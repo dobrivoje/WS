@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="org.superb.apps.ws_WS_DATABASE" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>org.superb.apps.ws.db.entities.Customer</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://sqlserver1.intermol.sys.corp:1433/WS"/>
+      <property name="javax.persistence.jdbc.password" value="821!!!"/>
+      <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>
+    </properties>
+  </persistence-unit>
+</persistence>
