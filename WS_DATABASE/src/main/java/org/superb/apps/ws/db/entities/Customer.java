@@ -6,7 +6,9 @@
 package org.superb.apps.ws.db.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,30 +45,42 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDC")
     private Long idc;
+    @Basic(optional = false)
     @Column(name = "Name")
-    @Basic(optional = false)
     private String name;
+    @Basic(optional = false)
     @Column(name = "Address")
-    @Basic(optional = false)
     private String address;
+    @Basic(optional = false)
     @Column(name = "City")
-    @Basic(optional = false)
     private String city;
+    @Basic(optional = false)
     @Column(name = "ZIP")
-    @Basic(optional = false)
     private String zip;
+    @Basic(optional = false)
     @Column(name = "Region")
-    @Basic(optional = false)
     private String region;
-    @Column(name = "PIB")
     @Basic(optional = false)
+    @Column(name = "PIB")
     private String pib;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDC")
+    private List<RelCBType> relCBTypeList;
 
     public Customer() {
     }
 
     public Customer(Long idc) {
         this.idc = idc;
+    }
+
+    public Customer(Long idc, String name, String address, String city, String zip, String region, String pib) {
+        this.idc = idc;
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.zip = zip;
+        this.region = region;
+        this.pib = pib;
     }
 
     public Long getIdc() {
@@ -123,6 +139,15 @@ public class Customer implements Serializable {
         this.pib = pib;
     }
 
+    @XmlTransient
+    public List<RelCBType> getRelCBTypeList() {
+        return relCBTypeList;
+    }
+
+    public void setRelCBTypeList(List<RelCBType> relCBTypeList) {
+        this.relCBTypeList = relCBTypeList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -142,7 +167,6 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.Customer[ idc=" + idc + " ]";
+        return name;
     }
-
 }

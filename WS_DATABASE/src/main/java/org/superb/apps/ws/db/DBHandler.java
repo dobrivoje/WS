@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.superb.apps.ws.db.entities.Customer;
+import org.superb.apps.ws.db.entities.CustomerBussinesType;
+import org.superb.apps.ws.db.entities.RelCBType;
 
 /**
  *
@@ -19,7 +21,7 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="System definitions">
     private static DBHandler instance;
-    private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_WS_DATABASE";
+    private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_ID);
     private static final EntityManager em = emf.createEntityManager();
 
@@ -149,5 +151,76 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
     //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Customer Bussines Type">
+    //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
+    public CustomerBussinesType getCustomerBussinesType(int IDCBT) {
+        try {
+            return (CustomerBussinesType) getEm().createNamedQuery("CustomerBussinesType.findByIdcbt")
+                    .setParameter("idcbt", IDCBT)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CustomerBussinesType> getAllCustomerBussinesTypes() {
+        try {
+            return (List<CustomerBussinesType>) getEm().createNamedQuery("CustomerBussinesType.findAll").getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CustomerBussinesType> getAllCustomerBussinesTypes(String activityName) {
+        try {
+            return getEm().createNamedQuery("CustomerBussinesType.findByActivity")
+                    .setParameter("customer_activity", activityName.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType bussinesType) {
+        return bussinesType.getAllCustomersForBussinesType();
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
+    public void addNewCustomerBussinesType(String newCustomerBussinesType) throws Exception {
+        CustomerBussinesType newCBT = new CustomerBussinesType();
+        newCBT.setCustomerActivity(newCustomerBussinesType);
+
+        getEm().getTransaction().begin();
+        em.persist(newCBT);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateCustomerBussinesType(int IDCBT, String newCustomerBussinesType) throws Exception {
+        CustomerBussinesType newCBT = getCustomerBussinesType(IDCBT);
+        newCBT.setCustomerActivity(newCustomerBussinesType);
+
+        getEm().getTransaction().begin();
+        em.merge(newCBT);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
+    public void addNew_CBT_CUSTOMER(CustomerBussinesType IDCBT, Customer IDC, String DateFrom, String DateTo, boolean active) throws Exception {
+        RelCBType newRelCBType = new RelCBType();
+        newRelCBType.setFK_IDC(IDC);
+        newRelCBType.setFK_IDCBT(IDCBT);
+        newRelCBType.setDateFrom(DateFrom);
+        newRelCBType.setDateTo(DateTo);
+        newRelCBType.setActive(active);
+
+        getEm().getTransaction().begin();
+        em.persist(newRelCBType);
+        getEm().getTransaction().commit();
+    }
     //</editor-fold>
 }
