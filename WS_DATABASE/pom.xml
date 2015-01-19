@@ -25,12 +25,6 @@
             <artifactId>jtds</artifactId>
             <version>1.3.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.superb.apps.ws</groupId>
-            <artifactId>WS_DATABASE</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
