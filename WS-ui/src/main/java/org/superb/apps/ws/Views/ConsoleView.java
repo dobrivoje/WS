@@ -5,7 +5,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -14,6 +13,12 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.superb.apps.vaadin.utils.AccordionMenu;
 import org.superb.apps.vaadin.utils.MyWindow;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.controllers.CustomerController;
@@ -28,9 +33,9 @@ public class ConsoleView extends VerticalLayout implements View {
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();
 
-    private final Accordion accordion = new Accordion();
+    private final AccordionMenu mainMenu = new AccordionMenu();
 
-    //<editor-fold defaultstate="collapsed" desc="model">
+    //<editor-fold defaultstate="collapsed" desc="Model">
     private static final ICustomer CUSTOMER_CONTROLLER = new CustomerController();
     private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
     private final Table customerTable = new Table();
@@ -54,17 +59,26 @@ public class ConsoleView extends VerticalLayout implements View {
         HR_VL_RIGHT.setMargin(true);
         HR_VL_RIGHT.setSpacing(true);
 
-        accordion.setSizeFull();
+        mainMenu.setSizeFull();
 
         HSP.setSplitPosition(33, Unit.PERCENTAGE);
         HSP.setFirstComponent(HL_VL_LEFT);
         HSP.setSecondComponent(HR_VL_RIGHT);
 
-        HL_VL_LEFT.addComponent(accordion);
+        HL_VL_LEFT.addComponent(mainMenu);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Accordion init">
-        accordion.addTab(new Button("New Customer", new Button.ClickListener() {
+        List<String> mainMenuCategories = new ArrayList<>(Arrays.asList(new String[]{"New Customer", "Bussines Types", "Tasks"}));
+        Map<String, List<String>> categoryOptions = new HashMap<>();
+        Map<String, List<Button>> subMenuButtons = new HashMap<>();
+
+        List<Button> buttons = new ArrayList<>();
+
+        categoryOptions.put(mainMenuCategories.get(0), new ArrayList<>(Arrays.asList(new String[]{"Option 1-1", "Option 1-2", "Option 1-3"})));
+        categoryOptions.put(mainMenuCategories.get(1), new ArrayList<>(Arrays.asList(new String[]{"Option 2-1", "Option 2-2"})));
+        categoryOptions.put(mainMenuCategories.get(2), new ArrayList<>(Arrays.asList(new String[]{"Option 3-1", "Option 3-2", "Option 3-3", "Option 3-4", "Option 3-5"})));
+
+        buttons.add(new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
             TextField customerAddress_TextField = new TextField("customer Address");
             TextField customerCity_TextField = new TextField("customer City");
@@ -97,10 +111,14 @@ public class ConsoleView extends VerticalLayout implements View {
                 HR_VL_RIGHT.addComponent(customerRegion_TextField);
                 HR_VL_RIGHT.addComponent(saveNewCustomer_Button);
             }
-        }), "Customer");
+        }));
 
-        final ComboBox comboBox_BussinesTypes
-                = new ComboBox("Bussines Types", CBT_CONTROLLER.getAllBussinesTypes());
+        subMenuButtons.put(mainMenuCategories.get(0), buttons.subList(0, 0));
+        subMenuButtons.put(mainMenuCategories.get(1), buttons.subList(1, 1));
+        mainMenu.setSubMenuButtons(subMenuButtons);
+
+        //<editor-fold defaultstate="collapsed" desc="Accordion init">
+        final ComboBox comboBox_BussinesTypes = new ComboBox("Bussines Types", CBT_CONTROLLER.getAllBussinesTypes());
         comboBox_BussinesTypes.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -126,15 +144,16 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
 
-        accordion.addTab(new Button("Customer Bussines Types", new Button.ClickListener() {
-
+        buttons.add(new Button("Customer Bussines Types", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 HR_VL_RIGHT.addComponent(comboBox_BussinesTypes);
             }
-        }), "Customer Bussines Types");
-        //</editor-fold>
+        }));
 
+        mainMenu.createTabs();
+        //</editor-fold>
+        
         //<editor-fold defaultstate="collapsed" desc="Customer Table1">
         Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
 
