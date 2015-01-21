@@ -9,9 +9,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.superb.apps.ws.db.entities.BussinesLine;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 import org.superb.apps.ws.db.entities.RelCBType;
+import org.superb.apps.ws.db.entities.Salesman;
 
 /**
  *
@@ -222,5 +224,105 @@ public class DBHandler {
         em.persist(newRelCBType);
         getEm().getTransaction().commit();
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SALESMAN">
+    //<editor-fold defaultstate="collapsed" desc="SALESMAN READ">
+    public Salesman getSalesman(int IDS) {
+        try {
+            return (Salesman) getEm().createNamedQuery("Salesman.findByIds")
+                    .setParameter("ids", IDS)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Salesman> getSalesmanByName(String name) {
+        try {
+            return getEm().createNamedQuery("Salesman.findByName")
+                    .setParameter("name", name)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Salesman> getSalesmanBySurname(String surname) {
+        try {
+            return getEm().createNamedQuery("Salesman.findBySurname")
+                    .setParameter("surname", surname)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Salesman> getSalesmanByPosition(String position) {
+        try {
+            return getEm().createNamedQuery("Salesman.findByPosition")
+                    .setParameter("position", position)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Salesman> getAllSalesmanByActivity(boolean active) {
+        try {
+            return getEm().createNamedQuery("Salesman.findByActive")
+                    .setParameter("active", active)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SALESMAN Add/Update Data">
+    public void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
+        Salesman newSalesman = new Salesman();
+
+        newSalesman.setName(name);
+        newSalesman.setSurname(surname);
+        newSalesman.setPosition(position);
+        newSalesman.setActive(active);
+        newSalesman.setDateFrom(dateFrom);
+        newSalesman.setDateTo(dateTo);
+        newSalesman.setFkIdbl(BL);
+
+        getEm().getTransaction().begin();
+        em.persist(newSalesman);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewSalesman(Salesman newSalesman) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newSalesman);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateSalesman(int IDS, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
+        Salesman newSalesman = getSalesman(IDS);
+
+        newSalesman.setName(name);
+        newSalesman.setSurname(surname);
+        newSalesman.setPosition(position);
+        newSalesman.setActive(active);
+        newSalesman.setDateFrom(dateFrom);
+        newSalesman.setDateTo(dateTo);
+        newSalesman.setFkIdbl(BL);
+
+        getEm().getTransaction().begin();
+        em.persist(newSalesman);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateSalesman(Salesman newSalesman) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newSalesman);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
     //</editor-fold>
 }

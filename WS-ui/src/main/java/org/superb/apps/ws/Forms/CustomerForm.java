@@ -37,9 +37,8 @@ public class CustomerForm extends FormLayout {
         setSizeFull();
         setMargin(true);
 
-        fieldGroup.bindMemberFields(this);
-
         addComponents(name, address, city, zip, region, pib);
+        fieldGroup.bindMemberFields(this);
     }
 
     public Item getBICCustomer() {
@@ -48,6 +47,6 @@ public class CustomerForm extends FormLayout {
 
     public void setBICCustomer(Item BICCustomer) {
         this.bicCustomer = BICCustomer;
-        fieldGroup.setItemDataSource(bicCustomer);
+        fieldGroup.setItemDataSource(BICCustomer);
     }
 }
