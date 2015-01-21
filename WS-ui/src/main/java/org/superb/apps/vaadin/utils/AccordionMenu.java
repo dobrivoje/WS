@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class AccordionMenu extends Accordion {
 
-    private List<String> mainMenuOptions = new ArrayList<>();
+    private List<String> mainMenuItems = new ArrayList<>();
 
     private Map<String, List<String>> subMenuButtonCaptions = new HashMap<>();
     private Map<String, List<Button>> subMenuButtons = new HashMap<>();
@@ -24,24 +24,27 @@ public class AccordionMenu extends Accordion {
 
     // private final String ACCORDION_STYLE1 = "mojAccordion";
     // private final String BUTTON_STYLE1 = "mojiDugmici_GlavniMeni";
-    public AccordionMenu() {
+    public AccordionMenu(List<String> mainMenuItems,
+            Map<String, List<String>> subMenuButtonCaptions,
+            Map<String, List<Button>> subMenuButtons) {
+
         // setStyleName(ACCORDION_STYLE1);
         setSizeFull();
-        // createTabs();
+        createTabs();
     }
 
-    public void createTabs() {
-        for (String item : mainMenuOptions) {
-            subMenuButtonCaptions.put(item, subMenuButtonCaptions.get(item));
-            subMenuButtons.put(item, subMenuButtons.get(item));
+    private void createTabs() {
+        for (String mainMenuItem : mainMenuItems) {
+            subMenuButtonCaptions.put(mainMenuItem, subMenuButtonCaptions.get(mainMenuItem));
+            subMenuButtons.put(mainMenuItem, subMenuButtons.get(mainMenuItem));
 
             VerticalLayout VL = new VerticalLayout();
             VL.setMargin(true);
             VL.setSpacing(true);
-            VL.setCaption(item);
+
             addComponent(VL);
 
-            for (Button subMenuButton : subMenuButtons.get(item)) {
+            for (Button subMenuButton : subMenuButtons.get(mainMenuItem)) {
                 // subMenuButton.setStyleName(BUTTON_STYLE1);
                 subMenuButton.setWidth("80%");
                 subMenuButton.setHeight("90px");
@@ -49,18 +52,16 @@ public class AccordionMenu extends Accordion {
                 VL.addComponent(subMenuButton);
                 VL.setComponentAlignment(subMenuButton, Alignment.MIDDLE_CENTER);
             }
-
-            addTab(VL);
         }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public List<String> getMainMenuOptions() {
-        return mainMenuOptions;
+        return mainMenuItems;
     }
 
     public void setMainMenuOptions(List<String> mainMenuOptions) {
-        this.mainMenuOptions = mainMenuOptions;
+        this.mainMenuItems = mainMenuOptions;
     }
 
     public Map<String, List<String>> getSubMenuButtonCaptions() {

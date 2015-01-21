@@ -11,7 +11,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ public class ConsoleView extends VerticalLayout implements View {
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();
 
-    private final AccordionMenu mainMenu = new AccordionMenu();
+    private final AccordionMenu accordionMainMenu;
 
     //<editor-fold defaultstate="collapsed" desc="Model">
     private static final ICustomer CUSTOMER_CONTROLLER = new CustomerController();
@@ -59,24 +58,21 @@ public class ConsoleView extends VerticalLayout implements View {
         HR_VL_RIGHT.setMargin(true);
         HR_VL_RIGHT.setSpacing(true);
 
-        mainMenu.setSizeFull();
-
         HSP.setSplitPosition(33, Unit.PERCENTAGE);
         HSP.setFirstComponent(HL_VL_LEFT);
         HSP.setSecondComponent(HR_VL_RIGHT);
 
-        HL_VL_LEFT.addComponent(mainMenu);
+        addComponent(HSP);
         //</editor-fold>
 
-        List<String> mainMenuCategories = new ArrayList<>(Arrays.asList(new String[]{"New Customer", "Bussines Types", "Tasks"}));
-        Map<String, List<String>> categoryOptions = new HashMap<>();
+        List<String> mainMenuItems = new ArrayList<>(Arrays.asList(new String[]{"New Customer", "Bussines Types", "Tasks"}));
+        Map<String, List<String>> subMenuItems = new HashMap<>();
         Map<String, List<Button>> subMenuButtons = new HashMap<>();
-
         List<Button> buttons = new ArrayList<>();
 
-        categoryOptions.put(mainMenuCategories.get(0), new ArrayList<>(Arrays.asList(new String[]{"Option 1-1", "Option 1-2", "Option 1-3"})));
-        categoryOptions.put(mainMenuCategories.get(1), new ArrayList<>(Arrays.asList(new String[]{"Option 2-1", "Option 2-2"})));
-        categoryOptions.put(mainMenuCategories.get(2), new ArrayList<>(Arrays.asList(new String[]{"Option 3-1", "Option 3-2", "Option 3-3", "Option 3-4", "Option 3-5"})));
+        subMenuItems.put(mainMenuItems.get(0), new ArrayList<>(Arrays.asList(new String[]{"Option 1-1", "Option 1-2", "Option 1-3"})));
+        subMenuItems.put(mainMenuItems.get(1), new ArrayList<>(Arrays.asList(new String[]{"Option 2-1", "Option 2-2"})));
+        subMenuItems.put(mainMenuItems.get(2), new ArrayList<>(Arrays.asList(new String[]{"Option 3-1", "Option 3-2", "Option 3-3", "Option 3-4", "Option 3-5"})));
 
         buttons.add(new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
@@ -112,12 +108,14 @@ public class ConsoleView extends VerticalLayout implements View {
                 HR_VL_RIGHT.addComponent(saveNewCustomer_Button);
             }
         }));
+        subMenuButtons.put(mainMenuItems.get(0), buttons.subList(0, 0));
+        subMenuButtons.put(mainMenuItems.get(1), buttons.subList(1, 1));
 
-        subMenuButtons.put(mainMenuCategories.get(0), buttons.subList(0, 0));
-        subMenuButtons.put(mainMenuCategories.get(1), buttons.subList(1, 1));
-        mainMenu.setSubMenuButtons(subMenuButtons);
-
+        accordionMainMenu = new AccordionMenu(mainMenuItems, subMenuItems, subMenuButtons);
+        accordionMainMenu.setSubMenuButtons(subMenuButtons);
+        HL_VL_LEFT.addComponent(accordionMainMenu);
         //<editor-fold defaultstate="collapsed" desc="Accordion init">
+
         final ComboBox comboBox_BussinesTypes = new ComboBox("Bussines Types", CBT_CONTROLLER.getAllBussinesTypes());
         comboBox_BussinesTypes.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
@@ -128,8 +126,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
                     Customer_BIC2.addAll(
                             CBT_CONTROLLER.getAllCustomersForBussinesType(
-                                    ((CustomerBussinesType) event.getProperty().getValue())
-                                    .getIdcbt()));
+                                    (CustomerBussinesType) event.getProperty().getValue()));
                 } catch (Exception e) {
                     getUI().addWindow(new MyWindow("Error."));
                 }
@@ -150,10 +147,8 @@ public class ConsoleView extends VerticalLayout implements View {
                 HR_VL_RIGHT.addComponent(comboBox_BussinesTypes);
             }
         }));
-
-        mainMenu.createTabs();
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Customer Table1">
         Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
 
@@ -169,7 +164,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer item = (Customer) row;
-                        UI.getCurrent().addWindow(new MyWindow(item.toString()));
+                        getUI().addWindow(new MyWindow(item.toString()));
                     }
                 });
 
@@ -186,7 +181,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     try {
                         CUSTOMER_CONTROLLER.updateCustomer(c);
                     } catch (Exception ex) {
-                        UI.getCurrent().addWindow(new MyWindow("Greška! Opis: ".concat(ex.toString())));
+                        getUI().addWindow(new MyWindow("Greška! Opis: ".concat(ex.toString())));
                     }
                 }
             }
@@ -200,7 +195,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     MyWindow mw = new MyWindow("VVV: ");
 
                     mw.setText(c.toString());
-                    UI.getCurrent().addWindow(mw);
+                    getUI().addWindow(mw);
                     //}
                 }
             }
@@ -249,13 +244,11 @@ public class ConsoleView extends VerticalLayout implements View {
                         errorMessage += "CUSTOMER PROBABLY ALREADY EXIST !!!";
                     }
 
-                    UI.getCurrent().addWindow(new MyWindow(errorMessage));
+                    getUI().addWindow(new MyWindow(errorMessage));
                 }
             }
         });
         //</editor-fold>
-
-        addComponent(HSP);
     }
 
     @Override
