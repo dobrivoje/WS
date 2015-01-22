@@ -27,6 +27,11 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
     }
 
     @Override
+    public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType) {
+        return dbh.getCustomerBussinesType(customerBussinesType.getIdcbt()).getAllCustomersForBussinesType();
+    }
+
+    @Override
     public List<CustomerBussinesType> getAllBussinesTypes() {
         return dbh.getAllCustomerBussinesTypes();
     }

@@ -16,6 +16,8 @@ import org.superb.apps.ws.db.entities.CustomerBussinesType;
 public interface ICustomerBussinesType {
 
     List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType);
+    
+    List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
 
     List<CustomerBussinesType> getAllBussinesTypes();
 

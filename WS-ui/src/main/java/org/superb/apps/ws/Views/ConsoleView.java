@@ -5,19 +5,16 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Accordion;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.superb.apps.vaadin.utils.AccordionMenu;
 import org.superb.apps.vaadin.utils.MyWindow;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.controllers.CustomerController;
@@ -32,9 +29,9 @@ public class ConsoleView extends VerticalLayout implements View {
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();
 
-    private final AccordionMenu accordionMainMenu;
+    private final Accordion accordion = new Accordion();
 
-    //<editor-fold defaultstate="collapsed" desc="Model">
+    //<editor-fold defaultstate="collapsed" desc="model">
     private static final ICustomer CUSTOMER_CONTROLLER = new CustomerController();
     private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
     private final Table customerTable = new Table();
@@ -58,23 +55,21 @@ public class ConsoleView extends VerticalLayout implements View {
         HR_VL_RIGHT.setMargin(true);
         HR_VL_RIGHT.setSpacing(true);
 
+        accordion.setSizeFull();
+
         HSP.setSplitPosition(33, Unit.PERCENTAGE);
         HSP.setFirstComponent(HL_VL_LEFT);
         HSP.setSecondComponent(HR_VL_RIGHT);
 
-        addComponent(HSP);
+        HL_VL_LEFT.addComponent(accordion);
         //</editor-fold>
 
-        List<String> mainMenuItems = new ArrayList<>(Arrays.asList(new String[]{"New Customer", "Bussines Types", "Tasks"}));
-        Map<String, List<String>> subMenuItems = new HashMap<>();
-        Map<String, List<Button>> subMenuButtons = new HashMap<>();
-        List<Button> buttons = new ArrayList<>();
-
-        subMenuItems.put(mainMenuItems.get(0), new ArrayList<>(Arrays.asList(new String[]{"Option 1-1", "Option 1-2", "Option 1-3"})));
-        subMenuItems.put(mainMenuItems.get(1), new ArrayList<>(Arrays.asList(new String[]{"Option 2-1", "Option 2-2"})));
-        subMenuItems.put(mainMenuItems.get(2), new ArrayList<>(Arrays.asList(new String[]{"Option 3-1", "Option 3-2", "Option 3-3", "Option 3-4", "Option 3-5"})));
-
-        buttons.add(new Button("New Customer", new Button.ClickListener() {
+        //<editor-fold defaultstate="collapsed" desc="Accordion init">
+        final VerticalLayout VL1 = new VerticalLayout();
+        VL1.setSizeFull();
+        VL1.setSpacing(true);
+        VL1.setMargin(true);
+        Button button1 = new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
             TextField customerAddress_TextField = new TextField("customer Address");
             TextField customerCity_TextField = new TextField("customer City");
@@ -93,13 +88,15 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
                     } catch (Exception ex) {
-                        getUI().addWindow(new MyWindow("Error!"));
+                        Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             });
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                HR_VL_RIGHT.removeAllComponents();
+
                 HR_VL_RIGHT.addComponent(customerName_TextField);
                 HR_VL_RIGHT.addComponent(customerAddress_TextField);
                 HR_VL_RIGHT.addComponent(customerCity_TextField);
@@ -107,16 +104,14 @@ public class ConsoleView extends VerticalLayout implements View {
                 HR_VL_RIGHT.addComponent(customerRegion_TextField);
                 HR_VL_RIGHT.addComponent(saveNewCustomer_Button);
             }
-        }));
-        subMenuButtons.put(mainMenuItems.get(0), buttons.subList(0, 0));
-        subMenuButtons.put(mainMenuItems.get(1), buttons.subList(1, 1));
+        });
 
-        accordionMainMenu = new AccordionMenu(mainMenuItems, subMenuItems, subMenuButtons);
-        accordionMainMenu.setSubMenuButtons(subMenuButtons);
-        HL_VL_LEFT.addComponent(accordionMainMenu);
-        //<editor-fold defaultstate="collapsed" desc="Accordion init">
+        VL1.addComponent(button1);
+        VL1.setComponentAlignment(button1, Alignment.TOP_CENTER);
+        accordion.addTab(VL1, "Customer");
 
         final ComboBox comboBox_BussinesTypes = new ComboBox("Bussines Types", CBT_CONTROLLER.getAllBussinesTypes());
+
         comboBox_BussinesTypes.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -126,27 +121,40 @@ public class ConsoleView extends VerticalLayout implements View {
 
                     Customer_BIC2.addAll(
                             CBT_CONTROLLER.getAllCustomersForBussinesType(
-                                    (CustomerBussinesType) event.getProperty().getValue()));
+                                    ((CustomerBussinesType) event.getProperty().getValue())
+                                    .getIdcbt()));
+
+                    customerTable2.setContainerDataSource(Customer_BIC2);
+                    customerTable2.setPageLength(Customer_BIC2.size());
+                    customerTable2.setVisibleColumns(
+                            "idc", "name", "city", "address", "zip", "pib", "region");
+                    customerTable2.setColumnHeaders(
+                            "CLIENT ID", "CLIENT NAME", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
+
+                    HR_VL_RIGHT.addComponent(customerTable2);
+
                 } catch (Exception e) {
-                    getUI().addWindow(new MyWindow("Error."));
+                    Notification.show("Error.", e.toString(), Notification.Type.ERROR_MESSAGE);
                 }
-
-                customerTable2.setContainerDataSource(Customer_BIC2);
-                customerTable2.setPageLength(Customer_BIC2.size());
-                customerTable2.setVisibleColumns("name", "city", "address");
-                customerTable2.setColumnHeaders("CLIENT NAME", "CITY", "ADDRESS");
-
-                HR_VL_RIGHT.addComponent(customerTable2);
                 //</editor-fold>
             }
         });
 
-        buttons.add(new Button("Customer Bussines Types", new Button.ClickListener() {
+        VerticalLayout VL2 = new VerticalLayout();
+        VL2.setSizeFull();
+        VL2.setSpacing(true);
+        VL2.setMargin(true);
+        Button button2 = new Button("Customer Bussines Types", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                HR_VL_RIGHT.removeAllComponents();
                 HR_VL_RIGHT.addComponent(comboBox_BussinesTypes);
             }
-        }));
+        });
+
+        VL2.addComponent(button2);
+        VL2.setComponentAlignment(button2, Alignment.TOP_CENTER);
+        accordion.addTab(VL2, "Customer Bussines Types");
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Customer Table1">
@@ -186,6 +194,7 @@ public class ConsoleView extends VerticalLayout implements View {
                 }
             }
         });
+
         customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent event) {
@@ -244,11 +253,13 @@ public class ConsoleView extends VerticalLayout implements View {
                         errorMessage += "CUSTOMER PROBABLY ALREADY EXIST !!!";
                     }
 
-                    getUI().addWindow(new MyWindow(errorMessage));
+                    Notification.show("Error.", errorMessage, Notification.Type.ERROR_MESSAGE);
                 }
             }
         });
         //</editor-fold>
+
+        addComponent(HSP);
     }
 
     @Override

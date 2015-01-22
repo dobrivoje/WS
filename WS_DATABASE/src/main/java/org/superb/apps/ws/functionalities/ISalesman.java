@@ -6,9 +6,7 @@
 package org.superb.apps.ws.functionalities;
 
 import java.util.List;
-import static org.superb.apps.ws.db.DBHandler.getEm;
 import org.superb.apps.ws.db.entities.BussinesLine;
-import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.Salesman;
 
 /**
