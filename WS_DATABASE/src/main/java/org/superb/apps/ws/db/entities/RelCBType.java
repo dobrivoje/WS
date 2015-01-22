@@ -6,6 +6,7 @@
 package org.superb.apps.ws.db.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RelCBType.findByDateTo", query = "SELECT r FROM RelCBType r WHERE r.dateTo = :dateTo"),
     @NamedQuery(name = "RelCBType.findByActive", query = "SELECT r FROM RelCBType r WHERE r.active = :active")})
 public class RelCBType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +43,11 @@ public class RelCBType implements Serializable {
     @Column(name = "IDRCBT")
     private Integer idrcbt;
     @Column(name = "Date_From")
-    private String dateFrom;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateFrom;
     @Column(name = "Date_To")
-    private String dateTo;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateTo;
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_IDCBT", referencedColumnName = "IDCBT")
@@ -67,19 +72,19 @@ public class RelCBType implements Serializable {
         this.idrcbt = idrcbt;
     }
 
-    public String getDateFrom() {
+    public Date getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
+    public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public String getDateTo() {
+    public Date getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(String dateTo) {
+    public void setDateTo(Date dateTo) {
         this.dateTo = dateTo;
     }
 
@@ -128,5 +133,5 @@ public class RelCBType implements Serializable {
     public String toString() {
         return "org.superb.apps.ws.db.entities.RelCBType[ idrcbt=" + idrcbt + " ]";
     }
-    
+
 }

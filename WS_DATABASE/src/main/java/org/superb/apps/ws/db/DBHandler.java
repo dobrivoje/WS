@@ -5,6 +5,7 @@
  */
 package org.superb.apps.ws.db;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -212,7 +213,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
-    public void addNew_CBT_CUSTOMER(CustomerBussinesType IDCBT, Customer IDC, String DateFrom, String DateTo, boolean active) throws Exception {
+    public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, Date DateFrom, Date DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
         newRelCBType.setFK_IDC(IDC);
         newRelCBType.setFK_IDCBT(IDCBT);
