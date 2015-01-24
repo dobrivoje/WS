@@ -9,6 +9,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
+import org.superb.apps.ws.Views.AccordionView;
 import org.superb.apps.ws.Views.ConsoleView;
 import org.superb.apps.ws.Views.ErrorView;
 
@@ -24,6 +25,7 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         navigator.addView(ConsoleView.class.getSimpleName(), ConsoleView.class);
+        navigator.addView(AccordionView.class.getSimpleName(), AccordionView.class);
         navigator.setErrorView(ErrorView.class);
 
         navigator.navigateTo(ConsoleView.class.getSimpleName());

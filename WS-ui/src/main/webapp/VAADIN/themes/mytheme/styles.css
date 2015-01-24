@@ -11889,3 +11889,9 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .mojiDugmici .v-textfield {
+	size: 50px;
+	width: max-content;
+	overflow: auto;
+}
