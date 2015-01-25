@@ -19,7 +19,7 @@ public class SalesmanController implements ISalesman {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">
+    //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
     public Salesman getSalesmanByID(int customerID) {
         return dbh.getSalesman(customerID);
@@ -46,7 +46,7 @@ public class SalesmanController implements ISalesman {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
     public void addNewSalesman(Salesman newSalesman) throws Exception {
         dbh.addNewSalesman(newSalesman);

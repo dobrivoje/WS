@@ -5,7 +5,6 @@
  */
 package org.superb.apps.ws.functionalities;
 
-import java.util.Date;
 import java.util.List;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
@@ -22,7 +21,7 @@ public interface ICustomerBussinesType {
 
     public List<CustomerBussinesType> getAllBussinesTypes();
 
-    public void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
+    public void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
             throws Exception;
 
 }

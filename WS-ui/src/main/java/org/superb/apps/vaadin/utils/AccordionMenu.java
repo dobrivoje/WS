@@ -21,26 +21,24 @@ public class AccordionMenu extends Accordion {
     private Map<String, List<Button.ClickListener>> subMenuButtonsClickListeners;
 
     public AccordionMenu() {
-    }
-
-    public AccordionMenu(List<String> mainMenuItems, Map<String, List<Button>> subMenuButtons) {
-        this.mainMenuItems = new ArrayList<>(mainMenuItems);
-        this.subMenuButtons = new HashMap<>(subMenuButtons);
-        this.createTabs();
+        this.mainMenuItems = new ArrayList<>();
+        this.subMenuButtons = new HashMap<>();
+        this.subMenuButtonsClickListeners = new HashMap<>();
     }
 
     public final void createTabs() {
-        for (String mainMenuItem : mainMenuItems) {
+        for (String m : mainMenuItems) {
             VerticalLayout VL = new VerticalLayout();
-            VL.setSizeFull();
             VL.setMargin(true);
             VL.setSpacing(true);
 
-            for (Button smb : subMenuButtons.get(mainMenuItem)) {
-                VL.addComponent(smb);
+            if (subMenuButtons.containsKey(m)) {
+                for (Button smb : subMenuButtons.get(m)) {
+                    VL.addComponent(smb);
+                }
             }
 
-            addTab(VL, mainMenuItem);
+            addTab(VL, m);
         }
     }
 
@@ -54,7 +52,7 @@ public class AccordionMenu extends Accordion {
     }
 
     public void setMainMenuOptions(String... mainMenuItems) {
-        this.mainMenuItems = Arrays.asList(mainMenuItems);
+        this.mainMenuItems = new ArrayList<>(Arrays.asList(mainMenuItems));
     }
 
     public Map<String, List<Button>> getSubMenuButtons() {
@@ -66,8 +64,7 @@ public class AccordionMenu extends Accordion {
     }
 
     public void setSubMenuButtons(int index, Button... subMenuButtons) {
-        this.subMenuButtons = new HashMap<>();
-        this.subMenuButtons.put(getMenuOption(index), Arrays.asList(subMenuButtons));
+        this.subMenuButtons.put(this.mainMenuItems.get(index), Arrays.asList(subMenuButtons));
     }
 
     public Map<String, List<Button.ClickListener>> getSubMenuButtonsClickListeners() {
@@ -79,12 +76,7 @@ public class AccordionMenu extends Accordion {
     }
 
     public void setSubMenuButtonsClickListeners(int index, Button.ClickListener... subMenuButtonsClickListeners) {
-        this.subMenuButtonsClickListeners = new HashMap<>();
-        this.subMenuButtonsClickListeners.put(getMenuOption(index), Arrays.asList(subMenuButtonsClickListeners));
+        this.subMenuButtonsClickListeners.put(this.mainMenuItems.get(index), Arrays.asList(subMenuButtonsClickListeners));
     }
     //</editor-fold>
-
-    private String getMenuOption(int index) {
-        return mainMenuItems.get(index);
-    }
 }

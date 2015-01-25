@@ -7,6 +7,9 @@
     <class>org.superb.apps.ws.db.entities.Customer</class>
     <class>org.superb.apps.ws.db.entities.Salesman</class>
     <class>org.superb.apps.ws.db.entities.BussinesLine</class>
+    <class>org.superb.apps.ws.db.entities.Image</class>
+    <class>org.superb.apps.ws.db.entities.Gallery</class>
+    <class>org.superb.apps.ws.db.entities.RelSALESMANIMAGE</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.password" value="821!!!"/>

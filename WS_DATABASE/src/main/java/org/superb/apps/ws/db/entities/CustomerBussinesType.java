@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "CustomerBussinesType.findAll", query = "SELECT c FROM CustomerBussinesType c"),
     @NamedQuery(name = "CustomerBussinesType.findByIdcbt", query = "SELECT c FROM CustomerBussinesType c WHERE c.idcbt = :idcbt"),
-    @NamedQuery(name = "CustomerBussinesType.AllBussinesTypesForActivity", 
+    @NamedQuery(name = "CustomerBussinesType.AllBussinesTypesForActivity",
             query = "SELECT c FROM CustomerBussinesType c WHERE c.customerActivity = :customerActivity")})
 public class CustomerBussinesType implements Serializable {
 
@@ -112,7 +112,9 @@ public class CustomerBussinesType implements Serializable {
 
     @Override
     public String toString() {
-        return customerActivity;
+        // OBAVEZNO definisati ovako, da bi kasnije u Combobox-u
+        // izlazio samo naziv aktivnosti !
+        return getCustomerActivity();
     }
 
 }

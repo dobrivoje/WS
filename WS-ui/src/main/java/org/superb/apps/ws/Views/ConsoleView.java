@@ -15,6 +15,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import java.text.SimpleDateFormat;
 import org.superb.apps.vaadin.utils.AccordionMenu;
 import org.superb.apps.vaadin.utils.MyWindow;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
@@ -30,9 +31,9 @@ public class ConsoleView extends VerticalLayout implements View {
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();
 
-    private final AccordionMenu menu;
+    private final AccordionMenu menu = new AccordionMenu();
 
-    //<editor-fold defaultstate="collapsed" desc="model">
+    //<editor-fold defaultstate="collapsed" desc="Model">
     private static final ICustomer CUSTOMER_CONTROLLER = new CustomerController();
     private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
     private final Table customerTable = new Table();
@@ -62,6 +63,8 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerZIP_TextField.getValue(),
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
+
+                        Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -77,6 +80,7 @@ public class ConsoleView extends VerticalLayout implements View {
                 HR_VL_RIGHT.addComponent(customerCity_TextField);
                 HR_VL_RIGHT.addComponent(customerZIP_TextField);
                 HR_VL_RIGHT.addComponent(customerRegion_TextField);
+                HR_VL_RIGHT.addComponent(customerPIB_TextField);
                 HR_VL_RIGHT.addComponent(saveNewCustomer_Button);
             }
         });
@@ -100,8 +104,8 @@ public class ConsoleView extends VerticalLayout implements View {
                         CBT_CONTROLLER.addNewCBT(
                                 (Customer) FK_IDC_ComboBox.getValue(),
                                 (CustomerBussinesType) FK_CBT_ComboBox.getValue(),
-                                CBT_DateFrom_TextField.getValue(),
-                                CBT_DateTo_TextField.getValue(),
+                                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateFrom_TextField.getValue()),
+                                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateTo_TextField.getValue()),
                                 activeCheckBox.getValue());
 
                         Notification.show("Saved.", "Message", Notification.Type.HUMANIZED_MESSAGE);
@@ -134,8 +138,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
                     Customer_BIC2.addAll(
                             CBT_CONTROLLER.getAllCustomersForBussinesType(
-                                    ((CustomerBussinesType) event.getProperty().getValue())
-                                    .getIdcbt()));
+                                    (CustomerBussinesType) event.getProperty().getValue()));
 
                     customerTable2.setContainerDataSource(Customer_BIC2);
                     customerTable2.setPageLength(Customer_BIC2.size());
@@ -153,7 +156,7 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
 
-        Button button2 = new Button("Customer Bussines Types", new Button.ClickListener() {
+        Button buttonCBT_List = new Button("Customer Bussines Types List", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 HR_VL_RIGHT.removeAllComponents();
@@ -162,22 +165,11 @@ public class ConsoleView extends VerticalLayout implements View {
         });
         //</editor-fold>
 
-        /*
-         List<String> m = new ArrayList<>(Arrays.asList("New Customer", "Bussines Types", "Tasks"));
-         Map<String, List<Button>> smb = new HashMap<>();
-         smb.put(m.get(0), Arrays.asList(buttonNewCustomer, buttonNewCBT));
-         smb.put(m.get(1), Arrays.asList(button2));
-         menu = new AccordionMenu(m, smb);
-         */
-        menu = new AccordionMenu();
-        menu.setMainMenuOptions("New Customer", "Bussines Types", "Tasks");
-        menu.setSubMenuButtons(0, buttonNewCustomer, buttonNewCBT);
-        menu.setSubMenuButtons(1, button2);
+        menu.setMainMenuOptions("App Management", "Customers Management", "Tasks/Todo");
+        menu.setSubMenuButtons(1, buttonNewCustomer, buttonNewCBT, buttonCBT_List);
         menu.createTabs();
 
         //<editor-fold defaultstate="collapsed" desc="UI setup">
-        setMargin(true);
-        setSpacing(true);
         setSizeFull();
 
         HL_VL_LEFT.setSizeFull();
@@ -197,7 +189,7 @@ public class ConsoleView extends VerticalLayout implements View {
         HL_VL_LEFT.addComponent(menu);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Customer Table1">
+        //<editor-fold defaultstate="collapsed" desc="Customer Table - Tbl dblclk open Customer Form">
         Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
 
         customerTable.setContainerDataSource(Customer_BIC);

@@ -6,6 +6,7 @@
 package org.superb.apps.ws.db.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -58,6 +61,8 @@ public class Salesman implements Serializable {
     @JoinColumn(name = "FK_IDBL", referencedColumnName = "IDBL")
     @ManyToOne
     private BussinesLine fkIdbl;
+    @OneToMany(mappedBy = "FK_Salesman")
+    private List<RelSALESMANIMAGE> SalesmanImageList;
 
     public Salesman() {
     }
@@ -130,6 +135,15 @@ public class Salesman implements Serializable {
         this.fkIdbl = fkIdbl;
     }
 
+    @XmlTransient
+    public List<RelSALESMANIMAGE> getSalesmanImageList() {
+        return SalesmanImageList;
+    }
+
+    public void setSalesmanImageList(List<RelSALESMANIMAGE> SalesmanImageList) {
+        this.SalesmanImageList = SalesmanImageList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -149,7 +163,7 @@ public class Salesman implements Serializable {
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.Salesman[ ids=" + ids + " ]";
+        return getName() + " " + getSurname() + " " + getPosition();
     }
 
 }

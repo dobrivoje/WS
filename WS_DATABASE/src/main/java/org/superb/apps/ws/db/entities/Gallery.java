@@ -22,40 +22,46 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 @Entity
-@Table(name = "BUSSINES_LINE")
+@Table(name = "GALLERY")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BussinesLine.findAll", query = "SELECT b FROM BussinesLine b"),
-    @NamedQuery(name = "BussinesLine.findByIDBL", query = "SELECT b FROM BussinesLine b WHERE b.idbl = :idbl"),
-    @NamedQuery(name = "BussinesLine.findByName", query = "SELECT b FROM BussinesLine b WHERE b.name LIKE :name")})
-public class BussinesLine implements Serializable {
+    @NamedQuery(name = "Gallery.findAll", query = "SELECT g FROM Gallery g"),
+    @NamedQuery(name = "Gallery.findByIdg", query = "SELECT g FROM Gallery g WHERE g.idg = :idg"),
+    @NamedQuery(name = "Gallery.findByName", query = "SELECT g FROM Gallery g WHERE g.name = :name")})
+public class Gallery implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDBL")
-    private Integer idbl;
-    @Column(name = "Name")
+    @Column(name = "IDG", nullable = false)
+    private Integer idg;
+    @Basic(optional = false)
+    @Column(name = "Name", nullable = false, length = 50)
     private String name;
-    @OneToMany(mappedBy = "fkIdbl")
-    private List<Salesman> salesmanList;
+    @OneToMany(mappedBy = "FK_IDGallery")
+    private List<Image> imageList;
 
-    public BussinesLine() {
+    public Gallery() {
     }
 
-    public BussinesLine(Integer idbl) {
-        this.idbl = idbl;
+    public Gallery(Integer idg) {
+        this.idg = idg;
     }
 
-    public Integer getIdbl() {
-        return idbl;
+    public Gallery(Integer idg, String name) {
+        this.idg = idg;
+        this.name = name;
     }
 
-    public void setIdbl(Integer idbl) {
-        this.idbl = idbl;
+    public Integer getIdg() {
+        return idg;
+    }
+
+    public void setIdg(Integer idg) {
+        this.idg = idg;
     }
 
     public String getName() {
@@ -67,29 +73,29 @@ public class BussinesLine implements Serializable {
     }
 
     @XmlTransient
-    public List<Salesman> getSalesmanList() {
-        return salesmanList;
+    public List<Image> getImageList() {
+        return imageList;
     }
 
-    public void setSalesmanList(List<Salesman> salesmanList) {
-        this.salesmanList = salesmanList;
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idbl != null ? idbl.hashCode() : 0);
+        hash += (idg != null ? idg.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BussinesLine)) {
+        if (!(object instanceof Gallery)) {
             return false;
         }
-        BussinesLine other = (BussinesLine) object;
-        return !((this.idbl == null && other.idbl != null) || (this.idbl != null && !this.idbl.equals(other.idbl)));
+        Gallery other = (Gallery) object;
+        return !((this.idg == null && other.idg != null) || (this.idg != null && !this.idg.equals(other.idg)));
     }
 
     @Override

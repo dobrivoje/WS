@@ -5,7 +5,6 @@
  */
 package org.superb.apps.ws.controllers;
 
-import java.util.Date;
 import org.superb.apps.ws.functionalities.ICustomerBussinesType;
 import java.util.List;
 import org.superb.apps.ws.db.DBHandler;
@@ -20,7 +19,7 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="REL_CBType Read Data">
+    //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
     public List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType) {
         return dbh.getCustomerBussinesType(IDCustomerBussinesType)
@@ -38,9 +37,9 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="REL_CBType add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
-    public void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
+    public void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
             throws Exception {
         dbh.addNew_CBT_CUSTOMER(customer, CBType, dateFrom, dateTo, active);
     }

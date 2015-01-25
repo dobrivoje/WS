@@ -5,6 +5,7 @@
  */
 package org.superb.apps.ws.db;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,7 +14,10 @@ import javax.persistence.Persistence;
 import org.superb.apps.ws.db.entities.BussinesLine;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
+import org.superb.apps.ws.db.entities.Gallery;
+import org.superb.apps.ws.db.entities.Image;
 import org.superb.apps.ws.db.entities.RelCBType;
+import org.superb.apps.ws.db.entities.RelSALESMANIMAGE;
 import org.superb.apps.ws.db.entities.Salesman;
 
 /**
@@ -213,7 +217,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
-    public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, Date DateFrom, Date DateTo, boolean active) throws Exception {
+    public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
         newRelCBType.setFK_IDC(IDC);
         newRelCBType.setFK_IDCBT(IDCBT);
@@ -322,6 +326,94 @@ public class DBHandler {
     public void updateSalesman(Salesman newSalesman) throws Exception {
         getEm().getTransaction().begin();
         em.persist(newSalesman);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="GALLERY & IMAGES">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public Gallery getGallery(int IDG) {
+        try {
+            return (Gallery) getEm().createNamedQuery("Gallery.findByIdg")
+                    .setParameter("idg", IDG)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Gallery> getAllGalleries() {
+        try {
+            return getEm().createNamedQuery("Gallery.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Image getImage(long IDI) {
+        try {
+            return (Image) getEm().createNamedQuery("Image.findByIdi")
+                    .setParameter("idi", IDI)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Image> getAllGalleryImages(Gallery gallery) {
+        return gallery.getImageList();
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addNewGallery(String name) throws Exception {
+        Gallery newGallery = new Gallery();
+
+        newGallery.setName(name);
+
+        getEm().getTransaction().begin();
+        em.persist(newGallery);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewImage(Gallery gallery, String imageName, Serializable imageData, Date imageUploadDate) throws Exception {
+        Image newImage = new Image();
+
+        newImage.setFK_IDGallery(gallery);
+        newImage.setName(imageName);
+        newImage.setImageData(imageData);
+        newImage.setUploadDate(imageUploadDate);
+
+        getEm().getTransaction().begin();
+        em.persist(newImage);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SALESMAN_IMAGE">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public List<RelSALESMANIMAGE> getAllSalesmanImages() {
+        try {
+            return getEm().createNamedQuery("RelSALESMANIMAGE.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addSalesmanImage(Salesman salesman, Image image) throws Exception {
+        RelSALESMANIMAGE newASALESMANIMAGE = new RelSALESMANIMAGE();
+
+        newASALESMANIMAGE.setFK_Salesman(salesman);
+        newASALESMANIMAGE.setFK_Image(image);
+
+        getEm().getTransaction().begin();
+        em.persist(newASALESMANIMAGE);
         getEm().getTransaction().commit();
     }
     //</editor-fold>

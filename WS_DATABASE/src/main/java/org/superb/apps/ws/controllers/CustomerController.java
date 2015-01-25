@@ -18,7 +18,7 @@ public class CustomerController implements ICustomer {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">
+    //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
     public List<Customer> getAllCustomers() {
         return dbh.getAllCustomers();
@@ -55,7 +55,7 @@ public class CustomerController implements ICustomer {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
     public void addNewCustomer(Customer newCustomer) throws Exception {
         dbh.addNewCustomer(newCustomer);
