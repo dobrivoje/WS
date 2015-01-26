@@ -25,10 +25,5 @@ public class Test2 {
         for (Customer c : CBTController.getAllCustomersForBussinesType(1)) {
             System.err.println(c.toString());
         }
-
-        for (Customer c : cbt.getAllCustomersForBussinesType()) {
-            System.err.println(c.toString());
-        }
-
     }
 }
