@@ -41,11 +41,17 @@ public class CustomerForm extends FormLayout {
         fieldGroup.bindMemberFields(this);
     }
 
+    public CustomerForm(Item bussinesItemContainer) {
+        this();
+        this.bicCustomer = bussinesItemContainer;
+        setBICCustomer(bicCustomer);
+    }
+
     public Item getBICCustomer() {
         return bicCustomer;
     }
 
-    public void setBICCustomer(Item BICCustomer) {
+    public final void setBICCustomer(Item BICCustomer) {
         this.bicCustomer = BICCustomer;
         fieldGroup.setItemDataSource(BICCustomer);
     }

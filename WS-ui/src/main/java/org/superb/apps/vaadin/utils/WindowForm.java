@@ -5,7 +5,6 @@
  */
 package org.superb.apps.vaadin.utils;
 
-import com.vaadin.data.Item;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
@@ -16,7 +15,7 @@ import com.vaadin.ui.themes.Reindeer;
  */
 public class WindowForm extends Window {
 
-    public WindowForm(String caption, FormLayout formLayout, Item item) {
+    public WindowForm(String caption, FormLayout formLayout) {
         setCaption(caption);
         setModal(true);
 

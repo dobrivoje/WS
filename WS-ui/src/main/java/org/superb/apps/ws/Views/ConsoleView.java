@@ -1,6 +1,7 @@
 package org.superb.apps.ws.Views;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
@@ -18,6 +19,8 @@ import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
 import org.superb.apps.vaadin.utils.AccordionMenu;
 import org.superb.apps.vaadin.utils.MyWindow;
+import org.superb.apps.vaadin.utils.WindowForm;
+import org.superb.apps.ws.Forms.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.controllers.CustomerController;
 import org.superb.apps.ws.db.entities.Customer;
@@ -165,10 +168,6 @@ public class ConsoleView extends VerticalLayout implements View {
         });
         //</editor-fold>
 
-        menu.setMainMenuOptions("App Management", "Customers Management", "Tasks/Todo");
-        menu.setSubMenuButtons(1, buttonNewCustomer, buttonNewCBT, buttonCBT_List);
-        menu.createTabs();
-
         //<editor-fold defaultstate="collapsed" desc="UI setup">
         setSizeFull();
 
@@ -226,70 +225,33 @@ public class ConsoleView extends VerticalLayout implements View {
                 }
             }
         });
-
         customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     // customerTable.setEditable(!customerTable.isEditable());
                     Customer c = (Customer) event.getItemId();
-                    MyWindow mw = new MyWindow("VVV: ");
-
-                    mw.setText(c.toString());
-                    getUI().addWindow(mw);
+                    // MyWindow mw = new MyWindow("VVV: ");
+                    WindowForm wf = new WindowForm("Customer", new CustomerForm(new BeanItem(c)));
+                    getUI().addWindow(wf);
                     //}
                 }
             }
         });
 
-        Button button = new Button("Refresh Table");
-        button.addClickListener(new Button.ClickListener() {
+        Button customersListButton = new Button("List of Customers");
+        customersListButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                customerTable.refreshRowCache();
-            }
-        });
-
-        final TextField customerName_TextField = new TextField("Name");
-        final TextField customerAddress_TextField = new TextField("Address");
-        final TextField customerCity_TextField = new TextField("City");
-        final TextField customerZIP_TextField = new TextField("ZIP");
-        final TextField customerRegion_TextField = new TextField("Region");
-
-        Button saveNewCustomer_Button = new Button("Save New Customer", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                String errorMessage = null;
-                try {
-                    Customer newCustomer = new Customer();
-
-                    newCustomer.setName(customerName_TextField.getValue());
-                    newCustomer.setAddress(customerAddress_TextField.getValue());
-                    newCustomer.setCity(customerCity_TextField.getValue());
-                    newCustomer.setZip(customerZIP_TextField.getValue());
-                    newCustomer.setRegion(customerRegion_TextField.getValue());
-                    newCustomer.setPib("12313");
-
-                    CUSTOMER_CONTROLLER.addNewCustomer(newCustomer);
-                } catch (Exception e) {
-                    if (e.toString().contains("java.sql.SQLException: Cannot insert the value NULL into column")) {
-                        errorMessage = "NULL Value detected! ";
-                    }
-
-                    if (e.toString().contains("Violation of UNIQUE KEY constraint \'CUSTOMER_PIB\'")) {
-                        errorMessage += "PIB MUST BE UNIQUE ! ";
-                    }
-
-                    if (e.toString().contains("java.sql.SQLException: Violation of UNIQUE KEY constraint \'CUSTOMER_Unique_Data\'")) {
-                        errorMessage += "CUSTOMER PROBABLY ALREADY EXIST !!!";
-                    }
-
-                    Notification.show("Error.", errorMessage, Notification.Type.ERROR_MESSAGE);
-                }
+                HR_VL_RIGHT.removeAllComponents();
+                HR_VL_RIGHT.addComponent(customerTable);
             }
         });
         //</editor-fold>
+
+        menu.setMainMenuOptions("App Management", "Customers Management", "Tasks/Todo");
+        menu.setSubMenuButtons(1, customersListButton, buttonNewCustomer, buttonNewCBT, buttonCBT_List);
+        menu.createTabs();
 
         addComponent(HSP);
     }
