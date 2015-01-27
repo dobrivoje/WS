@@ -47,8 +47,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
     public ConsoleView() {
         customerTable2 = new Table("Customers");
-        customerTable2.setSizeFull();
-        
+
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
