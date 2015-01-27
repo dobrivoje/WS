@@ -11,6 +11,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
+import org.superb.apps.vaadin.utils.CrudOperations;
 import org.superb.apps.ws.controllers.CustomerController;
 import org.superb.apps.ws.db.entities.Customer;
 
@@ -18,7 +19,7 @@ public class CustomerForm extends FormLayout {
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
     private Item BICCustomer;
-    private Button saveButton;
+    private Button crudButton;
     private BeanItem<Customer> beanItemCustomer;
     private Table callingTable;
 
@@ -43,50 +44,69 @@ public class CustomerForm extends FormLayout {
     //</editor-fold>
 
     public CustomerForm() {
+    }
+
+    public CustomerForm(Item customerItem, final Table callingTable, CrudOperations.MODE crudMode) {
         setSizeFull();
         setMargin(true);
-        setMargin(true);
-
-        this.callingTable = null;
 
         fieldGroup.bindMemberFields(this);
 
-        saveButton = new Button("Save modifications", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
-                    Customer customerToUpdate = beanItemCustomer.getBean();
-
-                    customerToUpdate.setName(name.getValue());
-                    customerToUpdate.setAddress(address.getValue());
-                    customerToUpdate.setCity(city.getValue());
-                    customerToUpdate.setZip(zip.getValue());
-                    customerToUpdate.setRegion(region.getValue());
-                    customerToUpdate.setPib(pib.getValue());
-
-                    new CustomerController().updateCustomer(customerToUpdate);
-                    // oveži tabelu posle izmene podatka !
-                    callingTable.markAsDirtyRecursive();
-
-                    Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
-                    
-                } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-
-        addComponents(name, address, city, zip, region, pib, saveButton);
-    }
-
-    public CustomerForm(Item customerItem, Table callingTable) {
-        this();
         this.callingTable = callingTable;
         this.BICCustomer = customerItem;
         setBICCustomer(BICCustomer);
+
+        if (crudMode.equals(CrudOperations.MODE.UPDATE)) {
+            crudButton = new Button("Save modifications", new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    try {
+                        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+                        Customer customerToUpdate = beanItemCustomer.getBean();
+                        getValuesFromFields(customerToUpdate);
+                        new CustomerController().updateCustomer(customerToUpdate);
+
+                        // oveži tabelu posle izmene podatka !
+                        callingTable.markAsDirtyRecursive();
+
+                        Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
+                    } catch (Exception ex) {
+                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+            });
+        }
+        if (crudMode.equals(CrudOperations.MODE.CREATE)) {
+            crudButton = new Button("New Customer", new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    try {
+                        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+                        Customer newCustomer = new Customer();
+                        getValuesFromFields(newCustomer);
+                        new CustomerController().addNewCustomer(newCustomer);
+
+                        // oveži tabelu posle izmene podatka !
+                        callingTable.markAsDirtyRecursive();
+                        Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
+                    } catch (Exception ex) {
+                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+            });
+        }
+
+        crudButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        addComponents(name, address, city, zip, region, pib, crudButton);
+    }
+
+    private void getValuesFromFields(Customer customerBean) {
+        customerBean.setName(name.getValue());
+        customerBean.setAddress(address.getValue());
+        customerBean.setCity(city.getValue());
+        customerBean.setZip(zip.getValue());
+        customerBean.setRegion(region.getValue());
+        customerBean.setPib(pib.getValue());
     }
 
     public Item getBICCustomer() {

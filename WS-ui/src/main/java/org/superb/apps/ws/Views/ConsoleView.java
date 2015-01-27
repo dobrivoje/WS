@@ -18,6 +18,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
 import org.superb.apps.vaadin.utils.AccordionMenu;
+import org.superb.apps.vaadin.utils.CrudOperations;
 import org.superb.apps.vaadin.utils.WindowForm;
 import org.superb.apps.ws.Forms.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
@@ -47,6 +48,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
     public ConsoleView() {
         customerTable2 = new Table("Customers");
+        customerTable2.setWidth(100, Unit.PERCENTAGE);
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
@@ -148,6 +150,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     Customer_BIC2.addAll(CBT_CONTROLLER.getAllCustomersForBussinesType(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
+                    customerTable2.markAsDirtyRecursive();
                     customerTable2.setContainerDataSource(Customer_BIC2);
                     customerTable2.setPageLength(Customer_BIC2.size());
                     customerTable2.setVisibleColumns(
@@ -178,11 +181,12 @@ public class ConsoleView extends VerticalLayout implements View {
 
         HL_VL_LEFT.setSizeFull();
         HL_VL_LEFT.setMargin(true);
-        HL_VL_LEFT.setSpacing(true);
+        //HL_VL_LEFT.setSpacing(true);
 
         HR_VL_RIGHT.setSizeUndefined();
+        //HR_VL_RIGHT.setWidth(100, Unit.PERCENTAGE);
         HR_VL_RIGHT.setMargin(true);
-        HR_VL_RIGHT.setSpacing(true);
+        // HR_VL_RIGHT.setSpacing(true);
 
         menu.setSizeFull();
 
@@ -196,19 +200,21 @@ public class ConsoleView extends VerticalLayout implements View {
         //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
         Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
 
+        customerTable.setPageLength(Customer_BIC.size());
         customerTable.setContainerDataSource(Customer_BIC);
         customerTable.setVisibleColumns(
                 "idc", "name", "city", "address", "zip", "pib", "region");
         customerTable.setColumnHeaders(
                 "CLIENT ID", "CLIENT NAME", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
-        customerTable.addGeneratedColumn("CHANGE DATA", new Table.ColumnGenerator() {
+        customerTable.addGeneratedColumn("CHANGE", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
                 final Button changeButton = new Button("Change.", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
-                        getUI().addWindow(new WindowForm("Customer Update Form", new CustomerForm(new BeanItem(c), customerTable)));
+                        getUI().addWindow(new WindowForm("Customer Update Form",
+                                new CustomerForm(new BeanItem(c), customerTable, CrudOperations.MODE.UPDATE)));
                     }
                 });
 
@@ -222,7 +228,8 @@ public class ConsoleView extends VerticalLayout implements View {
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
-                    getUI().addWindow(new WindowForm("Customer Update Form", new CustomerForm(new BeanItem(c), customerTable)));
+                    getUI().addWindow(new WindowForm("Customer Update Form",
+                            new CustomerForm(new BeanItem(c), customerTable, CrudOperations.MODE.UPDATE)));
                 }
             }
         });

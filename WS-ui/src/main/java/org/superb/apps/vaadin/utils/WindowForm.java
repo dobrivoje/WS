@@ -9,7 +9,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -21,8 +20,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class WindowForm extends Window implements Button.ClickListener {
 
     private final Button closeButton;
-    private final VerticalSplitPanel VSP = new VerticalSplitPanel();
-    private final VerticalLayout exitlayout = new VerticalLayout();
+    private final VerticalLayout VL = new VerticalLayout();
 
     public WindowForm(String caption, FormLayout formLayout) {
         setStyleName(Reindeer.LAYOUT_BLACK);
@@ -30,22 +28,19 @@ public class WindowForm extends Window implements Button.ClickListener {
         setCaption(caption);
         setModal(true);
 
-        this.VSP.setSizeFull();
-        this.VSP.setSplitPosition(90, Unit.PERCENTAGE);
+        this.VL.setSizeFull();
 
         this.closeButton = new Button("Close Window", this);
         this.closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
 
-        this.exitlayout.addComponent(closeButton);
-        this.exitlayout.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
+        this.VL.addComponent(formLayout);
+        this.VL.addComponent(closeButton);
+        this.VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
 
-        this.VSP.setFirstComponent(formLayout);
-        this.VSP.setSecondComponent(exitlayout);
-        
         setHeight(60, Unit.PERCENTAGE);
         setWidth(50, Unit.PERCENTAGE);
         center();
-        setContent(VSP);
+        setContent(VL);
     }
 
     @Override
