@@ -18,7 +18,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
 import org.superb.apps.vaadin.utils.AccordionMenu;
-import org.superb.apps.vaadin.utils.MyWindow;
 import org.superb.apps.vaadin.utils.WindowForm;
 import org.superb.apps.ws.Forms.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
@@ -43,10 +42,13 @@ public class ConsoleView extends VerticalLayout implements View {
 
     private static final ICustomerBussinesType CBT_CONTROLLER = new CustomerBussinesType_Controller();
     private final BeanItemContainer<Customer> Customer_BIC2 = new BeanItemContainer<>(Customer.class);
-    private final Table customerTable2 = new Table("Customers");
+    private final Table customerTable2;
     //</editor-fold>
 
     public ConsoleView() {
+        customerTable2 = new Table("Customers");
+        customerTable2.setSizeFull();
+        
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
@@ -88,11 +90,10 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
         Button buttonNewCBT = new Button("New Customer Bussines Type", new Button.ClickListener() {
-            ComboBox FK_IDC_ComboBox = new ComboBox("Customer",
-                    new BeanItemContainer(Customer.class, CUSTOMER_CONTROLLER.getAllCustomers()));
+            ComboBox FK_IDC_ComboBox = new ComboBox("Customer", new BeanItemContainer(Customer.class, CUSTOMER_CONTROLLER.getAllCustomers()));
             ComboBox FK_CBT_ComboBox = new ComboBox("Customer Bussines Type",
-                    new BeanItemContainer(CustomerBussinesType.class,
-                            CBT_CONTROLLER.getAllBussinesTypes()));
+                    new BeanItemContainer(CustomerBussinesType.class, CBT_CONTROLLER.getAllBussinesTypes()));
+
             DateField CBT_DateFrom_TextField = new DateField("Date From");
             DateField CBT_DateTo_TextField = new DateField("Date To");
             CheckBox activeCheckBox = new CheckBox("Active", true);
@@ -100,6 +101,12 @@ public class ConsoleView extends VerticalLayout implements View {
             Button saveNewCBT_Button = new Button("Save", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
+                    FK_IDC_ComboBox.setNullSelectionAllowed(false);
+                    FK_IDC_ComboBox.setTextInputAllowed(false);
+
+                    FK_CBT_ComboBox.setNullSelectionAllowed(false);
+                    FK_CBT_ComboBox.setTextInputAllowed(false);
+
                     CBT_DateFrom_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -139,9 +146,8 @@ public class ConsoleView extends VerticalLayout implements View {
                 try {
                     Customer_BIC2.removeAllItems();
 
-                    Customer_BIC2.addAll(
-                            CBT_CONTROLLER.getAllCustomersForBussinesType(
-                                    (CustomerBussinesType) event.getProperty().getValue()));
+                    Customer_BIC2.addAll(CBT_CONTROLLER.getAllCustomersForBussinesType(
+                            (CustomerBussinesType) event.getProperty().getValue()));
 
                     customerTable2.setContainerDataSource(Customer_BIC2);
                     customerTable2.setPageLength(Customer_BIC2.size());
@@ -188,7 +194,7 @@ public class ConsoleView extends VerticalLayout implements View {
         HL_VL_LEFT.addComponent(menu);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Customer Table - Tbl dblclk open Customer Form">
+        //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
         Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
 
         customerTable.setContainerDataSource(Customer_BIC);
@@ -202,8 +208,8 @@ public class ConsoleView extends VerticalLayout implements View {
                 final Button changeButton = new Button("Change.", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Customer item = (Customer) row;
-                        getUI().addWindow(new MyWindow(item.toString()));
+                        Customer c = (Customer) row;
+                        getUI().addWindow(new WindowForm("Customer Update Form", new CustomerForm(new BeanItem(c), customerTable)));
                     }
                 });
 
@@ -212,35 +218,17 @@ public class ConsoleView extends VerticalLayout implements View {
         });
 
         customerTable.setSelectable(true);
-        customerTable.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                if (event.getProperty().getType().equals(Customer.class)) {
-                    Customer c = (Customer) event.getProperty().getValue();
-                    try {
-                        CUSTOMER_CONTROLLER.updateCustomer(c);
-                    } catch (Exception ex) {
-                        getUI().addWindow(new MyWindow("Greška! Opis: ".concat(ex.toString())));
-                    }
-                }
-            }
-        });
         customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
-                    // customerTable.setEditable(!customerTable.isEditable());
                     Customer c = (Customer) event.getItemId();
-                    // MyWindow mw = new MyWindow("VVV: ");
-                    WindowForm wf = new WindowForm("Customer", new CustomerForm(new BeanItem(c)));
-                    getUI().addWindow(wf);
-                    //}
+                    getUI().addWindow(new WindowForm("Customer Update Form", new CustomerForm(new BeanItem(c), customerTable)));
                 }
             }
         });
 
-        Button customersListButton = new Button("List of Customers");
-        customersListButton.addClickListener(new Button.ClickListener() {
+        Button customersListButton = new Button("List of Customers", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 HR_VL_RIGHT.removeAllComponents();
