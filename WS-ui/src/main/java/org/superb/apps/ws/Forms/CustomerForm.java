@@ -21,7 +21,6 @@ public class CustomerForm extends FormLayout {
     private Item BICCustomer;
     private Button crudButton;
     private BeanItem<Customer> beanItemCustomer;
-    private Table callingTable;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -52,7 +51,6 @@ public class CustomerForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
-        this.callingTable = callingTable;
         this.BICCustomer = customerItem;
         setBICCustomer(BICCustomer);
 
@@ -88,6 +86,7 @@ public class CustomerForm extends FormLayout {
 
                         // oveži tabelu posle izmene podatka !
                         callingTable.markAsDirtyRecursive();
+                        
                         Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
@@ -96,7 +95,7 @@ public class CustomerForm extends FormLayout {
             });
         }
 
-        crudButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         addComponents(name, address, city, zip, region, pib, crudButton);
     }
 

@@ -37,8 +37,8 @@ public class WindowForm extends Window implements Button.ClickListener {
         this.VL.addComponent(closeButton);
         this.VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
 
-        setHeight(60, Unit.PERCENTAGE);
-        setWidth(50, Unit.PERCENTAGE);
+        setHeight(66, Unit.PERCENTAGE);
+        setWidth(60, Unit.PERCENTAGE);
         center();
         setContent(VL);
     }

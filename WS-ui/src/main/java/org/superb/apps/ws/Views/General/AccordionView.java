@@ -1,4 +1,4 @@
-package org.superb.apps.ws.Views;
+package org.superb.apps.ws.Views.General;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
