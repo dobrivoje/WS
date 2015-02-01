@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superb.apps.vaadin.utils;
+package org.superb.apps.utilities.Exceptions;
 
 /**
  *
  * @author root
  */
-public class CrudOperations {
-
-    public static enum MODE {
-
-        CREATE, READ, UPDATE, DELETE;
+public class AccordionIndexException extends NullPointerException {
+    
+    public AccordionIndexException() {
+        super("My AccodionMenu Exception.");
     }
+    
 }

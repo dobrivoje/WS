@@ -5,10 +5,8 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
-import org.superb.apps.vaadin.utils.AccordionMenu;
-import org.superb.apps.vaadin.utils.Exceptions.AccordionIndexException;
+import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
 
 public class AccordionView extends VerticalLayout implements View {
 

@@ -17,9 +17,11 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
-import org.superb.apps.vaadin.utils.AccordionMenu;
-import org.superb.apps.vaadin.utils.CrudOperations;
-import org.superb.apps.vaadin.utils.WindowForm;
+import org.superb.apps.utilities.Enums.CrudOperations;
+import org.superb.apps.utilities.Enums.Statuses;
+import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
+import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.ws.Forms.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.controllers.Customer_Controller;
@@ -72,7 +74,7 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
 
-                        Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification.show("Saved. Statuses: ", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -204,10 +206,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
         customerTable.setPageLength(Customer_BIC.size());
         customerTable.setContainerDataSource(Customer_BIC);
-        customerTable.setVisibleColumns(
-                "idc", "name", "city", "address", "zip", "pib", "region");
-        customerTable.setColumnHeaders(
-                "CLIENT ID", "CLIENT NAME", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
+        
         customerTable.addGeneratedColumn("CHANGE", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
@@ -216,14 +215,25 @@ public class ConsoleView extends VerticalLayout implements View {
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
                         getUI().addWindow(new WindowForm("Customer Update Form",
-                                new CustomerForm(new BeanItem(c), customerTable, CrudOperations.MODE.UPDATE)));
+                                new CustomerForm(new BeanItem(c), customerTable, CrudOperations.UPDATE)));
                     }
                 });
 
                 return changeButton;
             }
         });
+        customerTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object row, Object column) {
+                return new StatusLabel(Statuses.COMING, "prop");
+            }
+        });
 
+        customerTable.setVisibleColumns(
+                "idc", "name", "Status", "CHANGE", "city", "address", "zip", "pib", "region");
+        customerTable.setColumnHeaders(
+                "CLIENT ID", "CLIENT NAME", "STATUS", "CHANGE", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
+        
         customerTable.setSelectable(true);
         customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
@@ -231,7 +241,7 @@ public class ConsoleView extends VerticalLayout implements View {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
                     getUI().addWindow(new WindowForm("Customer Update Form",
-                            new CustomerForm(new BeanItem(c), customerTable, CrudOperations.MODE.UPDATE)));
+                            new CustomerForm(new BeanItem(c), customerTable, CrudOperations.UPDATE)));
                 }
             }
         });

@@ -11,7 +11,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
-import org.superb.apps.vaadin.utils.CrudOperations;
+import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 
@@ -45,7 +45,7 @@ public class CustomerForm extends FormLayout {
     public CustomerForm() {
     }
 
-    public CustomerForm(Item customerItem, final Table callingTable, CrudOperations.MODE crudMode) {
+    public CustomerForm(Item customerItem, final Table callingTable, CrudOperations crudOperation) {
         setSizeFull();
         setMargin(true);
 
@@ -54,7 +54,7 @@ public class CustomerForm extends FormLayout {
         this.BICCustomer = customerItem;
         setBICCustomer(BICCustomer);
 
-        if (crudMode.equals(CrudOperations.MODE.UPDATE)) {
+        if (crudOperation.equals(CrudOperations.UPDATE)) {
             crudButton = new Button("Save modifications", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
@@ -74,7 +74,7 @@ public class CustomerForm extends FormLayout {
                 }
             });
         }
-        if (crudMode.equals(CrudOperations.MODE.CREATE)) {
+        if (crudOperation.equals(CrudOperations.CREATE)) {
             crudButton = new Button("New Customer", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
@@ -86,7 +86,7 @@ public class CustomerForm extends FormLayout {
 
                         // oveži tabelu posle izmene podatka !
                         callingTable.markAsDirtyRecursive();
-                        
+
                         Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);

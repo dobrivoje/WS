@@ -3,3 +3,7 @@
 /WS_DATABASE/target/
 /WS-ui/target/
 /WS-production/target/
+/VaadinLibrary_UTILS/nbproject/private/
+/VaadinLibrary_UTILS/build/
+/VaadinLibrary_UTILS/dist/
+/UTILITIES/target/

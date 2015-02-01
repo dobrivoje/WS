@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superb.apps.vaadin.utils.Exceptions;
+package org.superb.apps.utilities.Exceptions;
 
 import java.util.HashMap;
 import java.util.Map;
