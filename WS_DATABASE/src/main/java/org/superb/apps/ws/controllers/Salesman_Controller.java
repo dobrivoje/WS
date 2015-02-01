@@ -15,11 +15,11 @@ import org.superb.apps.ws.functionalities.ISalesman;
  *
  * @author root
  */
-public class Salesman_DBController implements ISalesman {
+public class Salesman_Controller implements ISalesman {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">
+    //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
     public Salesman getSalesmanByID(int customerID) {
         return dbh.getSalesman(customerID);
@@ -46,7 +46,7 @@ public class Salesman_DBController implements ISalesman {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
     public void addNewSalesman(Salesman newSalesman) throws Exception {
         dbh.addNewSalesman(newSalesman);
@@ -54,18 +54,7 @@ public class Salesman_DBController implements ISalesman {
 
     @Override
     public void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
-        Salesman newSalesman = new Salesman();
-
-        newSalesman.setName(name);
-        newSalesman.setSurname(surname);
-        newSalesman.setPosition(position);
-        newSalesman.setActive(active);
-        newSalesman.setDateFrom(dateFrom);
-        newSalesman.setDateTo(dateTo);
-        newSalesman.setDateFrom(dateFrom);
-        newSalesman.setFkIdbl(BL);
-
-        dbh.addNewSalesman(newSalesman);
+        dbh.addNewSalesman(name, surname, position, active, dateFrom, dateTo, BL);
     }
 
     @Override

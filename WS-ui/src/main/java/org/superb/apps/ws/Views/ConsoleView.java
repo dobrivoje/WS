@@ -22,7 +22,7 @@ import org.superb.apps.vaadin.utils.CrudOperations;
 import org.superb.apps.vaadin.utils.WindowForm;
 import org.superb.apps.ws.Forms.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
-import org.superb.apps.ws.controllers.CustomerController;
+import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 import org.superb.apps.ws.functionalities.ICustomer;
@@ -39,7 +39,7 @@ public class ConsoleView extends VerticalLayout implements View {
     private final AccordionMenu menu = new AccordionMenu();
 
     //<editor-fold defaultstate="collapsed" desc="Model">
-    private static final ICustomer CUSTOMER_CONTROLLER = new CustomerController();
+    private static final ICustomer CUSTOMER_CONTROLLER = new Customer_Controller();
     private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
     private final Table customerTable = new Table();
 

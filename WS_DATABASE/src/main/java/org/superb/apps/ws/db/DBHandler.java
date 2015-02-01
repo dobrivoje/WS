@@ -219,8 +219,8 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
     public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
-        newRelCBType.setFK_IDC(IDC);
-        newRelCBType.setFK_IDCBT(IDCBT);
+        newRelCBType.setFK_Customer(IDC);
+        newRelCBType.setFK_CBT(IDCBT);
         newRelCBType.setDateFrom(DateFrom);
         newRelCBType.setDateTo(DateTo);
         newRelCBType.setActive(active);
@@ -294,7 +294,7 @@ public class DBHandler {
         newSalesman.setActive(active);
         newSalesman.setDateFrom(dateFrom);
         newSalesman.setDateTo(dateTo);
-        newSalesman.setFkIdbl(BL);
+        newSalesman.setFK_BussinesLine(BL);
 
         getEm().getTransaction().begin();
         em.persist(newSalesman);
@@ -316,7 +316,7 @@ public class DBHandler {
         newSalesman.setActive(active);
         newSalesman.setDateFrom(dateFrom);
         newSalesman.setDateTo(dateTo);
-        newSalesman.setFkIdbl(BL);
+        newSalesman.setFK_BussinesLine(BL);
 
         getEm().getTransaction().begin();
         em.persist(newSalesman);

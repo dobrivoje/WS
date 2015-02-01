@@ -26,8 +26,8 @@ public class LoginScreen extends CssLayout {
     private PasswordField password;
     private Button login;
     private Button forgotPassword;
-    private LoginListener loginListener;
-    private AccessControl accessControl;
+    private final LoginListener loginListener;
+    private final AccessControl accessControl;
 
     public LoginScreen(AccessControl accessControl, LoginListener loginListener) {
         this.loginListener = loginListener;
@@ -48,8 +48,7 @@ public class LoginScreen extends CssLayout {
         VerticalLayout centeringLayout = new VerticalLayout();
         centeringLayout.setStyleName("centering-layout");
         centeringLayout.addComponent(loginForm);
-        centeringLayout.setComponentAlignment(loginForm,
-                Alignment.MIDDLE_CENTER);
+        centeringLayout.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
         // information text about logging in
         CssLayout loginInformation = buildLoginInformation();

@@ -44,7 +44,7 @@ public class CustomerBussinesType implements Serializable {
     private Integer idcbt;
     @Column(name = "Customer_Activity")
     private String customerActivity;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDCBT")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_CBT")
     private List<RelCBType> relCBTypeList;
 
     public CustomerBussinesType() {
@@ -82,7 +82,7 @@ public class CustomerBussinesType implements Serializable {
             customersOfRelCBT = null;
         } else {
             for (RelCBType r : getRelCBTypeList()) {
-                customersOfRelCBT.add(r.getFK_IDC());
+                customersOfRelCBT.add(r.getFK_Customer());
             }
         }
 

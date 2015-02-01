@@ -48,10 +48,10 @@ public class RelCBType implements Serializable {
     private Boolean active;
     @JoinColumn(name = "FK_IDCBT", referencedColumnName = "IDCBT")
     @ManyToOne(optional = false)
-    private CustomerBussinesType FK_IDCBT;
+    private CustomerBussinesType FK_CBT;
     @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
     @ManyToOne(optional = false)
-    private Customer FK_IDC;
+    private Customer FK_Customer;
 
     public RelCBType() {
     }
@@ -92,20 +92,20 @@ public class RelCBType implements Serializable {
         this.active = active;
     }
 
-    public CustomerBussinesType getFK_IDCBT() {
-        return FK_IDCBT;
+    public CustomerBussinesType getFK_CBT() {
+        return FK_CBT;
     }
 
-    public void setFK_IDCBT(CustomerBussinesType FK_IDCBT) {
-        this.FK_IDCBT = FK_IDCBT;
+    public void setFK_CBT(CustomerBussinesType FK_CBT) {
+        this.FK_CBT = FK_CBT;
     }
 
-    public Customer getFK_IDC() {
-        return FK_IDC;
+    public Customer getFK_Customer() {
+        return FK_Customer;
     }
 
-    public void setFK_IDC(Customer FK_IDC) {
-        this.FK_IDC = FK_IDC;
+    public void setFK_Customer(Customer FK_Customer) {
+        this.FK_Customer = FK_Customer;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class RelCBType implements Serializable {
 
     @Override
     public String toString() {
-        return getFK_IDC() + "->" + getFK_IDCBT().getCustomerActivity();
+        return getFK_Customer() + "->" + getFK_CBT().getCustomerActivity();
     }
 
 }

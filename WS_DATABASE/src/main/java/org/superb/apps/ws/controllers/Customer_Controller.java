@@ -14,11 +14,11 @@ import org.superb.apps.ws.functionalities.ICustomer;
  *
  * @author root
  */
-public class CustomerController implements ICustomer {
+public class Customer_Controller implements ICustomer {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Read Data">
+    //<editor-fold defaultstate="collapsed" desc="Customer read data">
     @Override
     public List<Customer> getAllCustomers() {
         return dbh.getAllCustomers();
@@ -55,7 +55,7 @@ public class CustomerController implements ICustomer {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Add/Update">
+    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
     @Override
     public void addNewCustomer(Customer newCustomer) throws Exception {
         dbh.addNewCustomer(newCustomer);

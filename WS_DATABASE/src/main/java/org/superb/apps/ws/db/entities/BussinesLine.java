@@ -40,7 +40,7 @@ public class BussinesLine implements Serializable {
     private Integer idbl;
     @Column(name = "Name")
     private String name;
-    @OneToMany(mappedBy = "fkIdbl")
+    @OneToMany(mappedBy = "FK_BussinesLine")
     private List<Salesman> salesmanList;
 
     public BussinesLine() {

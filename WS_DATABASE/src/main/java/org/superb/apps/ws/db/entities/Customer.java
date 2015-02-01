@@ -63,7 +63,7 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "PIB")
     private String pib;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDC")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_Customer")
     private List<RelCBType> relCBTypeList;
 
     public Customer() {

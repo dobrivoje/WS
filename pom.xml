@@ -126,5 +126,6 @@
     <module>WS-ui</module>
     <module>WS-production</module>
     <module>WS_DATABASE</module>
+    <module>../../pocetak/ChromaTextField</module>
   </modules>
 </project>

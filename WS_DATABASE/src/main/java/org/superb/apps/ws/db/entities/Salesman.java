@@ -60,7 +60,7 @@ public class Salesman implements Serializable {
     private String dateTo;
     @JoinColumn(name = "FK_IDBL", referencedColumnName = "IDBL")
     @ManyToOne
-    private BussinesLine fkIdbl;
+    private BussinesLine FK_BussinesLine;
     @OneToMany(mappedBy = "FK_Salesman")
     private List<RelSALESMANIMAGE> SalesmanImageList;
 
@@ -127,12 +127,12 @@ public class Salesman implements Serializable {
         this.dateTo = dateTo;
     }
 
-    public BussinesLine getFkIdbl() {
-        return fkIdbl;
+    public BussinesLine getFK_BussinesLine() {
+        return FK_BussinesLine;
     }
 
-    public void setFkIdbl(BussinesLine fkIdbl) {
-        this.fkIdbl = fkIdbl;
+    public void setFK_BussinesLine(BussinesLine FK_BussinesLine) {
+        this.FK_BussinesLine = FK_BussinesLine;
     }
 
     @XmlTransient

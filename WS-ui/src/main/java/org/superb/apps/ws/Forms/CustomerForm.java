@@ -12,7 +12,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import org.superb.apps.vaadin.utils.CrudOperations;
-import org.superb.apps.ws.controllers.CustomerController;
+import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 
 public class CustomerForm extends FormLayout {
@@ -62,7 +62,7 @@ public class CustomerForm extends FormLayout {
                         beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
                         Customer customerToUpdate = beanItemCustomer.getBean();
                         getValuesFromFields(customerToUpdate);
-                        new CustomerController().updateCustomer(customerToUpdate);
+                        new Customer_Controller().updateCustomer(customerToUpdate);
 
                         // oveži tabelu posle izmene podatka !
                         callingTable.markAsDirtyRecursive();
@@ -82,7 +82,7 @@ public class CustomerForm extends FormLayout {
                         beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
                         Customer newCustomer = new Customer();
                         getValuesFromFields(newCustomer);
-                        new CustomerController().addNewCustomer(newCustomer);
+                        new Customer_Controller().addNewCustomer(newCustomer);
 
                         // oveži tabelu posle izmene podatka !
                         callingTable.markAsDirtyRecursive();

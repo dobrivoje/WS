@@ -19,7 +19,7 @@ public class AboutView extends VerticalLayout implements View {
 
         aboutContent.addComponent(
                 new Label(FontAwesome.INFO_CIRCLE.getHtml()
-                        + " Vaadin/SQL Server Powered Ppplication.<p> by MOL Serbia Team</p><p>2015.</p>",
+                        + " Vaadin/SQL Server Powered Application.<p> by MOL Serbia Team</p><p>2015.</p>",
                         ContentMode.HTML), "info_div");
 
         setSizeFull();
