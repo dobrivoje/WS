@@ -21,7 +21,7 @@ import static org.superb.apps.utilities.Enums.Statuses.DISCONTINUED;
  */
 public class StatusLabel extends Label {
 
-    private static Map<Statuses, String> color = new HashMap<>();
+    private final Map<Statuses, String> color = new HashMap<>();
 
     public StatusLabel() {
         setContentMode(ContentMode.HTML);
