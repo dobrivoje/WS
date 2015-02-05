@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -17,6 +18,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
@@ -40,19 +42,45 @@ public class ConsoleView extends VerticalLayout implements View {
 
     private final AccordionMenu menu = new AccordionMenu();
 
+    private final ComboBox Customer_ComboBox = new ComboBox("Customer");
+    private final ComboBox CBT_ComboBox = new ComboBox("Customer Bussines Type");
+    private final ComboBox bussinesTypes_ComboBox = new ComboBox("Bussines Types");
+
     //<editor-fold defaultstate="collapsed" desc="Model">
     private static final ICustomer CUSTOMER_CONTROLLER = new Customer_Controller();
     private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
+    private final BeanItemContainer<Customer> Customer_BIC2 = new BeanItemContainer<>(Customer.class);
+    private final BeanItemContainer<CustomerBussinesType> CustomerBussinesType_BIC = new BeanItemContainer<>(CustomerBussinesType.class);
+
     private final Table customerTable = new Table();
+    private final Table customerTable2 = new Table();
 
     private static final ICustomerBussinesType CBT_CONTROLLER = new CustomerBussinesType_Controller();
-    private final BeanItemContainer<Customer> Customer_BIC2 = new BeanItemContainer<>(Customer.class);
-    private final Table customerTable2;
     //</editor-fold>
 
     public ConsoleView() {
-        customerTable2 = new Table("Customers");
-        customerTable2.setWidth(100, Unit.PERCENTAGE);
+        Customer_ComboBox.setContainerDataSource(Customer_BIC);
+        CBT_ComboBox.setContainerDataSource(CustomerBussinesType_BIC);
+        bussinesTypes_ComboBox.setContainerDataSource(CustomerBussinesType_BIC);
+
+        Customer_ComboBox.setNullSelectionAllowed(false);
+        Customer_ComboBox.setTextInputAllowed(false);
+
+        CBT_ComboBox.setNullSelectionAllowed(false);
+        CBT_ComboBox.setTextInputAllowed(false);
+
+        bussinesTypes_ComboBox.setNullSelectionAllowed(false);
+        bussinesTypes_ComboBox.setTextInputAllowed(false);
+
+        customerTable2.addGeneratedColumn("licence", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object row, Object column) {
+                return new StatusLabel(Statuses.AVAILABLE, "Ok");
+            }
+        });
+
+        updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
+        updateBeanItemContainer(CustomerBussinesType_BIC, CBT_CONTROLLER.getAllBussinesTypes());
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
@@ -73,6 +101,8 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerZIP_TextField.getValue(),
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
+
+                        updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
 
                         Notification.show("Saved. Statuses: ", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
@@ -95,10 +125,6 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
         Button buttonNewCBT = new Button("New Customer Bussines Type", new Button.ClickListener() {
-            ComboBox FK_IDC_ComboBox = new ComboBox("Customer", new BeanItemContainer(Customer.class, CUSTOMER_CONTROLLER.getAllCustomers()));
-            ComboBox FK_CBT_ComboBox = new ComboBox("Customer Bussines Type",
-                    new BeanItemContainer(CustomerBussinesType.class, CBT_CONTROLLER.getAllBussinesTypes()));
-
             DateField CBT_DateFrom_TextField = new DateField("Date From");
             DateField CBT_DateTo_TextField = new DateField("Date To");
             CheckBox activeCheckBox = new CheckBox("Active", true);
@@ -106,19 +132,15 @@ public class ConsoleView extends VerticalLayout implements View {
             Button saveNewCBT_Button = new Button("Save", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    FK_IDC_ComboBox.setNullSelectionAllowed(false);
-                    FK_IDC_ComboBox.setTextInputAllowed(false);
-
-                    FK_CBT_ComboBox.setNullSelectionAllowed(false);
-                    FK_CBT_ComboBox.setTextInputAllowed(false);
+                    updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
 
                     CBT_DateFrom_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
                         CBT_CONTROLLER.addNewCBT(
-                                (Customer) FK_IDC_ComboBox.getValue(),
-                                (CustomerBussinesType) FK_CBT_ComboBox.getValue(),
+                                (Customer) Customer_ComboBox.getValue(),
+                                (CustomerBussinesType) CBT_ComboBox.getValue(),
                                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateFrom_TextField.getValue()),
                                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateTo_TextField.getValue()),
                                 activeCheckBox.getValue());
@@ -134,8 +156,8 @@ public class ConsoleView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent event) {
                 HR_VL_RIGHT.removeAllComponents();
 
-                HR_VL_RIGHT.addComponent(FK_IDC_ComboBox);
-                HR_VL_RIGHT.addComponent(FK_CBT_ComboBox);
+                HR_VL_RIGHT.addComponent(Customer_ComboBox);
+                HR_VL_RIGHT.addComponent(CBT_ComboBox);
                 HR_VL_RIGHT.addComponent(CBT_DateFrom_TextField);
                 HR_VL_RIGHT.addComponent(CBT_DateTo_TextField);
                 HR_VL_RIGHT.addComponent(activeCheckBox);
@@ -143,27 +165,20 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
 
-        final ComboBox comboBox_BussinesTypes = new ComboBox("Bussines Types", CBT_CONTROLLER.getAllBussinesTypes());
-        comboBox_BussinesTypes.addValueChangeListener(new Property.ValueChangeListener() {
+        bussinesTypes_ComboBox.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 //<editor-fold defaultstate="collapsed" desc="Customer table 2">
                 try {
-                    Customer_BIC2.removeAllItems();
-
-                    Customer_BIC2.addAll(CBT_CONTROLLER.getAllCustomersForBussinesType(
+                    customerTable2.setContainerDataSource(Customer_BIC2);
+                    updateBeanItemContainer(Customer_BIC2, CBT_CONTROLLER.getAllCustomersForBussinesType(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
-                    customerTable2.markAsDirtyRecursive();
-                    customerTable2.setContainerDataSource(Customer_BIC2);
                     customerTable2.setPageLength(Customer_BIC2.size());
-                    customerTable2.setVisibleColumns(
-                            "idc", "name", "city", "address", "zip", "pib", "region");
-                    customerTable2.setColumnHeaders(
-                            "CLIENT ID", "CLIENT NAME", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
+                    customerTable2.setVisibleColumns("name", "licence", "city", "address", "region");
+                    customerTable2.setColumnHeaders("CLIENT NAME", "LICENCE", "CITY", "ADDRESS", "REGION");
 
                     HR_VL_RIGHT.addComponent(customerTable2);
-
                 } catch (Exception e) {
                     Notification.show("Error.", e.toString(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -174,8 +189,10 @@ public class ConsoleView extends VerticalLayout implements View {
         Button buttonCBT_List = new Button("Customer Bussines Types List", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                updateBeanItemContainer(CustomerBussinesType_BIC, CBT_CONTROLLER.getAllBussinesTypes());
+
                 HR_VL_RIGHT.removeAllComponents();
-                HR_VL_RIGHT.addComponent(comboBox_BussinesTypes);
+                HR_VL_RIGHT.addComponent(bussinesTypes_ComboBox);
             }
         });
         //</editor-fold>
@@ -194,19 +211,19 @@ public class ConsoleView extends VerticalLayout implements View {
 
         menu.setSizeFull();
 
-        HSP.setSplitPosition(33, Unit.PERCENTAGE);
+        HSP.setSplitPosition(33, Sizeable.Unit.PERCENTAGE);
         HSP.setFirstComponent(HL_VL_LEFT);
         HSP.setSecondComponent(HR_VL_RIGHT);
 
         HL_VL_LEFT.addComponent(menu);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
-        Customer_BIC.addAll(CUSTOMER_CONTROLLER.getAllCustomers());
-
-        customerTable.setPageLength(Customer_BIC.size());
         customerTable.setContainerDataSource(Customer_BIC);
-        
+        customerTable.setPageLength(Customer_BIC.size());
+
+        customerTable2.setContainerDataSource(Customer_BIC2);
+        customerTable2.setPageLength(Customer_BIC2.size());
+
         customerTable.addGeneratedColumn("CHANGE", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
@@ -233,7 +250,7 @@ public class ConsoleView extends VerticalLayout implements View {
                 "idc", "name", "Status", "CHANGE", "city", "address", "zip", "pib", "region");
         customerTable.setColumnHeaders(
                 "CLIENT ID", "CLIENT NAME", "STATUS", "CHANGE", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
-        
+
         customerTable.setSelectable(true);
         customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
@@ -249,6 +266,8 @@ public class ConsoleView extends VerticalLayout implements View {
         Button customersListButton = new Button("List of Customers", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
+
                 HR_VL_RIGHT.removeAllComponents();
                 HR_VL_RIGHT.addComponent(customerTable);
             }
@@ -260,6 +279,12 @@ public class ConsoleView extends VerticalLayout implements View {
         menu.createTabs();
 
         addComponent(HSP);
+    }
+    //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
+
+    private void updateBeanItemContainer(BeanItemContainer beanItemContainer, List listOfData) {
+        beanItemContainer.removeAllItems();
+        beanItemContainer.addAll(listOfData);
     }
 
     @Override
