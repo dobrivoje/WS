@@ -71,7 +71,8 @@ public class ConsoleView extends VerticalLayout implements View {
 
         bussinesTypes_ComboBox.setNullSelectionAllowed(false);
         bussinesTypes_ComboBox.setTextInputAllowed(false);
-
+        
+        customerTable2.setWidth(100, Unit.PERCENTAGE);
         customerTable2.addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
@@ -170,7 +171,6 @@ public class ConsoleView extends VerticalLayout implements View {
             public void valueChange(Property.ValueChangeEvent event) {
                 //<editor-fold defaultstate="collapsed" desc="Customer table 2">
                 try {
-                    customerTable2.setContainerDataSource(Customer_BIC2);
                     updateBeanItemContainer(Customer_BIC2, CBT_CONTROLLER.getAllCustomersForBussinesType(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
@@ -189,8 +189,6 @@ public class ConsoleView extends VerticalLayout implements View {
         Button buttonCBT_List = new Button("Customer Bussines Types List", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                updateBeanItemContainer(CustomerBussinesType_BIC, CBT_CONTROLLER.getAllBussinesTypes());
-
                 HR_VL_RIGHT.removeAllComponents();
                 HR_VL_RIGHT.addComponent(bussinesTypes_ComboBox);
             }
