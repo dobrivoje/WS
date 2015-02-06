@@ -103,6 +103,7 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerPIB_TextField.getValue());
 
                         updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+                        allCustomersTable.markAsDirtyRecursive();
 
                         Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
@@ -228,8 +229,9 @@ public class ConsoleView extends VerticalLayout implements View {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
-                        getUI().addWindow(new WindowForm("Customer Update Form",
-                                new CustomerForm(new BeanItem(c), allCustomersTable, CrudOperations.UPDATE)));
+                        CustomerForm customerForm = new CustomerForm(new BeanItem(c), CrudOperations.UPDATE);
+                        getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+                        allCustomersTable.markAsDirty();
                     }
                 });
 
@@ -239,7 +241,24 @@ public class ConsoleView extends VerticalLayout implements View {
         allCustomersTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
-                return new StatusLabel(Statuses.COMING, "prop");
+                int k = ((Customer) row).getName().hashCode() % 3;
+                Statuses s;
+
+                switch (k) {
+                    case 0:
+                        s = Statuses.AVAILABLE;
+                        break;
+                    case 1:
+                        s = Statuses.COMING;
+                        break;
+                    case 2:
+                        s = Statuses.DISCONTINUED;
+                        break;
+                    default:
+                        s = Statuses.COMING;
+                }
+
+                return new StatusLabel(s, s.toString());
             }
         });
 
@@ -254,8 +273,9 @@ public class ConsoleView extends VerticalLayout implements View {
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
-                    getUI().addWindow(new WindowForm("Customer Update Form",
-                            new CustomerForm(new BeanItem(c), allCustomersTable, CrudOperations.UPDATE)));
+                    CustomerForm customerForm = new CustomerForm(new BeanItem(c), CrudOperations.UPDATE);
+                    getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+                    allCustomersTable.markAsDirty();
                 }
             }
         });

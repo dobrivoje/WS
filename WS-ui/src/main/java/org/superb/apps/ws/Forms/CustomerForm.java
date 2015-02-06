@@ -8,20 +8,24 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.superb.apps.utilities.Enums.CrudOperations;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.UPDATE;
 import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 
 public class CustomerForm extends FormLayout {
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
-    private Item BICCustomer;
+    private Item newUpdate_Customer;
     private Button crudButton;
     private BeanItem<Customer> beanItemCustomer;
+
+    private boolean modificationSuccesfull;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -47,56 +51,72 @@ public class CustomerForm extends FormLayout {
         setSizeFull();
         setMargin(true);
         setStyleName(Reindeer.LAYOUT_BLACK);
-        
-        fieldGroup.bindMemberFields(this);
+
+        modificationSuccesfull = false;
     }
 
-    public CustomerForm(Item customerItem, final Table callingTable, CrudOperations crudOperation) {
+    public CustomerForm(Item newUpdate_Customer, final CrudOperations crudOperation) {
         this();
-        
-        this.BICCustomer = customerItem;
-        setBICCustomer(BICCustomer);
 
-        if (crudOperation.equals(CrudOperations.UPDATE)) {
-            crudButton = new Button("Save modifications", new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+        fieldGroup.bindMemberFields(this);
+
+        this.newUpdate_Customer = newUpdate_Customer;
+        setNewUpdate_Customer(newUpdate_Customer);
+        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+
+        final Button.ClickListener clickListener;
+        final String btnCaption;
+
+        switch (crudOperation) {
+            case UPDATE: {
+                btnCaption = BUTTON_CAPTION_UPDATE.toString();
+
+                clickListener = new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
                         Customer customerToUpdate = beanItemCustomer.getBean();
                         getValuesFromFields(customerToUpdate);
-                        new Customer_Controller().updateCustomer(customerToUpdate);
 
-                        // oveži tabelu posle izmene podatka !
-                        callingTable.markAsDirtyRecursive();
-
-                        Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        try {
+                            new Customer_Controller().updateCustomer(customerToUpdate);
+                            modificationSuccesfull = true;
+                            Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
+                        } catch (Exception ex) {
+                            modificationSuccesfull = false;
+                        }
                     }
-                }
-            });
-        }
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            crudButton = new Button("New Customer", new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+                };
+
+                crudButton = new Button(btnCaption, clickListener);
+            }
+            ;
+            break;
+
+            case CREATE: {
+                btnCaption = BUTTON_CAPTION_NEW.toString();
+
+                clickListener = new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
                         Customer newCustomer = new Customer();
                         getValuesFromFields(newCustomer);
-                        new Customer_Controller().addNewCustomer(newCustomer);
 
-                        // oveži tabelu posle izmene podatka !
-                        callingTable.markAsDirtyRecursive();
-
-                        Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        try {
+                            new Customer_Controller().addNewCustomer(newCustomer);
+                            modificationSuccesfull = true;
+                            Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
+                        } catch (Exception ex) {
+                            modificationSuccesfull = false;
+                            Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        }
                     }
-                }
-            });
-        }
+                };
+
+                crudButton = new Button(btnCaption, clickListener);
+            }
+            ;
+            break;
+        };
 
         crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         addComponents(name, address, city, zip, region, pib, crudButton);
@@ -111,12 +131,20 @@ public class CustomerForm extends FormLayout {
         customerBean.setPib(pib.getValue());
     }
 
-    public Item getBICCustomer() {
-        return BICCustomer;
+    public Item getNewUpdate_Customer() {
+        return newUpdate_Customer;
     }
 
-    public final void setBICCustomer(Item BICCustomer) {
-        this.BICCustomer = BICCustomer;
-        fieldGroup.setItemDataSource(BICCustomer);
+    public final void setNewUpdate_Customer(Item newUpdate_Customer) {
+        this.newUpdate_Customer = newUpdate_Customer;
+        fieldGroup.setItemDataSource(newUpdate_Customer);
+    }
+
+    public boolean isModificationSuccesfull() {
+        return modificationSuccesfull;
+    }
+
+    public void setModificationSuccesfull(boolean modificationSuccesfull) {
+        this.modificationSuccesfull = modificationSuccesfull;
     }
 }

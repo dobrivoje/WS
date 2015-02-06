@@ -14,7 +14,10 @@ public enum CrudOperations {
     CREATE("Create"),
     READ("Read"),
     UPDATE("Update"),
-    DELETE("Delete");
+    DELETE("Delete"),
+    //
+    BUTTON_CAPTION_UPDATE("Save modifications"),
+    BUTTON_CAPTION_NEW("Insert new data");
 
     private final String name;
 
