@@ -10,6 +10,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.ws.controllers.Customer_Controller;
@@ -43,14 +44,16 @@ public class CustomerForm extends FormLayout {
     //</editor-fold>
 
     public CustomerForm() {
+        setSizeFull();
+        setMargin(true);
+        setStyleName(Reindeer.LAYOUT_BLACK);
+        
+        fieldGroup.bindMemberFields(this);
     }
 
     public CustomerForm(Item customerItem, final Table callingTable, CrudOperations crudOperation) {
-        setSizeFull();
-        setMargin(true);
-
-        fieldGroup.bindMemberFields(this);
-
+        this();
+        
         this.BICCustomer = customerItem;
         setBICCustomer(BICCustomer);
 

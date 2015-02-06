@@ -40,48 +40,47 @@ public class ConsoleView extends VerticalLayout implements View {
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();
 
+    //<editor-fold defaultstate="collapsed" desc="UI">
     private final AccordionMenu menu = new AccordionMenu();
 
     private final ComboBox Customer_ComboBox = new ComboBox("Customer");
     private final ComboBox CBT_ComboBox = new ComboBox("Customer Bussines Type");
-    private final ComboBox bussinesTypes_ComboBox = new ComboBox("Bussines Types");
+    private final ComboBox bussinesTypes_ComboBox = new ComboBox();
+    private final Table allCustomersTable = new Table();
+    private final Table cBT_Table = new Table();
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Model">
+    //<editor-fold defaultstate="collapsed" desc="MODEL">
     private static final ICustomer CUSTOMER_CONTROLLER = new Customer_Controller();
-    private final BeanItemContainer<Customer> Customer_BIC = new BeanItemContainer<>(Customer.class);
-    private final BeanItemContainer<Customer> Customer_BIC2 = new BeanItemContainer<>(Customer.class);
-    private final BeanItemContainer<CustomerBussinesType> CustomerBussinesType_BIC = new BeanItemContainer<>(CustomerBussinesType.class);
-
-    private final Table customerTable = new Table();
-    private final Table customerTable2 = new Table();
-
     private static final ICustomerBussinesType CBT_CONTROLLER = new CustomerBussinesType_Controller();
+
+    private final BeanItemContainer<Customer> Customer_Container = new BeanItemContainer<>(Customer.class);
+    private final BeanItemContainer<Customer> CustomersForBT_Container = new BeanItemContainer<>(Customer.class);
+    private final BeanItemContainer<CustomerBussinesType> CBT_Container = new BeanItemContainer<>(CustomerBussinesType.class);
     //</editor-fold>
 
     public ConsoleView() {
-        Customer_ComboBox.setContainerDataSource(Customer_BIC);
-        CBT_ComboBox.setContainerDataSource(CustomerBussinesType_BIC);
-        bussinesTypes_ComboBox.setContainerDataSource(CustomerBussinesType_BIC);
+        Customer_ComboBox.setContainerDataSource(Customer_Container);
+        CBT_ComboBox.setContainerDataSource(CBT_Container);
+        bussinesTypes_ComboBox.setContainerDataSource(CBT_Container);
 
         Customer_ComboBox.setNullSelectionAllowed(false);
-        Customer_ComboBox.setTextInputAllowed(false);
 
         CBT_ComboBox.setNullSelectionAllowed(false);
         CBT_ComboBox.setTextInputAllowed(false);
 
         bussinesTypes_ComboBox.setNullSelectionAllowed(false);
         bussinesTypes_ComboBox.setTextInputAllowed(false);
-        
-        customerTable2.setWidth(100, Unit.PERCENTAGE);
-        customerTable2.addGeneratedColumn("licence", new Table.ColumnGenerator() {
+
+        cBT_Table.addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
                 return new StatusLabel(Statuses.AVAILABLE, "Ok");
             }
         });
 
-        updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
-        updateBeanItemContainer(CustomerBussinesType_BIC, CBT_CONTROLLER.getAllBussinesTypes());
+        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+        updateBeanItemContainer(CBT_Container, CBT_CONTROLLER.getAllBussinesTypes());
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
@@ -103,9 +102,9 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
 
-                        updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
+                        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
 
-                        Notification.show("Saved. Statuses: ", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -133,7 +132,7 @@ public class ConsoleView extends VerticalLayout implements View {
             Button saveNewCBT_Button = new Button("Save", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
+                    updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
 
                     CBT_DateFrom_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -171,14 +170,14 @@ public class ConsoleView extends VerticalLayout implements View {
             public void valueChange(Property.ValueChangeEvent event) {
                 //<editor-fold defaultstate="collapsed" desc="Customer table 2">
                 try {
-                    updateBeanItemContainer(Customer_BIC2, CBT_CONTROLLER.getAllCustomersForBussinesType(
+                    updateBeanItemContainer(CustomersForBT_Container, CBT_CONTROLLER.getAllCustomersForBussinesType(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
-                    customerTable2.setPageLength(Customer_BIC2.size());
-                    customerTable2.setVisibleColumns("name", "licence", "city", "address", "region");
-                    customerTable2.setColumnHeaders("CLIENT NAME", "LICENCE", "CITY", "ADDRESS", "REGION");
+                    cBT_Table.setPageLength(CustomersForBT_Container.size());
+                    cBT_Table.setVisibleColumns("name", "licence", "city", "address", "region");
+                    cBT_Table.setColumnHeaders("CLIENT NAME", "LICENCE", "CITY", "ADDRESS", "REGION");
 
-                    HR_VL_RIGHT.addComponent(customerTable2);
+                    HR_VL_RIGHT.addComponent(cBT_Table);
                 } catch (Exception e) {
                     Notification.show("Error.", e.toString(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -216,13 +215,13 @@ public class ConsoleView extends VerticalLayout implements View {
         HL_VL_LEFT.addComponent(menu);
         //</editor-fold>
 
-        customerTable.setContainerDataSource(Customer_BIC);
-        customerTable.setPageLength(Customer_BIC.size());
+        allCustomersTable.setContainerDataSource(Customer_Container);
+        allCustomersTable.setPageLength(Customer_Container.size());
 
-        customerTable2.setContainerDataSource(Customer_BIC2);
-        customerTable2.setPageLength(Customer_BIC2.size());
+        cBT_Table.setContainerDataSource(CustomersForBT_Container);
+        cBT_Table.setPageLength(CustomersForBT_Container.size());
 
-        customerTable.addGeneratedColumn("CHANGE", new Table.ColumnGenerator() {
+        allCustomersTable.addGeneratedColumn("CHANGE", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
                 final Button changeButton = new Button("Change.", new Button.ClickListener() {
@@ -230,33 +229,33 @@ public class ConsoleView extends VerticalLayout implements View {
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
                         getUI().addWindow(new WindowForm("Customer Update Form",
-                                new CustomerForm(new BeanItem(c), customerTable, CrudOperations.UPDATE)));
+                                new CustomerForm(new BeanItem(c), allCustomersTable, CrudOperations.UPDATE)));
                     }
                 });
 
                 return changeButton;
             }
         });
-        customerTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
+        allCustomersTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
                 return new StatusLabel(Statuses.COMING, "prop");
             }
         });
 
-        customerTable.setVisibleColumns(
+        allCustomersTable.setVisibleColumns(
                 "idc", "name", "Status", "CHANGE", "city", "address", "zip", "pib", "region");
-        customerTable.setColumnHeaders(
+        allCustomersTable.setColumnHeaders(
                 "CLIENT ID", "CLIENT NAME", "STATUS", "CHANGE", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
 
-        customerTable.setSelectable(true);
-        customerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+        allCustomersTable.setSelectable(true);
+        allCustomersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
                     getUI().addWindow(new WindowForm("Customer Update Form",
-                            new CustomerForm(new BeanItem(c), customerTable, CrudOperations.UPDATE)));
+                            new CustomerForm(new BeanItem(c), allCustomersTable, CrudOperations.UPDATE)));
                 }
             }
         });
@@ -264,10 +263,10 @@ public class ConsoleView extends VerticalLayout implements View {
         Button customersListButton = new Button("List of Customers", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                updateBeanItemContainer(Customer_BIC, CUSTOMER_CONTROLLER.getAllCustomers());
+                updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
 
                 HR_VL_RIGHT.removeAllComponents();
-                HR_VL_RIGHT.addComponent(customerTable);
+                HR_VL_RIGHT.addComponent(allCustomersTable);
             }
         });
         //</editor-fold>

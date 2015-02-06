@@ -23,8 +23,7 @@ public class MyWindow extends Window {
     private final Label label = new Label();
 
     public MyWindow(String caption) {
-        super(caption);
-
+        setCaption(caption);
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         VerticalSplitPanel vSP = new VerticalSplitPanel();
