@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.superb.apps.utilities</groupId>
     <artifactId>UTILITIES</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -22,4 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <name>Vaadin-UTILITIES</name>
+    <description>7.2.2015 15:55 - Kreiranje tabele sa implementiranjem interfejsa
+koju koristimo da bismo posče ažuriranja podatka u bean-u, imali
+vidljive izmene u tabeli.</description>
 </project>

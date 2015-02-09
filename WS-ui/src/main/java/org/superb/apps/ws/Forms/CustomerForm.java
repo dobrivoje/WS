@@ -15,6 +15,7 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import static org.superb.apps.utilities.Enums.CrudOperations.UPDATE;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 
@@ -55,7 +56,9 @@ public class CustomerForm extends FormLayout {
         modificationSuccesfull = false;
     }
 
-    public CustomerForm(Item newUpdate_Customer, final CrudOperations crudOperation) {
+    public CustomerForm(Item newUpdate_Customer, final CrudOperations crudOperation,
+            final IRefreshVisualContainer visualContainer) {
+
         this();
 
         fieldGroup.bindMemberFields(this);
@@ -80,9 +83,11 @@ public class CustomerForm extends FormLayout {
                         try {
                             new Customer_Controller().updateCustomer(customerToUpdate);
                             modificationSuccesfull = true;
+                            visualContainer.refreshVisualContainer();
                             Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
                         } catch (Exception ex) {
                             modificationSuccesfull = false;
+                            Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                         }
                     }
                 };
@@ -104,6 +109,7 @@ public class CustomerForm extends FormLayout {
                         try {
                             new Customer_Controller().addNewCustomer(newCustomer);
                             modificationSuccesfull = true;
+                            visualContainer.refreshVisualContainer();
                             Notification.show("Customer updated.", Notification.Type.HUMANIZED_MESSAGE);
                         } catch (Exception ex) {
                             modificationSuccesfull = false;

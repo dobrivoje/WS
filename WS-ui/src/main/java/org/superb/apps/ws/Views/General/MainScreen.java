@@ -29,8 +29,10 @@ public class MainScreen extends HorizontalLayout {
         final Navigator navigator = new Navigator(ui, viewContainer);
         navigator.setErrorView(ErrorView.class);
         menu = new Menu(navigator);
-        menu.addView(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME , FontAwesome.EDIT);
-        menu.addView(new AboutView(), AboutView.class.getSimpleName(), AboutView.VIEW_NAME, FontAwesome.INFO_CIRCLE);
+        menu.addViewTree(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME);
+        menu.addViewButton(new AboutView(), AboutView.class.getSimpleName(), AboutView.VIEW_NAME, FontAwesome.INFO_CIRCLE);
+
+        navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
 
         navigator.addViewChangeListener(viewChangeListener);
 
@@ -51,7 +53,7 @@ public class MainScreen extends HorizontalLayout {
 
         @Override
         public void afterViewChange(ViewChangeEvent event) {
-            menu.setActiveView(event.getViewName());
+            menu.setActiveViewButton(event.getViewName());
         }
 
     };
