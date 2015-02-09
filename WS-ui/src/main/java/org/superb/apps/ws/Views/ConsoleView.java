@@ -19,13 +19,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.CustomTable;
-import org.superb.apps.ws.Forms.CustomerForm;
+import org.superb.apps.ws.Forms.CDM.CustomerForm;
 import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
@@ -229,12 +228,8 @@ public class ConsoleView extends VerticalLayout implements View {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
-                        CustomerForm customerForm = new CustomerForm(new BeanItem(c), CrudOperations.UPDATE, allCustomersTable);
+                        CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
                         getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
-
-                        //updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
-                        //HR_VL_RIGHT.removeAllComponents();
-                        //HR_VL_RIGHT.addComponent(allCustomersTable);
                     }
                 });
 
@@ -276,7 +271,7 @@ public class ConsoleView extends VerticalLayout implements View {
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
-                    CustomerForm customerForm = new CustomerForm(new BeanItem(c), CrudOperations.UPDATE, allCustomersTable);
+                    CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
                     getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
                 }
             }

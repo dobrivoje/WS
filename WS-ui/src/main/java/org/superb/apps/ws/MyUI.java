@@ -48,7 +48,6 @@ public class MyUI extends UI {
         setContent(new MainScreen(MyUI.this));
         getNavigator().navigateTo(EmptyView.class.getSimpleName());
         //getNavigator().navigateTo(getNavigator().getState());
-        //getNavigator().navigateTo(ConsoleView.class.getSimpleName());
     }
 
     public static MyUI get() {

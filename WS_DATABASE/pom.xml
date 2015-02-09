@@ -29,6 +29,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>1.3</version>
+    <version>1.4.1</version>
     <name>WS_DATABASE</name>
+    <description>9.2.2015 - v 1.4.1 - Ubacivanje u DBH metoda za CustomerBussinesType add/update.</description>
 </project>

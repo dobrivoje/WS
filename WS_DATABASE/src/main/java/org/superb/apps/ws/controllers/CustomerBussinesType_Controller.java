@@ -43,5 +43,15 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
             throws Exception {
         dbh.addNew_CBT_CUSTOMER(customer, CBType, dateFrom, dateTo, active);
     }
+
+    @Override
+    public void addNewCBT(CustomerBussinesType customerBussinesType) throws Exception {
+        dbh.addNewCustomerBussinesType(customerBussinesType);
+    }
+
+    @Override
+    public void updateNewCBT(CustomerBussinesType customerBussinesType) throws Exception {
+        dbh.updateCustomerBussinesType(customerBussinesType);
+    }
     //</editor-fold>
 }

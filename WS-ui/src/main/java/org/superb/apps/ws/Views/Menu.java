@@ -24,6 +24,10 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.themes.ValoTheme;
+import org.superb.apps.utilities.Enums.CrudOperations;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.ws.Forms.CDM.CBTForm;
+import org.superb.apps.ws.Forms.CDM.CustomerForm;
 import org.superb.apps.ws.MainMenu.MainMenu;
 import org.superb.apps.ws.MainMenu.MenuDefinitions;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.CUST_CRM_MANAG;
@@ -40,6 +44,7 @@ import static org.superb.apps.ws.MainMenu.MenuDefinitions.FS_DATA_MANAG_IMAGES;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_LICENCES_OVERDUE;
+import org.superb.apps.ws.Views.MainMenu.CDM.AllCustomersView;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -180,8 +185,18 @@ public class Menu extends CssLayout {
             public void itemClick(ItemClickEvent event) {
                 switch ((MenuDefinitions) (event.getItemId())) {
                     case CUST_DATA_MANAG_ALL_CUST:
-                        navigator.navigateTo(ConsoleView.class.getSimpleName());
+                        navigator.navigateTo(AllCustomersView.class.getSimpleName());
                         ;
+                        break;
+                    case CUST_DATA_MANAG_NEW_CUST:
+                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+                        ;
+                        break;
+                    case CUST_DATA_MANAG_CBT_LIST:
+                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), new CBTForm(CrudOperations.CREATE)));
+                        ;
+                        break;
+
                 }
             }
         });

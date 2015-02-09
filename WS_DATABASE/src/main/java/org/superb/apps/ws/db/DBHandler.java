@@ -196,12 +196,15 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
-    public void addNewCustomerBussinesType(String newCustomerBussinesType) throws Exception {
-        CustomerBussinesType newCBT = new CustomerBussinesType();
-        newCBT.setCustomerActivity(newCustomerBussinesType);
-
+    public void addNewCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
         getEm().getTransaction().begin();
-        em.persist(newCBT);
+        em.persist(newCustomerBussinesType);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
+        getEm().getTransaction().begin();
+        em.merge(newCustomerBussinesType);
         getEm().getTransaction().commit();
     }
 
@@ -215,7 +218,7 @@ public class DBHandler {
     }
     //</editor-fold>
     //</editor-fold>
-
+    
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
     public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();

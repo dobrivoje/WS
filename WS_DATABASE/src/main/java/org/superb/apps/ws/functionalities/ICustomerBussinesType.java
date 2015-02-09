@@ -15,13 +15,16 @@ import org.superb.apps.ws.db.entities.CustomerBussinesType;
  */
 public interface ICustomerBussinesType {
 
-    public List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType);
+    List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType);
 
-    public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
+    List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
 
-    public List<CustomerBussinesType> getAllBussinesTypes();
+    List<CustomerBussinesType> getAllBussinesTypes();
 
-    public void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
+    void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
             throws Exception;
 
+    void addNewCBT(CustomerBussinesType customerBussinesType) throws Exception;
+
+    void updateNewCBT(CustomerBussinesType customerBussinesType) throws Exception;
 }
