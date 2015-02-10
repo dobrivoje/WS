@@ -8,7 +8,6 @@ import com.vaadin.ui.HorizontalLayout;
 import org.superb.apps.ws.MyUI;
 import org.superb.apps.ws.Views.ConsoleView;
 import org.superb.apps.ws.Views.MainMenu.CDM.AllCustomersView;
-import org.superb.apps.ws.Views.MainMenu.CDM.NewCustomersView;
 import org.superb.apps.ws.Views.Menu;
 
 /**
@@ -37,7 +36,6 @@ public class MainScreen extends HorizontalLayout {
         // DODAVANJE VIEW-ova NOVIH AKCIJAI GL. MENIJA :
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
         navigator.addView(AllCustomersView.class.getSimpleName(), AllCustomersView.class);
-        navigator.addView(NewCustomersView.class.getSimpleName(), NewCustomersView.class);
 
         navigator.addViewChangeListener(viewChangeListener);
 

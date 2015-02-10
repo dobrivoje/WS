@@ -20,7 +20,7 @@ import org.superb.apps.ws.functionalities.ICustomer;
 
 public class AllCustomersView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "Console";
+    public static final String VIEW_NAME = "All Customers View";
 
     private final VerticalLayout VL = new VerticalLayout();
     private final CustomTable allCustomersTable = new CustomTable();

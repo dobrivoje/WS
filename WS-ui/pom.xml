@@ -59,14 +59,14 @@
             <type>war</type>
         </dependency>
         <dependency>
-            <groupId>org.superb.apps.utilities</groupId>
-            <artifactId>UTILITIES</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>WS_DATABASE</artifactId>
             <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.superb.apps.utilities</groupId>
+            <artifactId>UTILITIES</artifactId>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 

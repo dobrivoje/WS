@@ -9,7 +9,6 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-import org.superb.apps.ws.Views.General.AboutView;
 import org.superb.apps.ws.Views.General.EmptyView;
 import org.superb.apps.ws.Views.General.MainScreen;
 import org.superb.apps.ws.authentication.AccessControl;
@@ -47,7 +46,6 @@ public class MyUI extends UI {
     protected void showMainView() {
         setContent(new MainScreen(MyUI.this));
         getNavigator().navigateTo(EmptyView.class.getSimpleName());
-        //getNavigator().navigateTo(getNavigator().getState());
     }
 
     public static MyUI get() {

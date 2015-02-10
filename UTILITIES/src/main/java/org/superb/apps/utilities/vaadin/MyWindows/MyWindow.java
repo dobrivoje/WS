@@ -30,6 +30,8 @@ public class MyWindow extends Window {
         vSP.setSizeFull();
 
         VerticalLayout vL = new VerticalLayout();
+        vL.setSpacing(true);
+        vL.setMargin(true);
         vL.setSizeFull();
 
         Button exitButton = new Button("Exit", new Button.ClickListener() {

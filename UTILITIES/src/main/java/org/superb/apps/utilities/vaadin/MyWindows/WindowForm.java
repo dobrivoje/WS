@@ -17,34 +17,34 @@ import com.vaadin.ui.themes.ValoTheme;
  *
  * @author root
  */
-public class WindowForm extends Window implements Button.ClickListener {
+public class WindowForm extends Window {
 
     private final Button closeButton;
     private final VerticalLayout VL = new VerticalLayout();
 
     public WindowForm(String caption, FormLayout formLayout) {
         setStyleName(Reindeer.LAYOUT_BLACK);
-        
+
         setCaption(caption);
         setModal(true);
+        
+        VL.setSizeFull();
 
-        this.VL.setSizeFull();
+        closeButton = new Button("Close Window", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                close();
+            }
+        });
+        closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
 
-        this.closeButton = new Button("Close Window", this);
-        this.closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
-
-        this.VL.addComponent(formLayout);
-        this.VL.addComponent(closeButton);
-        this.VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
+        VL.addComponent(formLayout);
+        VL.addComponent(closeButton);
+        VL.setComponentAlignment(closeButton, Alignment.MIDDLE_RIGHT);
 
         setHeight(66, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
         center();
         setContent(VL);
-    }
-
-    @Override
-    public void buttonClick(Button.ClickEvent event) {
-        close();
     }
 }

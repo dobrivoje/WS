@@ -21,7 +21,6 @@ import org.superb.apps.ws.db.entities.Customer;
 public class CustomerForm extends FormLayout {
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
-    private Item newUpdate_Customer;
     private Button crudButton;
     private BeanItem<Customer> beanItemCustomer;
 
@@ -66,7 +65,7 @@ public class CustomerForm extends FormLayout {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     Customer newCustomer = new Customer();
-                    getValuesFromFields(newCustomer);
+                    bindFieldsToBean(newCustomer);
 
                     try {
                         new Customer_Controller().addNewCustomer(newCustomer);
@@ -85,22 +84,17 @@ public class CustomerForm extends FormLayout {
     }
 
     public CustomerForm(Item existingCustomer, final IRefreshVisualContainer visualContainer) {
-
         this();
 
-        fieldGroup.bindMemberFields(this);
-
-        this.newUpdate_Customer = existingCustomer;
-        setNewUpdate_Customer(existingCustomer);
+        fieldGroup.setItemDataSource(existingCustomer);
         beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
-
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Customer customerToUpdate = beanItemCustomer.getBean();
-                getValuesFromFields(customerToUpdate);
+                bindFieldsToBean(customerToUpdate);
 
                 try {
                     new Customer_Controller().updateCustomer(customerToUpdate);
@@ -118,21 +112,12 @@ public class CustomerForm extends FormLayout {
         addComponents(name, address, city, zip, region, pib, crudButton);
     }
 
-    private void getValuesFromFields(Customer customerBean) {
+    private void bindFieldsToBean(Customer customerBean) {
         customerBean.setName(name.getValue());
         customerBean.setAddress(address.getValue());
         customerBean.setCity(city.getValue());
         customerBean.setZip(zip.getValue());
         customerBean.setRegion(region.getValue());
         customerBean.setPib(pib.getValue());
-    }
-
-    public Item getNewUpdate_Customer() {
-        return newUpdate_Customer;
-    }
-
-    public final void setNewUpdate_Customer(Item newUpdate_Customer) {
-        this.newUpdate_Customer = newUpdate_Customer;
-        fieldGroup.setItemDataSource(newUpdate_Customer);
     }
 }
