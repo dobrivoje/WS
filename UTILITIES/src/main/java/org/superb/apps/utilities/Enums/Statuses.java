@@ -11,9 +11,11 @@ package org.superb.apps.utilities.Enums;
  */
 public enum Statuses {
 
-    COMING("Coming"),
+    COMING("In progress"),
     AVAILABLE("Available"),
-    DISCONTINUED("Discontinued");
+    DISCONTINUED("No licence"),
+    IN_PROGRESS("In progress"),
+    NO_LICENCE("No licence");
 
     private final String name;
 

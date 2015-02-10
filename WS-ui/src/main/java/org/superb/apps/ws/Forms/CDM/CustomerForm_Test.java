@@ -1,6 +1,8 @@
 package org.superb.apps.ws.Forms.CDM;
 
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.Forms.CRUDForm;
@@ -31,11 +33,22 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
 
     public CustomerForm_Test(final Customer customer) {
         super(customer);
+        
+        fieldGroup = new BeanFieldGroup(Customer.class);
+        fieldGroup.bindMemberFields(this);
+        
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
     public CustomerForm_Test(final Customer customer, final IRefreshVisualContainer visualContainer) {
         super(customer, visualContainer);
+        
+        fieldGroup = new BeanFieldGroup(Customer.class);
+        fieldGroup.bindMemberFields(this);
+        
+        fieldGroup.setItemDataSource(new BeanItem(customer));
+        beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+        
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 

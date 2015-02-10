@@ -24,9 +24,10 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.themes.ValoTheme;
+import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.ws.Forms.CDM.CBTForm;
-import org.superb.apps.ws.Forms.CDM.CustomerForm_Test;
+import org.superb.apps.ws.Forms.CDM.CustomerForm;
 import org.superb.apps.ws.MainMenu.MainMenu;
 import org.superb.apps.ws.MainMenu.MenuDefinitions;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.CUST_CRM_MANAG;
@@ -44,7 +45,6 @@ import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_LICENCES_OVERDUE;
 import org.superb.apps.ws.Views.MainMenu.CDM.AllCustomersView;
-import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 
 /**
@@ -169,7 +169,7 @@ public class Menu extends CssLayout {
         customersTree.setChildrenAllowed(FS_DATA_MANAG_IMAGES, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_DOCS, false);
 
-        customersTree.expandItemsRecursively(SYS_NOTIF_BOARD);
+        customersTree.expandItemsRecursively(CUST_DATA_MANAG);
         //</editor-fold>
 
         customersTree.addItemClickListener(new ItemClickEvent.ItemClickListener() {
@@ -181,10 +181,10 @@ public class Menu extends CssLayout {
                         ;
                         break;
                     case CUST_DATA_MANAG_NEW_CUST:
-                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm_Test(new Customer())));
+                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
                         ;
                         break;
-                    case CUST_DATA_MANAG_CBT_LIST:
+                    case CUST_DATA_MANAG_NEW_CBT:
                         getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), new CBTForm(new CustomerBussinesType())));
                         ;
                         break;

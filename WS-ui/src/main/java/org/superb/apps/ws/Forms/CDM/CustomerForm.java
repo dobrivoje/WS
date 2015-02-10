@@ -22,7 +22,7 @@ public class CustomerForm extends FormLayout {
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
     private Button crudButton;
-    private BeanItem<Customer> beanItemCustomer;
+    private BeanItem<Customer> beanItem;
 
     private Button.ClickListener clickListener;
     private String btnCaption;
@@ -87,13 +87,13 @@ public class CustomerForm extends FormLayout {
         this();
 
         fieldGroup.setItemDataSource(existingCustomer);
-        beanItemCustomer = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+        beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Customer customerToUpdate = beanItemCustomer.getBean();
+                Customer customerToUpdate = beanItem.getBean();
                 bindFieldsToBean(customerToUpdate);
 
                 try {

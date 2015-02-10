@@ -14,24 +14,23 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 public abstract class CRUDForm<T> extends FormLayout {
 
     protected FieldGroup fieldGroup;
-    private BeanItem<T> beanItem;
+    protected BeanItem<T> beanItem;
 
     protected Button formButton;
     protected String formButtonCaption;
     protected Button.ClickListener clickListener;
 
-    protected T bean;
-
     protected CRUDForm() {
         setSizeFull();
         setMargin(true);
         setStyleName(Reindeer.LAYOUT_BLACK);
-        
-        fieldGroup.bindMemberFields(this);
     }
 
     public CRUDForm(final T bean) {
         this();
+
+        // PAZI : OBAVEZNO INICIJALOIZOVATI U IZVEDENOJ KLASI !!!
+        // fieldGroup.bindMemberFields(this);
 
         formButtonCaption = BUTTON_CAPTION_NEW.toString();
 
@@ -59,8 +58,12 @@ public abstract class CRUDForm<T> extends FormLayout {
     public CRUDForm(final T bean, final IRefreshVisualContainer visualContainer) {
         this();
 
+        // PAZI : OBAVEZNO INICIJALOIZOVATI U IZVEDENOJ KLASI !!!
+        fieldGroup.bindMemberFields(this);
+
         fieldGroup.setItemDataSource(new BeanItem(bean));
         beanItem = (BeanItem<T>) fieldGroup.getItemDataSource();
+        
         formButtonCaption = BUTTON_CAPTION_UPDATE.toString();
 
         clickListener = new Button.ClickListener() {

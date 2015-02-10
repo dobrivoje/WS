@@ -247,13 +247,12 @@ public class ConsoleView extends VerticalLayout implements View {
                         s = Statuses.AVAILABLE;
                         break;
                     case 1:
+                    default:
                         s = Statuses.COMING;
                         break;
                     case 2:
                         s = Statuses.DISCONTINUED;
                         break;
-                    default:
-                        s = Statuses.COMING;
                 }
 
                 return new StatusLabel(s, s.toString());
