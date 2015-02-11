@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Fuelstation.findAll", query = "SELECT f FROM Fuelstation f"),
     @NamedQuery(name = "Fuelstation.findByIdfs", query = "SELECT f FROM Fuelstation f WHERE f.idfs = :idfs"),
-    @NamedQuery(name = "Fuelstation.findByName", query = "SELECT f FROM Fuelstation f WHERE f.name = :name"),
+    @NamedQuery(name = "Fuelstation.PartialName", query = "SELECT f FROM Fuelstation f WHERE f.name LIKE :partialName"),
     @NamedQuery(name = "Fuelstation.findByCity", query = "SELECT f FROM Fuelstation f WHERE f.city = :city"),
     @NamedQuery(name = "Fuelstation.findByAddress", query = "SELECT f FROM Fuelstation f WHERE f.address = :address"),
     @NamedQuery(name = "Fuelstation.findByCoordinates", query = "SELECT f FROM Fuelstation f WHERE f.coordinates = :coordinates")})

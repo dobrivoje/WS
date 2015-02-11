@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superb.apps.ws.functionalities;
+package org.superb.apps.ws.db.functionalities;
 
 import java.util.List;
 import org.superb.apps.ws.db.entities.Customer;

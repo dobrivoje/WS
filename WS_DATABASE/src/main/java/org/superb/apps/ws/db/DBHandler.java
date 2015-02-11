@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 import org.superb.apps.ws.db.entities.BussinesLine;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
+import org.superb.apps.ws.db.entities.Fuelstation;
 import org.superb.apps.ws.db.entities.Gallery;
 import org.superb.apps.ws.db.entities.Image;
 import org.superb.apps.ws.db.entities.RelCBType;
@@ -160,6 +161,78 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Fuel station">
+    //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
+    public List<Fuelstation> getAllFuelstation() {
+        try {
+            return (List<Fuelstation>) getEm().createNamedQuery("Fuelstation.findAll").getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Fuelstation getFuelstationByID(int fuelstationID) {
+        try {
+            return (Fuelstation) getEm().createNamedQuery("Fuelstation.findByIdfs")
+                    .setParameter("idfs", fuelstationID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Fuelstation> getFuelstationByName(String partialName) {
+        try {
+            return getEm().createNamedQuery("Fuelstation.PartialName")
+                    .setParameter("partialName", partialName.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
+    public void addNewFuelstation(String name, String city, String address, String coordinates) throws Exception {
+        Fuelstation newFuelstation = new Fuelstation();
+
+        newFuelstation.setName(name);
+        newFuelstation.setAddress(address);
+        newFuelstation.setCity(city);
+        newFuelstation.setCity(coordinates);
+
+        getEm().getTransaction().begin();
+        em.persist(newFuelstation);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewFuelstation(Fuelstation newFuelstation) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newFuelstation);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateFuelstation(int fuelstationID, String name, String city, String address, String coordinates) throws Exception {
+        Fuelstation customer = getFuelstationByID(fuelstationID);
+
+        customer.setName(name);
+        customer.setAddress(address);
+        customer.setCity(city);
+        customer.setCoordinates(coordinates);
+
+        getEm().getTransaction().begin();
+        em.merge(customer);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateFuelstation(Fuelstation fuelstation) throws Exception {
+        getEm().getTransaction().begin();
+        em.merge(fuelstation);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Customer Bussines Type">
     //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
     public CustomerBussinesType getCustomerBussinesType(int IDCBT) {
@@ -218,7 +291,7 @@ public class DBHandler {
     }
     //</editor-fold>
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
     public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superb.apps.ws.controllers;
+package org.superb.apps.ws.db.controllers;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,8 +13,8 @@ import org.superb.apps.ws.db.entities.Gallery;
 import org.superb.apps.ws.db.entities.Image;
 import org.superb.apps.ws.db.entities.RelSALESMANIMAGE;
 import org.superb.apps.ws.db.entities.Salesman;
-import org.superb.apps.ws.functionalities.IGalleryImage;
-import org.superb.apps.ws.functionalities.ISalesmanImage;
+import org.superb.apps.ws.db.functionalities.IGalleryImage;
+import org.superb.apps.ws.db.functionalities.ISalesmanImage;
 
 /**
  *

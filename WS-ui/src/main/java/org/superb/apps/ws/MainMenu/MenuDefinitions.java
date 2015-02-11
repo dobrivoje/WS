@@ -20,11 +20,11 @@ public enum MenuDefinitions {
     SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST("Customer Blacklist"),
     SYS_NOTIF_BOARD_LICENCES_OVERDUE("Licences Overdue"),
     //
-    CUST_DATA_MANAG_ALL_CUST("List of All Customers"),
-    CUST_DATA_MANAG_NEW_CUST("New Customers"),
+    CUST_DATA_MANAG_ALL_CUST("Customers Browser"),
+    CUST_DATA_MANAG_NEW_CUST("New Customer"),
     CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
-    CUST_DATA_MANAG_CUST_FS("Customer's FS"),
+    CUST_DATA_MANAG_CUST_FS("Customer's FS Browser"),
     CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
     //
     FS_DATA_MANAG_IMAGES("FS's Images"),

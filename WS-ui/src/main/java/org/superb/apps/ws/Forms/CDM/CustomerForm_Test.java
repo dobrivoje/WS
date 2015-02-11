@@ -6,7 +6,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.Forms.CRUDForm;
-import org.superb.apps.ws.controllers.Customer_Controller;
+import org.superb.apps.ws.db.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 
 public class CustomerForm_Test extends CRUDForm<Customer> {

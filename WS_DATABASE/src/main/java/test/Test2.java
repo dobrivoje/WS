@@ -5,11 +5,8 @@
  */
 package test;
 
-import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
-import org.superb.apps.ws.db.DBHandler;
-import org.superb.apps.ws.db.entities.Customer;
-import org.superb.apps.ws.db.entities.CustomerBussinesType;
-import org.superb.apps.ws.functionalities.ICustomerBussinesType;
+import org.superb.apps.ws.db.controllers.FS_Controller;
+import org.superb.apps.ws.db.entities.Fuelstation;
 
 /**
  *
@@ -17,13 +14,19 @@ import org.superb.apps.ws.functionalities.ICustomerBussinesType;
  */
 public class Test2 {
 
-    private static final ICustomerBussinesType CBTController = new CustomerBussinesType_Controller();
-
     public static void main(String[] args) {
-        CustomerBussinesType cbt = DBHandler.getDefault().getCustomerBussinesType(1);
+        Fuelstation fs = new FS_Controller().getByID(1);
+        fs.setName("Boško Petrol DOO");
+        fs.setAddress("Uplašenih hajduka BB");
+        fs.setCity("Tihi Gaj");
 
-        for (Customer c : CBTController.getAllCustomersForBussinesType(1)) {
-            System.err.println(c.toString());
+        try {
+            new FS_Controller().updateExisting(fs);
+        } catch (Exception ex) {
+        }
+
+        for (Fuelstation f : new FS_Controller().getAll()) {
+            System.err.print(f.toString());
         }
     }
 }

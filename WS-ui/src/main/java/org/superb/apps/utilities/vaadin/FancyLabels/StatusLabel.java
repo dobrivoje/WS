@@ -25,8 +25,9 @@ public class StatusLabel extends Label {
         setSizeUndefined();
 
         color.put(Statuses.OK, "#2dd085");
-        color.put(Statuses.BLACK_LIST, "#583388");
+        color.put(Statuses.BLACK_LIST, "#222222");
         color.put(Statuses.IN_PROGRESS, "#F3A344");
+        color.put(Statuses.UNKNOWN, "#aa66aa");
         color.put(Statuses.NO_LICENCE, "#f54993");
     }
 

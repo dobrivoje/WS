@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superb.apps.ws.controllers;
+package org.superb.apps.ws.db.controllers;
 
 import java.util.List;
 import org.superb.apps.ws.db.DBHandler;
 import org.superb.apps.ws.db.entities.Customer;
-import org.superb.apps.ws.functionalities.ICustomer;
+import org.superb.apps.ws.db.functionalities.ICustomer;
 
 /**
  *

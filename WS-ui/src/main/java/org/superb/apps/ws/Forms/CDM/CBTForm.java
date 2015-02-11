@@ -4,7 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.Forms.CRUDForm;
-import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
+import org.superb.apps.ws.db.controllers.CustomerBussinesType_Controller;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 
 public class CBTForm extends CRUDForm<CustomerBussinesType> {

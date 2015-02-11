@@ -45,6 +45,7 @@ import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
 import static org.superb.apps.ws.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD_LICENCES_OVERDUE;
 import org.superb.apps.ws.Views.MainMenu.CDM.AllCustomersView;
+import org.superb.apps.ws.Views.MainMenu.FSDM.FSForm;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 
 /**
@@ -144,9 +145,9 @@ public class Menu extends CssLayout {
 
         customersTree.setParent(CUST_DATA_MANAG_ALL_CUST, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_NEW_CUST, CUST_DATA_MANAG);
-        customersTree.setParent(CUST_DATA_MANAG_NEW_CBT, CUST_DATA_MANAG);
-        customersTree.setParent(CUST_DATA_MANAG_CBT_LIST, CUST_DATA_MANAG);
-        customersTree.setParent(CUST_DATA_MANAG_CUST_FS, CUST_DATA_MANAG);
+        // customersTree.setParent(CUST_DATA_MANAG_NEW_CBT, CUST_DATA_MANAG);
+        // customersTree.setParent(CUST_DATA_MANAG_CBT_LIST, CUST_DATA_MANAG);
+        // customersTree.setParent(CUST_DATA_MANAG_CUST_FS, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_CUST_DOCS, CUST_DATA_MANAG);
 
         customersTree.setParent(FS_DATA_MANAG_IMAGES, FS_DATA_MANAG);
@@ -186,6 +187,10 @@ public class Menu extends CssLayout {
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), new CBTForm(new CustomerBussinesType())));
+                        ;
+                        break;
+                    case FS_DATA_MANAG:
+                        getUI().addWindow(new WindowForm(FS_DATA_MANAG.toString(), new FSForm(CrudOperations.CREATE)));
                         ;
                         break;
 

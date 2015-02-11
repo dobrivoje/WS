@@ -25,12 +25,12 @@ import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.CustomTable;
 import org.superb.apps.ws.Forms.CDM.CustomerForm;
-import org.superb.apps.ws.controllers.CustomerBussinesType_Controller;
-import org.superb.apps.ws.controllers.Customer_Controller;
+import org.superb.apps.ws.db.controllers.CustomerBussinesType_Controller;
+import org.superb.apps.ws.db.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
-import org.superb.apps.ws.functionalities.ICustomer;
-import org.superb.apps.ws.functionalities.ICustomerBussinesType;
+import org.superb.apps.ws.db.functionalities.ICustomer;
+import org.superb.apps.ws.db.functionalities.ICustomerBussinesType;
 
 public class ConsoleView extends VerticalLayout implements View {
 

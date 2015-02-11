@@ -45,7 +45,7 @@ public class RelFSPROPPRODUCT implements Serializable {
     private FsProp FK_FSP;
     @JoinColumn(name = "FK_IDP", referencedColumnName = "IDP")
     @OneToOne
-    private Product fkIdp;
+    private Product FK_Product;
 
     public RelFSPROPPRODUCT() {
     }
@@ -78,12 +78,12 @@ public class RelFSPROPPRODUCT implements Serializable {
         this.FK_FSP = FK_FSP;
     }
 
-    public Product getFkIdp() {
-        return fkIdp;
+    public Product getFK_Product() {
+        return FK_Product;
     }
 
-    public void setFkIdp(Product fkIdp) {
-        this.fkIdp = fkIdp;
+    public void setFK_Product(Product FK_Product) {
+        this.FK_Product = FK_Product;
     }
 
     @Override

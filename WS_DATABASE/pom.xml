@@ -29,7 +29,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <name>WS_DATABASE</name>
-    <description>9.2.2015 - v 1.4.1 - Ubacivanje u DBH metoda za CustomerBussinesType add/update.</description>
+    <description>v 1.4.2  - 11.2.2015 - FS - kontroler.
+v 1.4.1  - 9.2.2015 - Ubacivanje u DBH metoda za CustomerBussinesType add/update.</description>
 </project>

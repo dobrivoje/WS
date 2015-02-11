@@ -9,16 +9,20 @@ package org.superb.apps.utilities.Enums;
  *
  * @author root
  */
-public enum Statuses {
+public enum CrudOperations {
 
-    OK("OK"),
-    BLACK_LIST("Black List!"),
-    IN_PROGRESS("In progress.."),
-    NO_LICENCE("No licence!");
+    CREATE("Create"),
+    READ("Read"),
+    UPDATE("Update"),
+    DELETE("Delete"),
+    //
+    BUTTON_CAPTION_UPDATE("Save modifications"),
+    BUTTON_CAPTION_NEW("Insert new data"),
+    BUTTON_CAPTION_CANCEL("Cancel");
 
     private final String name;
 
-    private Statuses(String name) {
+    private CrudOperations(String name) {
         this.name = name;
     }
 
