@@ -40,7 +40,7 @@ public class WindowForm extends Window {
 
         VL.addComponent(formLayout);
         VL.addComponent(closeButton);
-        VL.setComponentAlignment(closeButton, Alignment.MIDDLE_RIGHT);
+        VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
 
         setHeight(66, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);

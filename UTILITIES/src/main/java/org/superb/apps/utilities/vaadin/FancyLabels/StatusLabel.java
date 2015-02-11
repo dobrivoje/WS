@@ -24,11 +24,10 @@ public class StatusLabel extends Label {
         setContentMode(ContentMode.HTML);
         setSizeUndefined();
 
-        color.put(Statuses.AVAILABLE, "#2dd085");
-        color.put(Statuses.COMING, "#ffc66e");
-        color.put(Statuses.DISCONTINUED, "#f54993");
-        color.put(Statuses.IN_PROGRESS, "#4521F3");
-        color.put(Statuses.DISCONTINUED, "#ff33aa");
+        color.put(Statuses.OK, "#2dd085");
+        color.put(Statuses.BLACK_LIST, "#583388");
+        color.put(Statuses.IN_PROGRESS, "#F3A344");
+        color.put(Statuses.NO_LICENCE, "#f54993");
     }
 
     public StatusLabel(Statuses status, String property) {

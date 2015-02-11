@@ -30,9 +30,6 @@ public class MyWindow extends Window {
         vSP.setSizeFull();
 
         VerticalLayout vL = new VerticalLayout();
-        vL.setSpacing(true);
-        vL.setMargin(true);
-        vL.setSizeFull();
 
         Button exitButton = new Button("Exit", new Button.ClickListener() {
             @Override
@@ -42,7 +39,7 @@ public class MyWindow extends Window {
         });
 
         vL.addComponent(exitButton);
-        vL.setComponentAlignment(exitButton, Alignment.BOTTOM_CENTER);
+        vL.setComponentAlignment(exitButton, Alignment.MIDDLE_CENTER);
 
         vSP.setSplitPosition(90, Unit.PERCENTAGE);
         vSP.setFirstComponent(label);

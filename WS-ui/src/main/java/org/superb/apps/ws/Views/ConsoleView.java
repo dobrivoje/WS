@@ -75,7 +75,7 @@ public class ConsoleView extends VerticalLayout implements View {
         cBT_Table.addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
-                return new StatusLabel(Statuses.AVAILABLE, "Ok");
+                return new StatusLabel(Statuses.OK, "Ok");
             }
         });
 
@@ -244,14 +244,14 @@ public class ConsoleView extends VerticalLayout implements View {
 
                 switch (k) {
                     case 0:
-                        s = Statuses.AVAILABLE;
+                        s = Statuses.OK;
                         break;
                     case 1:
                     default:
-                        s = Statuses.COMING;
+                        s = Statuses.IN_PROGRESS;
                         break;
                     case 2:
-                        s = Statuses.DISCONTINUED;
+                        s = Statuses.NO_LICENCE;
                         break;
                 }
 
