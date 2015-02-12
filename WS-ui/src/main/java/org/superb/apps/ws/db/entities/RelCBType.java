@@ -39,7 +39,7 @@ public class RelCBType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDRCBT")
-    private Integer idrcbt;
+    private Long idrcbt;
     @Column(name = "Date_From")
     private String dateFrom;
     @Column(name = "Date_To")
@@ -56,15 +56,15 @@ public class RelCBType implements Serializable {
     public RelCBType() {
     }
 
-    public RelCBType(Integer idrcbt) {
+    public RelCBType(Long idrcbt) {
         this.idrcbt = idrcbt;
     }
 
-    public Integer getIdrcbt() {
+    public Long getIdrcbt() {
         return idrcbt;
     }
 
-    public void setIdrcbt(Integer idrcbt) {
+    public void setIdrcbt(Long idrcbt) {
         this.idrcbt = idrcbt;
     }
 

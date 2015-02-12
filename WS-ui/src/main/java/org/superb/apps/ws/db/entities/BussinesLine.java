@@ -37,7 +37,7 @@ public class BussinesLine implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDBL")
-    private Integer idbl;
+    private Long idbl;
     @Column(name = "Name")
     private String name;
     @OneToMany(mappedBy = "FK_BussinesLine")
@@ -46,15 +46,15 @@ public class BussinesLine implements Serializable {
     public BussinesLine() {
     }
 
-    public BussinesLine(Integer idbl) {
+    public BussinesLine(Long idbl) {
         this.idbl = idbl;
     }
 
-    public Integer getIdbl() {
+    public Long getIdbl() {
         return idbl;
     }
 
-    public void setIdbl(Integer idbl) {
+    public void setIdbl(Long idbl) {
         this.idbl = idbl;
     }
 

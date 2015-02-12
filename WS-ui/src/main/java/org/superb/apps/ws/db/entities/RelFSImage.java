@@ -34,12 +34,12 @@ public class RelFSImage implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "IDFSI")
-    private Integer idfsi;
+    private Long idfsi;
     @Column(name = "ImageTaken")
     private String imageTaken;
     @JoinColumn(name = "FK_IDFS", referencedColumnName = "IDFS")
     @ManyToOne
-    private Fuelstation FK_FuelStation;
+    private Fuelstation FK_FS1;
     @JoinColumn(name = "FK_IDI", referencedColumnName = "IDI")
     @OneToOne
     private Image FK_Image;
@@ -47,15 +47,15 @@ public class RelFSImage implements Serializable {
     public RelFSImage() {
     }
 
-    public RelFSImage(Integer idfsi) {
+    public RelFSImage(Long idfsi) {
         this.idfsi = idfsi;
     }
 
-    public Integer getIdfsi() {
+    public Long getIdfsi() {
         return idfsi;
     }
 
-    public void setIdfsi(Integer idfsi) {
+    public void setIdfsi(Long idfsi) {
         this.idfsi = idfsi;
     }
 
@@ -67,12 +67,12 @@ public class RelFSImage implements Serializable {
         this.imageTaken = imageTaken;
     }
 
-    public Fuelstation getFK_FuelStation() {
-        return FK_FuelStation;
+    public Fuelstation getFK_FS1() {
+        return FK_FS1;
     }
 
-    public void setFK_FuelStation(Fuelstation FK_FuelStation) {
-        this.FK_FuelStation = FK_FuelStation;
+    public void setFK_FS1(Fuelstation FK_FS1) {
+        this.FK_FS1 = FK_FS1;
     }
 
     public Image getFK_Image() {
@@ -97,15 +97,12 @@ public class RelFSImage implements Serializable {
             return false;
         }
         RelFSImage other = (RelFSImage) object;
-        if ((this.idfsi == null && other.idfsi != null) || (this.idfsi != null && !this.idfsi.equals(other.idfsi))) {
-            return false;
-        }
-        return true;
+        return !((this.idfsi == null && other.idfsi != null) || (this.idfsi != null && !this.idfsi.equals(other.idfsi)));
     }
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.RelFSImage[ idfsi=" + idfsi + " ]";
+        return "RelFSImage[ " + idfsi + " ]";
     }
     
 }

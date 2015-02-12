@@ -21,7 +21,7 @@ public class CBT_Controller implements ICBT {
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
-    public List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType) {
+    public List<Customer> getAllCustomersForCBT(long IDCustomerBussinesType) {
         return dbh.getCustomerBussinesType(IDCustomerBussinesType)
                 .getAllCustomersForBussinesType();
     }
@@ -33,11 +33,11 @@ public class CBT_Controller implements ICBT {
 
     @Override
     public List<CustomerBussinesType> getAll() {
-        return dbh.getAllCustomerBussinesTypes();
+        return dbh.getAllCBT();
     }
 
     @Override
-    public CustomerBussinesType getByID(int ID) {
+    public CustomerBussinesType getByID(long ID) {
         return dbh.getCustomerBussinesType(ID);
     }
 
@@ -47,7 +47,7 @@ public class CBT_Controller implements ICBT {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Add/Update">
+    //<editor-fold defaultstate="collapsed" desc="Write data">
     @Override
     public void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
             throws Exception {

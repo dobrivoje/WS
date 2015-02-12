@@ -37,7 +37,7 @@ public class RelSALESMANIMAGE implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDSI")
-    private Integer idsi;
+    private Long idsi;
     @JoinColumn(name = "FK_IMAGE", referencedColumnName = "IDI")
     @OneToOne(optional = false)
     private Image FK_Image;
@@ -48,15 +48,15 @@ public class RelSALESMANIMAGE implements Serializable {
     public RelSALESMANIMAGE() {
     }
 
-    public RelSALESMANIMAGE(Integer idsi) {
+    public RelSALESMANIMAGE(Long idsi) {
         this.idsi = idsi;
     }
 
-    public Integer getIdsi() {
+    public Long getIdsi() {
         return idsi;
     }
 
-    public void setIdsi(Integer idsi) {
+    public void setIdsi(Long idsi) {
         this.idsi = idsi;
     }
 

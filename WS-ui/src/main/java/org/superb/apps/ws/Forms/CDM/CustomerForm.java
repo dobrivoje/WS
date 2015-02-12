@@ -68,7 +68,7 @@ public class CustomerForm extends FormLayout {
                     bindFieldsToBean(newCustomer);
 
                     try {
-                        new Customer_Controller().addNewCustomer(newCustomer);
+                        new Customer_Controller().addNew(newCustomer);
                         Notification n = new Notification("Customer Added.", Notification.Type.HUMANIZED_MESSAGE);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -99,7 +99,7 @@ public class CustomerForm extends FormLayout {
                 bindFieldsToBean(customerToUpdate);
 
                 try {
-                    new Customer_Controller().updateCustomer(customerToUpdate);
+                    new Customer_Controller().updateExisting(customerToUpdate);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("Customer Updated.", Notification.Type.HUMANIZED_MESSAGE);
                     n.setDelayMsec(500);

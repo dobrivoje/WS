@@ -18,14 +18,14 @@ public class FS_Controller implements IFS {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">@Override
+    //<editor-fold defaultstate="collapsed" desc="Read data">@Override
     @Override
     public List<Fuelstation> getAll() {
         return dbh.getAllFuelstation();
     }
 
     @Override
-    public Fuelstation getByID(int customerID) {
+    public Fuelstation getByID(long customerID) {
         return dbh.getFuelstationByID(customerID);
     }
 
@@ -35,7 +35,7 @@ public class FS_Controller implements IFS {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Write data">
     @Override
     public void addNew(Fuelstation newFS) throws Exception {
         dbh.addNewFS(newFS);
@@ -43,7 +43,7 @@ public class FS_Controller implements IFS {
 
     @Override
     public void addNew(String name, String address, String city, String coordinates) throws Exception {
-        dbh.addNewFS(name, city, address, coordinates);
+        dbh.addNewFS(name, address, city, coordinates);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FS_Controller implements IFS {
     }
 
     @Override
-    public void updateExisting(int ID, String name, String address, String city, String coordinates) throws Exception {
+    public void updateExisting(long ID, String name, String address, String city, String coordinates) throws Exception {
         dbh.addNewFS(name, city, address, coordinates);
     }
     //</editor-fold>

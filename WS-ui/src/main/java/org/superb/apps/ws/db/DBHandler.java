@@ -29,7 +29,8 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="System definitions">
     private static DBHandler instance;
-    private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
+    //private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
+    private static final String PERSISTENCE_UNIT_ID = "PU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_ID);
     private static final EntityManager em = emf.createEntityManager();
 
@@ -127,15 +128,11 @@ public class DBHandler {
         newCustomer.setRegion(region);
         newCustomer.setPib(PIB);
 
-        getEm().getTransaction().begin();
         em.persist(newCustomer);
-        getEm().getTransaction().commit();
     }
 
     public void addNewCustomer(Customer newCustomer) throws Exception {
-        getEm().getTransaction().begin();
         em.persist(newCustomer);
-        getEm().getTransaction().commit();
     }
 
     public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
@@ -148,15 +145,11 @@ public class DBHandler {
         customer.setRegion(region);
         customer.setPib(PIB);
 
-        getEm().getTransaction().begin();
         em.merge(customer);
-        getEm().getTransaction().commit();
     }
 
     public void updateCustomer(Customer customer) throws Exception {
-        getEm().getTransaction().begin();
         em.merge(customer);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
@@ -171,7 +164,7 @@ public class DBHandler {
         }
     }
 
-    public Fuelstation getFuelstationByID(int fuelstationID) {
+    public Fuelstation getFuelstationByID(long fuelstationID) {
         try {
             return (Fuelstation) getEm().createNamedQuery("Fuelstation.findByIdfs")
                     .setParameter("idfs", fuelstationID)
@@ -201,26 +194,14 @@ public class DBHandler {
         newFuelstation.setCity(city);
         newFuelstation.setCity(coordinates);
 
-        try {
-            getEm().getTransaction().begin();
-            em.persist(newFuelstation);
-            getEm().getTransaction().commit();
-        } catch (Exception e) {
-            getEm().getTransaction().rollback();
-        } finally {
-            if (getEm().getTransaction().isActive()) {
-                getEm().close();
-            }
-        }
+        em.persist(newFuelstation);
     }
 
     public void addNewFS(Fuelstation newFuelstation) throws Exception {
-        getEm().getTransaction().begin();
         em.persist(newFuelstation);
-        getEm().getTransaction().commit();
     }
 
-    public void updateFS(int fuelstationID, String name, String city, String address, String coordinates) throws Exception {
+    public void updateFS(Long fuelstationID, String name, String city, String address, String coordinates) throws Exception {
         Fuelstation customer = getFuelstationByID(fuelstationID);
 
         customer.setName(name);
@@ -228,22 +209,18 @@ public class DBHandler {
         customer.setCity(city);
         customer.setCoordinates(coordinates);
 
-        getEm().getTransaction().begin();
         em.merge(customer);
-        getEm().getTransaction().commit();
     }
 
     public void updateFS(Fuelstation fuelstation) throws Exception {
-        getEm().getTransaction().begin();
         em.merge(fuelstation);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Bussines Type">
     //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
-    public CustomerBussinesType getCustomerBussinesType(int IDCBT) {
+    public CustomerBussinesType getCustomerBussinesType(long IDCBT) {
         try {
             return (CustomerBussinesType) getEm().createNamedQuery("CustomerBussinesType.findByIdcbt")
                     .setParameter("idcbt", IDCBT)
@@ -253,7 +230,7 @@ public class DBHandler {
         }
     }
 
-    public List<CustomerBussinesType> getAllCustomerBussinesTypes() {
+    public List<CustomerBussinesType> getAllCBT() {
         try {
             return (List<CustomerBussinesType>) getEm().createNamedQuery("CustomerBussinesType.findAll").getResultList();
         } catch (Exception ex) {
@@ -278,24 +255,18 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
     public void addNewCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        getEm().getTransaction().begin();
         em.persist(newCustomerBussinesType);
-        getEm().getTransaction().commit();
     }
 
     public void updateCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        getEm().getTransaction().begin();
         em.merge(newCustomerBussinesType);
-        getEm().getTransaction().commit();
     }
 
     public void updateCustomerBussinesType(int IDCBT, String newCustomerBussinesType) throws Exception {
         CustomerBussinesType newCBT = getCustomerBussinesType(IDCBT);
         newCBT.setCustomerActivity(newCustomerBussinesType);
 
-        getEm().getTransaction().begin();
         em.merge(newCBT);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
@@ -309,9 +280,7 @@ public class DBHandler {
         newRelCBType.setDateTo(DateTo);
         newRelCBType.setActive(active);
 
-        getEm().getTransaction().begin();
         em.persist(newRelCBType);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
 
@@ -380,15 +349,11 @@ public class DBHandler {
         newSalesman.setDateTo(dateTo);
         newSalesman.setFK_BussinesLine(BL);
 
-        getEm().getTransaction().begin();
         em.persist(newSalesman);
-        getEm().getTransaction().commit();
     }
 
     public void addNewSalesman(Salesman newSalesman) throws Exception {
-        getEm().getTransaction().begin();
         em.persist(newSalesman);
-        getEm().getTransaction().commit();
     }
 
     public void updateSalesman(int IDS, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
@@ -402,15 +367,11 @@ public class DBHandler {
         newSalesman.setDateTo(dateTo);
         newSalesman.setFK_BussinesLine(BL);
 
-        getEm().getTransaction().begin();
         em.persist(newSalesman);
-        getEm().getTransaction().commit();
     }
 
     public void updateSalesman(Salesman newSalesman) throws Exception {
-        getEm().getTransaction().begin();
         em.persist(newSalesman);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
@@ -457,9 +418,7 @@ public class DBHandler {
 
         newGallery.setName(name);
 
-        getEm().getTransaction().begin();
         em.persist(newGallery);
-        getEm().getTransaction().commit();
     }
 
     public void addNewImage(Gallery gallery, String imageName, Serializable imageData, Date imageUploadDate) throws Exception {
@@ -470,9 +429,7 @@ public class DBHandler {
         newImage.setImageData(imageData);
         newImage.setUploadDate(imageUploadDate);
 
-        getEm().getTransaction().begin();
         em.persist(newImage);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
@@ -496,9 +453,7 @@ public class DBHandler {
         newASALESMANIMAGE.setFK_Salesman(salesman);
         newASALESMANIMAGE.setFK_Image(image);
 
-        getEm().getTransaction().begin();
         em.persist(newASALESMANIMAGE);
-        getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>

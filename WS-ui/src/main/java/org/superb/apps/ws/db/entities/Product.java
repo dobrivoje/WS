@@ -35,7 +35,7 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDP")
-    private Integer idp;
+    private Long idp;
     @Column(name = "Name")
     private String name;
     @OneToOne(mappedBy = "FK_Product")
@@ -44,15 +44,15 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Integer idp) {
+    public Product(Long idp) {
         this.idp = idp;
     }
 
-    public Integer getIdp() {
+    public Long getIdp() {
         return idp;
     }
 
-    public void setIdp(Integer idp) {
+    public void setIdp(Long idp) {
         this.idp = idp;
     }
 
@@ -91,7 +91,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.Product[ idp=" + idp + " ]";
+        return "Product[ " + idp + " ]";
     }
     
 }

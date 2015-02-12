@@ -41,7 +41,7 @@ public class CustomerBussinesType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDCBT")
-    private Integer idcbt;
+    private Long idcbt;
     @Column(name = "Customer_Activity")
     private String customerActivity;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_CBT")
@@ -50,15 +50,15 @@ public class CustomerBussinesType implements Serializable {
     public CustomerBussinesType() {
     }
 
-    public CustomerBussinesType(Integer idcbt) {
+    public CustomerBussinesType(Long idcbt) {
         this.idcbt = idcbt;
     }
 
-    public Integer getIdcbt() {
+    public Long getIdcbt() {
         return idcbt;
     }
 
-    public void setIdcbt(Integer idcbt) {
+    public void setIdcbt(Long idcbt) {
         this.idcbt = idcbt;
     }
 

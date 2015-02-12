@@ -79,7 +79,7 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
 
-        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
         updateBeanItemContainer(CBT_Container, CBT_CONTROLLER.getAll());
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
@@ -102,7 +102,7 @@ public class ConsoleView extends VerticalLayout implements View {
                                 customerRegion_TextField.getValue(),
                                 customerPIB_TextField.getValue());
 
-                        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+                        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
                         Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
@@ -131,7 +131,7 @@ public class ConsoleView extends VerticalLayout implements View {
             Button saveNewCBT_Button = new Button("Save", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+                    updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
 
                     CBT_DateFrom_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -279,7 +279,7 @@ public class ConsoleView extends VerticalLayout implements View {
         Button customersListButton = new Button("List of Customers", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
+                updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
                 HR_VL_RIGHT.removeAllComponents();
                 HR_VL_RIGHT.addComponent(allCustomersTable);
             }

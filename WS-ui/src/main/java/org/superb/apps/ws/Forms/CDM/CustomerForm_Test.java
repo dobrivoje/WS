@@ -33,22 +33,22 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
 
     public CustomerForm_Test(final Customer customer) {
         super(customer);
-        
+
         fieldGroup = new BeanFieldGroup(Customer.class);
         fieldGroup.bindMemberFields(this);
-        
+
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
     public CustomerForm_Test(final Customer customer, final IRefreshVisualContainer visualContainer) {
         super(customer, visualContainer);
-        
+
         fieldGroup = new BeanFieldGroup(Customer.class);
         fieldGroup.bindMemberFields(this);
-        
+
         fieldGroup.setItemDataSource(new BeanItem(customer));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
-        
+
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
@@ -64,11 +64,11 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
 
     @Override
     public void addNewBean(Customer bean) throws Exception {
-        new Customer_Controller().addNewCustomer(bean);
+        new Customer_Controller().addNew(bean);
     }
 
     @Override
     public void updateExistingBean(Customer bean) throws Exception {
-        new Customer_Controller().updateCustomer(bean);
+        new Customer_Controller().updateExisting(bean);
     }
 }

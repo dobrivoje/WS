@@ -34,7 +34,7 @@ public class CustomerTable extends Table implements IRefreshVisualContainer {
         setSizeFull();
 
         setContainerDataSource(beanContainer);
-        updateBeanItemContainer(beanContainer, CUSTOMER_CONTROLLER.getAllCustomers());
+        updateBeanItemContainer(beanContainer, CUSTOMER_CONTROLLER.getAll());
 
         addGeneratedColumn("FS", new Table.ColumnGenerator() {
             @Override

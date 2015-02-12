@@ -35,12 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fuelstation.findByAddress", query = "SELECT f FROM Fuelstation f WHERE f.address = :address"),
     @NamedQuery(name = "Fuelstation.findByCoordinates", query = "SELECT f FROM Fuelstation f WHERE f.coordinates = :coordinates")})
 public class Fuelstation implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDFS")
-    private Integer idfs;
+    private Long idfs;
     @Column(name = "Name")
     private String name;
     @Column(name = "City")
@@ -49,23 +50,23 @@ public class Fuelstation implements Serializable {
     private String address;
     @Column(name = "Coordinates")
     private String coordinates;
-    @OneToMany(mappedBy = "FK_FuelStation")
+    @OneToMany(mappedBy = "FK_FS1")
     private List<RelFSImage> relFSImageList;
-    @OneToMany(mappedBy = "FK_FuelStation")
+    @OneToMany(mappedBy = "FK_FS2")
     private List<Owner> ownerList;
 
     public Fuelstation() {
     }
 
-    public Fuelstation(Integer idfs) {
+    public Fuelstation(Long idfs) {
         this.idfs = idfs;
     }
 
-    public Integer getIdfs() {
+    public Long getIdfs() {
         return idfs;
     }
 
-    public void setIdfs(Integer idfs) {
+    public void setIdfs(Long idfs) {
         this.idfs = idfs;
     }
 
@@ -141,7 +142,7 @@ public class Fuelstation implements Serializable {
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.Fuelstation[ idfs=" + idfs + " ]";
+        return "Fuelstation[ " + idfs + " ]";
     }
-    
+
 }

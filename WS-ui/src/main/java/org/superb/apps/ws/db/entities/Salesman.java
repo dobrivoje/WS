@@ -45,7 +45,7 @@ public class Salesman implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDS")
-    private Integer ids;
+    private Long ids;
     @Column(name = "Name")
     private String name;
     @Column(name = "Surname")
@@ -67,15 +67,15 @@ public class Salesman implements Serializable {
     public Salesman() {
     }
 
-    public Salesman(Integer ids) {
+    public Salesman(Long ids) {
         this.ids = ids;
     }
 
-    public Integer getIds() {
+    public Long getIds() {
         return ids;
     }
 
-    public void setIds(Integer ids) {
+    public void setIds(Long ids) {
         this.ids = ids;
     }
 

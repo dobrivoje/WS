@@ -12,14 +12,17 @@ import org.superb.apps.ws.db.entities.Customer;
  *
  * @author root
  */
-public interface ICustomer {
+public interface ICustomer extends CRUDInterface<Customer> {
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
-    public List<Customer> getAllCustomers();
+    @Override
+    public List<Customer> getAll();
 
-    public Customer getCustomerByID(Long customerID);
+    @Override
+    public List<Customer> getByName(String partialName);
 
-    public List<Customer> getCustomerByName(String partialName);
+    @Override
+    public Customer getByID(long ID);
 
     public List<Customer> getCustomerByCity(String partialCityName);
 
@@ -31,12 +34,14 @@ public interface ICustomer {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">
-    public void addNewCustomer(Customer newCustomer) throws Exception;
+    @Override
+    public void addNew(Customer newObject) throws Exception;
+
+    @Override
+    public void updateExisting(Customer object) throws Exception;
 
     public void addNewCustomer(String name, String address, String city, String zip, String region, String PIB) throws Exception;
 
-    public void updateCustomer(Customer customer) throws Exception;
-
-    public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception;
+    public void updateExisting(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception;
     //</editor-fold>
 }

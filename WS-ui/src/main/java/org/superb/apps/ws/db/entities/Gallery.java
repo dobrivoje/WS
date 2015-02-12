@@ -32,12 +32,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Gallery.findByIdg", query = "SELECT g FROM Gallery g WHERE g.idg = :idg"),
     @NamedQuery(name = "Gallery.findByName", query = "SELECT g FROM Gallery g WHERE g.name = :name")})
 public class Gallery implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDG", nullable = false)
-    private Integer idg;
+    private Long idg;
     @Basic(optional = false)
     @Column(name = "Name", nullable = false, length = 50)
     private String name;
@@ -47,20 +48,20 @@ public class Gallery implements Serializable {
     public Gallery() {
     }
 
-    public Gallery(Integer idg) {
+    public Gallery(Long idg) {
         this.idg = idg;
     }
 
-    public Gallery(Integer idg, String name) {
+    public Gallery(Long idg, String name) {
         this.idg = idg;
         this.name = name;
     }
 
-    public Integer getIdg() {
+    public Long getIdg() {
         return idg;
     }
 
-    public void setIdg(Integer idg) {
+    public void setIdg(Long idg) {
         this.idg = idg;
     }
 
@@ -102,5 +103,5 @@ public class Gallery implements Serializable {
     public String toString() {
         return getName();
     }
-    
+
 }

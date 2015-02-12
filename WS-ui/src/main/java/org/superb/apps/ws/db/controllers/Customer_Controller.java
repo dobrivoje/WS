@@ -18,19 +18,19 @@ public class Customer_Controller implements ICustomer {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">
+    //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getAll() {
         return dbh.getAllCustomers();
     }
 
     @Override
-    public Customer getCustomerByID(Long customerID) {
-        return dbh.getCustomerByID(customerID);
+    public Customer getByID(long ID) {
+        return dbh.getCustomerByID(ID);
     }
 
     @Override
-    public List<Customer> getCustomerByName(String partialName) {
+    public List<Customer> getByName(String partialName) {
         return dbh.getCustomerByName(partialName);
     }
 
@@ -55,9 +55,9 @@ public class Customer_Controller implements ICustomer {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Write data">
     @Override
-    public void addNewCustomer(Customer newCustomer) throws Exception {
+    public void addNew(Customer newCustomer) throws Exception {
         dbh.addNewCustomer(newCustomer);
     }
 
@@ -67,12 +67,12 @@ public class Customer_Controller implements ICustomer {
     }
 
     @Override
-    public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
+    public void updateExisting(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
         dbh.updateCustomer(customerID, name, address, city, zip, region, PIB);
     }
 
     @Override
-    public void updateCustomer(Customer customer) throws Exception {
+    public void updateExisting(Customer customer) throws Exception {
         dbh.updateCustomer(customer);
     }
     //</editor-fold>

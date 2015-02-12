@@ -36,12 +36,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Owner.findByDateTo", query = "SELECT o FROM Owner o WHERE o.dateTo = :dateTo"),
     @NamedQuery(name = "Owner.findByActive", query = "SELECT o FROM Owner o WHERE o.active = :active")})
 public class Owner implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDO")
-    private Integer ido;
+    private Long ido;
     @Column(name = "DateFrom")
     private String dateFrom;
     @Column(name = "DateTo")
@@ -53,22 +54,22 @@ public class Owner implements Serializable {
     private Customer fKIDCustomer;
     @JoinColumn(name = "FK_ID_FS", referencedColumnName = "IDFS")
     @ManyToOne
-    private Fuelstation FK_FuelStation;
+    private Fuelstation FK_FS2;
     @OneToMany(mappedBy = "FK_OWNER")
     private List<FsProp> FS_Prop_List;
 
     public Owner() {
     }
 
-    public Owner(Integer ido) {
+    public Owner(Long ido) {
         this.ido = ido;
     }
 
-    public Integer getIdo() {
+    public Long getIdo() {
         return ido;
     }
 
-    public void setIdo(Integer ido) {
+    public void setIdo(Long ido) {
         this.ido = ido;
     }
 
@@ -104,12 +105,12 @@ public class Owner implements Serializable {
         this.fKIDCustomer = fKIDCustomer;
     }
 
-    public Fuelstation getFK_FuelStation() {
-        return FK_FuelStation;
+    public Fuelstation getFK_FS2() {
+        return FK_FS2;
     }
 
-    public void setFK_FuelStation(Fuelstation FK_FuelStation) {
-        this.FK_FuelStation = FK_FuelStation;
+    public void setFK_FS2(Fuelstation FK_FS2) {
+        this.FK_FS2 = FK_FS2;
     }
 
     @XmlTransient
@@ -135,15 +136,12 @@ public class Owner implements Serializable {
             return false;
         }
         Owner other = (Owner) object;
-        if ((this.ido == null && other.ido != null) || (this.ido != null && !this.ido.equals(other.ido))) {
-            return false;
-        }
-        return true;
+        return !((this.ido == null && other.ido != null) || (this.ido != null && !this.ido.equals(other.ido)));
     }
 
     @Override
     public String toString() {
-        return "org.superb.apps.ws.db.entities.Owner[ ido=" + ido + " ]";
+        return "Owner[ " + ido + " ]";
     }
-    
+
 }
