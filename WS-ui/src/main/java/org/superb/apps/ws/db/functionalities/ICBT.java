@@ -13,18 +13,12 @@ import org.superb.apps.ws.db.entities.CustomerBussinesType;
  *
  * @author root
  */
-public interface ICustomerBussinesType {
+public interface ICBT extends CRUDInterface<CustomerBussinesType>{
 
     List<Customer> getAllCustomersForBussinesType(int IDCustomerBussinesType);
 
     List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
 
-    List<CustomerBussinesType> getAllBussinesTypes();
-
     void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
             throws Exception;
-
-    void addNewCBT(CustomerBussinesType customerBussinesType) throws Exception;
-
-    void updateNewCBT(CustomerBussinesType customerBussinesType) throws Exception;
 }

@@ -17,6 +17,7 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDA
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.db.controllers.FS_Controller;
 import org.superb.apps.ws.db.entities.Fuelstation;
+import org.superb.apps.ws.db.functionalities.IFS;
 
 public class FSForm extends FormLayout {
 
@@ -26,6 +27,8 @@ public class FSForm extends FormLayout {
 
     private Button.ClickListener clickListener;
     private String btnCaption;
+
+    private static final IFS ifsController = new FS_Controller();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -60,7 +63,7 @@ public class FSForm extends FormLayout {
                 public void buttonClick(Button.ClickEvent event) {
                     Fuelstation newFuelstation = new Fuelstation();
                     bindFieldsToBean(newFuelstation);
-
+                    
                     try {
                         new FS_Controller().addNew(newFuelstation);
                         Notification n = new Notification("Fuelstation Added.", Notification.Type.HUMANIZED_MESSAGE);
@@ -89,11 +92,11 @@ public class FSForm extends FormLayout {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Fuelstation fuelstationToUpdate = beanItem.getBean();
-                bindFieldsToBean(fuelstationToUpdate);
+                Fuelstation FSToUpdate = beanItem.getBean();
+                bindFieldsToBean(FSToUpdate);
 
                 try {
-                    new FS_Controller().updateExisting(fuelstationToUpdate);
+                    new FS_Controller().updateExisting(FSToUpdate);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("Customer Updated.", Notification.Type.HUMANIZED_MESSAGE);
                     n.setDelayMsec(500);

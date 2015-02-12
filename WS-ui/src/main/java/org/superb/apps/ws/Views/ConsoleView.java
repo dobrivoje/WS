@@ -25,12 +25,12 @@ import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.CustomTable;
 import org.superb.apps.ws.Forms.CDM.CustomerForm;
-import org.superb.apps.ws.db.controllers.CustomerBussinesType_Controller;
+import org.superb.apps.ws.db.controllers.CBT_Controller;
 import org.superb.apps.ws.db.controllers.Customer_Controller;
 import org.superb.apps.ws.db.entities.Customer;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 import org.superb.apps.ws.db.functionalities.ICustomer;
-import org.superb.apps.ws.db.functionalities.ICustomerBussinesType;
+import org.superb.apps.ws.db.functionalities.ICBT;
 
 public class ConsoleView extends VerticalLayout implements View {
 
@@ -52,7 +52,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
     //<editor-fold defaultstate="collapsed" desc="MODEL">
     private static final ICustomer CUSTOMER_CONTROLLER = new Customer_Controller();
-    private static final ICustomerBussinesType CBT_CONTROLLER = new CustomerBussinesType_Controller();
+    private static final ICBT CBT_CONTROLLER = new CBT_Controller();
 
     private final BeanItemContainer<Customer> Customer_Container = new BeanItemContainer<>(Customer.class);
     private final BeanItemContainer<Customer> CustomersForBT_Container = new BeanItemContainer<>(Customer.class);
@@ -80,7 +80,7 @@ public class ConsoleView extends VerticalLayout implements View {
         });
 
         updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAllCustomers());
-        updateBeanItemContainer(CBT_Container, CBT_CONTROLLER.getAllBussinesTypes());
+        updateBeanItemContainer(CBT_Container, CBT_CONTROLLER.getAll());
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {

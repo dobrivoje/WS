@@ -33,14 +33,14 @@ public class DBHandler {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_ID);
     private static final EntityManager em = emf.createEntityManager();
 
-    public static synchronized EntityManager getEm() throws NullPointerException, Exception, java.net.UnknownHostException, java.sql.SQLException {
+    public static EntityManager getEm() throws NullPointerException, Exception, java.net.UnknownHostException, java.sql.SQLException {
         return em;
     }
 
     private DBHandler() {
     }
 
-    public static synchronized DBHandler getDefault() {
+    public static DBHandler getDefault() {
         return instance == null ? instance = new DBHandler() : instance;
     }
     //</editor-fold>
@@ -193,7 +193,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
-    public void addNewFuelstation(String name, String city, String address, String coordinates) throws Exception {
+    public void addNewFS(String name, String city, String address, String coordinates) throws Exception {
         Fuelstation newFuelstation = new Fuelstation();
 
         newFuelstation.setName(name);
@@ -201,18 +201,26 @@ public class DBHandler {
         newFuelstation.setCity(city);
         newFuelstation.setCity(coordinates);
 
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newFuelstation);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            getEm().getTransaction().rollback();
+        } finally {
+            if (getEm().getTransaction().isActive()) {
+                getEm().close();
+            }
+        }
+    }
+
+    public void addNewFS(Fuelstation newFuelstation) throws Exception {
         getEm().getTransaction().begin();
         em.persist(newFuelstation);
         getEm().getTransaction().commit();
     }
 
-    public void addNewFuelstation(Fuelstation newFuelstation) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newFuelstation);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateFuelstation(int fuelstationID, String name, String city, String address, String coordinates) throws Exception {
+    public void updateFS(int fuelstationID, String name, String city, String address, String coordinates) throws Exception {
         Fuelstation customer = getFuelstationByID(fuelstationID);
 
         customer.setName(name);
@@ -225,7 +233,7 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateFuelstation(Fuelstation fuelstation) throws Exception {
+    public void updateFS(Fuelstation fuelstation) throws Exception {
         getEm().getTransaction().begin();
         em.merge(fuelstation);
         getEm().getTransaction().commit();

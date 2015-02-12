@@ -4,7 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.ws.Forms.CRUDForm;
-import org.superb.apps.ws.db.controllers.CustomerBussinesType_Controller;
+import org.superb.apps.ws.db.controllers.CBT_Controller;
 import org.superb.apps.ws.db.entities.CustomerBussinesType;
 
 public class CBTForm extends CRUDForm<CustomerBussinesType> {
@@ -30,12 +30,12 @@ public class CBTForm extends CRUDForm<CustomerBussinesType> {
     }
 
     @Override
-    public void addNewBean(CustomerBussinesType bean) throws Exception {
-        new CustomerBussinesType_Controller().addNewCBT(bean);
+    public void updateExistingBean(CustomerBussinesType bean) throws Exception {
+        new CBT_Controller().updateExisting(bean);
     }
 
     @Override
-    public void updateExistingBean(CustomerBussinesType bean) throws Exception {
-        new CustomerBussinesType_Controller().updateNewCBT(bean);
+    public void addNewBean(CustomerBussinesType bean) throws Exception {
+        new CBT_Controller().addNew(bean);
     }
 }

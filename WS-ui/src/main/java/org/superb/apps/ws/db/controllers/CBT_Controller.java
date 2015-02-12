@@ -5,7 +5,7 @@
  */
 package org.superb.apps.ws.db.controllers;
 
-import org.superb.apps.ws.db.functionalities.ICustomerBussinesType;
+import org.superb.apps.ws.db.functionalities.ICBT;
 import java.util.List;
 import org.superb.apps.ws.db.DBHandler;
 import org.superb.apps.ws.db.entities.Customer;
@@ -15,7 +15,7 @@ import org.superb.apps.ws.db.entities.CustomerBussinesType;
  *
  * @author root
  */
-public class CustomerBussinesType_Controller implements ICustomerBussinesType {
+public class CBT_Controller implements ICBT {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
@@ -32,8 +32,18 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
     }
 
     @Override
-    public List<CustomerBussinesType> getAllBussinesTypes() {
+    public List<CustomerBussinesType> getAll() {
         return dbh.getAllCustomerBussinesTypes();
+    }
+
+    @Override
+    public CustomerBussinesType getByID(int ID) {
+        return dbh.getCustomerBussinesType(ID);
+    }
+
+    @Override
+    public List<CustomerBussinesType> getByName(String partialName) {
+        return dbh.getAllCustomerBussinesTypes(partialName);
     }
     //</editor-fold>
 
@@ -45,13 +55,14 @@ public class CustomerBussinesType_Controller implements ICustomerBussinesType {
     }
 
     @Override
-    public void addNewCBT(CustomerBussinesType customerBussinesType) throws Exception {
+    public void addNew(CustomerBussinesType customerBussinesType) throws Exception {
         dbh.addNewCustomerBussinesType(customerBussinesType);
     }
 
     @Override
-    public void updateNewCBT(CustomerBussinesType customerBussinesType) throws Exception {
+    public void updateExisting(CustomerBussinesType customerBussinesType) throws Exception {
         dbh.updateCustomerBussinesType(customerBussinesType);
     }
     //</editor-fold>
+
 }

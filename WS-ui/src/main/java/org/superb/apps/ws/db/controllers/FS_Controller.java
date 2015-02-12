@@ -38,22 +38,22 @@ public class FS_Controller implements IFS {
     //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
     @Override
     public void addNew(Fuelstation newFS) throws Exception {
-        dbh.addNewFuelstation(newFS);
+        dbh.addNewFS(newFS);
     }
 
     @Override
     public void addNew(String name, String address, String city, String coordinates) throws Exception {
-        dbh.addNewFuelstation(name, city, address, coordinates);
+        dbh.addNewFS(name, city, address, coordinates);
     }
 
     @Override
     public void updateExisting(Fuelstation fuelstation) throws Exception {
-        dbh.addNewFuelstation(fuelstation);
+        dbh.addNewFS(fuelstation);
     }
 
     @Override
     public void updateExisting(int ID, String name, String address, String city, String coordinates) throws Exception {
-        dbh.addNewFuelstation(name, city, address, coordinates);
+        dbh.addNewFS(name, city, address, coordinates);
     }
     //</editor-fold>
 
