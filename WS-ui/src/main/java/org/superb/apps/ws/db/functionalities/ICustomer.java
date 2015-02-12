@@ -22,7 +22,7 @@ public interface ICustomer extends CRUDInterface<Customer> {
     public List<Customer> getByName(String partialName);
 
     @Override
-    public Customer getByID(long ID);
+    public Customer getByID(Long ID);
 
     public List<Customer> getCustomerByCity(String partialCityName);
 

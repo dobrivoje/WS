@@ -21,23 +21,23 @@ public class CBT_Controller implements ICBT {
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
-    public List<Customer> getAllCustomersForCBT(long IDCustomerBussinesType) {
-        return dbh.getCustomerBussinesType(IDCustomerBussinesType)
+    public List<Customer> getAllCustomersForCBT(Long IDCBT) {
+        return dbh.getCustomerBussinesType(IDCBT)
                 .getAllCustomersForBussinesType();
     }
 
     @Override
-    public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType) {
+    public List<Customer> getAllCustomersForCBT(CustomerBussinesType customerBussinesType) {
         return dbh.getCustomerBussinesType(customerBussinesType.getIdcbt()).getAllCustomersForBussinesType();
     }
 
     @Override
     public List<CustomerBussinesType> getAll() {
-        return dbh.getAllCBT();
+        return dbh.getAllCustomerBussinesTypes();
     }
 
     @Override
-    public CustomerBussinesType getByID(long ID) {
+    public CustomerBussinesType getByID(Long ID) {
         return dbh.getCustomerBussinesType(ID);
     }
 

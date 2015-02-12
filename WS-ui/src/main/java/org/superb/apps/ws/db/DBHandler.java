@@ -29,19 +29,18 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="System definitions">
     private static DBHandler instance;
-    //private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
-    private static final String PERSISTENCE_UNIT_ID = "PU";
+    private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_ID);
-    private static final EntityManager em = emf.createEntityManager();
+    private static EntityManager em = emf.createEntityManager();
 
-    public static EntityManager getEm() throws NullPointerException, Exception, java.net.UnknownHostException, java.sql.SQLException {
+    public static synchronized EntityManager getEm() throws NullPointerException, Exception, java.net.UnknownHostException, java.sql.SQLException {
         return em;
     }
 
     private DBHandler() {
     }
 
-    public static DBHandler getDefault() {
+    public static synchronized DBHandler getDefault() {
         return instance == null ? instance = new DBHandler() : instance;
     }
     //</editor-fold>
@@ -128,11 +127,47 @@ public class DBHandler {
         newCustomer.setRegion(region);
         newCustomer.setPib(PIB);
 
-        em.persist(newCustomer);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newCustomer);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
     public void addNewCustomer(Customer newCustomer) throws Exception {
-        em.persist(newCustomer);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newCustomer);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
     public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
@@ -145,11 +180,47 @@ public class DBHandler {
         customer.setRegion(region);
         customer.setPib(PIB);
 
-        em.merge(customer);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(customer);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
     public void updateCustomer(Customer customer) throws Exception {
-        em.merge(customer);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(customer);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -164,10 +235,10 @@ public class DBHandler {
         }
     }
 
-    public Fuelstation getFuelstationByID(long fuelstationID) {
+    public Fuelstation getFuelstationByID(Long ID) {
         try {
             return (Fuelstation) getEm().createNamedQuery("Fuelstation.findByIdfs")
-                    .setParameter("idfs", fuelstationID)
+                    .setParameter("idfs", ID)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;
@@ -187,40 +258,108 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
     public void addNewFS(String name, String city, String address, String coordinates) throws Exception {
-        Fuelstation newFuelstation = new Fuelstation();
+        Fuelstation fs = new Fuelstation();
 
-        newFuelstation.setName(name);
-        newFuelstation.setAddress(address);
-        newFuelstation.setCity(city);
-        newFuelstation.setCity(coordinates);
+        fs.setName(name);
+        fs.setAddress(address);
+        fs.setCity(city);
+        fs.setCity(coordinates);
 
-        em.persist(newFuelstation);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+            em.persist(fs);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception ee) {
+            }
+        }
     }
 
-    public void addNewFS(Fuelstation newFuelstation) throws Exception {
-        em.persist(newFuelstation);
+    public void addNewFS(Fuelstation newFuelstation) {
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+            em.persist(newFuelstation);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e) {
+            }
+        }
     }
 
-    public void updateFS(Long fuelstationID, String name, String city, String address, String coordinates) throws Exception {
-        Fuelstation customer = getFuelstationByID(fuelstationID);
+    public void updateFS(Long ID, String name, String city, String address, String coordinates) throws Exception {
+        Fuelstation object = getFuelstationByID(ID);
 
-        customer.setName(name);
-        customer.setAddress(address);
-        customer.setCity(city);
-        customer.setCoordinates(coordinates);
+        object.setName(name);
+        object.setAddress(address);
+        object.setCity(city);
+        object.setCoordinates(coordinates);
 
-        em.merge(customer);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(object);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
     public void updateFS(Fuelstation fuelstation) throws Exception {
-        em.merge(fuelstation);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(fuelstation);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Bussines Type">
     //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
-    public CustomerBussinesType getCustomerBussinesType(long IDCBT) {
+    public CustomerBussinesType getCustomerBussinesType(Long IDCBT) {
         try {
             return (CustomerBussinesType) getEm().createNamedQuery("CustomerBussinesType.findByIdcbt")
                     .setParameter("idcbt", IDCBT)
@@ -230,7 +369,7 @@ public class DBHandler {
         }
     }
 
-    public List<CustomerBussinesType> getAllCBT() {
+    public List<CustomerBussinesType> getAllCustomerBussinesTypes() {
         try {
             return (List<CustomerBussinesType>) getEm().createNamedQuery("CustomerBussinesType.findAll").getResultList();
         } catch (Exception ex) {
@@ -254,42 +393,115 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
-    public void addNewCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        em.persist(newCustomerBussinesType);
+    public void addNewCustomerBussinesType(CustomerBussinesType cbt) throws Exception {
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(cbt);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
-    public void updateCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        em.merge(newCustomerBussinesType);
+    public void updateCustomerBussinesType(CustomerBussinesType cbt) throws Exception {
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(cbt);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
-    public void updateCustomerBussinesType(int IDCBT, String newCustomerBussinesType) throws Exception {
+    public void updateCustomerBussinesType(Long IDCBT, String newCustomerBussinesType) throws Exception {
         CustomerBussinesType newCBT = getCustomerBussinesType(IDCBT);
         newCBT.setCustomerActivity(newCustomerBussinesType);
 
-        em.merge(newCBT);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(newCBT);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
-    public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
+    public void addNew_CBT_CUSTOMER(Customer ID, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
-        newRelCBType.setFK_Customer(IDC);
+
+        newRelCBType.setFK_Customer(ID);
         newRelCBType.setFK_CBT(IDCBT);
         newRelCBType.setDateFrom(DateFrom);
         newRelCBType.setDateTo(DateTo);
         newRelCBType.setActive(active);
 
-        em.persist(newRelCBType);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newRelCBType);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="SALESMAN">
     //<editor-fold defaultstate="collapsed" desc="SALESMAN READ">
-    public Salesman getSalesman(int IDS) {
+    public Salesman getSalesman(Long ID) {
         try {
             return (Salesman) getEm().createNamedQuery("Salesman.findByIds")
-                    .setParameter("ids", IDS)
+                    .setParameter("ids", ID)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;
@@ -349,14 +561,50 @@ public class DBHandler {
         newSalesman.setDateTo(dateTo);
         newSalesman.setFK_BussinesLine(BL);
 
-        em.persist(newSalesman);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newSalesman);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
     public void addNewSalesman(Salesman newSalesman) throws Exception {
-        em.persist(newSalesman);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newSalesman);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
 
-    public void updateSalesman(int IDS, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
+    public void updateSalesman(Long IDS, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
         Salesman newSalesman = getSalesman(IDS);
 
         newSalesman.setName(name);
@@ -367,21 +615,57 @@ public class DBHandler {
         newSalesman.setDateTo(dateTo);
         newSalesman.setFK_BussinesLine(BL);
 
-        em.persist(newSalesman);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(newSalesman);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        };
     }
 
     public void updateSalesman(Salesman newSalesman) throws Exception {
-        em.persist(newSalesman);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.merge(newSalesman);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="GALLERY & IMAGES">
     //<editor-fold defaultstate="collapsed" desc="READ">
-    public Gallery getGallery(int IDG) {
+    public Gallery getGallery(Long ID) {
         try {
             return (Gallery) getEm().createNamedQuery("Gallery.findByIdg")
-                    .setParameter("idg", IDG)
+                    .setParameter("idg", ID)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;
@@ -418,7 +702,9 @@ public class DBHandler {
 
         newGallery.setName(name);
 
+        getEm().getTransaction().begin();
         em.persist(newGallery);
+        getEm().getTransaction().commit();
     }
 
     public void addNewImage(Gallery gallery, String imageName, Serializable imageData, Date imageUploadDate) throws Exception {
@@ -429,7 +715,25 @@ public class DBHandler {
         newImage.setImageData(imageData);
         newImage.setUploadDate(imageUploadDate);
 
-        em.persist(newImage);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newImage);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -453,7 +757,25 @@ public class DBHandler {
         newASALESMANIMAGE.setFK_Salesman(salesman);
         newASALESMANIMAGE.setFK_Image(image);
 
-        em.persist(newASALESMANIMAGE);
+        try {
+            if (!getEm().getTransaction().isActive()) {
+                getEm().getTransaction().begin();
+            }
+
+            em.persist(newASALESMANIMAGE);
+
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            try {
+                getEm().flush();
+                getEm().close();
+            } catch (Exception e2) {
+            }
+        }
     }
     //</editor-fold>
     //</editor-fold>

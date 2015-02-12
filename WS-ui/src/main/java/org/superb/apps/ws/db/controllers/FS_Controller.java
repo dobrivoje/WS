@@ -25,7 +25,7 @@ public class FS_Controller implements IFS {
     }
 
     @Override
-    public Fuelstation getByID(long customerID) {
+    public Fuelstation getByID(Long customerID) {
         return dbh.getFuelstationByID(customerID);
     }
 
@@ -48,12 +48,12 @@ public class FS_Controller implements IFS {
 
     @Override
     public void updateExisting(Fuelstation fuelstation) throws Exception {
-        dbh.addNewFS(fuelstation);
+        dbh.updateFS(fuelstation);
     }
 
     @Override
-    public void updateExisting(long ID, String name, String address, String city, String coordinates) throws Exception {
-        dbh.addNewFS(name, city, address, coordinates);
+    public void updateExisting(Long ID, String name, String address, String city, String coordinates) throws Exception {
+        dbh.updateFS(ID, name, city, address, coordinates);
     }
     //</editor-fold>
 

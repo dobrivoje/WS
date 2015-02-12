@@ -19,7 +19,7 @@ public interface IFS extends CRUDInterface<Fuelstation> {
     public List<Fuelstation> getByName(String partialName);
 
     @Override
-    public Fuelstation getByID(long ID);
+    public Fuelstation getByID(Long ID);
 
     @Override
     public List<Fuelstation> getAll();
@@ -28,7 +28,7 @@ public interface IFS extends CRUDInterface<Fuelstation> {
     //<editor-fold defaultstate="collapsed" desc="Write data">
     public void addNew(String name, String address, String city, String coordinates) throws Exception;
 
-    public void updateExisting(long ID, String name, String address, String city, String coordinates) throws Exception;
+    public void updateExisting(Long ID, String name, String address, String city, String coordinates) throws Exception;
 
     @Override
     public void updateExisting(Fuelstation object) throws Exception;
@@ -36,5 +36,4 @@ public interface IFS extends CRUDInterface<Fuelstation> {
     @Override
     public void addNew(Fuelstation newObject) throws Exception;
     //</editor-fold>
-
 }

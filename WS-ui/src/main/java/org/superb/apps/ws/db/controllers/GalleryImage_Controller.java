@@ -31,13 +31,13 @@ public class GalleryImage_Controller implements IGalleryImage, ISalesmanImage {
     }
 
     @Override
-    public Gallery getGallery(int IDGallery) {
-        return dbh.getGallery(IDGallery);
+    public Gallery getGallery(Long ID) {
+        return dbh.getGallery(ID);
     }
 
     @Override
-    public Image getImage(long IDImage) {
-        return dbh.getImage(IDImage);
+    public Image getImage(Long ID) {
+        return dbh.getImage(ID);
     }
 
     @Override

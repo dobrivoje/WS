@@ -25,7 +25,7 @@ public class Customer_Controller implements ICustomer {
     }
 
     @Override
-    public Customer getByID(long ID) {
+    public Customer getByID(Long ID) {
         return dbh.getCustomerByID(ID);
     }
 

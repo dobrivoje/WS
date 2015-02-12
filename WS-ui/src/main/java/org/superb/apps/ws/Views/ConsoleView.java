@@ -169,7 +169,7 @@ public class ConsoleView extends VerticalLayout implements View {
             public void valueChange(Property.ValueChangeEvent event) {
                 //<editor-fold defaultstate="collapsed" desc="Customer table 2">
                 try {
-                    updateBeanItemContainer(CustomersForBT_Container, CBT_CONTROLLER.getAllCustomersForBussinesType(
+                    updateBeanItemContainer(CustomersForBT_Container, CBT_CONTROLLER.getAllCustomersForCBT(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
                     // cBT_Table.setPageLength(CustomersForBT_Container.size());

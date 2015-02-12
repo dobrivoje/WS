@@ -16,22 +16,23 @@ import org.superb.apps.ws.db.entities.CustomerBussinesType;
 public interface ICBT extends CRUDInterface<CustomerBussinesType> {
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
-    List<Customer> getAllCustomersForCBT(long IDCustomerBussinesType);
+    List<Customer> getAllCustomersForCBT(Long IDCBT);
 
-    List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
+    List<Customer> getAllCustomersForCBT(CustomerBussinesType customerBussinesType);
 
     @Override
     public List<CustomerBussinesType> getByName(String partialName);
 
     @Override
-    public CustomerBussinesType getByID(long ID);
+    public CustomerBussinesType getByID(Long ID);
 
     @Override
     public List<CustomerBussinesType> getAll();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Write data">
-    void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active) throws Exception;
+    void addNewCBT(Customer customer, CustomerBussinesType customerBussinesType, String dateFrom, String dateTo, boolean active)
+            throws Exception;
 
     @Override
     public void updateExisting(CustomerBussinesType object) throws Exception;

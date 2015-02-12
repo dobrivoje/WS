@@ -15,8 +15,9 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import org.superb.apps.ws.db.DBHandler;
+import org.superb.apps.ws.db.controllers.FS_Controller;
 import org.superb.apps.ws.db.entities.Fuelstation;
+import org.superb.apps.ws.db.functionalities.IFS;
 
 public class FSForm extends FormLayout {
 
@@ -26,6 +27,7 @@ public class FSForm extends FormLayout {
 
     private Button.ClickListener clickListener;
     private String btnCaption;
+    private final IFS ifsController = new FS_Controller();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -60,10 +62,9 @@ public class FSForm extends FormLayout {
                 public void buttonClick(Button.ClickEvent event) {
                     Fuelstation newFuelstation = new Fuelstation();
                     bindFieldsToBean(newFuelstation);
-                    
+
                     try {
-                        // new FS_Controller().addNew(newFuelstation);
-                        DBHandler.getDefault().addNewFS(newFuelstation);
+                        ifsController.addNew(newFuelstation);
                         Notification n = new Notification("Fuelstation Added.", Notification.Type.HUMANIZED_MESSAGE);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -94,8 +95,8 @@ public class FSForm extends FormLayout {
                 bindFieldsToBean(FSToUpdate);
 
                 try {
-                    // new FS_Controller().updateExisting(FSToUpdate);
-                    DBHandler.getDefault().updateFS(FSToUpdate);
+                    ifsController.updateExisting(FSToUpdate);
+
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("Customer Updated.", Notification.Type.HUMANIZED_MESSAGE);
                     n.setDelayMsec(500);

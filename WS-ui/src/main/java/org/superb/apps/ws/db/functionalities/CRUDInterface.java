@@ -17,7 +17,7 @@ public interface CRUDInterface<T> {
     //<editor-fold defaultstate="collapsed" desc="data to read">
     public List<T> getAll();
 
-    public T getByID(long ID);
+    public T getByID(Long ID);
 
     public List<T> getByName(String partialName);
     //</editor-fold>

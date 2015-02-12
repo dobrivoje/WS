@@ -20,9 +20,9 @@ public interface IGalleryImage {
     //<editor-fold defaultstate="collapsed" desc="data to read">
     public List<Gallery> getAllGalleries();
 
-    public Gallery getGallery(int IDGallery);
+    public Gallery getGallery(Long ID);
 
-    public Image getImage(long IDImage);
+    public Image getImage(Long ID);
     
     //</editor-fold>
 

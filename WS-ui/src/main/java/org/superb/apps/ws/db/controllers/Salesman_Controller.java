@@ -21,8 +21,8 @@ public class Salesman_Controller implements ISalesman {
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
-    public Salesman getSalesmanByID(int customerID) {
-        return dbh.getSalesman(customerID);
+    public Salesman getSalesmanByID(Long ID) {
+        return dbh.getSalesman(ID);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class Salesman_Controller implements ISalesman {
     }
 
     @Override
-    public void updateSalesman(int SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
-        dbh.updateSalesman(SalesmanID, name, surname, position, active, dateFrom, dateTo, BL);
+    public void updateSalesman(Long ID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
+        dbh.updateSalesman(ID, name, surname, position, active, dateFrom, dateTo, BL);
     }
     //</editor-fold>
 }

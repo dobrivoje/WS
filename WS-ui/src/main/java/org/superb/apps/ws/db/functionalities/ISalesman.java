@@ -16,7 +16,7 @@ import org.superb.apps.ws.db.entities.Salesman;
 public interface ISalesman {
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
-    public Salesman getSalesmanByID(int customerID);
+    public Salesman getSalesmanByID(Long customerID);
 
     public List<Salesman> getSalesmanByName(String partialName);
 
@@ -34,6 +34,6 @@ public interface ISalesman {
 
     public void updateSalesman(Salesman salesman) throws Exception;
 
-    public void updateSalesman(int SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
+    public void updateSalesman(Long SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
     //</editor-fold>
 }
