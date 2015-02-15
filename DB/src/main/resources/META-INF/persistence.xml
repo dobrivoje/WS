@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="org.superb.apps.ws_PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>db.ent.Owner</class>
+    <class>db.ent.Gallery</class>
+    <class>db.ent.RelFSPROPPRODUCT</class>
+    <class>db.ent.Customer</class>
+    <class>db.ent.Product</class>
+    <class>db.ent.Image</class>
+    <class>db.ent.RelFSImage</class>
+    <class>db.ent.FsProp</class>
+    <class>db.ent.RelSALESMANIMAGE</class>
+    <class>db.ent.Fuelstation</class>
+    <class>db.ent.RelCBType</class>
+    <class>db.ent.Salesman</class>
+    <class>db.ent.CustomerBussinesType</class>
+    <class>db.ent.BussinesLine</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
+      <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>
+      <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="821!!!"/>
+    </properties>
+  </persistence-unit>
+</persistence>

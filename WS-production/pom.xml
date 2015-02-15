@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>WS</artifactId>
-        <groupId>org.superb.apps.ws</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>ws</groupId>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -80,7 +80,7 @@
                                             <artifactId>WS-widgetset</artifactId>
                                             <version>${project.version}</version>
                                             <type>jar</type>
-                                            <includes>org/superb/apps/ws/**</includes>
+                                            <includes>ws/**</includes>
                                             <!-- Vaadin/GWT plug-in expects .gwt.xml to be in its warSourceDirectory -->
                                             <outputDirectory>${vaadin.resource.directory}/WEB-INF/classes</outputDirectory>
                                         </artifactItem>
@@ -110,7 +110,7 @@
                         <groupId>com.vaadin</groupId>
                         <artifactId>vaadin-maven-plugin</artifactId>
                         <configuration>
-                            <module>org.superb.apps.ws.MyAppWidgetset</module>
+                            <module>ws.MyAppWidgetset</module>
                             <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
                             <warSourceDirectory>${vaadin.resource.directory}</warSourceDirectory>
                             <webappDirectory>${vaadin.resource.directory}/VAADIN/widgetsets</webappDirectory>

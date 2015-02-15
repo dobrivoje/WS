@@ -6,7 +6,7 @@
         <artifactId>WS</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>UTILITIES</artifactId>
+    <artifactId>AUTH</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
