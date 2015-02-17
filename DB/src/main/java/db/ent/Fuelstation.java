@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -31,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fuelstation.findAll", query = "SELECT f FROM Fuelstation f"),
     @NamedQuery(name = "Fuelstation.findByIdfs", query = "SELECT f FROM Fuelstation f WHERE f.idfs = :idfs"),
     @NamedQuery(name = "Fuelstation.findByName", query = "SELECT f FROM Fuelstation f WHERE f.name = :name"),
-    @NamedQuery(name = "Fuelstation.findByCity", query = "SELECT f FROM Fuelstation f WHERE f.city = :city"),
     @NamedQuery(name = "Fuelstation.findByAddress", query = "SELECT f FROM Fuelstation f WHERE f.address = :address"),
     @NamedQuery(name = "Fuelstation.findByCoordinates", query = "SELECT f FROM Fuelstation f WHERE f.coordinates = :coordinates")})
 public class Fuelstation implements Serializable {
@@ -44,8 +45,6 @@ public class Fuelstation implements Serializable {
     private Long idfs;
     @Column(name = "Name")
     private String name;
-    @Column(name = "City")
-    private String city;
     @Column(name = "Address")
     private String address;
     @Column(name = "Coordinates")
@@ -54,6 +53,9 @@ public class Fuelstation implements Serializable {
     private List<RelFSImage> relFSImageList;
     @OneToMany(mappedBy = "fkIdFs")
     private List<Owner> ownerList;
+    @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
+    @ManyToOne
+    private City fkIdc;
 
     public Fuelstation() {
     }
@@ -76,14 +78,6 @@ public class Fuelstation implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getAddress() {
@@ -120,6 +114,14 @@ public class Fuelstation implements Serializable {
         this.ownerList = ownerList;
     }
 
+    public City getFkIdc() {
+        return fkIdc;
+    }
+
+    public void setFkIdc(City fkIdc) {
+        this.fkIdc = fkIdc;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -139,7 +141,7 @@ public class Fuelstation implements Serializable {
 
     @Override
     public String toString() {
-        return name + ", " + city;
+        return name + ", " + fkIdc.getName();
     }
 
 }

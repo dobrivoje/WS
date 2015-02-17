@@ -8,17 +8,18 @@ package db.interfaces;
 import java.util.List;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
+import java.util.Date;
 
 /**
  *
  * @author root
  */
-public interface ICBT extends CRUDInterface<CustomerBussinesType>{
+public interface ICBT extends CRUDInterface<CustomerBussinesType> {
 
-    List<Customer> getAllCustomersForBussinesType(Long IDCustomerBussinesType);
+    List<Customer> getAllCustomersForBussinesType(Long cBTID);
 
-    List<Customer> getAllCustomersForBussinesType(CustomerBussinesType customerBussinesType);
+    List<Customer> getAllCustomersForBussinesType(CustomerBussinesType cBT);
 
-    void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
+    void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
             throws Exception;
 }

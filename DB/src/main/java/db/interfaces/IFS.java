@@ -5,6 +5,7 @@
  */
 package db.interfaces;
 
+import db.ent.City;
 import db.ent.Fuelstation;
 
 /**
@@ -13,8 +14,8 @@ import db.ent.Fuelstation;
  */
 public interface IFS extends CRUDInterface<Fuelstation> {
 
-    public void addNew(String name, String address, String city, String coordinates) throws Exception;
+    public void addNew(String name, String address, City city, String coordinates) throws Exception;
 
-    public void updateExisting(int ID, String name, String address, String city, String coordinates) throws Exception;
+    public void updateExisting(int ID, String name, String address, City city, String coordinates) throws Exception;
 
 }

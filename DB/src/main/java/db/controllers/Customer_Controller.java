@@ -7,9 +7,9 @@ package db.controllers;
 
 import java.util.List;
 import db.DBHandler;
+import db.ent.City;
 import db.ent.Customer;
 import db.interfaces.ICustomer;
-import java.util.ArrayList;
 
 /**
  *
@@ -34,37 +34,27 @@ public class Customer_Controller implements ICustomer {
     public List<Customer> getByName(String partialName) {
         return dbh.getCustomerByName(partialName);
     }
-
-    @Override
-    public List<Customer> getCustomerByCity(String partialCityName) {
-        return dbh.getCustomerByCity(partialCityName);
-    }
-
-    @Override
-    public List<Customer> getCustomerByRegion(String partialRegion) {
-        return dbh.getCustomerByRegion(partialRegion);
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    @Override
+    public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {
+        dbh.addNewCustomer(name, address, city, PIB);
+    }
+
+    @Override
+    public void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception {
+        dbh.updateCustomer(customerID, name, address, PIB);
+    }
+
     @Override
     public void addNew(Customer newObject) throws Exception {
         dbh.addNewCustomer(newObject);
     }
 
     @Override
-    public void addNewCustomer(String name, String address, String city, String zip, String region, String PIB) throws Exception {
-        dbh.addNewCustomer(name, address, city, zip, region, PIB);
-    }
-
-    @Override
     public void updateExisting(Customer object) throws Exception {
         dbh.updateCustomer(object);
-    }
-
-    @Override
-    public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
-        dbh.updateCustomer(customerID, name, address, city, zip, region, PIB);
     }
     //</editor-fold>
 }

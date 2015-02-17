@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Owner.findByDateTo", query = "SELECT o FROM Owner o WHERE o.dateTo = :dateTo"),
     @NamedQuery(name = "Owner.findByActive", query = "SELECT o FROM Owner o WHERE o.active = :active")})
 public class Owner implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -135,15 +136,12 @@ public class Owner implements Serializable {
             return false;
         }
         Owner other = (Owner) object;
-        if ((this.ido == null && other.ido != null) || (this.ido != null && !this.ido.equals(other.ido))) {
-            return false;
-        }
-        return true;
+        return !((this.ido == null && other.ido != null) || (this.ido != null && !this.ido.equals(other.ido)));
     }
 
     @Override
     public String toString() {
-        return "db.Owner[ ido=" + ido + " ]";
+        return fKIDCustomer.getName() + "- " + fkIdFs.getName();
     }
-    
+
 }

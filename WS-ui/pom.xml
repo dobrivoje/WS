@@ -59,13 +59,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>DB</artifactId>
-            <version>${project.version}</version>
+            <artifactId>AUTH</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>AUTH</artifactId>
-            <version>1.0</version>
+            <artifactId>DB</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

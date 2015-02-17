@@ -1,6 +1,5 @@
-package Forms.FSM;
+package Forms.CDM;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -12,41 +11,35 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
-import db.controllers.Customer_Controller;
-import db.controllers.FSOwner_Controller;
-import db.controllers.FS_Controller;
+import db.controllers.CBT_Controller;
 import db.ent.Customer;
-import db.ent.Fuelstation;
-import db.ent.Owner;
-import java.text.SimpleDateFormat;
+import db.ent.CustomerBussinesType;
+import db.ent.RelCBType;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
-public class FSOWNER_Form extends FormLayout {
+public class RELCBTForm extends FormLayout {
 
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_ENG.toString();
+    private final FieldGroup fieldGroup = new BeanFieldGroup(RelCBType.class);
+    private BeanItem<RelCBType> beanItem;
+    private final BeanItemContainer<CustomerBussinesType> bicbt
+            = new BeanItemContainer(CustomerBussinesType.class, new CBT_Controller().getAll());
 
-    private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
     private Button crudButton;
-    private BeanItem<Owner> beanItem;
-
-    private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, new Customer_Controller().getAll());
-    private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, new FS_Controller().getAll());
-
     private Button.ClickListener clickListener;
     private String btnCaption;
+    private final TextField customer = new TextField("Customer");
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    @PropertyId("fKIDCustomer")
-    private final ComboBox customer = new ComboBox("Customer", bicc);
-
-    @PropertyId("fkIdFs")
-    private final ComboBox fs = new ComboBox("Fuel station", bicf);
+    @PropertyId("fkIdcbt")
+    private final ComboBox cBType = new ComboBox("Bussines Type", bicbt);
 
     @PropertyId("dateFrom")
     private final DateField dateFrom = new DateField("Date From");
@@ -55,10 +48,10 @@ public class FSOWNER_Form extends FormLayout {
     private final DateField dateTo = new DateField("Date To");
 
     @PropertyId("active")
-    private final CheckBox active = new CheckBox("Active ?");
+    private final CheckBox active = new CheckBox("Active?");
     //</editor-fold>
 
-    public FSOWNER_Form() {
+    public RELCBTForm() {
         setSizeFull();
         setMargin(true);
         setStyleName(Reindeer.LAYOUT_BLACK);
@@ -68,18 +61,17 @@ public class FSOWNER_Form extends FormLayout {
         dateFrom.setDateFormat(DATE_FORMAT);
         dateTo.setDateFormat(DATE_FORMAT);
 
-        customer.setNullSelectionAllowed(false);
-        fs.setNullSelectionAllowed(false);
-
         customer.setWidth(50, Unit.PERCENTAGE);
-        fs.setWidth(50, Unit.PERCENTAGE);
+        cBType.setWidth(50, Unit.PERCENTAGE);
         dateFrom.setWidth(50, Unit.PERCENTAGE);
         dateTo.setWidth(50, Unit.PERCENTAGE);
 
-        customer.focus();
+        cBType.setNullSelectionAllowed(false);
+
+        cBType.focus();
     }
 
-    public FSOWNER_Form(final CrudOperations crudOperation) {
+    public RELCBTForm(final CrudOperations crudOperation) {
         this();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
@@ -88,12 +80,12 @@ public class FSOWNER_Form extends FormLayout {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    Owner newOwner = new Owner();
-                    bindFieldsToBean(newOwner);
+                    RelCBType newRelCBType = new RelCBType();
+                    bindFieldsToBean(newRelCBType);
 
                     try {
-                        new FSOwner_Controller().addNew(newOwner);
-                        Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
+                        //new rel .addNew(newRelCBType);
+                        Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
@@ -105,27 +97,31 @@ public class FSOWNER_Form extends FormLayout {
             crudButton = new Button(btnCaption, clickListener);
 
             crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-            addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
+            addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
         }
     }
 
-    public FSOWNER_Form(Item existingCustomer, final IRefreshVisualContainer visualContainer) {
+    public RELCBTForm(Customer existingCustomer, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingCustomer);
-        beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+        customer.setValue(existingCustomer.getName());
+        customer.setEnabled(false);
+
+        // daj samo za AKTIVAN REL CB TYPE !!!
+        fieldGroup.setItemDataSource(new BeanItem(new RelCBType()));
+        beanItem = (BeanItem<RelCBType>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Owner existingOwner = beanItem.getBean();
-                bindFieldsToBean(existingOwner);
+                // Customer existingRelCBT = beanItem.getBean();
+                bindFieldsToBean(new RelCBType());
 
                 try {
-                    new FSOwner_Controller().updateExisting(existingOwner);
+                    // new Customer_Controller().updateExisting(existingRelCBT);
                     visualContainer.refreshVisualContainer();
-                    Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
+                    Notification n = new Notification("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
@@ -137,14 +133,13 @@ public class FSOWNER_Form extends FormLayout {
         crudButton = new Button(btnCaption, clickListener);
 
         crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-        addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
+        addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
     }
 
-    private void bindFieldsToBean(Owner ownerBean) {
-        ownerBean.setFKIDCustomer((Customer) customer.getValue());
-        ownerBean.setFkIdFs((Fuelstation) fs.getValue());
-        ownerBean.setDateFrom(dateFrom.getValue() == null ? null : new SimpleDateFormat(DATE_FORMAT).format(dateFrom.getValue()));
-        ownerBean.setDateTo(dateTo.getValue() == null ? null : new SimpleDateFormat(DATE_FORMAT).format(dateTo.getValue()));
-        ownerBean.setActive(active.getValue());
+    private void bindFieldsToBean(RelCBType existingRelCBT) {
+        existingRelCBT.setFkIdcbt((CustomerBussinesType) cBType.getValue());
+        existingRelCBT.setDateFrom(dateFrom.getValue());
+        existingRelCBT.setDateTo(dateTo.getValue());
+        existingRelCBT.setActive(active.getValue());
     }
 }

@@ -18,31 +18,34 @@ import org.superb.apps.utilities.Enums.Statuses;
  */
 public class StatusLabel extends Label {
 
-    private final Map<Statuses, String> color = new HashMap<>();
+    private final Map<Statuses, Statuses> color = new HashMap<>();
+    private String iconCode;
 
     public StatusLabel() {
         setContentMode(ContentMode.HTML);
         setSizeUndefined();
 
-        color.put(Statuses.OK, "#2dd085");
-        color.put(Statuses.BLACK_LIST, "#222222");
-        color.put(Statuses.IN_PROGRESS, "#F3A344");
-        color.put(Statuses.UNKNOWN, "#aa66aa");
-        color.put(Statuses.NO_LICENCE, "#f54993");
+        color.put(Statuses.OK, Statuses.OK_COLOR);
+        color.put(Statuses.BLACK_LIST, Statuses.BLACK_LIST_COLOR);
+        color.put(Statuses.IN_PROGRESS, Statuses.IN_PROGRESS_COLOR);
+        color.put(Statuses.UNKNOWN, Statuses.UNKNOWN_COLOR);
+        color.put(Statuses.NO_LICENCE, Statuses.NO_LICENCE_COLOR);
     }
 
     public StatusLabel(Statuses status, String property) {
         this();
+        render(status);
+        setValue(iconCode + " " + property);
+    }
 
-        String iconCode = "<span class=\"v-icon\" style=\"font-family: "
+    private void render(Statuses status) {
+        iconCode = "<span class=\"v-icon\" style=\"font-family: "
                 + FontAwesome.CIRCLE.getFontFamily()
                 + ";color:"
-                + color.get(status)
+                + color.get(status).toString()
                 + "\">&#x"
                 + Integer
                 .toHexString(FontAwesome.CIRCLE.getCodepoint())
                 + ";</span>";
-
-        setValue(iconCode + " " + property);
     }
 }

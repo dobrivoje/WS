@@ -11,7 +11,7 @@ public class CBTForm extends CRUDForm<CustomerBussinesType> {
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("customerActivity")
-    private final TextField customerActivity = new TextField("customer Activity");
+    private final TextField customerActivity = new TextField("Activity");
     //</editor-fold>
 
     public CBTForm(final CustomerBussinesType customerBussinesType) {

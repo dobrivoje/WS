@@ -19,7 +19,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import db.controllers.CBT_Controller;
 import db.controllers.Customer_Controller;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
@@ -86,9 +85,6 @@ public class ConsoleView extends VerticalLayout implements View {
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
             TextField customerName_TextField = new TextField("customer Name");
             TextField customerAddress_TextField = new TextField("customer Address");
-            TextField customerCity_TextField = new TextField("customer City");
-            TextField customerZIP_TextField = new TextField("customer ZIP");
-            TextField customerRegion_TextField = new TextField("customer Region");
             TextField customerPIB_TextField = new TextField("customer PIB");
             Button saveNewCustomer_Button = new Button("Save", new Button.ClickListener() {
                 @Override
@@ -97,13 +93,11 @@ public class ConsoleView extends VerticalLayout implements View {
                         CUSTOMER_CONTROLLER.addNewCustomer(
                                 customerName_TextField.getValue(),
                                 customerAddress_TextField.getValue(),
-                                customerCity_TextField.getValue(),
-                                customerZIP_TextField.getValue(),
-                                customerRegion_TextField.getValue(),
+                                null,
                                 customerPIB_TextField.getValue());
 
                         updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
-                        Notification.show("Saved.", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification.show("Saved.", Notification.Type.TRAY_NOTIFICATION);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -116,9 +110,6 @@ public class ConsoleView extends VerticalLayout implements View {
 
                 HR_VL_RIGHT.addComponent(customerName_TextField);
                 HR_VL_RIGHT.addComponent(customerAddress_TextField);
-                HR_VL_RIGHT.addComponent(customerCity_TextField);
-                HR_VL_RIGHT.addComponent(customerZIP_TextField);
-                HR_VL_RIGHT.addComponent(customerRegion_TextField);
                 HR_VL_RIGHT.addComponent(customerPIB_TextField);
                 HR_VL_RIGHT.addComponent(saveNewCustomer_Button);
             }
@@ -140,11 +131,11 @@ public class ConsoleView extends VerticalLayout implements View {
                         CBT_CONTROLLER.addNewCBT(
                                 (Customer) Customer_ComboBox.getValue(),
                                 (CustomerBussinesType) CBT_ComboBox.getValue(),
-                                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateFrom_TextField.getValue()),
-                                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(CBT_DateTo_TextField.getValue()),
+                                CBT_DateFrom_TextField.getValue(),
+                                CBT_DateTo_TextField.getValue(),
                                 activeCheckBox.getValue());
 
-                        Notification.show("Saved.", "Message", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification.show("Saved.", "Message", Notification.Type.TRAY_NOTIFICATION);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -260,9 +251,9 @@ public class ConsoleView extends VerticalLayout implements View {
         });
 
         allCustomersTable.setVisibleColumns(
-                "idc", "name", "Status", "CHANGE", "city", "address", "zip", "pib", "region");
+                "idc", "name", "Status", "CHANGE", "address", "pib");
         allCustomersTable.setColumnHeaders(
-                "CLIENT ID", "CLIENT NAME", "STATUS", "CHANGE", "CITY", "ADDRESS", "POSTAL CODE", "PIB", "REGION");
+                "CLIENT ID", "CLIENT NAME", "STATUS", "CHANGE", "ADDRESS", "PIB");
 
         allCustomersTable.setSelectable(true);
         allCustomersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {

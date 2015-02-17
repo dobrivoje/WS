@@ -45,12 +45,12 @@ public class FSOwner_Controller implements IFS_Owner {
 
     @Override
     public void updateExisting(Owner object) throws Exception {
-        dbh.updateExistingOwner(object);
+        dbh.updateOwner(object);
     }
 
     @Override
     public void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
-        dbh.updateExistingOwner(ID, customer, fuelstation, dateFrom, dateTo, active);
+        dbh.updateOwner(ID, customer, fuelstation, dateFrom, dateTo, active);
     }
 
     //</editor-fold>

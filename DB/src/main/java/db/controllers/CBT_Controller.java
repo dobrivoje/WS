@@ -10,6 +10,7 @@ import java.util.List;
 import db.DBHandler;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
+import java.util.Date;
 
 /**
  *
@@ -48,9 +49,9 @@ public class CBT_Controller implements ICBT {
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
-    public void addNewCBT(Customer customer, CustomerBussinesType CBType, String dateFrom, String dateTo, boolean active)
+    public void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
             throws Exception {
-        dbh.addNew_CBT_CUSTOMER(customer, CBType, dateFrom, dateTo, active);
+        dbh.addNew_RelCBT(customer, CBType, dateFrom, dateTo, active);
     }
 
     @Override
@@ -61,6 +62,11 @@ public class CBT_Controller implements ICBT {
     @Override
     public void updateExisting(CustomerBussinesType customerBussinesType) throws Exception {
         dbh.updateCustomerBussinesType(customerBussinesType);
+    }
+
+    public void updateExisting(Long ID, Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
+            throws Exception {
+        dbh.updateRelCBT(ID, customer, CBType, dateFrom, dateTo, active);
     }
     //</editor-fold>
 

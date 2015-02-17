@@ -5,7 +5,7 @@
  */
 package db.interfaces;
 
-import java.util.List;
+import db.ent.City;
 import db.ent.Customer;
 
 /**
@@ -14,15 +14,7 @@ import db.ent.Customer;
  */
 public interface ICustomer extends CRUDInterface<Customer> {
 
-    //<editor-fold defaultstate="collapsed" desc="data to read">
-    public List<Customer> getCustomerByCity(String partialCityName);
+    public void addNewCustomer(String name, String address, City city, String PIB) throws Exception;
 
-    public List<Customer> getCustomerByRegion(String partialRegion);
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="data to create, and update">
-    public void addNewCustomer(String name, String address, String city, String zip, String region, String PIB) throws Exception;
-
-    public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception;
-    //</editor-fold>
+    public void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception;
 }

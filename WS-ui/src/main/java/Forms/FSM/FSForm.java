@@ -5,13 +5,17 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
+import db.controllers.City_Controller;
 import db.controllers.FS_Controller;
+import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
@@ -21,6 +25,8 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 public class FSForm extends FormLayout {
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
+    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class, new City_Controller().getAll());
+
     private Button crudButton;
     private BeanItem<Fuelstation> beanItem;
 
@@ -31,14 +37,14 @@ public class FSForm extends FormLayout {
     @PropertyId("name")
     private final TextField name = new TextField("Fuelstation Name");
 
-    @PropertyId("city")
-    private final TextField city = new TextField("Fuelstation City");
+    @PropertyId("fkIdc")
+    private final ComboBox city = new ComboBox("City", bicc);
 
     @PropertyId("address")
-    private final TextField address = new TextField("Fuelstation Address");
+    private final TextField address = new TextField("Address");
 
     @PropertyId("coordinates")
-    private final TextField coordinates = new TextField("Fuelstation Coordinates");
+    private final TextField coordinates = new TextField("Coordinates");
     //</editor-fold>
 
     public FSForm() {
@@ -47,7 +53,14 @@ public class FSForm extends FormLayout {
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         fieldGroup.bindMemberFields(this);
-        
+
+        name.setWidth(50, Unit.PERCENTAGE);
+        city.setWidth(50, Unit.PERCENTAGE);
+        address.setWidth(50, Unit.PERCENTAGE);
+        coordinates.setWidth(50, Unit.PERCENTAGE);
+
+        city.setNullSelectionAllowed(false);
+
         name.focus();
     }
 
@@ -62,10 +75,10 @@ public class FSForm extends FormLayout {
                 public void buttonClick(Button.ClickEvent event) {
                     Fuelstation newFuelstation = new Fuelstation();
                     bindFieldsToBean(newFuelstation);
-                    
+
                     try {
                         new FS_Controller().addNew(newFuelstation);
-                        Notification n = new Notification("Fuelstation Added.", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification n = new Notification("Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
@@ -97,7 +110,7 @@ public class FSForm extends FormLayout {
                 try {
                     new FS_Controller().updateExisting(FSToUpdate);
                     visualContainer.refreshVisualContainer();
-                    Notification n = new Notification("Customer Updated.", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification n = new Notification("Fuelstation Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
@@ -115,7 +128,7 @@ public class FSForm extends FormLayout {
     private void bindFieldsToBean(Fuelstation FSBean) {
         FSBean.setName(name.getValue());
         FSBean.setAddress(address.getValue());
-        FSBean.setCity(city.getValue());
+        FSBean.setFkIdc((City) city.getValue());
         FSBean.setCoordinates(coordinates.getValue());
     }
 }

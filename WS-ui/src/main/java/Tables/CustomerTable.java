@@ -11,14 +11,17 @@ import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Table;
-import org.superb.apps.utilities.Enums.Statuses;
-import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CDM.CustomerForm;
+import Forms.CDM.RELCBTForm;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
 import db.controllers.Customer_Controller;
 import db.ent.Customer;
 import db.interfaces.CRUDInterface;
+import org.superb.apps.utilities.Enums.Statuses;
+import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 
 /**
  *
@@ -33,10 +36,12 @@ public class CustomerTable extends GENTable<Customer> {
     public CustomerTable(BeanItemContainer<Customer> beanContainer, CRUDInterface controller) {
         super(beanContainer, controller);
 
-        addGeneratedColumn("FS", new Table.ColumnGenerator() {
+        addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                final Button changeButton = new Button("Show", new Button.ClickListener() {
+                HorizontalLayout custOptionsHL = new HorizontalLayout();
+
+                final Button editBtn = new Button("e", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
@@ -49,13 +54,28 @@ public class CustomerTable extends GENTable<Customer> {
                         getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
                     }
                 });
+                final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        RELCBTForm relCBT_Form = new RELCBTForm((Customer) row, null);
+                        getUI().addWindow(new WindowForm("Customer Bussines Type Form", relCBT_Form));
 
-                return changeButton;
+                    }
+                });
+
+                custOptionsHL.addComponents(editBtn, cbTapeBtn);
+                custOptionsHL.setSizeFull();
+                custOptionsHL.setSpacing(true);
+                custOptionsHL.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+                custOptionsHL.setComponentAlignment(cbTapeBtn, Alignment.MIDDLE_CENTER);
+
+                return custOptionsHL;
             }
         });
         addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
+
                 int k = ((Customer) row).getName().hashCode() % 5;
                 Statuses s;
 
@@ -64,7 +84,6 @@ public class CustomerTable extends GENTable<Customer> {
                         s = Statuses.OK;
                         break;
                     case 1:
-                    default:
                         s = Statuses.BLACK_LIST;
                         break;
                     case 2:
@@ -74,20 +93,40 @@ public class CustomerTable extends GENTable<Customer> {
                         s = Statuses.NO_LICENCE;
                         break;
                     case 4:
+                    default:
                         s = Statuses.UNKNOWN;
-                        break;
                 }
 
                 return new StatusLabel(s, s.toString());
             }
         });
+        addGeneratedColumn("city", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                String c = ((Customer) row).getFKIDCity().getName();
+                return c == null ? "" : c;
+            }
+        });
+        addGeneratedColumn("munic", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                String c = ((Customer) row).getFKIDCity().getMunicipality();
+                return c == null ? "" : c;
+            }
+        });
+        addGeneratedColumn("district", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                String c = ((Customer) row).getFKIDCity().getDistrict();
+                return c == null ? "" : c;
+            }
+        });
 
-        setVisibleColumns("idc", "name", "licence", "FS", "city", /*"address", "zip", "pib", */ "region");
-        setColumnHeaders("CLIENT ID", "CLIENT NAME", "LICENCE STATUS", "FS", "CITY", /* "ADDRESS", "POSTAL CODE", "PIB", */ "REGION");
+        setVisibleColumns("idc", "name", "licence", "options", "city", "munic", "district");
+        setColumnHeaders("CLIENT ID", "CLIENT NAME", "LICENCE STATUS", "OPTIONS", "CITY", "MUNIC.", "DISTRICT");
 
         setColumnWidth("idc", 80);
         setColumnWidth("licence", 120);
-        setColumnWidth("FS", 80);
     }
 
     public void setFilter(String filterString) {
@@ -100,10 +139,15 @@ public class CustomerTable extends GENTable<Customer> {
                     "licence", filterString, true, false);
             SimpleStringFilter cityFilter = new SimpleStringFilter(
                     "city", filterString, true, false);
-            SimpleStringFilter regionFilter = new SimpleStringFilter(
-                    "region", filterString, true, false);
+            SimpleStringFilter municipalityFilter = new SimpleStringFilter(
+                    "munic", filterString, true, false);
+            SimpleStringFilter districtFilter = new SimpleStringFilter(
+                    "district", filterString, true, false);
 
-            beanContainer.addContainerFilter(new Or(nameFilter, licenceFilter, cityFilter, regionFilter));
+            beanContainer.addContainerFilter(new Or(
+                    nameFilter, licenceFilter,
+                    cityFilter, municipalityFilter,
+                    districtFilter));
         }
     }
 }

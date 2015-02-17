@@ -7,6 +7,7 @@ package db.controllers;
 
 import java.util.List;
 import db.DBHandler;
+import db.ent.City;
 import db.ent.Fuelstation;
 import db.interfaces.IFS;
 
@@ -42,7 +43,7 @@ public class FS_Controller implements IFS {
     }
 
     @Override
-    public void addNew(String name, String address, String city, String coordinates) throws Exception {
+    public void addNew(String name, String address, City city, String coordinates) throws Exception {
         dbh.addNewFS(name, city, address, coordinates);
     }
 
@@ -52,7 +53,7 @@ public class FS_Controller implements IFS {
     }
 
     @Override
-    public void updateExisting(int ID, String name, String address, String city, String coordinates) throws Exception {
+    public void updateExisting(int ID, String name, String address, City city, String coordinates) throws Exception {
         dbh.addNewFS(name, city, address, coordinates);
     }
     //</editor-fold>

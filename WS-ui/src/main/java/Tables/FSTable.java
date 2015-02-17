@@ -5,12 +5,20 @@
  */
 package Tables;
 
+import Forms.FSM.FSForm;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Table;
 import db.controllers.FS_Controller;
 import db.ent.Fuelstation;
 import db.interfaces.IFS;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  *
@@ -25,8 +33,34 @@ public class FSTable extends GENTable<Fuelstation> {
     public FSTable(BeanItemContainer<Fuelstation> BIC_FS, IFS controller) {
         super(BIC_FS, controller);
 
-        setVisibleColumns("name", "city", "address");
-        setColumnHeaders("FS NAME", "CITY", "ADDRESS");
+        addGeneratedColumn("options", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                HorizontalLayout btnPlace = new HorizontalLayout();
+
+                final Button editBtn = new Button("e", new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        Fuelstation f = (Fuelstation) row;
+                        FSForm customerForm = new FSForm(new BeanItem(f), new IRefreshVisualContainer() {
+                            @Override
+                            public void refreshVisualContainer() {
+                                source.markAsDirtyRecursive();
+                            }
+                        });
+                        getUI().addWindow(new WindowForm("FS Update Form", customerForm));
+                    }
+                });
+                btnPlace.addComponent(editBtn);
+                btnPlace.setSizeFull();
+                btnPlace.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+
+                return btnPlace;
+            }
+        });
+
+        setVisibleColumns("name", "options", "fkIdc", "address");
+        setColumnHeaders("FUEL STATION", "OPTIONS", "CITY", "ADDRESS");
     }
 
     public void setFilter(String filterString) {
@@ -36,7 +70,7 @@ public class FSTable extends GENTable<Fuelstation> {
             SimpleStringFilter nameFilter = new SimpleStringFilter(
                     "name", filterString, true, false);
             SimpleStringFilter cityFilter = new SimpleStringFilter(
-                    "city", filterString, true, false);
+                    "fkIdc", filterString, true, false);
 
             beanContainer.addContainerFilter(new Or(nameFilter, cityFilter));
         }

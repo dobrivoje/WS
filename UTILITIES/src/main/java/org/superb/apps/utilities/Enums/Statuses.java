@@ -15,7 +15,13 @@ public enum Statuses {
     BLACK_LIST("Black List!"),
     IN_PROGRESS("In progress.."),
     UNKNOWN("Unknown"),
-    NO_LICENCE("No licence!");
+    NO_LICENCE("No licence!"),
+    //
+    OK_COLOR("#2dd085"),
+    BLACK_LIST_COLOR("#222222"),
+    IN_PROGRESS_COLOR("#F3A344"),
+    UNKNOWN_COLOR("#aa66aa"),
+    NO_LICENCE_COLOR("#f54993");
 
     private final String name;
 

@@ -16,6 +16,7 @@
     <class>db.ent.Salesman</class>
     <class>db.ent.CustomerBussinesType</class>
     <class>db.ent.BussinesLine</class>
+    <class>db.ent.City</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>

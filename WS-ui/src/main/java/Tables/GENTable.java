@@ -32,6 +32,7 @@ public class GENTable<T> extends Table implements IRefreshVisualContainer {
         setPageLength(beanContainer.size());
         setCacheRate(20);
         setSelectable(true);
+        setColumnCollapsingAllowed(true);
         //setImmediate(true);
     }
 

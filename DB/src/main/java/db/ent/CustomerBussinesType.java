@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CustomerBussinesType.findByIdcbt", query = "SELECT c FROM CustomerBussinesType c WHERE c.idcbt = :idcbt"),
     @NamedQuery(name = "CustomerBussinesType.findByCustomerActivity", query = "SELECT c FROM CustomerBussinesType c WHERE c.customerActivity = :customerActivity")})
 public class CustomerBussinesType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,15 +91,12 @@ public class CustomerBussinesType implements Serializable {
             return false;
         }
         CustomerBussinesType other = (CustomerBussinesType) object;
-        if ((this.idcbt == null && other.idcbt != null) || (this.idcbt != null && !this.idcbt.equals(other.idcbt))) {
-            return false;
-        }
-        return true;
+        return !((this.idcbt == null && other.idcbt != null) || (this.idcbt != null && !this.idcbt.equals(other.idcbt)));
     }
 
     @Override
     public String toString() {
-        return "db.CustomerBussinesType[ idcbt=" + idcbt + " ]";
+        return customerActivity;
     }
-    
+
 }

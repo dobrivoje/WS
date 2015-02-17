@@ -1,7 +1,6 @@
 package Views.MainMenu.CDM;
 
 import com.vaadin.event.FieldEvents;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -16,6 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import Tables.CustomerTable;
 import Views.ResetButtonForTextField;
+import com.vaadin.data.Property;
 import db.ent.Customer;
 
 public class CustomersView extends VerticalLayout implements View {
@@ -26,7 +26,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
     private final CustomerTable customersTable;
 
-    private VerticalLayout customersProperties;
+    private VerticalLayout customersPropertiesVL;
 
     private Button newCustomer;
     private Button newCustomerOwnerFS;
@@ -61,21 +61,18 @@ public class CustomersView extends VerticalLayout implements View {
         addComponent(VL);
         //</editor-fold>
 
-        customersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+        customersTable.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
-            public void itemClick(ItemClickEvent event) {
-                Customer c = (Customer) event.getItemId();
+            public void valueChange(Property.ValueChangeEvent event) {
+                Customer c = (Customer) customersTable.getValue();
 
-                if (customersProperties != null) {
-                    HL.removeComponent(customersProperties);
+                if (customersPropertiesVL != null) {
+                    HL.removeComponent(customersPropertiesVL);
                 }
-                customersProperties = createProperties(c, event);
-                customersProperties.setMargin(true);
-                HL.setSecondComponent(customersProperties);
-
-                // customersProperties.addComponent(VL);
-                // CustomerForm customerForm = new CustomerForm(new BeanItem(c), customersTable);
-                // getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+                customersPropertiesVL = createProperties(c);
+                customersPropertiesVL.setMargin(true);
+                
+                HL.setSecondComponent(customersPropertiesVL);
             }
         });
         //</editor-fold>
@@ -94,7 +91,7 @@ public class CustomersView extends VerticalLayout implements View {
         filter.setStyleName("filter-textfield");
         filter.setInputPrompt("Filter");
         ResetButtonForTextField.extend(filter);
-        filter.setImmediate(true);
+        filter.setImmediate(false);
         filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
@@ -132,13 +129,12 @@ public class CustomersView extends VerticalLayout implements View {
         return topLayout;
     }
 
-    private VerticalLayout createProperties(Customer customer, ItemClickEvent event) {
+    private VerticalLayout createProperties(Customer customer) {
         VerticalLayout vl = new VerticalLayout();
         vl.setMargin(true);
         vl.setSpacing(true);
 
         vl.addComponent(new Label(customer == null ? "no data" : customer.toString()));
-        vl.addComponent(new Label("item :" + event.getItem().toString() + ", getItemId" + event.getItemId().toString()));
         return vl;
     }
     //</editor-fold>

@@ -56,9 +56,6 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
     protected void bindFieldsToBean(Customer bean) {
         bean.setName(name.getValue());
         bean.setAddress(address.getValue());
-        bean.setCity(city.getValue());
-        bean.setZip(zip.getValue());
-        bean.setRegion(region.getValue());
         bean.setPib(pib.getValue());
     }
 

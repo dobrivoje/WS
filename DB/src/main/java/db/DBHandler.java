@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import db.ent.BussinesLine;
+import db.ent.City;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.Fuelstation;
@@ -21,7 +22,6 @@ import db.ent.Owner;
 import db.ent.RelCBType;
 import db.ent.RelSALESMANIMAGE;
 import db.ent.Salesman;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -77,37 +77,21 @@ public class DBHandler {
             return null;
         }
     }
-
-    public List<Customer> getCustomerByCity(String partialCityName) {
-        try {
-            return getEm().createNamedQuery("Customer.PartialCity")
-                    .setParameter("city", partialCityName.concat("%"))
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Customer> getCustomerByRegion(String partialRegion) {
-        try {
-            return getEm().createNamedQuery("Customer.PartialRegion")
-                    .setParameter("region", partialRegion.concat("%"))
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
-    public void addNewCustomer(String name, String address, String city, String zip, String region, String PIB) throws Exception {
+    public void addNewCustomer(Customer newCustomer) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newCustomer);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {
         Customer newCustomer = new Customer();
 
         newCustomer.setName(name);
         newCustomer.setAddress(address);
-        newCustomer.setCity(city);
-        newCustomer.setZip(zip);
-        newCustomer.setRegion(region);
+        newCustomer.setFKIDCity(city);
         newCustomer.setPib(PIB);
 
         getEm().getTransaction().begin();
@@ -115,20 +99,23 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void addNewCustomer(Customer newCustomer) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newCustomer);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateCustomer(Long customerID, String name, String address, String city, String zip, String region, String PIB) throws Exception {
+    public void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception {
         Customer customer = getCustomerByID(customerID);
 
         customer.setName(name);
         customer.setAddress(address);
-        customer.setCity(city);
-        customer.setZip(zip);
-        customer.setRegion(region);
+        customer.setPib(PIB);
+
+        getEm().getTransaction().begin();
+        em.merge(customer);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateCustomer2(Long customerID, String name, City city, String PIB) throws Exception {
+        Customer customer = getCustomerByID(customerID);
+
+        customer.setName(name);
+        customer.setFKIDCity(city);
         customer.setPib(PIB);
 
         getEm().getTransaction().begin();
@@ -176,13 +163,13 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
-    public void addNewFS(String name, String city, String address, String coordinates) throws Exception {
+    public void addNewFS(String name, City city, String address, String coordinates) throws Exception {
         Fuelstation newFuelstation = new Fuelstation();
 
         newFuelstation.setName(name);
         newFuelstation.setAddress(address);
-        newFuelstation.setCity(city);
-        newFuelstation.setCity(coordinates);
+        newFuelstation.setFkIdc(city);
+        newFuelstation.setCoordinates(coordinates);
 
         getEm().getTransaction().begin();
         em.persist(newFuelstation);
@@ -195,12 +182,12 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateFS(Long fuelstationID, String name, String city, String address, String coordinates) throws Exception {
+    public void updateFS(Long fuelstationID, String name, City city, String address, String coordinates) throws Exception {
         Fuelstation customer = getFuelstationByID(fuelstationID);
 
         customer.setName(name);
         customer.setAddress(address);
-        customer.setCity(city);
+        customer.setFkIdc(city);
         customer.setCoordinates(coordinates);
 
         getEm().getTransaction().begin();
@@ -281,17 +268,62 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Relation: CB TYPE - CUSTOMER">
-    public void addNew_CBT_CUSTOMER(Customer IDC, CustomerBussinesType IDCBT, String DateFrom, String DateTo, boolean active) throws Exception {
+    //<editor-fold defaultstate="collapsed" desc="Relation: REL CB TYPE">
+    public List<RelCBType> getAllRelCBT() {
+        try {
+            return getEm().createNamedQuery("RelCBType.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public RelCBType getRelCBType(Long ID) {
+        try {
+            return (RelCBType) getEm().createNamedQuery("RelCBType.findByIdrcbt")
+                    .setParameter("idrcbt", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public void addNew_RelCBT(Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
         newRelCBType.setFkIdc(IDC);
         newRelCBType.setFkIdcbt(IDCBT);
-        newRelCBType.setDateFrom(new SimpleDateFormat("yyyy-MM-dd").parse(DateFrom));
-        newRelCBType.setDateFrom(new SimpleDateFormat("yyyy-MM-dd").parse(DateTo));
+        newRelCBType.setDateFrom(dateFrom);
+        newRelCBType.setDateFrom(dateTo);
         newRelCBType.setActive(active);
 
         getEm().getTransaction().begin();
         em.persist(newRelCBType);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNew_RelCBT(RelCBType newRelCBType) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newRelCBType);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateRelCBT(RelCBType relCBType) throws Exception {
+        getEm().getTransaction().begin();
+        em.merge(relCBType);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateRelCBT(Long ID, Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
+        RelCBType rcbt = getRelCBType(ID);
+
+        rcbt.setFkIdc(IDC);
+        rcbt.setFkIdcbt(IDCBT);
+        rcbt.setDateFrom(dateFrom);
+        rcbt.setDateFrom(dateTo);
+        rcbt.setActive(active);
+
+        getEm().getTransaction().begin();
+        em.merge(rcbt);
         getEm().getTransaction().commit();
     }
     //</editor-fold>
@@ -393,13 +425,13 @@ public class DBHandler {
         newSalesman.setFkIdbl(BL);
 
         getEm().getTransaction().begin();
-        em.persist(newSalesman);
+        em.merge(newSalesman);
         getEm().getTransaction().commit();
     }
 
     public void updateSalesman(Salesman newSalesman) throws Exception {
         getEm().getTransaction().begin();
-        em.persist(newSalesman);
+        em.merge(newSalesman);
         getEm().getTransaction().commit();
     }
     //</editor-fold>
@@ -536,13 +568,13 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateExistingOwner(Owner newOwner) throws Exception {
+    public void updateOwner(Owner newOwner) throws Exception {
         getEm().getTransaction().begin();
         em.merge(newOwner);
         getEm().getTransaction().commit();
     }
 
-    public void updateExistingOwner(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
+    public void updateOwner(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
         Owner owner = getFSOwner(ID);
 
         owner.setFKIDCustomer(customer);
@@ -553,6 +585,107 @@ public class DBHandler {
 
         getEm().getTransaction().begin();
         em.merge(owner);
+        getEm().getTransaction().commit();
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CITY">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public List<City> getAllCities() {
+        try {
+            return getEm().createNamedQuery("City.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public City getCity(Long ID) {
+        try {
+            return (City) getEm().createNamedQuery("City.findByIdc")
+                    .setParameter("idc", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<City> getCityByName(String partialNameWithBeggining) {
+        try {
+            return getEm().createNamedQuery("City.PartialName")
+                    .setParameter("name", partialNameWithBeggining.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<City> getCityByContainingName(String partialName) {
+        try {
+            return getEm().createNamedQuery("City.PartialName")
+                    .setParameter("name", "%" + partialName + "%")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<City> getCityByMunicipality(String partialName) {
+        try {
+            return getEm().createNamedQuery("City.MunicipalityPartialName")
+                    .setParameter("municipality", partialName.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<City> getCityByDistrict(String partialName) {
+        try {
+            return getEm().createNamedQuery("City.DistrictPartialName")
+                    .setParameter("district", partialName.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addNewCity(String name, String zip, String region) throws Exception {
+        City newCity = new City();
+
+        newCity.setName(name);
+        newCity.setZip(zip);
+        newCity.setRegion(region);
+
+        getEm().getTransaction().begin();
+        em.persist(newCity);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewCity(City newCity) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newCity);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateExistingCity(City newCity) throws Exception {
+        getEm().getTransaction().begin();
+        em.merge(newCity);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateExistingCity(Long ID, String name, String zip, String region) throws Exception {
+        City existingCity = getCity(ID);
+
+        existingCity.setName(name);
+        existingCity.setZip(zip);
+        existingCity.setRegion(region);
+
+        getEm().getTransaction().begin();
+        em.merge(existingCity);
         getEm().getTransaction().commit();
     }
     //</editor-fold>

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -32,9 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
     @NamedQuery(name = "Customer.findByID", query = "SELECT c FROM Customer c WHERE c.idc = :idc"),
     @NamedQuery(name = "Customer.PartialName", query = "SELECT c FROM Customer c WHERE c.name LIKE :name"),
-    @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
-    @NamedQuery(name = "Customer.PartialCity", query = "SELECT c FROM Customer c WHERE c.city = :city"),
-    @NamedQuery(name = "Customer.PartialRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
     @NamedQuery(name = "Customer.findByPib", query = "SELECT c FROM Customer c WHERE c.pib = :pib")})
 public class Customer implements Serializable {
 
@@ -51,21 +50,15 @@ public class Customer implements Serializable {
     @Column(name = "Address")
     private String address;
     @Basic(optional = false)
-    @Column(name = "City")
-    private String city;
-    @Basic(optional = false)
-    @Column(name = "ZIP")
-    private String zip;
-    @Basic(optional = false)
-    @Column(name = "Region")
-    private String region;
-    @Basic(optional = false)
     @Column(name = "PIB")
     private String pib;
     @OneToMany(mappedBy = "fKIDCustomer")
     private List<Owner> ownerList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdc")
     private List<RelCBType> relCBTypeList;
+    @JoinColumn(name = "FK_IDCity", referencedColumnName = "IDC")
+    @ManyToOne
+    private City fKIDCity;
 
     public Customer() {
     }
@@ -74,13 +67,10 @@ public class Customer implements Serializable {
         this.idc = idc;
     }
 
-    public Customer(Long idc, String name, String address, String city, String zip, String region, String pib) {
+    public Customer(Long idc, String name, String address, String pib) {
         this.idc = idc;
         this.name = name;
         this.address = address;
-        this.city = city;
-        this.zip = zip;
-        this.region = region;
         this.pib = pib;
     }
 
@@ -106,30 +96,6 @@ public class Customer implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     public String getPib() {
@@ -158,6 +124,14 @@ public class Customer implements Serializable {
         this.relCBTypeList = relCBTypeList;
     }
 
+    public City getFKIDCity() {
+        return fKIDCity;
+    }
+
+    public void setFKIDCity(City fKIDCity) {
+        this.fKIDCity = fKIDCity;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -180,7 +154,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return name + ", " + city + ", " + region;
+        return name;
     }
 
 }

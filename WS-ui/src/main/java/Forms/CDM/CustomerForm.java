@@ -5,13 +5,17 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
+import db.controllers.City_Controller;
 import db.controllers.Customer_Controller;
+import db.ent.City;
 import db.ent.Customer;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
@@ -29,22 +33,17 @@ public class CustomerForm extends FormLayout {
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
-    private final TextField name = new TextField("customer Name");
+    private final TextField name = new TextField("Customer Name");
 
     @PropertyId("address")
-    private final TextField address = new TextField("customer Address");
+    private final TextField address = new TextField("Customer Address");
 
-    @PropertyId("city")
-    private final TextField city = new TextField("customer City");
-
-    @PropertyId("zip")
-    private final TextField zip = new TextField("customer ZIP");
-
-    @PropertyId("region")
-    private final TextField region = new TextField("customer Region");
+    @PropertyId("fKIDCity")
+    private final ComboBox city = new ComboBox("Customer City",
+            new BeanItemContainer(City.class, new City_Controller().getAll()));
 
     @PropertyId("pib")
-    private final TextField pib = new TextField("customer PIB");
+    private final TextField pib = new TextField("Customer PIB");
     //</editor-fold>
 
     public CustomerForm() {
@@ -53,7 +52,14 @@ public class CustomerForm extends FormLayout {
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         fieldGroup.bindMemberFields(this);
-        
+
+        name.setWidth(50, Unit.PERCENTAGE);
+        address.setWidth(50, Unit.PERCENTAGE);
+        city.setWidth(50, Unit.PERCENTAGE);
+        pib.setWidth(50, Unit.PERCENTAGE);
+
+        city.setNullSelectionAllowed(false);
+
         name.focus();
     }
 
@@ -71,7 +77,7 @@ public class CustomerForm extends FormLayout {
 
                     try {
                         new Customer_Controller().addNew(newCustomer);
-                        Notification n = new Notification("Customer Added.", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
@@ -83,7 +89,7 @@ public class CustomerForm extends FormLayout {
             crudButton = new Button(btnCaption, clickListener);
 
             crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-            addComponents(name, address, city, zip, region, pib, crudButton);
+            addComponents(name, address, city, pib, crudButton);
         }
     }
 
@@ -103,7 +109,7 @@ public class CustomerForm extends FormLayout {
                 try {
                     new Customer_Controller().updateExisting(customerToUpdate);
                     visualContainer.refreshVisualContainer();
-                    Notification n = new Notification("Customer Updated.", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification n = new Notification("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
@@ -115,15 +121,13 @@ public class CustomerForm extends FormLayout {
         crudButton = new Button(btnCaption, clickListener);
 
         crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-        addComponents(name, address, city, zip, region, pib, crudButton);
+        addComponents(name, address, city, pib, crudButton);
     }
 
     private void bindFieldsToBean(Customer customerBean) {
         customerBean.setName(name.getValue());
         customerBean.setAddress(address.getValue());
-        customerBean.setCity(city.getValue());
-        customerBean.setZip(zip.getValue());
-        customerBean.setRegion(region.getValue());
+        customerBean.setFKIDCity((City) city.getValue());
         customerBean.setPib(pib.getValue());
     }
 }
