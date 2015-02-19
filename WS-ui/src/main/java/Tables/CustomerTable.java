@@ -62,7 +62,6 @@ public class CustomerTable extends GENTable<Customer> {
 
                     }
                 });
-
                 custOptionsHL.addComponents(editBtn, cbTapeBtn);
                 custOptionsHL.setSizeFull();
                 custOptionsHL.setSpacing(true);

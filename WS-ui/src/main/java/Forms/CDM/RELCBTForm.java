@@ -11,7 +11,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
@@ -19,6 +18,8 @@ import db.controllers.CBT_Controller;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
+import java.util.ArrayList;
+import java.util.List;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
@@ -31,13 +32,16 @@ public class RELCBTForm extends FormLayout {
     private BeanItem<RelCBType> beanItem;
     private final BeanItemContainer<CustomerBussinesType> bicbt
             = new BeanItemContainer(CustomerBussinesType.class, new CBT_Controller().getAll());
+    private final BeanItemContainer<Customer> bic = new BeanItemContainer(Customer.class);
 
     private Button crudButton;
     private Button.ClickListener clickListener;
     private String btnCaption;
-    private final TextField customer = new TextField("Customer");
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
+    @PropertyId("fkIdc")
+    private final ComboBox customer = new ComboBox("Bussines Type");
+
     @PropertyId("fkIdcbt")
     private final ComboBox cBType = new ComboBox("Bussines Type", bicbt);
 
@@ -103,8 +107,10 @@ public class RELCBTForm extends FormLayout {
 
     public RELCBTForm(Customer existingCustomer, final IRefreshVisualContainer visualContainer) {
         this();
-
-        customer.setValue(existingCustomer.getName());
+        
+        List l = new ArrayList();
+        l.add(existingCustomer);
+        customer.setContainerDataSource(new BeanItemContainer(CustomerBussinesType.class, l));
         customer.setEnabled(false);
 
         // daj samo za AKTIVAN REL CB TYPE !!!

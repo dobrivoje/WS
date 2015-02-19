@@ -1,5 +1,6 @@
 package Views.MainMenu.CDM;
 
+import Forms.SaDesneStraneForm;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -7,7 +8,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -16,6 +16,8 @@ import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import Tables.CustomerTable;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.ui.HorizontalSplitPanel;
 import db.ent.Customer;
 
 public class CustomersView extends VerticalLayout implements View {
@@ -24,55 +26,51 @@ public class CustomersView extends VerticalLayout implements View {
 
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
-    private final CustomerTable customersTable;
+    private final CustomerTable customersTable = new CustomerTable();
 
-    private VerticalLayout customersPropertiesVL;
+    private final SaDesneStraneForm form = new SaDesneStraneForm();
 
     private Button newCustomer;
     private Button newCustomerOwnerFS;
 
     public CustomersView() {
-        customersTable = new CustomerTable();
-
         //<editor-fold defaultstate="collapsed" desc="UI setup">
         setSizeFull();
         addStyleName("crud-view");
-
         VL.setSizeFull();
         VL.setMargin(true);
         VL.setSpacing(true);
-
         HL.setSizeFull();
         HL.setSplitPosition(70, Unit.PERCENTAGE);
-
         HorizontalLayout topLayout = createTopBar();
+        
         // kreiraj panel za tabelu i properies tabele :
         VerticalLayout vl1 = new VerticalLayout(customersTable);
         vl1.setMargin(true);
         vl1.setSizeFull();
         HL.setFirstComponent(vl1);
-
         VL.addComponent(topLayout);
         VL.addComponent(HL);
         VL.setSizeFull();
         VL.setExpandRatio(HL, 1);
         VL.setStyleName("crud-main-layout");
-
         addComponent(VL);
         //</editor-fold>
+
+        customersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                if (event.isDoubleClick()) {
+                    Customer c = (Customer) customersTable.getValue();
+                    showPropForm(c);
+                }
+            }
+        });
 
         customersTable.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Customer c = (Customer) customersTable.getValue();
-
-                if (customersPropertiesVL != null) {
-                    HL.removeComponent(customersPropertiesVL);
-                }
-                customersPropertiesVL = createProperties(c);
-                customersPropertiesVL.setMargin(true);
-                
-                HL.setSecondComponent(customersPropertiesVL);
             }
         });
         //</editor-fold>
@@ -138,4 +136,14 @@ public class CustomersView extends VerticalLayout implements View {
         return vl;
     }
     //</editor-fold>
+
+    private void showPropForm(Customer customer) {
+        if (customer != null) {
+            form.addStyleName("visible");
+            form.setEnabled(true);
+        } else {
+            form.removeStyleName("visible");
+            form.setEnabled(false);
+        }
+    }
 }
