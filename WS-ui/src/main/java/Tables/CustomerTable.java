@@ -41,7 +41,7 @@ public class CustomerTable extends GENTable<Customer> {
             public Object generateCell(final Table source, final Object row, Object column) {
                 HorizontalLayout custOptionsHL = new HorizontalLayout();
 
-                final Button editBtn = new Button("e", new Button.ClickListener() {
+                final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
@@ -62,6 +62,10 @@ public class CustomerTable extends GENTable<Customer> {
 
                     }
                 });
+
+                editBtn.setDescription("Update this customer with new data...");
+                cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
+
                 custOptionsHL.addComponents(editBtn, cbTapeBtn);
                 custOptionsHL.setSizeFull();
                 custOptionsHL.setSpacing(true);
