@@ -7,7 +7,7 @@ package org.superb.apps.utilities.vaadin.MyWindows;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
@@ -19,16 +19,18 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class WindowForm extends Window {
 
-    private final Button closeButton;
-    private final VerticalLayout VL = new VerticalLayout();
+    protected final Button closeButton;
+    protected final VerticalLayout VL = new VerticalLayout();
 
-    public WindowForm(String caption, FormLayout formLayout) {
+    public WindowForm(String caption, Layout formLayout) {
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         setCaption(caption);
         setModal(true);
-        
+
         VL.setSizeFull();
+        VL.setMargin(true);
+        VL.setSpacing(true);
 
         closeButton = new Button("Close Window", new Button.ClickListener() {
             @Override
@@ -37,10 +39,12 @@ public class WindowForm extends Window {
             }
         });
         closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
+        closeButton.setWidth(150, Unit.PIXELS);
 
         VL.addComponent(formLayout);
         VL.addComponent(closeButton);
         VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
+        VL.setExpandRatio(formLayout, 1);
 
         setHeight(66, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);

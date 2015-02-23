@@ -17,12 +17,16 @@ import db.controllers.City_Controller;
 import db.controllers.Customer_Controller;
 import db.ent.City;
 import db.ent.Customer;
+import db.interfaces.ICityController;
+import db.interfaces.ICustomerController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class CustomerForm extends FormLayout {
+    private final ICustomerController customerController = new Customer_Controller();
+    private final ICityController cityController = new City_Controller();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
     private Button crudButton;
@@ -39,8 +43,8 @@ public class CustomerForm extends FormLayout {
     private final TextField address = new TextField("Customer Address");
 
     @PropertyId("fKIDCity")
-    private final ComboBox city = new ComboBox("Customer City",
-            new BeanItemContainer(City.class, new City_Controller().getAll()));
+    private final ComboBox city = new ComboBox("Customer City", 
+            new BeanItemContainer(City.class, cityController.getAll()));
 
     @PropertyId("pib")
     private final TextField pib = new TextField("Customer PIB");
@@ -76,7 +80,7 @@ public class CustomerForm extends FormLayout {
                     bindFieldsToBean(newCustomer);
 
                     try {
-                        new Customer_Controller().addNew(newCustomer);
+                        customerController.addNew(newCustomer);
                         Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -87,8 +91,9 @@ public class CustomerForm extends FormLayout {
             };
 
             crudButton = new Button(btnCaption, clickListener);
-
+            crudButton.setWidth(150, Unit.PIXELS);
             crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
             addComponents(name, address, city, pib, crudButton);
         }
     }
@@ -107,9 +112,13 @@ public class CustomerForm extends FormLayout {
                 bindFieldsToBean(customerToUpdate);
 
                 try {
-                    new Customer_Controller().updateExisting(customerToUpdate);
-                    visualContainer.refreshVisualContainer();
+                    customerController.updateExisting(customerToUpdate);
+
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
                     Notification n = new Notification("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
+
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
@@ -119,8 +128,9 @@ public class CustomerForm extends FormLayout {
         };
 
         crudButton = new Button(btnCaption, clickListener);
-
+        crudButton.setWidth(150, Unit.PIXELS);
         crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
         addComponents(name, address, city, pib, crudButton);
     }
 

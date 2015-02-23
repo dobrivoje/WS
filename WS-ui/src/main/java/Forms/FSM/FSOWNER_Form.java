@@ -21,6 +21,9 @@ import db.controllers.FS_Controller;
 import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
+import db.interfaces.ICustomerController;
+import db.interfaces.IFSController;
+import db.interfaces.IFSOController;
 import java.text.SimpleDateFormat;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
@@ -29,14 +32,18 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class FSOWNER_Form extends FormLayout {
 
-    private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_ENG.toString();
+    private final ICustomerController customerController = new Customer_Controller();
+    private final IFSOController fsOwnerController = new FSOwner_Controller();
+    private final IFSController fsController = new FS_Controller();
+    
+    private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
     private Button crudButton;
     private BeanItem<Owner> beanItem;
 
-    private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, new Customer_Controller().getAll());
-    private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, new FS_Controller().getAll());
+    private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, customerController.getAll());
+    private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, fsController.getAll());
 
     private Button.ClickListener clickListener;
     private String btnCaption;
@@ -92,7 +99,7 @@ public class FSOWNER_Form extends FormLayout {
                     bindFieldsToBean(newOwner);
 
                     try {
-                        new FSOwner_Controller().addNew(newOwner);
+                        fsOwnerController.addNew(newOwner);
                         Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -103,8 +110,9 @@ public class FSOWNER_Form extends FormLayout {
             };
 
             crudButton = new Button(btnCaption, clickListener);
-
+            crudButton.setWidth(150, Unit.PIXELS);
             crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
             addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
         }
     }
@@ -123,7 +131,7 @@ public class FSOWNER_Form extends FormLayout {
                 bindFieldsToBean(existingOwner);
 
                 try {
-                    new FSOwner_Controller().updateExisting(existingOwner);
+                    fsOwnerController.updateExisting(existingOwner);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);

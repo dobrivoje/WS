@@ -12,7 +12,9 @@ package date.formats;
 public enum DateFormat {
 
     DATE_FORMAT_ENG("yyyy-MM-dd"),
-    DATETIME_FORMAT_ENG("yyyy-MM-dd hh:mm:ss");
+    DATETIME_FORMAT_ENG("yyyy-MM-dd hh:mm:ss"),
+    DATE_FORMAT_SRB("dd.MM.yyyy"),
+    DATETIME_FORMAT_SRB("dd.MM.yyyy hh:mm:ss");
 
     private final String name;
 

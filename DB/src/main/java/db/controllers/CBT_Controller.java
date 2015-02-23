@@ -5,7 +5,7 @@
  */
 package db.controllers;
 
-import db.interfaces.ICBT;
+import db.interfaces.ICBTController;
 import java.util.List;
 import db.DBHandler;
 import db.ent.Customer;
@@ -16,7 +16,7 @@ import java.util.Date;
  *
  * @author root
  */
-public class CBT_Controller implements ICBT {
+public class CBT_Controller implements ICBTController {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 

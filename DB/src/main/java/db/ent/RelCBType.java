@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "RelCBType.findAll", query = "SELECT r FROM RelCBType r"),
     @NamedQuery(name = "RelCBType.findByIdrcbt", query = "SELECT r FROM RelCBType r WHERE r.idrcbt = :idrcbt"),
+    @NamedQuery(name = "RelCBType.findByCustomer", query = "SELECT r FROM RelCBType r WHERE r.fkIdc = :customer"),
     @NamedQuery(name = "RelCBType.findByDateFrom", query = "SELECT r FROM RelCBType r WHERE r.dateFrom = :dateFrom"),
     @NamedQuery(name = "RelCBType.findByDateTo", query = "SELECT r FROM RelCBType r WHERE r.dateTo = :dateTo"),
     @NamedQuery(name = "RelCBType.findByActive", query = "SELECT r FROM RelCBType r WHERE r.active = :active")})

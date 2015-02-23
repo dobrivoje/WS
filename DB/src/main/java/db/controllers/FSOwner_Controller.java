@@ -2,20 +2,26 @@ package db.controllers;
 
 import db.DBHandler;
 import db.ent.Customer;
+import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
-import db.interfaces.IFS_Owner;
+import db.interfaces.IFSOController;
 import java.util.List;
 
 /**
  *
  * @author root
  */
-public class FSOwner_Controller implements IFS_Owner {
+public class FSOwner_Controller implements IFSOController {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">@Override
+    //<editor-fold defaultstate="collapsed" desc="Read Data">
+    @Override
+    public List<FsProp> getAllFSProperties(Owner owner) {
+        return dbh.getAllFSProperties(owner);
+    }
+
     @Override
     public List<Owner> getAll() {
         return dbh.getAllFSOwners();
@@ -32,7 +38,7 @@ public class FSOwner_Controller implements IFS_Owner {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNew(Owner newObject) throws Exception {
         dbh.addNewOwner(newObject);

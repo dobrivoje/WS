@@ -15,6 +15,7 @@ import db.ent.BussinesLine;
 import db.ent.City;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
+import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
 import db.ent.Image;
@@ -79,7 +80,7 @@ public class DBHandler {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewCustomer(Customer newCustomer) throws Exception {
         getEm().getTransaction().begin();
         em.persist(newCustomer);
@@ -162,7 +163,7 @@ public class DBHandler {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewFS(String name, City city, String address, String coordinates) throws Exception {
         Fuelstation newFuelstation = new Fuelstation();
 
@@ -244,7 +245,7 @@ public class DBHandler {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer Add/Update Data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
         getEm().getTransaction().begin();
         em.persist(newCustomerBussinesType);
@@ -272,6 +273,16 @@ public class DBHandler {
     public List<RelCBType> getAllRelCBT() {
         try {
             return getEm().createNamedQuery("RelCBType.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<RelCBType> getAllCustomerBussinesTypes(Customer customer) {
+        try {
+            return getEm().createNamedQuery("RelCBType.findByCustomer")
+                    .setParameter("customer", customer)
                     .getResultList();
         } catch (Exception ex) {
             return null;
@@ -536,6 +547,16 @@ public class DBHandler {
         }
     }
 
+    public List<Owner> getAllFSOwnedByCustomer(Customer customer) {
+        try {
+            return getEm().createNamedQuery("Owner.findByCustomer")
+                    .setParameter("customer", customer)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Owner getFSOwner(Long ID) {
         try {
             return (Owner) getEm().createNamedQuery("Owner.findByIdo")
@@ -590,6 +611,23 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="FS PROPERTIES">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public List<FsProp> getAllFSProperties(Owner owner) {
+        try {
+            return getEm().createNamedQuery("FsProp.findByOwner")
+                    .setParameter("owner", owner)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
+    // public List<FsProp> getAllFSProperties(Owner owner) 
+    //</editor-fold>
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="CITY">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<City> getAllCities() {

@@ -13,7 +13,7 @@ import db.ent.Salesman;
  *
  * @author dprtenjak
  */
-public interface ISalesman extends CRUDInterface<Salesman>{
+public interface ISalesmanController extends CRUDInterface<Salesman>{
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
     public List<Salesman> getSalesmanBySurname(String partialSurname);
@@ -22,8 +22,8 @@ public interface ISalesman extends CRUDInterface<Salesman>{
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">
-    public void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
+    void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
 
-    public void updateSalesman(Long SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
+    void updateSalesman(Long SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
     //</editor-fold>
 }

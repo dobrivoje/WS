@@ -15,19 +15,25 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
+import Trees.CBTTree;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import db.controllers.Customer_Controller;
+import db.controllers.FS_Controller;
 import db.ent.Customer;
 import db.interfaces.CRUDInterface;
+import db.interfaces.IFSController;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 
 /**
  *
  * @author root
  */
 public class CustomerTable extends GENTable<Customer> {
+
+    private final IFSController fsController = new FS_Controller();
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), new Customer_Controller());
@@ -58,7 +64,8 @@ public class CustomerTable extends GENTable<Customer> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         RELCBTForm relCBT_Form = new RELCBTForm((Customer) row, null);
-                        getUI().addWindow(new WindowForm("Customer Bussines Type Form", relCBT_Form));
+                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", relCBT_Form,
+                                new CBTTree("Stablo", fsController.getAll())));
 
                     }
                 });

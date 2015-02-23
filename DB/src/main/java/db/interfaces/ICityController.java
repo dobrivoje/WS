@@ -5,22 +5,19 @@
  */
 package db.interfaces;
 
+import db.ent.City;
 import java.util.List;
 
 /**
  *
  * @author root
- * @param <T>
  */
-public interface CRUDInterface<T> {
+public interface ICityController extends CRUDInterface<City> {
 
-    public List<T> getAll();
+    List<City> getCityByDistrict(String partialName);
 
-    public T getByID(Long ID);
+    List<City> getCityByContainingName(String partialName);
 
-    public List<T> getByName(String partialName);
+    List<City> getCityByMunicipality(String partialName);
 
-    void addNew(T newObject) throws Exception;
-
-    void updateExisting(T object) throws Exception;
 }

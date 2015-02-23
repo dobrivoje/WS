@@ -17,6 +17,8 @@ import db.controllers.City_Controller;
 import db.controllers.FS_Controller;
 import db.ent.City;
 import db.ent.Fuelstation;
+import db.interfaces.ICityController;
+import db.interfaces.IFSController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
@@ -24,8 +26,11 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class FSForm extends FormLayout {
 
+    private final ICityController cityController = new City_Controller();
+    private final IFSController fsController = new FS_Controller();
+    
     private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
-    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class, new City_Controller().getAll());
+    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class, cityController.getAll());
 
     private Button crudButton;
     private BeanItem<Fuelstation> beanItem;
@@ -77,8 +82,8 @@ public class FSForm extends FormLayout {
                     bindFieldsToBean(newFuelstation);
 
                     try {
-                        new FS_Controller().addNew(newFuelstation);
-                        Notification n = new Notification("Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
+                        fsController.addNew(newFuelstation);
+                        Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
@@ -88,8 +93,9 @@ public class FSForm extends FormLayout {
             };
 
             crudButton = new Button(btnCaption, clickListener);
-
+            crudButton.setWidth(150, Unit.PIXELS);
             crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
             addComponents(name, address, city, coordinates, crudButton);
         }
     }
@@ -108,9 +114,13 @@ public class FSForm extends FormLayout {
                 bindFieldsToBean(FSToUpdate);
 
                 try {
-                    new FS_Controller().updateExisting(FSToUpdate);
-                    visualContainer.refreshVisualContainer();
-                    Notification n = new Notification("Fuelstation Updated.", Notification.Type.TRAY_NOTIFICATION);
+                    fsController.updateExisting(FSToUpdate);
+
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+
+                    Notification n = new Notification("Fuelstation Data Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
@@ -120,8 +130,9 @@ public class FSForm extends FormLayout {
         };
 
         crudButton = new Button(btnCaption, clickListener);
-
+        crudButton.setWidth(150, Unit.PIXELS);
         crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
         addComponents(name, address, city, coordinates, crudButton);
     }
 

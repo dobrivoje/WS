@@ -9,7 +9,7 @@ import db.DBHandler;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
-import db.interfaces.IREL_CBT;
+import db.interfaces.IRELCBTController;
 import java.util.Date;
 import java.util.List;
 
@@ -17,11 +17,11 @@ import java.util.List;
  *
  * @author root
  */
-public class RelCBT_Controller implements IREL_CBT {
+public class RelCBT_Controller implements IRELCBTController {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">@Override
+    //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
     public List<RelCBType> getAll() {
         return dbh.getAllRelCBT();
@@ -38,7 +38,7 @@ public class RelCBT_Controller implements IREL_CBT {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNew(Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active) throws Exception {
         dbh.addNew_RelCBT(customer, customerBussinesType, dateFrom, dateTo, active);

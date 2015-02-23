@@ -16,7 +16,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import db.controllers.FS_Controller;
 import db.ent.Fuelstation;
-import db.interfaces.IFS;
+import db.interfaces.IFSController;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
@@ -30,7 +30,7 @@ public class FSTable extends GENTable<Fuelstation> {
         this(new BeanItemContainer<>(Fuelstation.class), new FS_Controller());
     }
 
-    public FSTable(BeanItemContainer<Fuelstation> BIC_FS, IFS controller) {
+    public FSTable(BeanItemContainer<Fuelstation> BIC_FS, IFSController controller) {
         super(BIC_FS, controller);
 
         addGeneratedColumn("options", new Table.ColumnGenerator() {
@@ -38,7 +38,7 @@ public class FSTable extends GENTable<Fuelstation> {
             public Object generateCell(final Table source, final Object row, Object column) {
                 HorizontalLayout btnPlace = new HorizontalLayout();
 
-                final Button editBtn = new Button("e", new Button.ClickListener() {
+                final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
@@ -51,6 +51,9 @@ public class FSTable extends GENTable<Fuelstation> {
                         getUI().addWindow(new WindowForm("FS Update Form", customerForm));
                     }
                 });
+
+                editBtn.setDescription("Update this Fuelstation with new data...");
+
                 btnPlace.addComponent(editBtn);
                 btnPlace.setSizeFull();
                 btnPlace.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);

@@ -9,13 +9,13 @@ import java.util.List;
 import db.DBHandler;
 import db.ent.BussinesLine;
 import db.ent.Salesman;
-import db.interfaces.ISalesman;
+import db.interfaces.ISalesmanController;
 
 /**
  *
  * @author root
  */
-public class Salesman_Controller implements ISalesman {
+public class Salesman_Controller implements ISalesmanController {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 

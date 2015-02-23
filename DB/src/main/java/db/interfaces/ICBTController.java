@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author root
  */
-public interface ICBT extends CRUDInterface<CustomerBussinesType> {
+public interface ICBTController extends CRUDInterface<CustomerBussinesType> {
 
     List<Customer> getAllCustomersForBussinesType(Long cBTID);
 

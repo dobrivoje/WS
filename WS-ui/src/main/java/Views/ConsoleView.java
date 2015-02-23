@@ -28,8 +28,8 @@ import org.superb.apps.utilities.vaadin.Tables.CustomTable;
 import Forms.CDM.CustomerForm;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
-import db.interfaces.ICBT;
-import db.interfaces.ICustomer;
+import db.interfaces.ICBTController;
+import db.interfaces.ICustomerController;
 
 public class ConsoleView extends VerticalLayout implements View {
 
@@ -50,8 +50,8 @@ public class ConsoleView extends VerticalLayout implements View {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MODEL">
-    private static final ICustomer CUSTOMER_CONTROLLER = new Customer_Controller();
-    private static final ICBT CBT_CONTROLLER = new CBT_Controller();
+    private final ICustomerController customerController = new Customer_Controller();
+    private static final ICBTController cbtController = new CBT_Controller();
 
     private final BeanItemContainer<Customer> Customer_Container = new BeanItemContainer<>(Customer.class);
     private final BeanItemContainer<Customer> CustomersForBT_Container = new BeanItemContainer<>(Customer.class);
@@ -78,8 +78,8 @@ public class ConsoleView extends VerticalLayout implements View {
             }
         });
 
-        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
-        updateBeanItemContainer(CBT_Container, CBT_CONTROLLER.getAll());
+        updateBeanItemContainer(Customer_Container, customerController.getAll());
+        updateBeanItemContainer(CBT_Container, cbtController.getAll());
 
         //<editor-fold defaultstate="collapsed" desc="Menu buttons init">
         Button buttonNewCustomer = new Button("New Customer", new Button.ClickListener() {
@@ -90,13 +90,13 @@ public class ConsoleView extends VerticalLayout implements View {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
-                        CUSTOMER_CONTROLLER.addNewCustomer(
+                        customerController.addNewCustomer(
                                 customerName_TextField.getValue(),
                                 customerAddress_TextField.getValue(),
                                 null,
                                 customerPIB_TextField.getValue());
 
-                        updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
+                        updateBeanItemContainer(Customer_Container, customerController.getAll());
                         Notification.show("Saved.", Notification.Type.TRAY_NOTIFICATION);
                     } catch (Exception ex) {
                         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
@@ -122,13 +122,13 @@ public class ConsoleView extends VerticalLayout implements View {
             Button saveNewCBT_Button = new Button("Save", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
+                    updateBeanItemContainer(Customer_Container, customerController.getAll());
 
                     CBT_DateFrom_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        CBT_CONTROLLER.addNewCBT(
+                        cbtController.addNewCBT(
                                 (Customer) Customer_ComboBox.getValue(),
                                 (CustomerBussinesType) CBT_ComboBox.getValue(),
                                 CBT_DateFrom_TextField.getValue(),
@@ -160,7 +160,7 @@ public class ConsoleView extends VerticalLayout implements View {
             public void valueChange(Property.ValueChangeEvent event) {
                 //<editor-fold defaultstate="collapsed" desc="Customer table 2">
                 try {
-                    updateBeanItemContainer(CustomersForBT_Container, CBT_CONTROLLER.getAllCustomersForBussinesType(
+                    updateBeanItemContainer(CustomersForBT_Container, cbtController.getAllCustomersForBussinesType(
                             (CustomerBussinesType) event.getProperty().getValue()));
 
                     // cBT_Table.setPageLength(CustomersForBT_Container.size());
@@ -270,7 +270,7 @@ public class ConsoleView extends VerticalLayout implements View {
         Button customersListButton = new Button("List of Customers", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                updateBeanItemContainer(Customer_Container, CUSTOMER_CONTROLLER.getAll());
+                updateBeanItemContainer(Customer_Container, customerController.getAll());
                 HR_VL_RIGHT.removeAllComponents();
                 HR_VL_RIGHT.addComponent(allCustomersTable);
             }

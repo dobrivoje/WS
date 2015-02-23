@@ -7,9 +7,13 @@ import com.vaadin.ui.TextField;
 import db.controllers.Customer_Controller;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CRUDForm;
+import Forms.IFormNotification;
 import db.ent.Customer;
+import db.interfaces.ICustomerController;
 
 public class CustomerForm_Test extends CRUDForm<Customer> {
+
+    private final ICustomerController customerController = new Customer_Controller();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -32,23 +36,28 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
     //</editor-fold>
 
     public CustomerForm_Test(final Customer customer) {
-        super(customer);
-        
+        super(customer, new IFormNotification() {
+            @Override
+            public String getNotification() {
+                return "New Customer";
+            }
+        });
+
         fieldGroup = new BeanFieldGroup(Customer.class);
         fieldGroup.bindMemberFields(this);
-        
+
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
     public CustomerForm_Test(final Customer customer, final IRefreshVisualContainer visualContainer) {
         super(customer, visualContainer);
-        
+
         fieldGroup = new BeanFieldGroup(Customer.class);
         fieldGroup.bindMemberFields(this);
-        
+
         fieldGroup.setItemDataSource(new BeanItem(customer));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
-        
+
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
@@ -61,11 +70,11 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
 
     @Override
     public void addNewBean(Customer bean) throws Exception {
-        new Customer_Controller().addNew(bean);
+        customerController.addNew(bean);
     }
 
     @Override
     public void updateExistingBean(Customer bean) throws Exception {
-        new Customer_Controller().updateExisting(bean);
+        customerController.updateExisting(bean);
     }
 }

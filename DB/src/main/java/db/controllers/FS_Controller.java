@@ -9,17 +9,17 @@ import java.util.List;
 import db.DBHandler;
 import db.ent.City;
 import db.ent.Fuelstation;
-import db.interfaces.IFS;
+import db.interfaces.IFSController;
 
 /**
  *
  * @author root
  */
-public class FS_Controller implements IFS {
+public class FS_Controller implements IFSController {
 
     private static final DBHandler dbh = DBHandler.getDefault();
 
-    //<editor-fold defaultstate="collapsed" desc="Customer read data">@Override
+    //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override
     public List<Fuelstation> getAll() {
         return dbh.getAllFuelstation();
@@ -36,7 +36,7 @@ public class FS_Controller implements IFS {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Customer add/update data">
+    //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNew(Fuelstation newFS) throws Exception {
         dbh.addNewFS(newFS);

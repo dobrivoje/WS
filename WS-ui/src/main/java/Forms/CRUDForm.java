@@ -26,12 +26,11 @@ public abstract class CRUDForm<T> extends FormLayout {
         setStyleName(Reindeer.LAYOUT_BLACK);
     }
 
-    public CRUDForm(final T bean) {
+    public CRUDForm(final T bean, final IFormNotification notification) {
         this();
 
         // PAZI : OBAVEZNO INICIJALOIZOVATI U IZVEDENOJ KLASI !!!
         // fieldGroup.bindMemberFields(this);
-
         formButtonCaption = BUTTON_CAPTION_NEW.toString();
 
         clickListener = new Button.ClickListener() {
@@ -41,7 +40,7 @@ public abstract class CRUDForm<T> extends FormLayout {
 
                 try {
                     addNewBean(bean);
-                    Notification.show("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
+                    Notification.show(notification.getNotification() + " Added.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
                     Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -63,7 +62,7 @@ public abstract class CRUDForm<T> extends FormLayout {
 
         fieldGroup.setItemDataSource(new BeanItem(bean));
         beanItem = (BeanItem<T>) fieldGroup.getItemDataSource();
-        
+
         formButtonCaption = BUTTON_CAPTION_UPDATE.toString();
 
         clickListener = new Button.ClickListener() {

@@ -12,10 +12,10 @@ import db.ent.Fuelstation;
  *
  * @author root
  */
-public interface IFS extends CRUDInterface<Fuelstation> {
+public interface IFSController extends CRUDInterface<Fuelstation> {
 
-    public void addNew(String name, String address, City city, String coordinates) throws Exception;
+    void addNew(String name, String address, City city, String coordinates) throws Exception;
 
-    public void updateExisting(int ID, String name, String address, City city, String coordinates) throws Exception;
+    void updateExisting(int ID, String name, String address, City city, String coordinates) throws Exception;
 
 }
