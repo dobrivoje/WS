@@ -16,6 +16,7 @@ import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
 import db.controllers.CBT_Controller;
+import db.controllers.Customer_Controller;
 import db.controllers.RelCBT_Controller;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
@@ -28,7 +29,7 @@ public class RELCBTForm extends FormLayout {
 
     private static final ICBTController cbtController = new CBT_Controller();
     private static final IRELCBTController relCBTController = new RelCBT_Controller();
-    
+
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
     private final FieldGroup fieldGroup = new BeanFieldGroup(RelCBType.class);
 
@@ -112,6 +113,13 @@ public class RELCBTForm extends FormLayout {
         crudButton.setWidth(150, Unit.PIXELS);
 
         addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
+    }
+
+    public RELCBTForm(final Customer c) {
+        this(c, new BeanItemContainer<>(
+                RelCBType.class,
+                new Customer_Controller().getAllCustomerBussinesTypes(c)
+        ));
     }
 
     private void bindFieldsToBean(RelCBType existingRelCBT, Customer existingCustomer) {

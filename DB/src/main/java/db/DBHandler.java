@@ -569,7 +569,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
-    public void addNewOwner(Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
+    public void addNewOwner(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         Owner newOwner = new Owner();
 
         newOwner.setFKIDCustomer(customer);
@@ -595,7 +595,7 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateOwner(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
+    public void updateOwner(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         Owner owner = getFSOwner(ID);
 
         owner.setFKIDCustomer(customer);

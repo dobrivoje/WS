@@ -6,7 +6,6 @@
 package db.ent;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -134,28 +133,9 @@ public class RelCBType implements Serializable {
 
     @Override
     public String toString() {
-        String df = "";
-        String dt = "";
-
-        try {
-            df = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
-        } catch (Exception e) {
-        }
-        try {
-            dt = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
-        } catch (Exception e) {
-        }
-
-        /*
-         return fkIdcbt.getCustomerActivity()
-         + ("".equals(df) || "".equals(dt) ? "" : " ")
-         + ("".equals(df) ? "" : df + "-")
-         + ("".equals(dt) ? "" : dt)
-         + (active ? "  ok" : "  not active");
-         */
         return getFkIdcbt().getCustomerActivity()
                 + ", "
-                + (active ? "  ok" : "  not active");
+                + (active ? " (a)" : " (n/a)");
     }
 
 }

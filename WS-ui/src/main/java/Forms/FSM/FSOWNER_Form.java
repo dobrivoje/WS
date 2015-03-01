@@ -24,7 +24,6 @@ import db.ent.Owner;
 import db.interfaces.ICustomerController;
 import db.interfaces.IFSController;
 import db.interfaces.IFSOController;
-import java.text.SimpleDateFormat;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
@@ -151,8 +150,8 @@ public class FSOWNER_Form extends FormLayout {
     private void bindFieldsToBean(Owner ownerBean) {
         ownerBean.setFKIDCustomer((Customer) customer.getValue());
         ownerBean.setFkIdFs((Fuelstation) fs.getValue());
-        ownerBean.setDateFrom(dateFrom.getValue() == null ? null : new SimpleDateFormat(DATE_FORMAT).format(dateFrom.getValue()));
-        ownerBean.setDateTo(dateTo.getValue() == null ? null : new SimpleDateFormat(DATE_FORMAT).format(dateTo.getValue()));
+        ownerBean.setDateFrom(dateFrom.getValue());
+        ownerBean.setDateTo(dateTo.getValue());
         ownerBean.setActive(active.getValue());
     }
 }

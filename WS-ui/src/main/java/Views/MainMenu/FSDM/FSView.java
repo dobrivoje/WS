@@ -86,7 +86,7 @@ public class FSView extends VerticalLayout implements View {
     public final HorizontalLayout createTopBar() {
         TextField filter = new TextField();
         filter.setStyleName("filter-textfield");
-        filter.setInputPrompt("Filter");
+        filter.setInputPrompt("search fuel station...");
         ResetButtonForTextField.extend(filter);
         filter.setImmediate(true);
         filter.addTextChangeListener(new FieldEvents.TextChangeListener() {

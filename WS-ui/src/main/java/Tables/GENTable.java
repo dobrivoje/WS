@@ -15,7 +15,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
  * @author root
  * @param <T>
  */
-public class GENTable<T> extends Table implements IRefreshVisualContainer {
+public abstract class GENTable<T> extends Table implements IRefreshVisualContainer {
 
     protected final BeanItemContainer<T> beanContainer;
     protected List list;
@@ -33,7 +33,7 @@ public class GENTable<T> extends Table implements IRefreshVisualContainer {
         setCacheRate(4);
         setSelectable(true);
         setColumnCollapsingAllowed(true);
-        //setImmediate(true);
+        setImmediate(true);
     }
 
     protected final void updateBeanItemContainer(List list) {

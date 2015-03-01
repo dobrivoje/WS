@@ -1,6 +1,10 @@
 package Views.MainMenu.CDM;
 
+import Forms.CDM.CustomerForm;
+import Forms.FSM.FSOWNER_Form;
 import Forms.SaDesneStraneForm;
+import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
+import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -12,13 +16,16 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import Tables.CustomerTable;
+import Trees.FSOwnerTree;
+import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Panel;
 import db.ent.Customer;
+import org.superb.apps.utilities.Enums.CrudOperations;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 
 public class CustomersView extends VerticalLayout implements View {
 
@@ -26,15 +33,35 @@ public class CustomersView extends VerticalLayout implements View {
 
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
-    private final CustomerTable customersTable = new CustomerTable();
+
+    private final VerticalLayout vl1;
+    private final VerticalLayout propVL = new VerticalLayout();
+
+    private static final String[] propPanelsCaptopns = new String[]{
+        "Bussines Type(s)", "Owner(s)", "Licences "};
+    private final Panel[] propPanels = new Panel[propPanelsCaptopns.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
+    private final CustomerTable customersTable = new CustomerTable();
 
     private Button newCustomer;
     private Button newCustomerOwnerFS;
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
+
+        propVL.setSpacing(true);
+        propVL.setMargin(true);
+
+        for (int i = 0; i < propPanels.length; i++) {
+            propPanels[i] = new Panel();
+            propPanels[i].setHeight(167, Unit.PIXELS);
+            propPanels[i].setCaption(propPanelsCaptopns[i]);
+
+            propVL.addComponent(propPanels[i]);
+            propVL.setComponentAlignment(propPanels[i], Alignment.TOP_CENTER);
+        }
+
         setSizeFull();
         addStyleName("crud-view");
         VL.setSizeFull();
@@ -43,12 +70,14 @@ public class CustomersView extends VerticalLayout implements View {
         HL.setSizeFull();
         HL.setSplitPosition(70, Unit.PERCENTAGE);
         HorizontalLayout topLayout = createTopBar();
-        
+
         // kreiraj panel za tabelu i properies tabele :
-        VerticalLayout vl1 = new VerticalLayout(customersTable);
+        vl1 = new VerticalLayout(customersTable);
         vl1.setMargin(true);
         vl1.setSizeFull();
         HL.setFirstComponent(vl1);
+        HL.setSecondComponent(propVL);
+
         VL.addComponent(topLayout);
         VL.addComponent(HL);
         VL.setSizeFull();
@@ -57,24 +86,15 @@ public class CustomersView extends VerticalLayout implements View {
         addComponent(VL);
         //</editor-fold>
 
-        customersTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent event) {
-                if (event.isDoubleClick()) {
-                    Customer c = (Customer) customersTable.getValue();
-                    showPropForm(c);
-                }
-            }
-        });
-
         customersTable.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Customer c = (Customer) customersTable.getValue();
+                showPropForm(c);
             }
         });
-        //</editor-fold>
 
+        //</editor-fold>
         addComponent(VL);
     }
     //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
@@ -87,9 +107,9 @@ public class CustomersView extends VerticalLayout implements View {
     public final HorizontalLayout createTopBar() {
         TextField filter = new TextField();
         filter.setStyleName("filter-textfield");
-        filter.setInputPrompt("Filter");
+        filter.setInputPrompt("search customer...");
         ResetButtonForTextField.extend(filter);
-        filter.setImmediate(false);
+        filter.setImmediate(true);
         filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
@@ -103,7 +123,7 @@ public class CustomersView extends VerticalLayout implements View {
         newCustomer.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                // viewLogic.newProduct();
+                getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
             }
         });
 
@@ -113,7 +133,7 @@ public class CustomersView extends VerticalLayout implements View {
         newCustomerOwnerFS.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new MyWindow("New Customer Owner FS"));
+                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), new FSOWNER_Form(CrudOperations.CREATE)));
             }
         });
 
@@ -137,13 +157,14 @@ public class CustomersView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
-    private void showPropForm(Customer customer) {
-        if (customer != null) {
-            form.addStyleName("visible");
-            form.setEnabled(true);
+    private void showPropForm(Customer c) {
+        if (c != null) {
+            propPanels[0].setContent(new RELCBT_Tree("", c));
+            propPanels[1].setContent(new FSOwnerTree("", c));
         } else {
-            form.removeStyleName("visible");
-            form.setEnabled(false);
+            for (Panel p : propPanels) {
+                p.setContent(new Label());
+            }
         }
     }
 }

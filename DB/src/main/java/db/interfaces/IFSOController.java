@@ -4,6 +4,7 @@ import db.ent.Customer;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,8 +15,8 @@ public interface IFSOController extends CRUDInterface<Owner> {
 
     List<FsProp> getAllFSProperties(Owner owner);
 
-    void addNew(Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception;
+    void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 
-    void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception;
+    void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 
 }

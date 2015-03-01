@@ -8,6 +8,7 @@ package db.interfaces;
 import db.ent.City;
 import db.ent.Customer;
 import db.ent.Fuelstation;
+import db.ent.Owner;
 import db.ent.RelCBType;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import java.util.List;
 public interface ICustomerController extends CRUDInterface<Customer> {
 
     List<Fuelstation> getAllCustomerFS(Customer customer);
+    
+    List<Owner> getAllFSOwnedByCustomer(Customer customer);
 
     List<RelCBType> getAllCustomerBussinesTypes(Customer customer);
 

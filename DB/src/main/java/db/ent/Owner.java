@@ -6,6 +6,7 @@
 package db.ent;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -45,9 +48,11 @@ public class Owner implements Serializable {
     @Column(name = "IDO")
     private Long ido;
     @Column(name = "DateFrom")
-    private String dateFrom;
+    @Temporal(TemporalType.DATE)
+    private Date dateFrom;
     @Column(name = "DateTo")
-    private String dateTo;
+    @Temporal(TemporalType.DATE)
+    private Date dateTo;
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_ID_Customer", referencedColumnName = "IDC")
@@ -74,19 +79,19 @@ public class Owner implements Serializable {
         this.ido = ido;
     }
 
-    public String getDateFrom() {
+    public Date getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
+    public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public String getDateTo() {
+    public Date getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(String dateTo) {
+    public void setDateTo(Date dateTo) {
         this.dateTo = dateTo;
     }
 
@@ -142,7 +147,10 @@ public class Owner implements Serializable {
 
     @Override
     public String toString() {
-        return fKIDCustomer.getName() + "- " + fkIdFs.getName();
+        // return fKIDCustomer.getName() + "- " + fkIdFs.getName();
+        return fkIdFs.getName()
+                + ", " + fKIDCustomer.getFKIDCity().getName()
+                + (active ? " (a)" : " (n/a)");
     }
 
 }

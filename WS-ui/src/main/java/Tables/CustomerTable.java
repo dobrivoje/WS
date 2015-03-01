@@ -20,7 +20,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import db.controllers.Customer_Controller;
 import db.ent.Customer;
-import db.ent.RelCBType;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
@@ -61,12 +60,9 @@ public class CustomerTable extends GENTable<Customer> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
-                        BeanItemContainer<RelCBType> bicRCBT = new BeanItemContainer<>(
-                                RelCBType.class, 
-                                new Customer_Controller().getAllCustomerBussinesTypes(c));
 
-                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", bicRCBT);
-                        RELCBTForm relCBT_Form = new RELCBTForm(c, bicRCBT);
+                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        RELCBTForm relCBT_Form = new RELCBTForm(c);
 
                         getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", relCBT_Form, cbtTree));
                     }
@@ -134,10 +130,10 @@ public class CustomerTable extends GENTable<Customer> {
             }
         });
 
-        setVisibleColumns("idc", "name", "licence", "options", "city", "munic", "district");
-        setColumnHeaders("CLIENT ID", "CLIENT NAME", "LICENCE STATUS", "OPTIONS", "CITY", "MUNIC.", "DISTRICT");
+        setVisibleColumns(/*"idc",*/"name", "licence", "options", "city", "munic", "district");
+        setColumnHeaders(/*"CLIENT ID",*/"CLIENT NAME", "LICENCE STATUS", "OPTIONS", "CITY", "MUNIC.", "DISTRICT");
 
-        setColumnWidth("idc", 80);
+        //setColumnWidth("idc", 80);
         setColumnWidth("licence", 120);
     }
 
@@ -156,10 +152,11 @@ public class CustomerTable extends GENTable<Customer> {
             SimpleStringFilter districtFilter = new SimpleStringFilter(
                     "district", filterString, true, false);
 
-            beanContainer.addContainerFilter(new Or(
-                    nameFilter, licenceFilter,
-                    cityFilter, municipalityFilter,
-                    districtFilter));
+            beanContainer.addContainerFilter(
+                    new Or(
+                            nameFilter, licenceFilter,
+                            cityFilter, municipalityFilter,
+                            districtFilter));
         }
     }
 }

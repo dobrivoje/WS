@@ -74,8 +74,10 @@ public class FSTable extends GENTable<Fuelstation> {
                     "name", filterString, true, false);
             SimpleStringFilter cityFilter = new SimpleStringFilter(
                     "fkIdc", filterString, true, false);
+            SimpleStringFilter addressFilter = new SimpleStringFilter(
+                    "address", filterString, true, false);
 
-            beanContainer.addContainerFilter(new Or(nameFilter, cityFilter));
+            beanContainer.addContainerFilter(new Or(nameFilter, cityFilter, addressFilter));
         }
     }
 }

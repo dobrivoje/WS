@@ -6,6 +6,7 @@ import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
 import db.interfaces.IFSOController;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class FSOwner_Controller implements IFSOController {
     }
 
     @Override
-    public void addNew(Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
+    public void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         dbh.addNewOwner(customer, fuelstation, dateFrom, dateTo, active);
     }
 
@@ -55,7 +56,7 @@ public class FSOwner_Controller implements IFSOController {
     }
 
     @Override
-    public void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, String dateFrom, String dateTo, boolean active) throws Exception {
+    public void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         dbh.updateOwner(ID, customer, fuelstation, dateFrom, dateTo, active);
     }
 
