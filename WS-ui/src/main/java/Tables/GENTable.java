@@ -8,41 +8,42 @@ package Tables;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import java.util.List;
-import db.interfaces.CRUDInterface;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  *
  * @author root
+ * @param <T>
  */
 public class GENTable<T> extends Table implements IRefreshVisualContainer {
 
     protected final BeanItemContainer<T> beanContainer;
-    protected final CRUDInterface controller;
+    protected List list;
 
-    public GENTable(BeanItemContainer<T> beanContainer, CRUDInterface controller) {
+    public GENTable(BeanItemContainer<T> beanContainer, List list) {
         this.beanContainer = beanContainer;
-        this.controller = controller;
+        this.list = list;
 
         setContainerDataSource(beanContainer);
-        updateBeanItemContainer(controller.getAll());
+        updateBeanItemContainer(list);
 
         setSizeFull();
-        
-        setPageLength(beanContainer.size());
-        setCacheRate(20);
+
+        setPageLength(20);
+        setCacheRate(4);
         setSelectable(true);
         setColumnCollapsingAllowed(true);
         //setImmediate(true);
     }
 
-    protected final void updateBeanItemContainer(List listOfData) {
+    protected final void updateBeanItemContainer(List list) {
         this.beanContainer.removeAllItems();
-        this.beanContainer.addAll(listOfData);
+        this.beanContainer.addAll(list);
     }
 
     @Override
     public void refreshVisualContainer() {
+        updateBeanItemContainer(this.list);
         markAsDirtyRecursive();
     }
 }

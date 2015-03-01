@@ -6,6 +6,7 @@
 package db.ent;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RelCBType.findByDateTo", query = "SELECT r FROM RelCBType r WHERE r.dateTo = :dateTo"),
     @NamedQuery(name = "RelCBType.findByActive", query = "SELECT r FROM RelCBType r WHERE r.active = :active")})
 public class RelCBType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +46,10 @@ public class RelCBType implements Serializable {
     @Column(name = "IDRCBT")
     private Long idrcbt;
     @Column(name = "Date_From")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateFrom;
     @Column(name = "Date_To")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateTo;
     @Column(name = "Active")
     private Boolean active;
@@ -127,15 +129,33 @@ public class RelCBType implements Serializable {
             return false;
         }
         RelCBType other = (RelCBType) object;
-        if ((this.idrcbt == null && other.idrcbt != null) || (this.idrcbt != null && !this.idrcbt.equals(other.idrcbt))) {
-            return false;
-        }
-        return true;
+        return !((this.idrcbt == null && other.idrcbt != null) || (this.idrcbt != null && !this.idrcbt.equals(other.idrcbt)));
     }
 
     @Override
     public String toString() {
-        return "db.RelCBType[ idrcbt=" + idrcbt + " ]";
+        String df = "";
+        String dt = "";
+
+        try {
+            df = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
+        } catch (Exception e) {
+        }
+        try {
+            dt = new SimpleDateFormat("yyyy-MM-dd").format(dateFrom);
+        } catch (Exception e) {
+        }
+
+        /*
+         return fkIdcbt.getCustomerActivity()
+         + ("".equals(df) || "".equals(dt) ? "" : " ")
+         + ("".equals(df) ? "" : df + "-")
+         + ("".equals(dt) ? "" : dt)
+         + (active ? "  ok" : "  not active");
+         */
+        return getFkIdcbt().getCustomerActivity()
+                + ", "
+                + (active ? "  ok" : "  not active");
     }
-    
+
 }

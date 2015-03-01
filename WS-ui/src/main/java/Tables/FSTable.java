@@ -16,7 +16,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import db.controllers.FS_Controller;
 import db.ent.Fuelstation;
-import db.interfaces.IFSController;
+import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
@@ -27,11 +27,11 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 public class FSTable extends GENTable<Fuelstation> {
 
     public FSTable() {
-        this(new BeanItemContainer<>(Fuelstation.class), new FS_Controller());
+        this(new BeanItemContainer<>(Fuelstation.class), new FS_Controller().getAll());
     }
 
-    public FSTable(BeanItemContainer<Fuelstation> BIC_FS, IFSController controller) {
-        super(BIC_FS, controller);
+    public FSTable(BeanItemContainer<Fuelstation> BIC_FS, List list) {
+        super(BIC_FS, new FS_Controller().getAll());
 
         addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override

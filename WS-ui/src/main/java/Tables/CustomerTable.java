@@ -15,14 +15,13 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
-import Trees.CBTTree;
+import Trees.RELCBT_Tree;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import db.controllers.Customer_Controller;
-import db.controllers.FS_Controller;
 import db.ent.Customer;
-import db.interfaces.CRUDInterface;
-import db.interfaces.IFSController;
+import db.ent.RelCBType;
+import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
@@ -33,14 +32,12 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
  */
 public class CustomerTable extends GENTable<Customer> {
 
-    private final IFSController fsController = new FS_Controller();
-
     public CustomerTable() {
-        this(new BeanItemContainer<>(Customer.class), new Customer_Controller());
+        this(new BeanItemContainer<>(Customer.class), new Customer_Controller().getAll());
     }
 
-    public CustomerTable(BeanItemContainer<Customer> beanContainer, CRUDInterface controller) {
-        super(beanContainer, controller);
+    public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {
+        super(beanContainer, list);
 
         addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override
@@ -63,10 +60,15 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        RELCBTForm relCBT_Form = new RELCBTForm((Customer) row, null);
-                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", relCBT_Form,
-                                new CBTTree("Stablo", fsController.getAll())));
+                        Customer c = (Customer) row;
+                        BeanItemContainer<RelCBType> bicRCBT = new BeanItemContainer<>(
+                                RelCBType.class, 
+                                new Customer_Controller().getAllCustomerBussinesTypes(c));
 
+                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", bicRCBT);
+                        RELCBTForm relCBT_Form = new RELCBTForm(c, bicRCBT);
+
+                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", relCBT_Form, cbtTree));
                     }
                 });
 

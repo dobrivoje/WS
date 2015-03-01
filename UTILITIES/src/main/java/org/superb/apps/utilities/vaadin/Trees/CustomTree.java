@@ -5,42 +5,38 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.Tree;
-import com.vaadin.ui.themes.Reindeer;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author root
+ * @param <T>
  */
 public class CustomTree<T> extends Tree {
-    
-    private String caption;
-    private List<T> treeItems;
-    
-    public CustomTree() {
-        setStyleName(Reindeer.LAYOUT_BLACK);
-        
-        treeItems = new ArrayList<>();
-        caption = "Tree";
+
+    public CustomTree(String caption) {
         setCaption(caption);
     }
-    
+
+    public CustomTree(String caption, Container container) {
+        this(caption);
+        setContainerDataSource(container);
+    }
+
     public CustomTree(String caption, List treeItems) {
-        this.caption = caption;
-        this.treeItems = treeItems;
-        
-        setCaption(caption);
+        this(caption);
         addItems(treeItems);
     }
-    
-    public List<T> getTreeItems() {
-        return treeItems;
+
+    public void setSubTreeItems(Object item, List childItems) {
+        for (Object childItem : childItems) {
+            if (this.containsId(item)) {
+                addItem(childItem);
+                setParent(childItem, item);
+                setChildrenAllowed(childItem, false);
+            }
+        }
     }
-    
-    public void setTreeItems(List<T> treeItems) {
-        this.treeItems = treeItems;
-    }
-    
 }

@@ -1,5 +1,6 @@
 package Forms.CDM;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -22,7 +23,6 @@ import db.ent.RelCBType;
 import db.interfaces.ICBTController;
 import db.interfaces.IRELCBTController;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class RELCBTForm extends FormLayout {
 
@@ -75,7 +75,7 @@ public class RELCBTForm extends FormLayout {
         cBType.focus();
     }
 
-    public RELCBTForm(final Customer existingCustomer, final IRefreshVisualContainer visualContainer) {
+    public RELCBTForm(final Customer existingCustomer, final Container container) {
         this();
 
         customer.setEnabled(false);
@@ -93,10 +93,7 @@ public class RELCBTForm extends FormLayout {
 
                 try {
                     relCBTController.addNew(newRelCBType);
-
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
+                    container.addItem(newRelCBType);
 
                     n.show(getUI().getPage());
                 } catch (NullPointerException npe) {

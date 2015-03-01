@@ -9,8 +9,8 @@ import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
@@ -29,7 +29,7 @@ public class WindowFormProp extends Window {
     private final VerticalLayout leftVL = new VerticalLayout();
     private final VerticalLayout rightVL = new VerticalLayout();
 
-    public WindowFormProp(String caption, FormLayout formLayout, Component... components) {
+    public WindowFormProp(String caption, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
@@ -49,7 +49,7 @@ public class WindowFormProp extends Window {
 
         HSP.setSizeFull();
         HSP.setSplitPosition(60, Unit.PERCENTAGE);
-        leftVL.addComponent(formLayout);
+        leftVL.addComponent(layout);
         rightVL.addComponents(components);
         leftVL.setSizeFull();
         leftVL.setMargin(true);
@@ -59,9 +59,9 @@ public class WindowFormProp extends Window {
         rightVL.setSpacing(true);
         HSP.addComponent(leftVL);
         HSP.addComponent(rightVL);
-        leftVL.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
+        leftVL.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
         for (Component c : components) {
-            rightVL.setComponentAlignment(c, Alignment.MIDDLE_CENTER);
+            rightVL.setComponentAlignment(c, Alignment.TOP_CENTER);
         }
 
         VL.addComponent(HSP);
