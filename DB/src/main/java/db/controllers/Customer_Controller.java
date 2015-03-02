@@ -43,7 +43,6 @@ public class Customer_Controller implements ICustomerController {
     public List<Fuelstation> getAllCustomerFS(Customer customer) {
         List<Fuelstation> fs = new ArrayList<>();
 
-        // List<Owner> customerOwned = new FSOwner_Controller().getAllFSOwnedByCustomer(customer);
         List<Owner> customerOwned = dbh.getAllFSOwnedByCustomer(customer);
         for (Owner o : customerOwned) {
             fs.add(o.getFkIdFs());
@@ -61,8 +60,8 @@ public class Customer_Controller implements ICustomerController {
     public List<Owner> getAllFSOwnedByCustomer(Customer customer) {
         return dbh.getAllFSOwnedByCustomer(customer);
     }
-
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {

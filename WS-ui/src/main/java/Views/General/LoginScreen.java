@@ -104,8 +104,10 @@ public class LoginScreen extends CssLayout {
         CssLayout loginInformation = new CssLayout();
         loginInformation.setStyleName("login-information");
         Label loginInfoText = new Label(
-                "<h1>Login Information</h1>"
-                + "Log in as &quot;ws&quot; to have full access. For all users, any password is fine",
+                "<h1>MOL Serbia SW<br>Platform</br></h1>"
+                + "<h2>Wholesale App</h2>"
+                + "Log in as &quot;ws&quot; to have full access."
+                +"<br>No password is needed now.</br>",
                 ContentMode.HTML);
         loginInformation.addComponent(loginInfoText);
         return loginInformation;

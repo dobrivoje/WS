@@ -6,7 +6,7 @@
 package db.ent;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,19 +33,33 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FsProp.findAll", query = "SELECT f FROM FsProp f"),
-    @NamedQuery(name = "FsProp.findByIdfsp", query = "SELECT f FROM FsProp f WHERE f.idfsp = :idfsp"),
+
+    @NamedQuery(name = "FsProp.findByFSPROP", query = "SELECT f FROM FsProp f WHERE f = :FSPROP"),
+    @NamedQuery(name = "FsProp.findByID", query = "SELECT f FROM FsProp f WHERE f.idfsp = :ID"),
     @NamedQuery(name = "FsProp.findByOwner", query = "SELECT f FROM FsProp f WHERE f.fkIdo = :owner"),
-    @NamedQuery(name = "FsProp.findByPropertiesDate", query = "SELECT f FROM FsProp f WHERE f.propertiesDate = :propertiesDate"),
+
+    @NamedQuery(name = "FsProp.FSPropByCustomer",
+            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fKIDCustomer = :customer AND f.fkIdo.fkIdFs = :fuelstation AND f.active = :active"),
+
+    @NamedQuery(name = "FsProp.FSPropByFS",
+            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = :active"),
+    
+    @NamedQuery(name = "FsProp.NewestFSPropForFS",
+            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = TRUE ORDER BY f.idfsp DESC"),
+
+    @NamedQuery(name = "FsProp.FSPropByPartCustomerName",
+            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fKIDCustomer.name LIKE :partName"),
+
     @NamedQuery(name = "FsProp.findByNoOfTanks", query = "SELECT f FROM FsProp f WHERE f.noOfTanks = :noOfTanks"),
     @NamedQuery(name = "FsProp.findByRestaurant", query = "SELECT f FROM FsProp f WHERE f.restaurant = :restaurant"),
     @NamedQuery(name = "FsProp.findByTruckCapable", query = "SELECT f FROM FsProp f WHERE f.truckCapable = :truckCapable"),
     @NamedQuery(name = "FsProp.findByCarWash", query = "SELECT f FROM FsProp f WHERE f.carWash = :carWash"),
-    @NamedQuery(name = "FsProp.findByCompliance", query = "SELECT f FROM FsProp f WHERE f.compliance = :compliance"),
-    @NamedQuery(name = "FsProp.findByLicence", query = "SELECT f FROM FsProp f WHERE f.licence = :licence"),
     @NamedQuery(name = "FsProp.findByLicDateFrom", query = "SELECT f FROM FsProp f WHERE f.licDateFrom = :licDateFrom"),
     @NamedQuery(name = "FsProp.findByLicDateTo", query = "SELECT f FROM FsProp f WHERE f.licDateTo = :licDateTo"),
     @NamedQuery(name = "FsProp.findByActive", query = "SELECT f FROM FsProp f WHERE f.active = :active")})
+
 public class FsProp implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,13 +67,14 @@ public class FsProp implements Serializable {
     @Column(name = "IDFSP")
     private Long idfsp;
     @Column(name = "PropertiesDate")
-    private String propertiesDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date propertiesDate;
     @Column(name = "NoOfTanks")
     private Integer noOfTanks;
     @Column(name = "Restaurant")
     private Boolean restaurant;
     @Column(name = "TruckCapable")
-    private BigInteger truckCapable;
+    private int truckCapable;
     @Column(name = "CarWash")
     private Boolean carWash;
     @Column(name = "Compliance")
@@ -66,9 +82,11 @@ public class FsProp implements Serializable {
     @Column(name = "Licence")
     private String licence;
     @Column(name = "LicDateFrom")
-    private String licDateFrom;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date licDateFrom;
     @Column(name = "LicDateTo")
-    private String licDateTo;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date licDateTo;
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_IDO", referencedColumnName = "IDO")
@@ -92,11 +110,11 @@ public class FsProp implements Serializable {
         this.idfsp = idfsp;
     }
 
-    public String getPropertiesDate() {
+    public Date getPropertiesDate() {
         return propertiesDate;
     }
 
-    public void setPropertiesDate(String propertiesDate) {
+    public void setPropertiesDate(Date propertiesDate) {
         this.propertiesDate = propertiesDate;
     }
 
@@ -116,11 +134,11 @@ public class FsProp implements Serializable {
         this.restaurant = restaurant;
     }
 
-    public BigInteger getTruckCapable() {
+    public int getTruckCapable() {
         return truckCapable;
     }
 
-    public void setTruckCapable(BigInteger truckCapable) {
+    public void setTruckCapable(int truckCapable) {
         this.truckCapable = truckCapable;
     }
 
@@ -148,19 +166,19 @@ public class FsProp implements Serializable {
         this.licence = licence;
     }
 
-    public String getLicDateFrom() {
+    public Date getLicDateFrom() {
         return licDateFrom;
     }
 
-    public void setLicDateFrom(String licDateFrom) {
+    public void setLicDateFrom(Date licDateFrom) {
         this.licDateFrom = licDateFrom;
     }
 
-    public String getLicDateTo() {
+    public Date getLicDateTo() {
         return licDateTo;
     }
 
-    public void setLicDateTo(String licDateTo) {
+    public void setLicDateTo(Date licDateTo) {
         this.licDateTo = licDateTo;
     }
 
@@ -203,15 +221,16 @@ public class FsProp implements Serializable {
             return false;
         }
         FsProp other = (FsProp) object;
-        if ((this.idfsp == null && other.idfsp != null) || (this.idfsp != null && !this.idfsp.equals(other.idfsp))) {
-            return false;
-        }
-        return true;
+        return !((this.idfsp == null && other.idfsp != null) || (this.idfsp != null && !this.idfsp.equals(other.idfsp)));
     }
 
     @Override
     public String toString() {
-        return "db.FsProp[ idfsp=" + idfsp + " ]";
+        return getFkIdo().getFKIDCustomer()
+                + ", "
+                + getFkIdo().getFkIdFs()
+                + ", "
+                + (getActive() ? "(a)" : "(na)");
     }
-    
+
 }

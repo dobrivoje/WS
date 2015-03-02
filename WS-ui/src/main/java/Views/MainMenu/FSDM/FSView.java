@@ -1,7 +1,7 @@
 package Views.MainMenu.FSDM;
 
+import Forms.FSPROP.FSPROP_Form;
 import com.vaadin.event.FieldEvents;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -9,13 +9,17 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import Tables.FSTable;
 import Views.ResetButtonForTextField;
+import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
+import db.controllers.FSPROP_Controller;
+import db.ent.FsProp;
 import db.ent.Fuelstation;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class FSView extends VerticalLayout implements View {
 
@@ -23,33 +27,33 @@ public class FSView extends VerticalLayout implements View {
 
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
-    private final FSTable FS_Table;
+    private final VerticalLayout propVL = new VerticalLayout();
 
-    private VerticalLayout customersProperties;
+    private final FSTable FS_Table = new FSTable();
 
     private Button newFS;
 
     public FSView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
-        FS_Table = new FSTable();
-
         setSizeFull();
         addStyleName("crud-view");
-
         VL.setSizeFull();
         VL.setMargin(true);
         VL.setSpacing(true);
-
         HL.setSizeFull();
-        HL.setSplitPosition(70, Unit.PERCENTAGE);
-
+        HL.setSplitPosition(100, Unit.PERCENTAGE);
         HorizontalLayout topLayout = createTopBar();
+
         // kreiraj panel za tabelu i properies tabele :
         VerticalLayout vl1 = new VerticalLayout(FS_Table);
+
+        propVL.setMargin(true);
+        propVL.setSpacing(true);
+
         vl1.setMargin(true);
         vl1.setSizeFull();
         HL.setFirstComponent(vl1);
-
+        HL.setSecondComponent(propVL);
         VL.addComponent(topLayout);
         VL.addComponent(HL);
         VL.setSizeFull();
@@ -59,17 +63,12 @@ public class FSView extends VerticalLayout implements View {
         addComponent(VL);
         //</editor-fold>
 
-        FS_Table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent event) {
-                Fuelstation bean = (Fuelstation) event.getItemId();
+        FS_Table.addValueChangeListener(new Property.ValueChangeListener() {
 
-                if (customersProperties != null) {
-                    HL.removeComponent(customersProperties);
-                }
-                customersProperties = createProperties(bean, event);
-                customersProperties.setMargin(true);
-                HL.setSecondComponent(customersProperties);
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                Fuelstation fs = (Fuelstation) FS_Table.getValue();
+                openProperties(fs);
             }
         });
         //</editor-fold>
@@ -115,15 +114,33 @@ public class FSView extends VerticalLayout implements View {
         topLayout.setStyleName("top-bar");
         return topLayout;
     }
-
-    private VerticalLayout createProperties(Fuelstation bean, ItemClickEvent event) {
-        VerticalLayout vl = new VerticalLayout();
-        vl.setMargin(true);
-        vl.setSpacing(true);
-
-        vl.addComponent(new Label(bean == null ? "no data" : bean.toString()));
-        vl.addComponent(new Label("item :" + event.getItem().toString() + ", getItemId" + event.getItemId().toString()));
-        return vl;
-    }
     //</editor-fold>
+
+    private void openProperties(Fuelstation fs) {
+        if (fs != null) {
+
+            HL.setSplitPosition(60, Unit.PERCENTAGE);
+
+            if (propVL.getComponentCount() > 0) {
+                propVL.removeAllComponents();
+            }
+
+            FsProp fsProp = new FSPROP_Controller().getNewestFSPropForFS(fs);
+
+            if (fsProp != null) {
+                FSPROP_Form fspropForm = new FSPROP_Form(
+                        new BeanItem(fsProp), new IRefreshVisualContainer() {
+                            @Override
+                            public void refreshVisualContainer() {
+                                FS_Table.refreshVisualContainer();
+                            }
+                        });
+                propVL.addComponent(fspropForm);
+            }
+
+        } else {
+            propVL.removeAllComponents();
+            HL.setSplitPosition(100, Unit.PERCENTAGE);
+        }
+    }
 }

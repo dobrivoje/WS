@@ -38,7 +38,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private static final String[] propPanelsCaptopns = new String[]{
-        "Bussines Type(s)", "Owner(s)", "Licences "};
+        "Bussines Type(s)", "FS(s) Owned by this customer", "Licences "};
     private final Panel[] propPanels = new Panel[propPanelsCaptopns.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();

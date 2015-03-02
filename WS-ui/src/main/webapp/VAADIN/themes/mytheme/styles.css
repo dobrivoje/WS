@@ -11918,7 +11918,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .login-screen {
 	background: #3b3f42;
-	background-image: url(img/archetype-login-bg.jpg);
+	background-image: url(img/login-bg-mol1.jpg);
 	background-size: cover;
 	background-position: 50% 50%;
 	width: 100%;
@@ -11956,6 +11956,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .login-screen .login-information h1 {
+	color: inherit;
+}
+
+.mytheme .login-screen .login-information h2 {
 	color: inherit;
 }
 

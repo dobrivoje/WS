@@ -40,7 +40,7 @@ public abstract class CRUDForm<T> extends FormLayout {
 
                 try {
                     addNewBean(bean);
-                    Notification.show(notification.getNotification() + " Added.", Notification.Type.TRAY_NOTIFICATION);
+                    Notification.show("New " + notification.getNotification() + " Added.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
                     Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }

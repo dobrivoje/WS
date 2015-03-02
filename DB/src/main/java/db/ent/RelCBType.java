@@ -135,7 +135,7 @@ public class RelCBType implements Serializable {
     public String toString() {
         return getFkIdcbt().getCustomerActivity()
                 + ", "
-                + (active ? " (a)" : " (n/a)");
+                + (active ? " (a)" : " (na)");
     }
 
 }

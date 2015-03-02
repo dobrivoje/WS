@@ -23,6 +23,7 @@ import db.ent.Owner;
 import db.ent.RelCBType;
 import db.ent.RelSALESMANIMAGE;
 import db.ent.Salesman;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -589,9 +590,9 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateOwner(Owner newOwner) throws Exception {
+    public void updateOwner(Owner existingOwner) throws Exception {
         getEm().getTransaction().begin();
-        em.merge(newOwner);
+        em.merge(existingOwner);
         getEm().getTransaction().commit();
     }
 
@@ -613,6 +614,66 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="FS PROPERTIES">
     //<editor-fold defaultstate="collapsed" desc="READ">
+    public FsProp getFSProp(FsProp fsProp) {
+        try {
+            return (FsProp) getEm().createNamedQuery("FsProp.findByFSPROP")
+                    .setParameter("FSPROP", fsProp)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public FsProp getFSProp(long ID) {
+        try {
+            return (FsProp) getEm().createNamedQuery("FsProp.findByID")
+                    .setParameter("ID", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<FsProp> getAllFSProps() {
+        try {
+            return getEm().createNamedQuery("FsProp.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active) {
+        try {
+            return getEm().createNamedQuery("FsProp.FSPropByFS")
+                    .setParameter("fuelstation", fuelstation)
+                    .setParameter("active", active)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public FsProp getNewestFSPropForFS(Fuelstation fuelstation) {
+        try {
+            return (FsProp) getEm().createNamedQuery("FsProp.NewestFSPropForFS")
+                    .setParameter("fuelstation", fuelstation)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<FsProp> getAllFSProperties(String FSpartName) {
+        try {
+            return getEm().createNamedQuery("FsProp.FSPropByPartCustomerName")
+                    .setParameter("partName", FSpartName.concat("%"))
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<FsProp> getAllFSProperties(Owner owner) {
         try {
             return getEm().createNamedQuery("FsProp.findByOwner")
@@ -622,12 +683,88 @@ public class DBHandler {
             return null;
         }
     }
+
+    public List<FsProp> getAllFSPropertiesByCustomer(Customer customer, Fuelstation fuelstation, boolean active) {
+        try {
+            return getEm().createNamedQuery("FsProp.FSPropByCustomer")
+                    .setParameter("customer", customer)
+                    .setParameter("fuelstation", fuelstation)
+                    .setParameter("active", active)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
-    // public List<FsProp> getAllFSProperties(Owner owner) 
+    public void addNewFSProp(FsProp newFsProp) throws Exception {
+        getEm().getTransaction().begin();
+        em.persist(newFsProp);
+        getEm().getTransaction().commit();
+    }
+
+    public void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant,
+            int truckCapable, boolean carWash, String compliance, String licence,
+            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
+
+        FsProp newFsProp = new FsProp();
+
+        newFsProp.setFkIdo(owner);
+        newFsProp.setPropertiesDate(propDate);
+        newFsProp.setNoOfTanks(noOfTanks);
+        newFsProp.setRestaurant(restaurant);
+        newFsProp.setTruckCapable(truckCapable);
+        newFsProp.setCarWash(carWash);
+        newFsProp.setCompliance(compliance);
+        newFsProp.setLicence(licence);
+        newFsProp.setLicDateFrom(dateLicenceFrom);
+        newFsProp.setLicDateTo(dateLicenceTo);
+        newFsProp.setActive(active);
+
+        getEm().getTransaction().begin();
+        em.persist(newFsProp);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateFSProp(FsProp existingFsProp) throws Exception {
+        getEm().getTransaction().begin();
+        em.merge(existingFsProp);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateFSProp(FsProp existingFsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
+            int truckCapable, boolean carWash, String compliance, String licence,
+            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
+
+        existingFsProp.setFkIdo(owner);
+        existingFsProp.setPropertiesDate(propDate);
+        existingFsProp.setNoOfTanks(noOfTanks);
+        existingFsProp.setRestaurant(restaurant);
+        existingFsProp.setTruckCapable(truckCapable);
+        existingFsProp.setCarWash(carWash);
+        existingFsProp.setCompliance(compliance);
+        existingFsProp.setLicence(licence);
+        existingFsProp.setLicDateFrom(dateLicenceFrom);
+        existingFsProp.setLicDateTo(dateLicenceTo);
+        existingFsProp.setActive(active);
+
+        getEm().getTransaction().begin();
+        em.merge(existingFsProp);
+        getEm().getTransaction().commit();
+    }
+
+    public void updateFSProp(long FsPropID, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
+            int truckCapable, boolean carWash, String compliance, String licence,
+            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
+
+        FsProp existingFsProp = getFSProp(FsPropID);
+        updateFSProp(existingFsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash,
+                compliance, licence, dateLicenceFrom, dateLicenceTo, active);
+    }
     //</editor-fold>
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="CITY">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<City> getAllCities() {

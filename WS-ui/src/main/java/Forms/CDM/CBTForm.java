@@ -21,7 +21,7 @@ public class CBTForm extends CRUDForm<CustomerBussinesType> {
         super(customerBussinesType, new IFormNotification() {
             @Override
             public String getNotification() {
-                return "New CBT";
+                return "CBT";
             }
         });
         addComponents(customerActivity, formButton);
