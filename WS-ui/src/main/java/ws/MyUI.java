@@ -4,8 +4,9 @@ import authentication.AccessControl;
 import authentication.BasicAccessControl;
 import Views.General.LoginScreen;
 import Views.General.LoginScreen.LoginListener;
-import Views.General.EmptyView;
 import Views.General.MainScreen;
+import Views.SYSNOTIF.Sys2View;
+import Views.SYSNOTIF.SysNotifView;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -45,7 +46,7 @@ public class MyUI extends UI {
 
     protected void showMainView() {
         setContent(new MainScreen(MyUI.this));
-        getNavigator().navigateTo(EmptyView.class.getSimpleName());
+        getNavigator().navigateTo(SysNotifView.class.getSimpleName());
     }
 
     public static MyUI get() {

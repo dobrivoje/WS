@@ -9,6 +9,7 @@ import Views.ConsoleView;
 import Views.MainMenu.CDM.CustomersView;
 import Views.MainMenu.FSDM.FSView;
 import Views.MainMenu.MainMenu;
+import Views.SYSNOTIF.SysNotifView;
 import ws.MyUI;
 
 /**
@@ -34,10 +35,11 @@ public class MainScreen extends HorizontalLayout {
         menu.addViewTree(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME);
         menu.addViewButton(new AboutView(), AboutView.class.getSimpleName(), AboutView.VIEW_NAME, FontAwesome.INFO_CIRCLE);
 
-        // DODAVANJE VIEW-ova NOVIH AKCIJAI GL. MENIJA :
+        // DODAVANJE VIEW-ova NOVIH AKCIJA I GL. MENIJA :
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
         navigator.addView(CustomersView.class.getSimpleName(), CustomersView.class);
         navigator.addView(FSView.class.getSimpleName(), FSView.class);
+        navigator.addView(SysNotifView.class.getSimpleName(), SysNotifView.class);
 
         navigator.addViewChangeListener(viewChangeListener);
 
