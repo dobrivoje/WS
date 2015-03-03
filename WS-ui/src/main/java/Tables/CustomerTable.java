@@ -18,12 +18,12 @@ import Forms.CDM.RELCBTForm;
 import Trees.RELCBT_Tree;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
-import db.controllers.Customer_Controller;
 import db.ent.Customer;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import static ws.MyUI.DS;
 
 /**
  *
@@ -32,7 +32,7 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 public class CustomerTable extends GENTable<Customer> {
 
     public CustomerTable() {
-        this(new BeanItemContainer<>(Customer.class), new Customer_Controller().getAll());
+        this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
     }
 
     public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {

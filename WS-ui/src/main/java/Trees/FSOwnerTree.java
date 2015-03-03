@@ -6,11 +6,11 @@
 package Trees;
 
 import com.vaadin.data.Container;
-import db.controllers.Customer_Controller;
 import db.ent.Customer;
 import db.ent.Owner;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.Trees.CustomTree;
+import static ws.MyUI.DS;
 
 /**
  *
@@ -24,7 +24,7 @@ public class FSOwnerTree extends CustomTree<Owner> {
     }
 
     public FSOwnerTree(String caption, Customer customer) {
-        super(caption, new Customer_Controller().getAllFSOwnedByCustomer(customer));
+        super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer));
         createSubItems();
     }
 

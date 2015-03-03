@@ -13,20 +13,17 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
-import db.controllers.City_Controller;
-import db.controllers.Customer_Controller;
 import db.ent.City;
 import db.ent.Customer;
-import db.interfaces.ICityController;
 import db.interfaces.ICustomerController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class CustomerForm extends FormLayout {
-    private final ICustomerController customerController = new Customer_Controller();
-    private final ICityController cityController = new City_Controller();
+    private final ICustomerController customerController = DS.getCustomerController();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
     private Button crudButton;
@@ -44,7 +41,7 @@ public class CustomerForm extends FormLayout {
 
     @PropertyId("fKIDCity")
     private final ComboBox city = new ComboBox("Customer City", 
-            new BeanItemContainer(City.class, cityController.getAll()));
+            new BeanItemContainer(City.class, DS.getCityController().getAll()));
 
     @PropertyId("pib")
     private final TextField pib = new TextField("Customer PIB");

@@ -17,21 +17,15 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
-import db.controllers.FSOwner_Controller;
-import db.controllers.FSPROP_Controller;
 import db.ent.FsProp;
 import db.ent.Owner;
-import db.interfaces.IFSOController;
-import db.interfaces.IFSPROPController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class FSPROP_Form extends FormLayout {
-
-    private final IFSOController fsOwnerController = new FSOwner_Controller();
-    private final IFSPROPController fsPropController = new FSPROP_Controller();
 
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
@@ -39,7 +33,8 @@ public class FSPROP_Form extends FormLayout {
     private Button crudButton;
     private BeanItem<FsProp> beanItem;
 
-    private final BeanItemContainer<Owner> bicOwner = new BeanItemContainer(Owner.class, fsOwnerController.getAll());
+    private final BeanItemContainer<Owner> bicOwner = new BeanItemContainer(
+            Owner.class, DS.getFSOController().getAll());
 
     private Button.ClickListener clickListener;
     private String btnCaption;
@@ -114,7 +109,7 @@ public class FSPROP_Form extends FormLayout {
                     bindFieldsToBean(newFSProp);
 
                     try {
-                        fsPropController.addNew(newFSProp);
+                        DS.getFSPROPController().addNew(newFSProp);
                         Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -149,7 +144,7 @@ public class FSPROP_Form extends FormLayout {
                 bindFieldsToBean(existingFSProp);
 
                 try {
-                    fsPropController.updateExisting(existingFSProp);
+                    DS.getFSPROPController().updateExisting(existingFSProp);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("FS Property Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);

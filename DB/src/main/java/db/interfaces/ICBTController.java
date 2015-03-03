@@ -22,4 +22,7 @@ public interface ICBTController extends CRUDInterface<CustomerBussinesType> {
 
     void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
             throws Exception;
+
+    public void updateExisting(Long ID, Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
+            throws Exception;
 }

@@ -24,41 +24,38 @@ import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class DashboardView extends Panel implements View {
+public abstract class DashboardView extends Panel implements View {
+
     private static final String EDIT_ID = "dashboard-edit";
-    private  static final String TITLE_ID = "dashboard-title";
+    private static final String TITLE_ID = "dashboard-title";
 
     private Label titleLabel;
     private NotificationsButton notificationsButton;
     private CssLayout dashboardPanels;
-    protected final VerticalLayout root = new VerticalLayout();;
+    protected final VerticalLayout root = new VerticalLayout();
+
     private Window notificationsWindow;
 
-    private DashboardView() {
+    protected DashboardView(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
-        
+
         root.setSizeFull();
         root.setMargin(true);
         root.addStyleName("dashboard-view");
         setContent(root);
         Responsive.makeResponsive(root);
 
-        root.addComponent(buildHeader());
-    }
-    
-    protected DashboardView(Component...components) {
-        this();
-        
-        buildContentWithComponents(components);
+        root.addComponent(buildHeader(dashBoardTitle));
     }
 
-    private Component buildHeader() {
+    //<editor-fold defaultstate="collapsed" desc="DashBoard Header">
+    protected final Component buildHeader(String dashBoardTitle) {
         HorizontalLayout header = new HorizontalLayout();
         header.addStyleName("viewheader");
         header.setSpacing(true);
 
-        titleLabel = new Label("Dashboard");
+        titleLabel = new Label(dashBoardTitle);
         titleLabel.setId(TITLE_ID);
         titleLabel.setSizeUndefined();
         titleLabel.addStyleName(ValoTheme.LABEL_H1);
@@ -75,7 +72,7 @@ public class DashboardView extends Panel implements View {
         return header;
     }
 
-    private  NotificationsButton buildNotificationsButton() {
+    private NotificationsButton buildNotificationsButton() {
         NotificationsButton result = new NotificationsButton();
         result.addClickListener(new Button.ClickListener() {
             @Override
@@ -100,20 +97,9 @@ public class DashboardView extends Panel implements View {
         });
         return result;
     }
+    //</editor-fold>
 
-    protected final void buildContentWithComponents(Component...components) {
-        dashboardPanels = new CssLayout();
-        dashboardPanels.addStyleName("dashboard-panels");
-        Responsive.makeResponsive(dashboardPanels);
-
-        for (Component c : components) {
-            dashboardPanels.addComponent(c);
-        }
-
-        root.addComponent(dashboardPanels);
-        root.setExpandRatio(dashboardPanels, 1);
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="Wrappers, builders, popups windows">
     protected Component createContentWrapper(final Component content) {
         final CssLayout slot = new CssLayout();
         slot.setWidth(100, Unit.PERCENTAGE);
@@ -131,7 +117,7 @@ public class DashboardView extends Panel implements View {
         caption.addStyleName(ValoTheme.LABEL_H4);
         caption.addStyleName(ValoTheme.LABEL_COLORED);
         caption.addStyleName(ValoTheme.LABEL_NO_MARGIN);
-        content.setCaption(null);
+        content.setCaption("");
 
         MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
@@ -171,8 +157,21 @@ public class DashboardView extends Panel implements View {
 
         card.addComponents(toolbar, content);
         slot.addComponent(card);
-        
+
         return slot;
+    }
+
+    protected final void buildContentWithComponents(Component... components) {
+        dashboardPanels = new CssLayout();
+        dashboardPanels.addStyleName("dashboard-panels");
+        Responsive.makeResponsive(dashboardPanels);
+
+        for (Component c : components) {
+            dashboardPanels.addComponent(c);
+        }
+
+        root.addComponent(dashboardPanels);
+        root.setExpandRatio(dashboardPanels, 1);
     }
 
     protected void openNotificationsPopup(final Button.ClickEvent event) {
@@ -245,10 +244,6 @@ public class DashboardView extends Panel implements View {
         }
     }
 
-    @Override
-    public void enter(final ViewChangeEvent event) {
-    }
-
     protected void toggleMaximized(final Component panel, final boolean maximized) {
         for (Iterator<Component> it = root.iterator(); it.hasNext();) {
             it.next().setVisible(!maximized);
@@ -291,6 +286,11 @@ public class DashboardView extends Panel implements View {
             }
             setDescription(description);
         }
+    }
+    //</editor-fold>
+
+    @Override
+    public void enter(final ViewChangeEvent event) {
     }
 
 }

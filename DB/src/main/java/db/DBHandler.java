@@ -23,7 +23,6 @@ import db.ent.Owner;
 import db.ent.RelCBType;
 import db.ent.RelSALESMANIMAGE;
 import db.ent.Salesman;
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**

@@ -5,12 +5,10 @@ import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CRUDForm;
 import Forms.IFormNotification;
-import db.controllers.CBT_Controller;
 import db.ent.CustomerBussinesType;
+import static ws.MyUI.DS;
 
 public class CBTForm extends CRUDForm<CustomerBussinesType> {
-
-    private final CBT_Controller cbtController = new CBT_Controller();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("customerActivity")
@@ -39,11 +37,11 @@ public class CBTForm extends CRUDForm<CustomerBussinesType> {
 
     @Override
     public void updateExistingBean(CustomerBussinesType bean) throws Exception {
-        cbtController.updateExisting(bean);
+        DS.getCBTController().updateExisting(bean);
     }
 
     @Override
     public void addNewBean(CustomerBussinesType bean) throws Exception {
-        cbtController.addNew(bean);
+        DS.getCBTController().addNew(bean);
     }
 }

@@ -15,34 +15,25 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
-import db.controllers.Customer_Controller;
-import db.controllers.FSOwner_Controller;
-import db.controllers.FS_Controller;
 import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
-import db.interfaces.ICustomerController;
-import db.interfaces.IFSController;
-import db.interfaces.IFSOController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class FSOWNER_Form extends FormLayout {
 
-    private final ICustomerController customerController = new Customer_Controller();
-    private final IFSOController fsOwnerController = new FSOwner_Controller();
-    private final IFSController fsController = new FS_Controller();
-    
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
     private Button crudButton;
     private BeanItem<Owner> beanItem;
 
-    private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, customerController.getAll());
-    private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, fsController.getAll());
+    private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, DS.getCustomerController().getAll());
+    private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, DS.getFSController().getAll());
 
     private Button.ClickListener clickListener;
     private String btnCaption;
@@ -98,7 +89,7 @@ public class FSOWNER_Form extends FormLayout {
                     bindFieldsToBean(newOwner);
 
                     try {
-                        fsOwnerController.addNew(newOwner);
+                        DS.getFSOController().addNew(newOwner);
                         Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -130,7 +121,7 @@ public class FSOWNER_Form extends FormLayout {
                 bindFieldsToBean(existingOwner);
 
                 try {
-                    fsOwnerController.updateExisting(existingOwner);
+                    DS.getFSOController().updateExisting(existingOwner);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);

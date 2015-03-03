@@ -16,10 +16,10 @@ import Tables.FSTable;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import db.controllers.FSPROP_Controller;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class FSView extends VerticalLayout implements View {
 
@@ -125,7 +125,7 @@ public class FSView extends VerticalLayout implements View {
                 propVL.removeAllComponents();
             }
 
-            FsProp fsProp = new FSPROP_Controller().getNewestFSPropForFS(fs);
+            FsProp fsProp = DS.getFSPROPController().getNewestFSPropForFS(fs);
 
             if (fsProp != null) {
                 FSPROP_Form fspropForm = new FSPROP_Form(

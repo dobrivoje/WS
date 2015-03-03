@@ -13,24 +13,19 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
-import db.controllers.City_Controller;
-import db.controllers.FS_Controller;
 import db.ent.City;
 import db.ent.Fuelstation;
-import db.interfaces.ICityController;
-import db.interfaces.IFSController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class FSForm extends FormLayout {
 
-    private final ICityController cityController = new City_Controller();
-    private final IFSController fsController = new FS_Controller();
-    
     private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
-    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class, cityController.getAll());
+    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class,
+            DS.getCityController().getAll());
 
     private Button crudButton;
     private BeanItem<Fuelstation> beanItem;
@@ -82,7 +77,7 @@ public class FSForm extends FormLayout {
                     bindFieldsToBean(newFuelstation);
 
                     try {
-                        fsController.addNew(newFuelstation);
+                        DS.getFSController().addNew(newFuelstation);
                         Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -114,7 +109,7 @@ public class FSForm extends FormLayout {
                 bindFieldsToBean(FSToUpdate);
 
                 try {
-                    fsController.updateExisting(FSToUpdate);
+                    DS.getFSController().updateExisting(FSToUpdate);
 
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();

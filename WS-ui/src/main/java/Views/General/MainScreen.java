@@ -1,15 +1,15 @@
 package Views.General;
 
+import Views.ConsoleView;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
-import Views.ConsoleView;
 import Views.MainMenu.CDM.CustomersView;
 import Views.MainMenu.FSDM.FSView;
 import Views.MainMenu.MainMenu;
 import Views.SYSNOTIF.SysNotifView;
+import com.vaadin.server.FontAwesome;
 import ws.MyUI;
 
 /**
@@ -32,7 +32,8 @@ public class MainScreen extends HorizontalLayout {
         final Navigator navigator = new Navigator(ui, viewContainer);
         navigator.setErrorView(ErrorView.class);
         menu = new MainMenu(navigator);
-        menu.addViewTree(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME);
+        menu.createViewTree("mainMenu");
+        // menu.addViewTree(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME);
         menu.addViewButton(new AboutView(), AboutView.class.getSimpleName(), AboutView.VIEW_NAME, FontAwesome.INFO_CIRCLE);
 
         // DODAVANJE VIEW-ova NOVIH AKCIJA I GL. MENIJA :

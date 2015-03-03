@@ -15,25 +15,23 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
-import db.controllers.CBT_Controller;
 import db.controllers.Customer_Controller;
-import db.controllers.RelCBT_Controller;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
-import db.interfaces.ICBTController;
 import db.interfaces.IRELCBTController;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static ws.MyUI.DS;
 
 public class RELCBTForm extends FormLayout {
 
-    private static final ICBTController cbtController = new CBT_Controller();
-    private static final IRELCBTController relCBTController = new RelCBT_Controller();
+    private static final IRELCBTController RELCBTController = DS.getRELCBTController();
 
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
     private final FieldGroup fieldGroup = new BeanFieldGroup(RelCBType.class);
 
-    private final BeanItemContainer<CustomerBussinesType> bicbt = new BeanItemContainer(CustomerBussinesType.class, cbtController.getAll());
+    private final BeanItemContainer<CustomerBussinesType> bicbt = new BeanItemContainer(
+            CustomerBussinesType.class, DS.getCBTController().getAll());
 
     private Button crudButton;
     private Button.ClickListener clickListener;
@@ -93,7 +91,7 @@ public class RELCBTForm extends FormLayout {
                 n.setDelayMsec(500);
 
                 try {
-                    relCBTController.addNew(newRelCBType);
+                    RELCBTController.addNew(newRelCBType);
                     container.addItem(newRelCBType);
 
                     n.show(getUI().getPage());

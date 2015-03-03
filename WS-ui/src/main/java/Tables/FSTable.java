@@ -19,6 +19,7 @@ import db.ent.Fuelstation;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 /**
  *
@@ -27,7 +28,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 public class FSTable extends GENTable<Fuelstation> {
 
     public FSTable() {
-        this(new BeanItemContainer<>(Fuelstation.class), new FS_Controller().getAll());
+        this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
     }
 
     public FSTable(BeanItemContainer<Fuelstation> BIC_FS, List list) {

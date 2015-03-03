@@ -51,6 +51,9 @@ import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.FSDM.FSView;
+import Views.SYSNOTIF.SysNotifView;
+import com.vaadin.data.Property;
+import com.vaadin.ui.Component;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -137,18 +140,18 @@ public class MainMenu extends CssLayout {
         viewButtons.put(name, button);
     }
 
-    private void createViewTree(final String name) {
+    public void createViewTree(final String name) {
         Tree customersTree = new Tree();
         //<editor-fold defaultstate="collapsed" desc="Menu UI Defs">
         customersTree.addItems(Menu.getDefault().getAllMenuItems());
-
-        customersTree.expandItemsRecursively(CUST_DATA_MANAG);
-        customersTree.expandItemsRecursively(FS_DATA_MANAG);
 
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD, true);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG, true);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG, true);
         customersTree.setChildrenAllowed(FS_DATA_MANAG, true);
+        
+        customersTree.expandItemsRecursively(CUST_DATA_MANAG);
+        customersTree.expandItemsRecursively(FS_DATA_MANAG);
 
         customersTree.setParent(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, SYS_NOTIF_BOARD);
         customersTree.setParent(SYS_NOTIF_BOARD_LICENCES_OVERDUE, SYS_NOTIF_BOARD);
@@ -182,6 +185,9 @@ public class MainMenu extends CssLayout {
             @Override
             public void itemClick(ItemClickEvent event) {
                 switch ((MenuDefinitions) (event.getItemId())) {
+                    case SYS_NOTIF_BOARD:
+                        navigator.navigateTo(SysNotifView.class.getSimpleName());
+                        break;
                     case CUST_DATA_MANAG_BROWSER:
                         navigator.navigateTo(CustomersView.class.getSimpleName());
                         break;

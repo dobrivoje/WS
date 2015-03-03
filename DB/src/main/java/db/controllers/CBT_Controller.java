@@ -64,6 +64,7 @@ public class CBT_Controller implements ICBTController {
         dbh.updateCustomerBussinesType(customerBussinesType);
     }
 
+    @Override
     public void updateExisting(Long ID, Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
             throws Exception {
         dbh.updateRelCBT(ID, customer, CBType, dateFrom, dateTo, active);

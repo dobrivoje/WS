@@ -148,9 +148,7 @@ public class Owner implements Serializable {
     @Override
     public String toString() {
         // return fKIDCustomer.getName() + "- " + fkIdFs.getName();
-        return fKIDCustomer.getName()
-                + ", "
-                + fkIdFs.getName()
+        return fkIdFs.getName()
                 + ", "
                 + fKIDCustomer.getFKIDCity().getName()
                 + (active ? " (a)" : " (na)");

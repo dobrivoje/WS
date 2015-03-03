@@ -6,11 +6,11 @@
 package Trees;
 
 import com.vaadin.data.Container;
-import db.controllers.Customer_Controller;
 import db.ent.Customer;
 import db.ent.RelCBType;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.Trees.CustomTree;
+import static ws.MyUI.DS;
 
 /**
  *
@@ -24,7 +24,7 @@ public class RELCBT_Tree extends CustomTree<RelCBType> {
     }
 
     public RELCBT_Tree(String caption, Customer customer) {
-        super(caption, new Customer_Controller().getAllCustomerBussinesTypes(customer));
+        super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer));
         createSubItems();
     }
 

@@ -5,7 +5,6 @@ import authentication.BasicAccessControl;
 import Views.General.LoginScreen;
 import Views.General.LoginScreen.LoginListener;
 import Views.General.MainScreen;
-import Views.SYSNOTIF.Sys2View;
 import Views.SYSNOTIF.SysNotifView;
 import javax.servlet.annotation.WebServlet;
 
@@ -16,6 +15,7 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
+import dataservice.DataService;
 
 /**
  *
@@ -25,6 +25,7 @@ import com.vaadin.ui.UI;
 public class MyUI extends UI {
 
     private final AccessControl accessControl = new BasicAccessControl();
+    public static final DataService DS = DataService.getDefault();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
