@@ -17,9 +17,14 @@ import db.interfaces.IFSController;
  */
 public class FS_Controller implements IFSController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public FS_Controller(DBHandler dbh) {
+        FS_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
+
     @Override
     public List<Fuelstation> getAll() {
         return dbh.getAllFuelstation();

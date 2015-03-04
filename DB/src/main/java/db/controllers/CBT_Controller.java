@@ -18,7 +18,11 @@ import java.util.Date;
  */
 public class CBT_Controller implements ICBTController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public CBT_Controller(DBHandler dbh) {
+        CBT_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override

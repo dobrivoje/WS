@@ -5,10 +5,6 @@
  */
 package test;
 
-import db.controllers.Customer_Controller;
-import db.ent.Customer;
-import db.interfaces.ICustomerController;
-
 /**
  *
  * @author root
@@ -16,10 +12,6 @@ import db.interfaces.ICustomerController;
 public class Test1 {
 
     public static void main(String[] args) {
-        ICustomerController fsc = new Customer_Controller();
-        Customer c = fsc.getByID(13L);
-
-        System.err.println(fsc.getAllCustomerBussinesTypes(c));
     }
 
 }

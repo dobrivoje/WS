@@ -16,7 +16,11 @@ import java.util.List;
  */
 public class City_Controller implements ICityController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public City_Controller(DBHandler dbh) {
+        City_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Customer read data">
     @Override

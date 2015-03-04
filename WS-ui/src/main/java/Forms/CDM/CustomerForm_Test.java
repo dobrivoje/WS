@@ -4,16 +4,13 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
-import db.controllers.Customer_Controller;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CRUDForm;
 import Forms.IFormNotification;
 import db.ent.Customer;
-import db.interfaces.ICustomerController;
+import static ws.MyUI.DS;
 
 public class CustomerForm_Test extends CRUDForm<Customer> {
-
-    private final ICustomerController customerController = new Customer_Controller();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -70,11 +67,11 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
 
     @Override
     public void addNewBean(Customer bean) throws Exception {
-        customerController.addNew(bean);
+        DS.getCustomerController().addNew(bean);
     }
 
     @Override
     public void updateExistingBean(Customer bean) throws Exception {
-        customerController.updateExisting(bean);
+        DS.getCustomerController().updateExisting(bean);
     }
 }

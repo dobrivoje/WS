@@ -32,10 +32,9 @@ public class DataService {
     //<editor-fold defaultstate="collapsed" desc="System Defs">
     private static DataService instance;
 
-    private static DBHandler DBH;
+    private static final DBHandler DBH = DBHandler.getDefault();
 
     private DataService() {
-        DBH = DBHandler.getDefault();
     }
 
     public static synchronized DataService getDefault() {
@@ -43,14 +42,14 @@ public class DataService {
     }
     //</editor-fold>
 
-    private final ICBTController cBTController = new CBT_Controller();
-    private final ICityController cityController = new City_Controller();
-    private final ICustomerController customerController = new Customer_Controller();
-    private final IFSController fSController = new FS_Controller();
-    private final IFSOController fSOController = new FSOwner_Controller();
-    private final IFSPROPController fSPROPController = new FSPROP_Controller();
-    private final IRELCBTController rELCBTController = new RelCBT_Controller();
-    private final ISalesmanController salesmanController = new Salesman_Controller();
+    private final ICBTController cBTController = new CBT_Controller(DBH);
+    private final ICityController cityController = new City_Controller(DBH);
+    private final ICustomerController customerController = new Customer_Controller(DBH);
+    private final IFSController fSController = new FS_Controller(DBH);
+    private final IFSOController fSOController = new FSOwner_Controller(DBH);
+    private final IFSPROPController fSPROPController = new FSPROP_Controller(DBH);
+    private final IRELCBTController rELCBTController = new RelCBT_Controller(DBH);
+    private final ISalesmanController salesmanController = new Salesman_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;

@@ -21,7 +21,11 @@ import java.util.ArrayList;
  */
 public class Customer_Controller implements ICustomerController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public Customer_Controller(DBHandler dbh) {
+        Customer_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
@@ -61,7 +65,7 @@ public class Customer_Controller implements ICustomerController {
         return dbh.getAllFSOwnedByCustomer(customer);
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {

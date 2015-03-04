@@ -19,9 +19,14 @@ import java.util.List;
  */
 public class RelCBT_Controller implements IRELCBTController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public RelCBT_Controller(DBHandler dbh) {
+        RelCBT_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
+
     @Override
     public List<RelCBType> getAll() {
         return dbh.getAllRelCBT();

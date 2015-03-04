@@ -15,7 +15,11 @@ import java.util.List;
  */
 public class FSOwner_Controller implements IFSOController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public FSOwner_Controller(DBHandler dbh) {
+        FSOwner_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
     @Override

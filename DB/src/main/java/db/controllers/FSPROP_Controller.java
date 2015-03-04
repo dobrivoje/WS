@@ -15,7 +15,11 @@ import java.util.List;
  */
 public class FSPROP_Controller implements IFSPROPController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public FSPROP_Controller(DBHandler dbh) {
+        FSPROP_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override

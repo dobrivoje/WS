@@ -15,7 +15,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
-import db.controllers.Customer_Controller;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
@@ -116,7 +115,7 @@ public class RELCBTForm extends FormLayout {
     public RELCBTForm(final Customer c) {
         this(c, new BeanItemContainer<>(
                 RelCBType.class,
-                new Customer_Controller().getAllCustomerBussinesTypes(c)
+                DS.getCustomerController().getAllCustomerBussinesTypes(c)
         ));
     }
 

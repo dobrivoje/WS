@@ -17,7 +17,11 @@ import db.interfaces.ISalesmanController;
  */
 public class Salesman_Controller implements ISalesmanController {
 
-    private static final DBHandler dbh = DBHandler.getDefault();
+    private static DBHandler dbh;
+
+    public Salesman_Controller(DBHandler dbh) {
+        Salesman_Controller.dbh = dbh;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
