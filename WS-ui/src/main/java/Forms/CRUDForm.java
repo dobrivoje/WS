@@ -48,7 +48,6 @@ public abstract class CRUDForm<T> extends FormLayout {
         };
 
         formButton = new Button(formButtonCaption, clickListener);
-        formButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         // Moramo obavezno dodati u izvedenom konstruktoru
         // addComponents(field0, field1,...,fieldN, formButton);
@@ -82,7 +81,6 @@ public abstract class CRUDForm<T> extends FormLayout {
         };
 
         formButton = new Button(formButtonCaption, clickListener);
-        formButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         // Moramo obavezno dodati u izvedenom konstruktoru
         // addComponents(field0, field1,...,fieldN, formButton);

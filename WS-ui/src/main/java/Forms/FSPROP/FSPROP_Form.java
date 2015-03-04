@@ -121,7 +121,6 @@ public class FSPROP_Form extends FormLayout {
 
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
-            crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
             for (Component c : fieldGroup.getFields()) {
                 addComponents(c);
@@ -157,7 +156,6 @@ public class FSPROP_Form extends FormLayout {
 
         crudButton = new Button(btnCaption, clickListener);
 
-        crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         for (Component c : fieldGroup.getFields()) {
             addComponents(c);

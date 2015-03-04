@@ -34,6 +34,11 @@ public class Customer_Controller implements ICustomerController {
     }
 
     @Override
+    public Customer getCustomerByNavCode(String navCode) {
+        return dbh.getCustomerByNavCode(navCode);
+    }
+
+    @Override
     public Customer getByID(Long ID) {
         return dbh.getCustomerByID(ID);
     }
@@ -87,4 +92,9 @@ public class Customer_Controller implements ICustomerController {
         dbh.updateCustomer(object);
     }
     //</editor-fold>
+
+    @Override
+    public Customer getCustomerByMatBr(String matBr) {
+        return dbh.getCustomerByMatBr(matBr);
+    }
 }

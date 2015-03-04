@@ -51,7 +51,9 @@ public class CustomerForm extends FormLayout {
         setSizeFull();
         setMargin(true);
         setStyleName(Reindeer.LAYOUT_BLACK);
-
+        addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        
+        
         fieldGroup.bindMemberFields(this);
 
         name.setWidth(50, Unit.PERCENTAGE);
@@ -89,7 +91,6 @@ public class CustomerForm extends FormLayout {
 
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
-            crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
             addComponents(name, address, city, pib, crudButton);
         }
@@ -126,7 +127,6 @@ public class CustomerForm extends FormLayout {
 
         crudButton = new Button(btnCaption, clickListener);
         crudButton.setWidth(150, Unit.PIXELS);
-        crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         addComponents(name, address, city, pib, crudButton);
     }

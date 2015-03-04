@@ -33,7 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
     @NamedQuery(name = "Customer.findByID", query = "SELECT c FROM Customer c WHERE c.idc = :idc"),
+    @NamedQuery(name = "Customer.findByNavCode", query = "SELECT c FROM Customer c WHERE c.navCode = :navCode"),
     @NamedQuery(name = "Customer.PartialName", query = "SELECT c FROM Customer c WHERE c.name LIKE :name"),
+    @NamedQuery(name = "Customer.findByMatBr", query = "SELECT c FROM Customer c WHERE c.matBr = :matBr"),
     @NamedQuery(name = "Customer.findByPib", query = "SELECT c FROM Customer c WHERE c.pib = :pib")})
 public class Customer implements Serializable {
 
@@ -52,6 +54,22 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "PIB")
     private String pib;
+    @Column(name = "MATBR")
+    private String matBr;
+    @Column(name = "NavCode")
+    private String navCode;
+    @Column(name = "Tel1")
+    private String tel1;
+    @Column(name = "Tel2")
+    private String tel2;
+    @Column(name = "Fax")
+    private String fax;
+    @Column(name = "Mob")
+    private String mob;
+    @Column(name = "Email1")
+    private String email1;
+    @Column(name = "Email2")
+    private String email2;
     @OneToMany(mappedBy = "fKIDCustomer")
     private List<Owner> ownerList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdc")
@@ -104,6 +122,70 @@ public class Customer implements Serializable {
 
     public void setPib(String pib) {
         this.pib = pib;
+    }
+
+    public String getNavCode() {
+        return navCode;
+    }
+
+    public void setNavCode(String navCode) {
+        this.navCode = navCode;
+    }
+
+    public String getMatBr() {
+        return matBr;
+    }
+
+    public void setMatBr(String matBr) {
+        this.matBr = matBr;
+    }
+
+    public String getTel1() {
+        return tel1;
+    }
+
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
+    }
+
+    public String getTel2() {
+        return tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getMob() {
+        return mob;
+    }
+
+    public void setMob(String mob) {
+        this.mob = mob;
+    }
+
+    public String getEmail1() {
+        return email1;
+    }
+
+    public void setEmail1(String email1) {
+        this.email1 = email1;
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2;
     }
 
     @XmlTransient

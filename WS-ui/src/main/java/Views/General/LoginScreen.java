@@ -4,6 +4,7 @@ import authentication.AccessControl;
 import java.io.Serializable;
 
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -22,6 +23,8 @@ import com.vaadin.ui.themes.ValoTheme;
  * UI content when the user is not logged in yet.
  */
 public class LoginScreen extends CssLayout {
+
+    private static final String PASSWORD_HINT = "Any password or blank is OK...";
 
     private TextField username;
     private PasswordField password;
@@ -65,11 +68,17 @@ public class LoginScreen extends CssLayout {
         loginForm.setSizeUndefined();
         loginForm.setMargin(false);
 
-        loginForm.addComponent(username = new TextField("Username", "ws"));
+        username = new TextField("Username", "ws");
+        username.setIcon(FontAwesome.USER);
         username.setWidth(15, Unit.EM);
-        loginForm.addComponent(password = new PasswordField("Password"));
+        loginForm.addComponent(username);
+
+        password = new PasswordField("Password");
         password.setWidth(15, Unit.EM);
-        password.setDescription("Write anything");
+        password.setDescription(PASSWORD_HINT);
+        password.setIcon(FontAwesome.LOCK);
+        loginForm.addComponent(password);
+
         CssLayout buttons = new CssLayout();
         buttons.setStyleName("buttons");
         loginForm.addComponent(buttons);
@@ -87,16 +96,16 @@ public class LoginScreen extends CssLayout {
             }
         });
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        login.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         buttons.addComponent(forgotPassword = new Button("Forgot password?"));
         forgotPassword.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                showNotification(new Notification("Hint: Try anything"));
+                showNotification(new Notification(PASSWORD_HINT));
             }
         });
         forgotPassword.addStyleName(ValoTheme.BUTTON_LINK);
+
         return loginForm;
     }
 
@@ -107,7 +116,7 @@ public class LoginScreen extends CssLayout {
                 "<h1>MOL Serbia SW<br>Platform</br></h1>"
                 + "<h2>Wholesale App</h2>"
                 + "Log in as &quot;ws&quot; to have full access."
-                +"<br>No password is needed now.</br>",
+                + "<br>No password is needed now.</br>",
                 ContentMode.HTML);
         loginInformation.addComponent(loginInfoText);
         return loginInformation;

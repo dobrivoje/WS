@@ -101,7 +101,6 @@ public class FSOWNER_Form extends FormLayout {
 
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
-            crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
             addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
         }
@@ -134,7 +133,6 @@ public class FSOWNER_Form extends FormLayout {
 
         crudButton = new Button(btnCaption, clickListener);
 
-        crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
     }
 

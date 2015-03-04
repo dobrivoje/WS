@@ -69,6 +69,26 @@ public class DBHandler {
         }
     }
 
+    public Customer getCustomerByNavCode(String navCode) {
+        try {
+            return (Customer) getEm().createNamedQuery("Customer.findByNavCode")
+                    .setParameter("navCode", navCode)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Customer getCustomerByMatBr(String matBr) {
+        try {
+            return (Customer) getEm().createNamedQuery("Customer.findByMatBr")
+                    .setParameter("matBr", matBr)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Customer> getCustomerByName(String partialName) {
         try {
             return getEm().createNamedQuery("Customer.PartialName")

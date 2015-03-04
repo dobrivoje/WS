@@ -106,7 +106,6 @@ public class RELCBTForm extends FormLayout {
         };
 
         crudButton = new Button(btnCaption, clickListener);
-        crudButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         crudButton.setWidth(150, Unit.PIXELS);
 
         addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);

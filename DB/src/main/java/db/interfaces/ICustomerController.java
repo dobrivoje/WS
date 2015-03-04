@@ -18,8 +18,12 @@ import java.util.List;
  */
 public interface ICustomerController extends CRUDInterface<Customer> {
 
+    Customer getCustomerByNavCode(String navCode);
+
+    Customer getCustomerByMatBr(String matBr);
+
     List<Fuelstation> getAllCustomerFS(Customer customer);
-    
+
     List<Owner> getAllFSOwnedByCustomer(Customer customer);
 
     List<RelCBType> getAllCustomerBussinesTypes(Customer customer);

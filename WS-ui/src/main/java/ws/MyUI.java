@@ -11,9 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.Position;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
 
@@ -32,6 +35,17 @@ public class MyUI extends UI {
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
         getPage().setTitle("WS App");
+
+        Notification notification = new Notification("Welcome to WS App");
+        notification.setDescription(
+                "<span>This application covers wholesale bussines process.</span>"
+                + "<span>This is a <b>test phase release</b></span>"
+                + "<span>Username \"ws\" and no password is required, just click the <b>Login</b> button to continue.</span>");
+        notification.setHtmlContentAllowed(true);
+        notification.setStyleName("tray dark small closable login-help");
+        notification.setPosition(Position.BOTTOM_CENTER);
+        notification.setDelayMsec(10000);
+        notification.show(Page.getCurrent());
 
         if (!accessControl.isUserSignedIn()) {
             setContent(new LoginScreen(accessControl, new LoginListener() {
