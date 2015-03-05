@@ -22,13 +22,21 @@ public class WindowForm extends Window {
     protected final Button closeButton;
     protected final VerticalLayout VL = new VerticalLayout();
 
-    public WindowForm(String caption, Layout formLayout) {
+    public WindowForm(String caption, boolean bigForm, Layout formLayout) {
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         setCaption(caption);
         setModal(true);
+        setHeight(90, Unit.PERCENTAGE);
+        setWidth(60, Unit.PERCENTAGE);
 
-        VL.setSizeFull();
+        if (bigForm) {
+            VL.setSizeUndefined();
+            setHeight(90, Unit.PERCENTAGE);
+        } else {
+            VL.setSizeFull();
+        }
+
         VL.setMargin(true);
         VL.setSpacing(true);
 
@@ -46,8 +54,6 @@ public class WindowForm extends Window {
         VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
         VL.setExpandRatio(formLayout, 1);
 
-        setHeight(66, Unit.PERCENTAGE);
-        setWidth(60, Unit.PERCENTAGE);
         center();
         setContent(VL);
     }

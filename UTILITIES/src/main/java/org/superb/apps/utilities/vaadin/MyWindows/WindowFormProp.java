@@ -29,12 +29,17 @@ public class WindowFormProp extends Window {
     private final VerticalLayout leftVL = new VerticalLayout();
     private final VerticalLayout rightVL = new VerticalLayout();
 
-    public WindowFormProp(String caption, Layout layout, Component... components) {
+    public WindowFormProp(String caption, boolean bigForm, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
 
-        VL.setSizeFull();
+        if (bigForm) {
+            VL.setSizeUndefined();
+        } else {
+            VL.setSizeFull();
+        }
+        
         VL.setMargin(true);
         VL.setSpacing(true);
 

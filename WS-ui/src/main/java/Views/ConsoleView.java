@@ -214,7 +214,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
                         CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
-                        getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+                        getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
                     }
                 });
 
@@ -256,7 +256,7 @@ public class ConsoleView extends VerticalLayout implements View {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
                     CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
-                    getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+                    getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
                 }
             }
         });

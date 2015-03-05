@@ -123,7 +123,7 @@ public class CustomersView extends VerticalLayout implements View {
         newCustomer.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+                getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), true, new CustomerForm(CrudOperations.CREATE)));
             }
         });
 
@@ -133,7 +133,7 @@ public class CustomersView extends VerticalLayout implements View {
         newCustomerOwnerFS.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), new FSOWNER_Form(CrudOperations.CREATE)));
+                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
             }
         });
 

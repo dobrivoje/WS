@@ -52,8 +52,6 @@ import Forms.FSM.FSOWNER_Form;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
-import com.vaadin.data.Property;
-import com.vaadin.ui.Component;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -149,7 +147,7 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CUST_DATA_MANAG, true);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG, true);
         customersTree.setChildrenAllowed(FS_DATA_MANAG, true);
-        
+
         customersTree.expandItemsRecursively(CUST_DATA_MANAG);
         customersTree.expandItemsRecursively(FS_DATA_MANAG);
 
@@ -193,19 +191,19 @@ public class MainMenu extends CssLayout {
                         break;
                     case CUST_DATA_MANAG_NEW_CUST:
                         navigator.navigateTo(CustomersView.class.getSimpleName());
-                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), true, new CustomerForm(CrudOperations.CREATE)));
                         ;
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
-                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), new CBTForm(new CustomerBussinesType())));
+                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
                         ;
                         break;
                     case FS_DATA_MANAG_NEW_FS:
                         navigator.navigateTo(FSView.class.getSimpleName());
-                        getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), new FSForm(CrudOperations.CREATE)));
+                        getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), false, new FSForm(CrudOperations.CREATE)));
                         break;
                     case FS_DATA_MANAG_NEW_FS_OWNER:
-                        getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), new FSOWNER_Form(CrudOperations.CREATE)));
+                        getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
                         break;
                     case FS_DATA_MANAG_BROWSER:
                         navigator.navigateTo(FSView.class.getSimpleName());

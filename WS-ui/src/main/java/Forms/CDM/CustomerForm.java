@@ -6,12 +6,13 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import db.ent.City;
 import db.ent.Customer;
@@ -23,6 +24,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
 public class CustomerForm extends FormLayout {
+
     private final ICustomerController customerController = DS.getCustomerController();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
@@ -40,26 +42,46 @@ public class CustomerForm extends FormLayout {
     private final TextField address = new TextField("Customer Address");
 
     @PropertyId("fKIDCity")
-    private final ComboBox city = new ComboBox("Customer City", 
+    private final ComboBox city = new ComboBox("Customer City",
             new BeanItemContainer(City.class, DS.getCityController().getAll()));
 
     @PropertyId("pib")
     private final TextField pib = new TextField("Customer PIB");
-    //</editor-fold>
 
+    @PropertyId("matBr")
+    private final TextField matBr = new TextField("Customer MATBR");
+
+    @PropertyId("navCode")
+    private final TextField navCode = new TextField("Customer Nav ID");
+
+    @PropertyId("tel1")
+    private final TextField tel1 = new TextField("Customer Tel1");
+
+    @PropertyId("tel2")
+    private final TextField tel2 = new TextField("Customer Tel2");
+
+    @PropertyId("fax")
+    private final TextField fax = new TextField("Customer Fax");
+
+    @PropertyId("mob")
+    private final TextField mob = new TextField("Customer Mob");
+
+    @PropertyId("email1")
+    private final TextField email1 = new TextField("Customer Email1");
+
+    @PropertyId("email2")
+    private final TextField email2 = new TextField("Customer Email2");
+    //</editor-fold>
+    
     public CustomerForm() {
         setSizeFull();
         setMargin(true);
-        setStyleName(Reindeer.LAYOUT_BLACK);
+        setSpacing(true);
         addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        
-        
+
         fieldGroup.bindMemberFields(this);
 
-        name.setWidth(50, Unit.PERCENTAGE);
-        address.setWidth(50, Unit.PERCENTAGE);
-        city.setWidth(50, Unit.PERCENTAGE);
-        pib.setWidth(50, Unit.PERCENTAGE);
+        setTFWidth(250, Unit.PIXELS);
 
         city.setNullSelectionAllowed(false);
 
@@ -92,7 +114,7 @@ public class CustomerForm extends FormLayout {
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
 
-            addComponents(name, address, city, pib, crudButton);
+            addBeansToForm();
         }
     }
 
@@ -128,7 +150,7 @@ public class CustomerForm extends FormLayout {
         crudButton = new Button(btnCaption, clickListener);
         crudButton.setWidth(150, Unit.PIXELS);
 
-        addComponents(name, address, city, pib, crudButton);
+        addBeansToForm();
     }
 
     private void bindFieldsToBean(Customer customerBean) {
@@ -136,5 +158,33 @@ public class CustomerForm extends FormLayout {
         customerBean.setAddress(address.getValue());
         customerBean.setFKIDCity((City) city.getValue());
         customerBean.setPib(pib.getValue());
+        customerBean.setMatBr(matBr.getValue());
+        customerBean.setNavCode(navCode.getValue());
+        customerBean.setTel1(tel1.getValue());
+        customerBean.setTel2(tel2.getValue());
+        customerBean.setFax(fax.getValue());
+        customerBean.setMob(mob.getValue());
+        customerBean.setEmail1(email1.getValue());
+        customerBean.setEmail2(email2.getValue());
+    }
+
+    private void addBeansToForm() {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                TextField tf = (TextField) c;
+                tf.setNullRepresentation("");
+            }
+            addComponent(c);
+        }
+
+        addComponents(crudButton);
+    }
+
+    private void setTFWidth(float width, Sizeable.Unit unit) {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                ((TextField) c).setWidth(width, unit);
+            }
+        }
     }
 }

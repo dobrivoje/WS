@@ -11,17 +11,19 @@ import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Table;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Trees.RELCBT_Tree;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Form;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import db.ent.Customer;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import static ws.MyUI.DS;
 
@@ -47,13 +49,17 @@ public class CustomerTable extends GENTable<Customer> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
+
                         CustomerForm customerForm = new CustomerForm(new BeanItem(c), new IRefreshVisualContainer() {
                             @Override
                             public void refreshVisualContainer() {
                                 source.markAsDirtyRecursive();
                             }
                         });
-                        getUI().addWindow(new WindowForm("Customer Update Form", customerForm));
+
+                        //getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
+                        //getUI().addWindow(new ProfilePreferencesWindow(false));
+                        getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
                     }
                 });
                 final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
@@ -64,7 +70,7 @@ public class CustomerTable extends GENTable<Customer> {
                         RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
                         RELCBTForm relCBT_Form = new RELCBTForm(c);
 
-                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", relCBT_Form, cbtTree));
+                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
                     }
                 });
 

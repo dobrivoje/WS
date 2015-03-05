@@ -48,7 +48,7 @@ public class FSTable extends GENTable<Fuelstation> {
                                 source.markAsDirtyRecursive();
                             }
                         });
-                        getUI().addWindow(new WindowForm("FS Update Form", customerForm));
+                        getUI().addWindow(new WindowForm("FS Update Form", false, customerForm));
                     }
                 });
 
