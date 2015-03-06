@@ -2,12 +2,9 @@ package Views.SYSNOTIF;
 
 import Views.DashboardView;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import db.ent.Customer;
-import static ws.MyUI.DS;
 
 public class SysNotifView extends DashboardView {
 
@@ -58,10 +55,6 @@ public class SysNotifView extends DashboardView {
     private Component customersPanel() {
         VerticalLayout VL = new VerticalLayout();
         VL.setCaption("MOL SERBIA Customers");
-
-        for (Customer c : DS.getCustomerController().getAll()) {
-            VL.addComponent(new Label(c.toString()));
-        }
 
         Component contentWrapper = createContentWrapper(VL);
 

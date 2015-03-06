@@ -97,4 +97,9 @@ public class Customer_Controller implements ICustomerController {
     public Customer getCustomerByMatBr(String matBr) {
         return dbh.getCustomerByMatBr(matBr);
     }
+
+    @Override
+    public List<Customer> getCustomerByNavCode(boolean licence) {
+        return dbh.getCustomerByLicence(licence);
+    }
 }

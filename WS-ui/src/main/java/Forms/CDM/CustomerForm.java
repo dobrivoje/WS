@@ -12,11 +12,15 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import db.ent.City;
 import db.ent.Customer;
 import db.interfaces.ICustomerController;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
@@ -54,6 +58,14 @@ public class CustomerForm extends FormLayout {
     @PropertyId("navCode")
     private final TextField navCode = new TextField("Customer Nav ID");
 
+    @PropertyId("licence")
+    private final OptionGroup licence = new OptionGroup("Licence ? ");
+
+    @PropertyId("zone")
+    private final ComboBox zone = new ComboBox("Customer Zone",
+            new BeanItemContainer(String.class, new ArrayList(
+                            Arrays.asList("West", "Beograd", "Central", "East", "North", "South"))));
+
     @PropertyId("tel1")
     private final TextField tel1 = new TextField("Customer Tel1");
 
@@ -71,8 +83,11 @@ public class CustomerForm extends FormLayout {
 
     @PropertyId("email2")
     private final TextField email2 = new TextField("Customer Email2");
+
+    @PropertyId("comment")
+    private final TextArea comment = new TextArea("Comment");
     //</editor-fold>
-    
+
     public CustomerForm() {
         setSizeFull();
         setMargin(true);
@@ -82,6 +97,15 @@ public class CustomerForm extends FormLayout {
         fieldGroup.bindMemberFields(this);
 
         setTFWidth(250, Unit.PIXELS);
+
+        licence.addItem(Boolean.FALSE);
+        licence.setItemCaption(Boolean.FALSE, "No licence");
+        licence.addItem(Boolean.TRUE);
+        licence.setItemCaption(Boolean.TRUE, "Yes, licensed");
+        licence.addStyleName("horizontal");
+
+        comment.setRows(5);
+        comment.setNullRepresentation("");
 
         city.setNullSelectionAllowed(false);
 
@@ -160,12 +184,15 @@ public class CustomerForm extends FormLayout {
         customerBean.setPib(pib.getValue());
         customerBean.setMatBr(matBr.getValue());
         customerBean.setNavCode(navCode.getValue());
+        customerBean.setLicence((boolean) licence.getValue());
+        customerBean.setZone((String) zone.getValue());
         customerBean.setTel1(tel1.getValue());
         customerBean.setTel2(tel2.getValue());
         customerBean.setFax(fax.getValue());
         customerBean.setMob(mob.getValue());
         customerBean.setEmail1(email1.getValue());
         customerBean.setEmail2(email2.getValue());
+        customerBean.setComment(comment.getValue());
     }
 
     private void addBeansToForm() {

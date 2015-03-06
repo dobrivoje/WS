@@ -20,6 +20,8 @@ public interface ICustomerController extends CRUDInterface<Customer> {
 
     Customer getCustomerByNavCode(String navCode);
 
+    List<Customer> getCustomerByNavCode(boolean licence);
+
     Customer getCustomerByMatBr(String matBr);
 
     List<Fuelstation> getAllCustomerFS(Customer customer);

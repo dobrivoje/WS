@@ -79,6 +79,16 @@ public class DBHandler {
         }
     }
 
+    public List<Customer> getCustomerByLicence(boolean licence) {
+        try {
+            return getEm().createNamedQuery("Customer.findByLicence")
+                    .setParameter("licence", licence)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Customer getCustomerByMatBr(String matBr) {
         try {
             return (Customer) getEm().createNamedQuery("Customer.findByMatBr")

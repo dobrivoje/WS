@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
     @NamedQuery(name = "Customer.findByID", query = "SELECT c FROM Customer c WHERE c.idc = :idc"),
     @NamedQuery(name = "Customer.findByNavCode", query = "SELECT c FROM Customer c WHERE c.navCode = :navCode"),
+    @NamedQuery(name = "Customer.findByLicence", query = "SELECT c FROM Customer c WHERE c.licence = :licence"),
     @NamedQuery(name = "Customer.PartialName", query = "SELECT c FROM Customer c WHERE c.name LIKE :name"),
     @NamedQuery(name = "Customer.findByMatBr", query = "SELECT c FROM Customer c WHERE c.matBr = :matBr"),
     @NamedQuery(name = "Customer.findByPib", query = "SELECT c FROM Customer c WHERE c.pib = :pib")})
@@ -48,16 +49,20 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @Basic(optional = false)
     @Column(name = "Address")
     private String address;
-    @Basic(optional = false)
     @Column(name = "PIB")
     private String pib;
     @Column(name = "MATBR")
     private String matBr;
     @Column(name = "NavCode")
     private String navCode;
+    @Column(name = "Licence")
+    private boolean licence;
+    @Column(name = "Zone")
+    private String zone;
+    @Column(name = "Comment")
+    private String comment;
     @Column(name = "Tel1")
     private String tel1;
     @Column(name = "Tel2")
@@ -130,6 +135,30 @@ public class Customer implements Serializable {
 
     public void setNavCode(String navCode) {
         this.navCode = navCode;
+    }
+
+    public boolean getLicence() {
+        return licence;
+    }
+
+    public void setLicence(boolean licence) {
+        this.licence = licence;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getMatBr() {

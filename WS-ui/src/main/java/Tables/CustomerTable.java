@@ -85,57 +85,91 @@ public class CustomerTable extends GENTable<Customer> {
         addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
-
-                int k = ((Customer) row).getName().hashCode() % 5;
+                boolean lic;
                 Statuses s;
 
-                switch (k) {
-                    case 0:
+                try {
+                    lic = ((Customer) row).getLicence();
+
+                    if (lic) {
                         s = Statuses.OK;
-                        break;
-                    case 1:
-                        s = Statuses.BLACK_LIST;
-                        break;
-                    case 2:
-                        s = Statuses.IN_PROGRESS;
-                        break;
-                    case 3:
+                    } else {
                         s = Statuses.NO_LICENCE;
-                        break;
-                    case 4:
-                    default:
-                        s = Statuses.UNKNOWN;
+                    }
+
+                } catch (Exception e) {
+                    s = Statuses.UNKNOWN;
                 }
 
                 return new StatusLabel(s, s.toString());
             }
         });
+
+        addGeneratedColumn("idc", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object row, Object column) {
+                String navID;
+
+                try {
+                    navID = ((Customer) row).getNavCode();
+                } catch (Exception e) {
+                    navID = "";
+                }
+
+                return navID;
+            }
+        });
+
+        /*
         addGeneratedColumn("city", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                String c = ((Customer) row).getFKIDCity().getName();
+                String c;
+
+                try {
+                    c = ((Customer) row).getFKIDCity().getName();
+                } catch (Exception e) {
+                    c = null;
+                }
+
                 return c == null ? "" : c;
             }
         });
         addGeneratedColumn("munic", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                String c = ((Customer) row).getFKIDCity().getMunicipality();
+                String c;
+
+                try {
+                    c = ((Customer) row).getFKIDCity().getMunicipality();
+                } catch (Exception e) {
+                    c = null;
+                }
+
                 return c == null ? "" : c;
             }
         });
         addGeneratedColumn("district", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                String c = ((Customer) row).getFKIDCity().getDistrict();
+                String c;
+
+                try {
+                    c = ((Customer) row).getFKIDCity().getDistrict();
+                } catch (Exception e) {
+                    c = null;
+                }
+
                 return c == null ? "" : c;
             }
         });
+        */
+        
+        setVisibleColumns("idc", "name", "licence", "options" /*,"city", "munic", "district"*/);
+        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS"/*, "CITY", "MUNIC.", "DISTRICT"*/);
 
-        setVisibleColumns(/*"idc",*/"name", "licence", "options", "city", "munic", "district");
-        setColumnHeaders(/*"CLIENT ID",*/"CLIENT NAME", "LICENCE STATUS", "OPTIONS", "CITY", "MUNIC.", "DISTRICT");
-
-        //setColumnWidth("idc", 80);
+        setColumnWidth("idc", 90);
+        setColumnWidth("name", 300);
         setColumnWidth("licence", 120);
     }
 
