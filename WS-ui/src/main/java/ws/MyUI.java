@@ -44,7 +44,7 @@ public class MyUI extends UI {
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(10000);
+        notification.setDelayMsec(5000);
         notification.show(Page.getCurrent());
 
         if (!accessControl.isUserSignedIn()) {

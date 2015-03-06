@@ -40,10 +40,8 @@ public class WindowForm2 extends Window {
 
         setModal(true);
         setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
-        setResizable(false);
-        setClosable(false);
-        setHeight(60, Unit.PERCENTAGE);
-        setWidth(60, Unit.PERCENTAGE);
+        setHeight(70, Unit.PERCENTAGE);
+        setWidth(50, Unit.PERCENTAGE);
 
         content.setSizeFull();
         content.setMargin(new MarginInfo(true, false, false, false));
@@ -65,11 +63,11 @@ public class WindowForm2 extends Window {
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
     private Component buildFormTab(String caption, Layout formLayout) {
         formLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        formLayout.setSizeUndefined();
         
         HorizontalLayout centralLayout = new HorizontalLayout();
         centralLayout.setCaption(caption);
         centralLayout.setIcon(FontAwesome.USER);
-        centralLayout.setWidth(100.0f, Unit.PERCENTAGE);
         centralLayout.setSpacing(true);
         centralLayout.setMargin(true);
         centralLayout.addStyleName("profile-form");
@@ -78,7 +76,7 @@ public class WindowForm2 extends Window {
         picLayout.setSizeUndefined();
         picLayout.setSpacing(true);
         Image profilePic = new Image(null, new ThemeResource("img/profile-pic-300px.jpg"));
-        profilePic.setWidth(100.0f, Sizeable.Unit.PIXELS);
+        profilePic.setWidth(100, Sizeable.Unit.PIXELS);
         picLayout.addComponent(profilePic);
 
         centralLayout.addComponent(picLayout);
@@ -93,20 +91,20 @@ public class WindowForm2 extends Window {
     private Component buildFooter() {
         HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
+        footer.setWidth(100, Unit.PERCENTAGE);
 
-        Button ok = new Button("Close");
-        ok.addStyleName(ValoTheme.BUTTON_DANGER);
-        ok.addClickListener(new Button.ClickListener() {
+        Button closeBtn = new Button("Close");
+        closeBtn.addStyleName(ValoTheme.BUTTON_DANGER);
+        closeBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 close();
             }
         });
 
-        ok.focus();
-        footer.addComponent(ok);
-        footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
+        closeBtn.focus();
+        footer.addComponent(closeBtn);
+        footer.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
         return footer;
     }
     //</editor-fold>

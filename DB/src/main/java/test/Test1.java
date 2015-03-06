@@ -5,13 +5,22 @@
  */
 package test;
 
+import dataservice.DataService;
+import db.ent.Customer;
+
 /**
  *
  * @author root
  */
 public class Test1 {
 
+    static dataservice.DataService DS = DataService.getDefault();
+
     public static void main(String[] args) {
+        for (Customer arg : DS.getCustomerController().getAll()) {
+            System.err.println(arg.toString());
+        }
+
     }
 
 }

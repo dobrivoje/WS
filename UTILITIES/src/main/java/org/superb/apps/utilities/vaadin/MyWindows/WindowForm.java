@@ -27,12 +27,12 @@ public class WindowForm extends Window {
 
         setCaption(caption);
         setModal(true);
-        setHeight(90, Unit.PERCENTAGE);
+        setHeight(66, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
         if (bigForm) {
             VL.setSizeUndefined();
-            setHeight(90, Unit.PERCENTAGE);
+            setHeight(60, Unit.PERCENTAGE);
         } else {
             VL.setSizeFull();
         }

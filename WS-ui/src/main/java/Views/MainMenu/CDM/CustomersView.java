@@ -26,6 +26,7 @@ import com.vaadin.ui.Panel;
 import db.ent.Customer;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 
 public class CustomersView extends VerticalLayout implements View {
 
@@ -123,7 +124,7 @@ public class CustomersView extends VerticalLayout implements View {
         newCustomer.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), true, new CustomerForm(CrudOperations.CREATE)));
+                getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
             }
         });
 

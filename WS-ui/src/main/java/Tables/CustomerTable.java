@@ -16,8 +16,6 @@ import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Trees.RELCBT_Tree;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Form;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import db.ent.Customer;
 import java.util.List;
@@ -57,8 +55,6 @@ public class CustomerTable extends GENTable<Customer> {
                             }
                         });
 
-                        //getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
-                        //getUI().addWindow(new ProfilePreferencesWindow(false));
                         getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
                     }
                 });

@@ -52,6 +52,7 @@ import Forms.FSM.FSOWNER_Form;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -191,12 +192,10 @@ public class MainMenu extends CssLayout {
                         break;
                     case CUST_DATA_MANAG_NEW_CUST:
                         navigator.navigateTo(CustomersView.class.getSimpleName());
-                        getUI().addWindow(new WindowForm(CUST_DATA_MANAG_NEW_CUST.toString(), true, new CustomerForm(CrudOperations.CREATE)));
-                        ;
+                        getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
-                        ;
                         break;
                     case FS_DATA_MANAG_NEW_FS:
                         navigator.navigateTo(FSView.class.getSimpleName());
