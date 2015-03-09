@@ -1,6 +1,7 @@
 package Views.MainMenu.CDM;
 
 import Forms.CDM.CustomerForm;
+import Forms.CDM.RELCBTForm;
 import Forms.FSM.FSOWNER_Form;
 import Forms.SaDesneStraneForm;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
@@ -21,12 +22,16 @@ import Trees.FSOwnerTree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public class CustomersView extends VerticalLayout implements View {
 
@@ -39,7 +44,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private static final String[] propPanelsCaptopns = new String[]{
-        "Bussines Type(s)", "FS(s) Owned by this customer", "Licences "};
+        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer Options "};
     private final Panel[] propPanels = new Panel[propPanelsCaptopns.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
@@ -162,10 +167,55 @@ public class CustomersView extends VerticalLayout implements View {
         if (c != null) {
             propPanels[0].setContent(new RELCBT_Tree("", c));
             propPanels[1].setContent(new FSOwnerTree("", c));
+            propPanels[2].setContent(buildCustomerOptions(c, customersTable));
+
         } else {
             for (Panel p : propPanels) {
                 p.setContent(new Label());
             }
         }
+    }
+
+    private Component buildCustomerOptions(final Customer c, final CustomerTable customersTable) {
+        VerticalLayout VL1 = new VerticalLayout();
+
+        HorizontalLayout HL1 = new HorizontalLayout();
+
+        Button editBtn = new Button("Update", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                CustomerForm customerForm = new CustomerForm(new BeanItem(c), new IRefreshVisualContainer() {
+                    @Override
+                    public void refreshVisualContainer() {
+                        customersTable.refreshVisualContainer();
+                    }
+                });
+
+                getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
+            }
+        });
+        Button cbTapeBtn = new Button("Bussines Type", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                RELCBTForm relCBT_Form = new RELCBTForm(c);
+
+                getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+            }
+        });
+
+        editBtn.setDescription("Update this customer with new data...");
+        cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
+
+        HL1.setSizeFull();
+        HL1.setSpacing(true);
+        HL1.setMargin(true);
+        HL1.addComponents(editBtn, cbTapeBtn);
+        HL1.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+        HL1.setComponentAlignment(cbTapeBtn, Alignment.MIDDLE_CENTER);
+
+        VL1.addComponents(HL1);
+
+        return VL1;
     }
 }

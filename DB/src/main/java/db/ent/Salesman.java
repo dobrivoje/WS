@@ -62,6 +62,8 @@ public class Salesman implements Serializable {
     @JoinColumn(name = "FK_IDBL", referencedColumnName = "IDBL")
     @ManyToOne
     private BussinesLine fkIdbl;
+    @OneToMany(mappedBy = "fkIds")
+    private List<RelSALESMEANCUST> relSALESMEANCUSTList;
 
     public Salesman() {
     }
@@ -166,6 +168,15 @@ public class Salesman implements Serializable {
     @Override
     public String toString() {
         return "db.Salesman[ ids=" + ids + " ]";
+    }
+
+    @XmlTransient
+    public List<RelSALESMEANCUST> getRelSALESMEANCUSTList() {
+        return relSALESMEANCUSTList;
+    }
+
+    public void setRelSALESMEANCUSTList(List<RelSALESMEANCUST> relSALESMEANCUSTList) {
+        this.relSALESMEANCUSTList = relSALESMEANCUSTList;
     }
     
 }

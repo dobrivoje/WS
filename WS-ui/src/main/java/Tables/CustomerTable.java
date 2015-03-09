@@ -5,24 +5,24 @@
  */
 package Tables;
 
+import Forms.CDM.CustomerForm;
+import Forms.CDM.RELCBTForm;
+import Trees.RELCBT_Tree;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Table;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import Forms.CDM.CustomerForm;
-import Forms.CDM.RELCBTForm;
-import Trees.RELCBT_Tree;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Table;
 import db.ent.Customer;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
 /**
@@ -82,6 +82,7 @@ public class CustomerTable extends GENTable<Customer> {
                 return custOptionsHL;
             }
         });
+
         addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
@@ -120,7 +121,6 @@ public class CustomerTable extends GENTable<Customer> {
             }
         });
 
-        /*
         addGeneratedColumn("city", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
@@ -135,42 +135,44 @@ public class CustomerTable extends GENTable<Customer> {
                 return c == null ? "" : c;
             }
         });
-        addGeneratedColumn("munic", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                String c;
 
-                try {
-                    c = ((Customer) row).getFKIDCity().getMunicipality();
-                } catch (Exception e) {
-                    c = null;
-                }
-
-                return c == null ? "" : c;
-            }
-        });
-        addGeneratedColumn("district", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                String c;
-
-                try {
-                    c = ((Customer) row).getFKIDCity().getDistrict();
-                } catch (Exception e) {
-                    c = null;
-                }
-
-                return c == null ? "" : c;
-            }
-        });
-        */
+        /*        
+         addGeneratedColumn("munic", new Table.ColumnGenerator() {
+         @Override
+         public Object generateCell(final Table source, final Object row, Object column) {
+         String c;
         
-        setVisibleColumns("idc", "name", "licence", "options" /*,"city", "munic", "district"*/);
-        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS"/*, "CITY", "MUNIC.", "DISTRICT"*/);
+         try {
+         c = ((Customer) row).getFKIDCity().getMunicipality();
+         } catch (Exception e) {
+         c = null;
+         }
+        
+         return c == null ? "" : c;
+         }
+         });
+         addGeneratedColumn("district", new Table.ColumnGenerator() {
+         @Override
+         public Object generateCell(final Table source, final Object row, Object column) {
+         String c;
+        
+         try {
+         c = ((Customer) row).getFKIDCity().getDistrict();
+         } catch (Exception e) {
+         c = null;
+         }
+        
+         return c == null ? "" : c;
+         }
+         });
+         */
+        setVisibleColumns("idc", "name", "licence", "options", "city"/*, "munic", "district"*/);
+        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY"/*, "MUNIC.", "DISTRICT"*/);
 
         setColumnWidth("idc", 90);
         setColumnWidth("name", 300);
         setColumnWidth("licence", 120);
+        setColumnWidth("options", 90);
     }
 
     public void setFilter(String filterString) {

@@ -82,6 +82,8 @@ public class Customer implements Serializable {
     @JoinColumn(name = "FK_IDCity", referencedColumnName = "IDC")
     @ManyToOne
     private City fKIDCity;
+    @OneToMany(mappedBy = "fkIdc")
+    private List<RelSALESMEANCUST> relSALESMEANCUSTList;
 
     public Customer() {
     }
@@ -241,6 +243,15 @@ public class Customer implements Serializable {
 
     public void setFKIDCity(City fKIDCity) {
         this.fKIDCity = fKIDCity;
+    }
+
+    @XmlTransient
+    public List<RelSALESMEANCUST> getRelSALESMEANCUSTList() {
+        return relSALESMEANCUSTList;
+    }
+
+    public void setRelSALESMEANCUSTList(List<RelSALESMEANCUST> relSALESMEANCUSTList) {
+        this.relSALESMEANCUSTList = relSALESMEANCUSTList;
     }
 
     @Override
