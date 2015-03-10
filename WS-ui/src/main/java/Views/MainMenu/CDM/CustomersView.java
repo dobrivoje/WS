@@ -181,7 +181,7 @@ public class CustomersView extends VerticalLayout implements View {
 
         HorizontalLayout HL1 = new HorizontalLayout();
 
-        Button editBtn = new Button("Update", new Button.ClickListener() {
+        Button editBtn = new Button("u", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 CustomerForm customerForm = new CustomerForm(new BeanItem(c), new IRefreshVisualContainer() {
@@ -194,7 +194,7 @@ public class CustomersView extends VerticalLayout implements View {
                 getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
             }
         });
-        Button cbTapeBtn = new Button("Bussines Type", new Button.ClickListener() {
+        Button cbTapeBtn = new Button("t", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
@@ -207,12 +207,9 @@ public class CustomersView extends VerticalLayout implements View {
         editBtn.setDescription("Update this customer with new data...");
         cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
 
-        HL1.setSizeFull();
         HL1.setSpacing(true);
         HL1.setMargin(true);
         HL1.addComponents(editBtn, cbTapeBtn);
-        HL1.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
-        HL1.setComponentAlignment(cbTapeBtn, Alignment.MIDDLE_CENTER);
 
         VL1.addComponents(HL1);
 

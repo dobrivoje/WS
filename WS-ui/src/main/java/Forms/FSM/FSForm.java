@@ -6,13 +6,13 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
 import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
@@ -60,6 +60,7 @@ public class FSForm extends FormLayout {
         coordinates.setWidth(50, Unit.PERCENTAGE);
 
         city.setNullSelectionAllowed(false);
+        city.setFilteringMode(FilteringMode.CONTAINS);
 
         name.focus();
     }
@@ -94,10 +95,10 @@ public class FSForm extends FormLayout {
         }
     }
 
-    public FSForm(Item existingCustomer, final IRefreshVisualContainer visualContainer) {
+    public FSForm(Item existingFS, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingCustomer);
+        fieldGroup.setItemDataSource(existingFS);
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();

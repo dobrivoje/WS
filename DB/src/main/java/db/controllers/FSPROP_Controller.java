@@ -61,17 +61,17 @@ public class FSPROP_Controller implements IFSPROPController {
 
     @Override
     public void updateExisting(FsProp fsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant, int truckCapable, boolean carWash, String compliance, String licence, Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
-        dbh.updateFSProp(fsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, active);
+        dbh.updateExistingFSProp(fsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, active);
     }
 
     @Override
     public void addNew(FsProp newObject) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dbh.addNewFSProp(newObject);
     }
 
     @Override
     public void updateExisting(FsProp object) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dbh.updateExistingFSProp(object);
     }
     //</editor-fold>
 }

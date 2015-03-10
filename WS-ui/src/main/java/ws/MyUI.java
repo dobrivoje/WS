@@ -19,6 +19,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
+import date.formats.DateFormat;
 
 /**
  *
@@ -29,6 +30,7 @@ public class MyUI extends UI {
 
     private final AccessControl accessControl = new BasicAccessControl();
     public static final DataService DS = DataService.getDefault();
+    public static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {

@@ -64,7 +64,6 @@ public class FSView extends VerticalLayout implements View {
         //</editor-fold>
 
         FS_Table.addValueChangeListener(new Property.ValueChangeListener() {
-
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Fuelstation fs = (Fuelstation) FS_Table.getValue();
@@ -119,24 +118,35 @@ public class FSView extends VerticalLayout implements View {
     private void openProperties(Fuelstation fs) {
         if (fs != null) {
 
-            HL.setSplitPosition(60, Unit.PERCENTAGE);
+            HL.setSplitPosition(50, Unit.PERCENTAGE);
 
             if (propVL.getComponentCount() > 0) {
                 propVL.removeAllComponents();
             }
 
             FsProp fsProp = DS.getFSPROPController().getNewestFSPropForFS(fs);
+            FSPROP_Form fspropForm;
 
             if (fsProp != null) {
-                FSPROP_Form fspropForm = new FSPROP_Form(
+                fspropForm = new FSPROP_Form(
                         new BeanItem(fsProp), new IRefreshVisualContainer() {
                             @Override
                             public void refreshVisualContainer() {
                                 FS_Table.refreshVisualContainer();
                             }
                         });
-                propVL.addComponent(fspropForm);
+            } else {
+                fsProp = new FsProp();
+                fspropForm = new FSPROP_Form(
+                        new BeanItem(fsProp), new IRefreshVisualContainer() {
+                            @Override
+                            public void refreshVisualContainer() {
+                                FS_Table.refreshVisualContainer();
+                            }
+                        });
             }
+
+            propVL.addComponent(fspropForm);
 
         } else {
             propVL.removeAllComponents();

@@ -15,31 +15,28 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
-import date.formats.DateFormat;
 import db.ent.FsProp;
 import db.ent.Owner;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class FSPROP_Form extends FormLayout {
-
-    private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     private final FieldGroup fieldGroup = new BeanFieldGroup(FsProp.class);
     private Button crudButton;
     private BeanItem<FsProp> beanItem;
 
-    private final BeanItemContainer<Owner> bicOwner = new BeanItemContainer(
-            Owner.class, DS.getFSOController().getAll());
-
+    private final BeanItemContainer<Owner> bicOwner = new BeanItemContainer(Owner.class, DS.getFSOController().getAll());
     private Button.ClickListener clickListener;
     private String btnCaption;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
+    private final TextField currentCustomer = new TextField("Current Customer");
+
     @PropertyId("fkIdo")
     private final ComboBox owner = new ComboBox("Owner", bicOwner);
 
@@ -94,6 +91,11 @@ public class FSPROP_Form extends FormLayout {
 
         owner.setNullSelectionAllowed(false);
         owner.focus();
+
+        noOfTanks.setNullRepresentation("");
+        truckCapable.setNullRepresentation("");
+        compliance.setNullRepresentation("");
+        licence.setNullRepresentation("");
     }
 
     public FSPROP_Form(final CrudOperations crudOperation) {
@@ -121,7 +123,9 @@ public class FSPROP_Form extends FormLayout {
 
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
+            currentCustomer.setWidth(230, Unit.PIXELS);
 
+            addComponent(currentCustomer);
             for (Component c : fieldGroup.getFields()) {
                 addComponents(c);
             }
@@ -134,6 +138,10 @@ public class FSPROP_Form extends FormLayout {
 
         fieldGroup.setItemDataSource(existingFSProp);
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
+
+        currentCustomer.setWidth(230, Unit.PIXELS);
+        currentCustomer.setValue(beanItem.getBean().getFkIdo() == null ? "" : beanItem.getBean().getFkIdo().getFKIDCustomer().getName());
+        currentCustomer.setEnabled(false);
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {
@@ -156,7 +164,7 @@ public class FSPROP_Form extends FormLayout {
 
         crudButton = new Button(btnCaption, clickListener);
 
-
+        addComponent(currentCustomer);
         for (Component c : fieldGroup.getFields()) {
             addComponents(c);
         }
@@ -164,7 +172,7 @@ public class FSPROP_Form extends FormLayout {
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {
-        fsPropertyBean.setFkIdo((Owner) owner.getValue());
+        // fsPropertyBean.setFkIdo((Owner) owner.getValue());
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
         fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
         fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));

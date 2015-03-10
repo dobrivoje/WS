@@ -16,7 +16,6 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
     List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active);
 
     /**
-     * @param customer
      * @param fuelstation
      * @return List FsProp
      *

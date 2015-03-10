@@ -13,11 +13,11 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
 import date.formats.DateFormat;
 import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
+import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
@@ -28,7 +28,7 @@ public class FSOWNER_Form extends FormLayout {
 
     private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
-    private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
+    private final FieldGroup fieldGroup = new BeanFieldGroup(Owner.class);
     private Button crudButton;
     private BeanItem<Owner> beanItem;
 
@@ -106,10 +106,44 @@ public class FSOWNER_Form extends FormLayout {
         }
     }
 
-    public FSOWNER_Form(Item existingCustomer, final IRefreshVisualContainer visualContainer) {
+    public FSOWNER_Form(Item existingOwner, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingCustomer);
+        fieldGroup.setItemDataSource(existingOwner);
+        beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+
+        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                Owner existingOwner = beanItem.getBean();
+                bindFieldsToBean(existingOwner);
+
+                try {
+                    DS.getFSOController().updateExisting(existingOwner);
+                    visualContainer.refreshVisualContainer();
+                    Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
+                } catch (Exception ex) {
+                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        crudButton = new Button(btnCaption, clickListener);
+
+        addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
+    }
+
+    public FSOWNER_Form(Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
+        this();
+
+        Owner o = new Owner();
+        o.setFkIdFs(existingFS);
+        BeanItem<Owner> biOwner = new BeanItem(o);
+
+        fieldGroup.setItemDataSource(biOwner);
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
@@ -139,7 +173,7 @@ public class FSOWNER_Form extends FormLayout {
     private void bindFieldsToBean(Owner ownerBean) {
         ownerBean.setFKIDCustomer((Customer) customer.getValue());
         ownerBean.setFkIdFs((Fuelstation) fs.getValue());
-        ownerBean.setDateFrom(dateFrom.getValue());
+        ownerBean.setDateFrom(dateFrom.getValue() == null ? new Date() : dateFrom.getValue());
         ownerBean.setDateTo(dateTo.getValue());
         ownerBean.setActive(active.getValue());
     }

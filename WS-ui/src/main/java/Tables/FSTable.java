@@ -6,6 +6,7 @@
 package Tables;
 
 import Forms.FSM.FSForm;
+import Forms.FSM.FSOWNER_Form;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
@@ -36,7 +37,7 @@ public class FSTable extends GENTable<Fuelstation> {
         addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                HorizontalLayout btnPlace = new HorizontalLayout();
+                HorizontalLayout optLayout = new HorizontalLayout();
 
                 final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
@@ -51,19 +52,37 @@ public class FSTable extends GENTable<Fuelstation> {
                         getUI().addWindow(new WindowForm("FS Update Form", false, customerForm));
                     }
                 });
+                final Button ownerBtn = new Button("o", new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        Fuelstation f = (Fuelstation) row;
+
+                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, new IRefreshVisualContainer() {
+                            @Override
+                            public void refreshVisualContainer() {
+                                source.markAsDirtyRecursive();
+                            }
+                        });
+                        getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+                    }
+                });
 
                 editBtn.setDescription("Update this Fuelstation with new data...");
+                ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
 
-                btnPlace.addComponent(editBtn);
-                btnPlace.setSizeFull();
-                btnPlace.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+                optLayout.addComponents(editBtn, ownerBtn);
+                optLayout.setSizeFull();
+                optLayout.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+                optLayout.setComponentAlignment(ownerBtn, Alignment.MIDDLE_CENTER);
 
-                return btnPlace;
+                return optLayout;
             }
         });
 
         setVisibleColumns("name", "options", "fkIdc", "address");
         setColumnHeaders("FUEL STATION", "OPTIONS", "CITY", "ADDRESS");
+
+        setColumnWidth("options", 110);
     }
 
     public void setFilter(String filterString) {

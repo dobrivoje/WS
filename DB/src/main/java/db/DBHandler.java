@@ -756,13 +756,13 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateFSProp(FsProp existingFsProp) throws Exception {
+    public void updateExistingFSProp(FsProp existingFsProp) throws Exception {
         getEm().getTransaction().begin();
         em.merge(existingFsProp);
         getEm().getTransaction().commit();
     }
 
-    public void updateFSProp(FsProp existingFsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
+    public void updateExistingFSProp(FsProp existingFsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
             Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
 
@@ -781,15 +781,6 @@ public class DBHandler {
         getEm().getTransaction().begin();
         em.merge(existingFsProp);
         getEm().getTransaction().commit();
-    }
-
-    public void updateFSProp(long FsPropID, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
-            int truckCapable, boolean carWash, String compliance, String licence,
-            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
-
-        FsProp existingFsProp = getFSProp(FsPropID);
-        updateFSProp(existingFsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash,
-                compliance, licence, dateLicenceFrom, dateLicenceTo, active);
     }
     //</editor-fold>
     //</editor-fold>
@@ -878,18 +869,6 @@ public class DBHandler {
     public void updateExistingCity(City newCity) throws Exception {
         getEm().getTransaction().begin();
         em.merge(newCity);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateExistingCity(Long ID, String name, String zip, String region) throws Exception {
-        City existingCity = getCity(ID);
-
-        existingCity.setName(name);
-        existingCity.setZip(zip);
-        existingCity.setRegion(region);
-
-        getEm().getTransaction().begin();
-        em.merge(existingCity);
         getEm().getTransaction().commit();
     }
     //</editor-fold>

@@ -7,6 +7,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.Sizeable;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -108,6 +109,7 @@ public class CustomerForm extends FormLayout {
         comment.setNullRepresentation("");
 
         city.setNullSelectionAllowed(false);
+        city.setFilteringMode(FilteringMode.CONTAINS);
 
         name.focus();
     }
