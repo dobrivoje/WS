@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = :active"),
     
     @NamedQuery(name = "FsProp.NewestFSPropForFS",
-            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = TRUE ORDER BY f.idfsp DESC"),
+            query = "SELECT fsp FROM FsProp fsp WHERE fsp.fkIdo.fkIdFs = :fuelstation ORDER BY fsp.idfsp DESC"),
 
     @NamedQuery(name = "FsProp.FSPropByPartCustomerName",
             query = "SELECT f FROM FsProp f WHERE f.fkIdo.fKIDCustomer.name LIKE :partName"),

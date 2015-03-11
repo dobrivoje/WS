@@ -15,6 +15,8 @@ public interface IFSOController extends CRUDInterface<Owner> {
 
     List<FsProp> getAllFSProperties(Owner owner);
 
+    List<Owner> getAllOwners(Fuelstation fuelstation);
+
     void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 
     void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;

@@ -596,6 +596,16 @@ public class DBHandler {
             return null;
         }
     }
+
+    public List<Owner> getAllOwners(Fuelstation fuelstation) {
+        try {
+            return getEm().createNamedQuery("Owner.findByFuelstation")
+                    .setParameter("fuelstation", fuelstation)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">

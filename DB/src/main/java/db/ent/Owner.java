@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Owner.findAll", query = "SELECT o FROM Owner o"),
     @NamedQuery(name = "Owner.findByIdo", query = "SELECT o FROM Owner o WHERE o.ido = :ido"),
     @NamedQuery(name = "Owner.findByCustomer", query = "SELECT o FROM Owner o WHERE o.fKIDCustomer = :customer"),
+    @NamedQuery(name = "Owner.findByFuelstation", query = "SELECT o FROM Owner o WHERE o.fkIdFs = :fuelstation"),
     @NamedQuery(name = "Owner.findByDateFrom", query = "SELECT o FROM Owner o WHERE o.dateFrom = :dateFrom"),
     @NamedQuery(name = "Owner.findByDateTo", query = "SELECT o FROM Owner o WHERE o.dateTo = :dateTo"),
     @NamedQuery(name = "Owner.findByActive", query = "SELECT o FROM Owner o WHERE o.active = :active")})

@@ -33,6 +33,11 @@ public class FSOwner_Controller implements IFSOController {
     }
 
     @Override
+    public List<Owner> getAllOwners(Fuelstation fuelstation) {
+        return dbh.getAllOwners(fuelstation);
+    }
+
+    @Override
     public Owner getByID(Long ID) {
         return dbh.getFSOwner(ID);
     }

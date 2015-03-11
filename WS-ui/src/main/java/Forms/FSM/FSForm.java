@@ -60,7 +60,7 @@ public class FSForm extends FormLayout {
         coordinates.setWidth(50, Unit.PERCENTAGE);
 
         city.setNullSelectionAllowed(false);
-        city.setFilteringMode(FilteringMode.CONTAINS);
+        // city.setFilteringMode(FilteringMode.CONTAINS);
 
         name.focus();
     }
