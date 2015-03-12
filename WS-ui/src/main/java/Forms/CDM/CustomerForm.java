@@ -108,7 +108,7 @@ public class CustomerForm extends FormLayout {
         comment.setRows(5);
         comment.setNullRepresentation("");
 
-        city.setNullSelectionAllowed(false);
+        // city.setNullSelectionAllowed(false);
         // city.setFilteringMode(FilteringMode.CONTAINS);
 
         name.focus();

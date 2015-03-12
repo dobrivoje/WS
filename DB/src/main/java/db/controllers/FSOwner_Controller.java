@@ -2,7 +2,6 @@ package db.controllers;
 
 import db.DBHandler;
 import db.ent.Customer;
-import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
 import db.interfaces.IFSOController;
@@ -22,11 +21,6 @@ public class FSOwner_Controller implements IFSOController {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
-    @Override
-    public List<FsProp> getAllFSProperties(Owner owner) {
-        return dbh.getAllFSProperties(owner);
-    }
-
     @Override
     public List<Owner> getAll() {
         return dbh.getAllFSOwners();
@@ -68,6 +62,5 @@ public class FSOwner_Controller implements IFSOController {
     public void updateExisting(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         dbh.updateOwner(ID, customer, fuelstation, dateFrom, dateTo, active);
     }
-
     //</editor-fold>
 }

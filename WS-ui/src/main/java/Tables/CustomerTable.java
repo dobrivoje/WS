@@ -8,6 +8,7 @@ package Tables;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Trees.RELCBT_Tree;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
@@ -16,6 +17,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import db.ent.City;
 import db.ent.Customer;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
@@ -86,90 +88,66 @@ public class CustomerTable extends GENTable<Customer> {
         addGeneratedColumn("licence", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
-                boolean lic;
-                Statuses s;
+                Property property = source.getItem(row).getItemProperty(column);
+                Statuses s = Statuses.UNKNOWN;
 
-                try {
-                    lic = ((Customer) row).getLicence();
-
-                    if (lic) {
-                        s = Statuses.OK;
-                    } else {
-                        s = Statuses.NO_LICENCE;
-                    }
-
-                } catch (Exception e) {
-                    s = Statuses.UNKNOWN;
+                if (property != null) {
+                    s = (boolean) property.getValue() ? Statuses.OK : Statuses.NO_LICENCE;
                 }
 
                 return new StatusLabel(s, s.toString());
             }
         });
 
-        addGeneratedColumn("idc", new Table.ColumnGenerator() {
+        addGeneratedColumn("navCode", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
-                String navID;
+                Property property = source.getItem(row).getItemProperty(column);
+                String navID = "";
 
-                try {
-                    navID = ((Customer) row).getNavCode();
-                } catch (Exception e) {
-                    navID = "";
+                if (property != null) {
+                    try {
+                        navID = (String) property.getValue();
+                    } catch (Exception e) {
+                        navID = "";
+                    }
                 }
 
                 return navID;
             }
         });
 
-        addGeneratedColumn("city", new Table.ColumnGenerator() {
+        addGeneratedColumn("matBr", new Table.ColumnGenerator() {
             @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                String c;
+            public Object generateCell(Table source, Object row, Object column) {
+                Property property = source.getItem(row).getItemProperty(column);
+                String matBrojID = "";
 
-                try {
-                    c = ((Customer) row).getFKIDCity().getName();
-                } catch (Exception e) {
-                    c = null;
+                if (property != null) {
+                    try {
+                        matBrojID = (String) property.getValue();
+                    } catch (Exception e) {
+                        matBrojID = "";
+                    }
                 }
 
-                return c == null ? "" : c;
+                return matBrojID;
             }
         });
 
-        /*        
-         addGeneratedColumn("munic", new Table.ColumnGenerator() {
-         @Override
-         public Object generateCell(final Table source, final Object row, Object column) {
-         String c;
-        
-         try {
-         c = ((Customer) row).getFKIDCity().getMunicipality();
-         } catch (Exception e) {
-         c = null;
-         }
-        
-         return c == null ? "" : c;
-         }
-         });
-         addGeneratedColumn("district", new Table.ColumnGenerator() {
-         @Override
-         public Object generateCell(final Table source, final Object row, Object column) {
-         String c;
-        
-         try {
-         c = ((Customer) row).getFKIDCity().getDistrict();
-         } catch (Exception e) {
-         c = null;
-         }
-        
-         return c == null ? "" : c;
-         }
-         });
-         */
-        setVisibleColumns("idc", "name", "licence", "options", "city"/*, "munic", "district"*/);
-        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY"/*, "MUNIC.", "DISTRICT"*/);
+        addGeneratedColumn("city", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                City c = ((Customer) row).getFKIDCity();
+                return (c != null) ? c.toString() : " - ";
+            }
+        });
 
-        setColumnWidth("idc", 90);
+        setVisibleColumns("navCode", "name", "licence", "options", "city", "matBr" /*, "munic", "district"*/);
+        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "MATBR" /*, "MUNIC.", "DISTRICT"*/);
+
+        setColumnWidth("navCode", 90);
+        setColumnWidth("matBr", 90);
         setColumnWidth("name", 300);
         setColumnWidth("licence", 120);
         setColumnWidth("options", 90);
@@ -179,22 +157,23 @@ public class CustomerTable extends GENTable<Customer> {
         beanContainer.removeAllContainerFilters();
 
         if (filterString.length() > 0) {
+            SimpleStringFilter navCodeFilter = new SimpleStringFilter(
+                    "navCode", filterString, true, false);
             SimpleStringFilter nameFilter = new SimpleStringFilter(
                     "name", filterString, true, false);
             SimpleStringFilter licenceFilter = new SimpleStringFilter(
                     "licence", filterString, true, false);
+            SimpleStringFilter matBrFilter = new SimpleStringFilter(
+                    "matBr", filterString, true, false);
             SimpleStringFilter cityFilter = new SimpleStringFilter(
                     "city", filterString, true, false);
-            SimpleStringFilter municipalityFilter = new SimpleStringFilter(
-                    "munic", filterString, true, false);
-            SimpleStringFilter districtFilter = new SimpleStringFilter(
-                    "district", filterString, true, false);
 
             beanContainer.addContainerFilter(
                     new Or(
+                            navCodeFilter,
                             nameFilter, licenceFilter,
-                            cityFilter, municipalityFilter,
-                            districtFilter));
+                            matBrFilter, cityFilter)
+            );
         }
     }
 }

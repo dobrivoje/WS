@@ -49,7 +49,7 @@ public class FSPROP_Controller implements IFSPROPController {
 
     @Override
     public List<FsProp> getByName(String partialName) {
-        return dbh.getAllFSProperties(partialName);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     //</editor-fold>
 

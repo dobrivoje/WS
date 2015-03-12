@@ -59,7 +59,7 @@ public class FSForm extends FormLayout {
         address.setWidth(50, Unit.PERCENTAGE);
         coordinates.setWidth(50, Unit.PERCENTAGE);
 
-        city.setNullSelectionAllowed(false);
+        // city.setNullSelectionAllowed(false);
         // city.setFilteringMode(FilteringMode.CONTAINS);
 
         name.focus();

@@ -27,7 +27,7 @@ public class WindowForm extends Window {
 
         setCaption(caption);
         setModal(true);
-        setHeight(66, Unit.PERCENTAGE);
+        setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
         if (bigForm) {

@@ -145,24 +145,25 @@ public class FSPROP_Form extends FormLayout {
         currentCustomer.setEnabled(false);
 
         Owner o = beanItem.getBean().getFkIdo();
-        setAllOwnersForFS(o.getFkIdFs());
-        
         String cName;
         String fsName;
 
-        try {
-            cName = o.getFKIDCustomer().getName();
-        } catch (Exception e) {
-            cName = " C(n/a)! ";
-        }
+        if (o != null) {
+            try {
+                cName = o.getFKIDCustomer().getName();
+            } catch (Exception e) {
+                cName = " C(n/a)! ";
+            }
 
-        try {
-            fsName = o.getFkIdFs().getName();
-        } catch (Exception e) {
-            fsName = " FS(n/a)! ";
-        }
+            try {
+                fsName = o.getFkIdFs().getName();
+            } catch (Exception e) {
+                fsName = " FS(n/a)! ";
+            }
 
-        owner.setItemCaption(o, cName + "->" + fsName);
+            setAllOwnersForFS(o.getFkIdFs());
+            owner.setItemCaption(o, cName + "->" + fsName);
+        }
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {

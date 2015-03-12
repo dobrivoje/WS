@@ -43,9 +43,9 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout vl1;
     private final VerticalLayout propVL = new VerticalLayout();
 
-    private static final String[] propPanelsCaptopns = new String[]{
+    private static final String[] propPanelsCaptions = new String[]{
         "Bussines Type(s)", "FS(s) Owned by this customer", "Customer Options "};
-    private final Panel[] propPanels = new Panel[propPanelsCaptopns.length];
+    private final Panel[] propPanels = new Panel[propPanelsCaptions.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
     private final CustomerTable customersTable = new CustomerTable();
@@ -55,18 +55,10 @@ public class CustomersView extends VerticalLayout implements View {
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
-
         propVL.setSpacing(true);
         propVL.setMargin(true);
 
-        for (int i = 0; i < propPanels.length; i++) {
-            propPanels[i] = new Panel();
-            propPanels[i].setHeight(167, Unit.PIXELS);
-            propPanels[i].setCaption(propPanelsCaptopns[i]);
-
-            propVL.addComponent(propPanels[i]);
-            propVL.setComponentAlignment(propPanels[i], Alignment.TOP_CENTER);
-        }
+        createPropertyPanels();
 
         setSizeFull();
         addStyleName("crud-view");
@@ -176,6 +168,8 @@ public class CustomersView extends VerticalLayout implements View {
         }
     }
 
+    // Ovaj metod drastično ubrzava generisanje Customer tabele, zato što na klik na Customer-a
+    // u tabeli generiše definisane dugmiće, umesto da se unapred za sve kupce generišu opcije !
     private Component buildCustomerOptions(final Customer c, final CustomerTable customersTable) {
         VerticalLayout VL1 = new VerticalLayout();
 
@@ -214,5 +208,16 @@ public class CustomersView extends VerticalLayout implements View {
         VL1.addComponents(HL1);
 
         return VL1;
+    }
+
+    private void createPropertyPanels() {
+        for (int i = 0; i < propPanels.length; i++) {
+            propPanels[i] = new Panel();
+            propPanels[i].setHeight(167, Unit.PIXELS);
+            propPanels[i].setCaption(propPanelsCaptions[i]);
+
+            propVL.addComponent(propPanels[i]);
+            propVL.setComponentAlignment(propPanels[i], Alignment.TOP_CENTER);
+        }
     }
 }

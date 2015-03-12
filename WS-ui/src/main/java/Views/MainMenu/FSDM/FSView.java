@@ -70,11 +70,9 @@ public class FSView extends VerticalLayout implements View {
                 openProperties(fs);
             }
         });
-        //</editor-fold>
 
         addComponent(VL);
     }
-    //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">
 
     @Override
     public void enter(ViewChangeEvent event) {
@@ -127,24 +125,13 @@ public class FSView extends VerticalLayout implements View {
             FsProp fsProp = DS.getFSPROPController().getNewestFSPropForFS(fs);
             FSPROP_Form fspropForm;
 
-            if (fsProp != null) {
-                fspropForm = new FSPROP_Form(
-                        new BeanItem(fsProp), new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                FS_Table.refreshVisualContainer();
-                            }
-                        });
-            } else {
-                fsProp = new FsProp();
-                fspropForm = new FSPROP_Form(
-                        new BeanItem(fsProp), new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                FS_Table.refreshVisualContainer();
-                            }
-                        });
-            }
+            fspropForm = new FSPROP_Form(
+                    new BeanItem(fsProp == null ? new FsProp() : fsProp), new IRefreshVisualContainer() {
+                        @Override
+                        public void refreshVisualContainer() {
+                            FS_Table.refreshVisualContainer();
+                        }
+                    });
 
             propVL.addComponent(fspropForm);
 

@@ -40,7 +40,7 @@ public class WindowForm2 extends Window {
 
         setModal(true);
         setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
-        setHeight(60, Unit.PERCENTAGE);
+        setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
         content.setSizeFull();
