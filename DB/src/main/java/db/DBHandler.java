@@ -587,21 +587,11 @@ public class DBHandler {
         }
     }
 
-    public Owner getFSOwner(Long ID) {
+    public Owner getFSOwner(Fuelstation fuelstation) {
         try {
-            return (Owner) getEm().createNamedQuery("Owner.findByIdo")
-                    .setParameter("ido", ID)
-                    .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Owner> getAllOwners(Fuelstation fuelstation) {
-        try {
-            return getEm().createNamedQuery("Owner.findByFuelstation")
+            return (Owner) getEm().createNamedQuery("Owner.findByFuelstation")
                     .setParameter("fuelstation", fuelstation)
-                    .getResultList();
+                    .getSingleResult();
         } catch (Exception ex) {
             return null;
         }
@@ -635,24 +625,19 @@ public class DBHandler {
         getEm().getTransaction().commit();
     }
 
-    public void updateOwner(Long ID, Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
-        Owner owner = getFSOwner(ID);
-
-        owner.setFKIDCustomer(customer);
-        owner.setFkIdFs(fuelstation);
-        owner.setDateFrom(dateFrom);
-        owner.setDateTo(dateTo);
-        owner.setActive(active);
-
+    public void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception {
         getEm().getTransaction().begin();
-        em.merge(owner);
+        getEm().createNamedQuery("Owner.updateAllFSActiveFalse")
+                .setParameter("fs", fuelstation)
+                .executeUpdate();
         getEm().getTransaction().commit();
     }
     //</editor-fold>
     //</editor-fold>
-
+    
     //<editor-fold defaultstate="collapsed" desc="FS PROPERTIES">
     //<editor-fold defaultstate="collapsed" desc="READ">
+
     public FsProp getFSProp(FsProp fsProp) {
         try {
             return (FsProp) getEm().createNamedQuery("FsProp.findByFSPROP")

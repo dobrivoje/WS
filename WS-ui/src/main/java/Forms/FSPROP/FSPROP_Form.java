@@ -37,7 +37,7 @@ public class FSPROP_Form extends FormLayout {
     private final TextField currentCustomer = new TextField("Current Customer");
 
     @PropertyId("fkIdo")
-    private final ComboBox owner = new ComboBox("Owner");
+    private final ComboBox ownerComboBox = new ComboBox("Owner");
 
     @PropertyId("propertiesDate")
     private final DateField propertiesDate = new DateField("Properties Date");
@@ -89,7 +89,7 @@ public class FSPROP_Form extends FormLayout {
         }
 
         //owner.setNullSelectionAllowed(false);
-        owner.focus();
+        ownerComboBox.focus();
 
         noOfTanks.setNullRepresentation("0");
         //noOfTanks.addValidator(new MyNumberValidator());
@@ -161,8 +161,8 @@ public class FSPROP_Form extends FormLayout {
                 fsName = " FS(n/a)! ";
             }
 
-            setAllOwnersForFS(o.getFkIdFs());
-            owner.setItemCaption(o, cName + "->" + fsName);
+            setComboBoxCaption(ownerComboBox, o.getFkIdFs());
+            ownerComboBox.setItemCaption(o, cName + "->" + fsName);
         }
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
@@ -194,7 +194,7 @@ public class FSPROP_Form extends FormLayout {
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {
-        fsPropertyBean.setFkIdo((Owner) owner.getValue());
+        fsPropertyBean.setFkIdo((Owner) ownerComboBox.getValue());
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
         fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
         fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));
@@ -207,10 +207,11 @@ public class FSPROP_Form extends FormLayout {
         fsPropertyBean.setActive(active.getValue());
     }
 
-    private void setAllOwnersForFS(Fuelstation f) {
-        for (Owner o : DS.getFSOController().getAllOwners(f)) {
-            owner.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
-            owner.addItem(o);
-        }
+    private void setComboBoxCaption(ComboBox comboBox, Fuelstation f) {
+        Owner o = DS.getFSOController().getFSOwner(f);
+        
+        comboBox.removeAllItems();
+        comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
+        comboBox.addItem(o);
     }
 }
