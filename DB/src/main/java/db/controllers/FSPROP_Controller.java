@@ -33,8 +33,13 @@ public class FSPROP_Controller implements IFSPROPController {
     }
 
     @Override
-    public FsProp getNewestFSPropForFS(Fuelstation fuelstation) {
-        return dbh.getNewestFSPropForFS(fuelstation);
+    public FsProp getCurrentFSProp(Fuelstation fuelstation) {
+        return dbh.getCurrentFSProp(fuelstation);
+    }
+
+    @Override
+    public FsProp getCurrentFSProp(Owner owner) {
+        return dbh.getCurrentFSProp(owner);
     }
 
     @Override

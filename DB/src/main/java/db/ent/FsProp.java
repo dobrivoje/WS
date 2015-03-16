@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.LockModeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,6 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FsProp.NewestFSPropForFS",
             query = "SELECT fsp FROM FsProp fsp "
             + "WHERE fsp.fkIdo.fkIdFs = :fuelstation AND fsp.active = TRUE"),
+
+    @NamedQuery(name = "FsProp.NewestFSPropForOwner",
+            query = "SELECT fsp FROM FsProp fsp WHERE fsp.fkIdo = :owner AND fsp.active = TRUE"),
 
     @NamedQuery(name = "FsProp.findByNoOfTanks", query = "SELECT f FROM FsProp f WHERE f.noOfTanks = :noOfTanks"),
     @NamedQuery(name = "FsProp.findByRestaurant", query = "SELECT f FROM FsProp f WHERE f.restaurant = :restaurant"),
@@ -95,6 +97,29 @@ public class FsProp implements Serializable {
     private List<RelFSPROPPRODUCT> relFSPROPPRODUCTList;
 
     public FsProp() {
+    }
+
+    public FsProp(FsProp existingFsProp) {
+        initFsProp(existingFsProp);
+    }
+
+    private void initFsProp(FsProp existingFsProp) {
+        this.propertiesDate = existingFsProp.getPropertiesDate();
+        this.noOfTanks = existingFsProp.getNoOfTanks();
+        this.restaurant = existingFsProp.getRestaurant();
+        this.truckCapable = existingFsProp.getTruckCapable();
+        this.carWash = existingFsProp.getCarWash();
+        this.compliance = existingFsProp.getCompliance();
+        this.licence = existingFsProp.getLicence();
+        this.licDateFrom = existingFsProp.getLicDateFrom();
+        this.licDateTo = existingFsProp.getLicDateTo();
+        this.active = existingFsProp.getActive();
+        this.fkIdo = existingFsProp.getFkIdo();
+        this.relFSPROPPRODUCTList = existingFsProp.getRelFSPROPPRODUCTList();
+    }
+
+    public void setNewFsProp(FsProp existingFsProp) {
+        initFsProp(existingFsProp);
     }
 
     public FsProp(Long idfsp) {
@@ -225,11 +250,12 @@ public class FsProp implements Serializable {
 
     @Override
     public String toString() {
-        return getFkIdo().getFKIDCustomer()
+        return getFkIdo() != null
+                ? getFkIdo().getFKIDCustomer()
                 + ", "
                 + getFkIdo().getFkIdFs()
                 + ", "
-                + (getActive() ? "(a)" : "(na)");
+                + (getActive() ? "(a)" : "(na)")
+                : "no owner!";
     }
-
 }

@@ -678,10 +678,20 @@ public class DBHandler {
         }
     }
 
-    public FsProp getNewestFSPropForFS(Fuelstation fuelstation) {
+    public FsProp getCurrentFSProp(Fuelstation fuelstation) {
         try {
             return (FsProp) getEm().createNamedQuery("FsProp.NewestFSPropForFS")
                     .setParameter("fuelstation", fuelstation)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+    public FsProp getCurrentFSProp(Owner owner) {
+        try {
+            return (FsProp) getEm().createNamedQuery("FsProp.NewestFSPropForOwner")
+                    .setParameter("owner", owner)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;

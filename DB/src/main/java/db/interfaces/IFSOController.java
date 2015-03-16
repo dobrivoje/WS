@@ -12,12 +12,14 @@ import java.util.Date;
 public interface IFSOController extends CRUDInterface<Owner> {
 
     /**
-     * Za FS, vrati trenutnog Owner-a. 
-     * Trenutni vlasnik je uvek u statusu Owner.active == true !
+     * Za FS, vrati trenutnog Owner-a. Trenutni vlasnik je uvek u statusu
+     * Owner.active == true ! Ukoliko je Owner null, znači da ne postoji samo
+     * jedan Active
+     *
      * @param fuelstation
      * @return Owner
      */
-    Owner getFSOwner(Fuelstation fuelstation) throws Exception;
+    Owner getCurrentFSOwner(Fuelstation fuelstation);
 
     void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 

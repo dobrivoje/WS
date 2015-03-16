@@ -1,6 +1,5 @@
 package Forms.FSPROP;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -29,16 +28,16 @@ public class FSPROP_Form extends FormLayout {
     private final FieldGroup fieldGroup = new BeanFieldGroup(FsProp.class);
     private Button crudButton;
     private BeanItem<FsProp> beanItem;
+    private Owner currentOwner;
 
     private Button.ClickListener clickListener;
     private String btnCaption;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final TextField currentCustomer = new TextField("Current Customer");
+    private final TextField currentCustomerTxtField = new TextField("Current Customer");
 
-    @PropertyId("fkIdo")
-    private final ComboBox ownerComboBox = new ComboBox("Owner");
-
+    // @PropertyId("fkIdo")
+    // private final ComboBox ownerComboBox = new ComboBox("Owner");
     @PropertyId("propertiesDate")
     private final DateField propertiesDate = new DateField("Properties Date");
 
@@ -89,8 +88,7 @@ public class FSPROP_Form extends FormLayout {
         }
 
         //owner.setNullSelectionAllowed(false);
-        ownerComboBox.focus();
-
+        //ownerComboBox.focus();
         noOfTanks.setNullRepresentation("0");
         //noOfTanks.addValidator(new MyNumberValidator());
         truckCapable.setNullRepresentation("0");
@@ -124,9 +122,9 @@ public class FSPROP_Form extends FormLayout {
 
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
-            currentCustomer.setWidth(230, Unit.PIXELS);
+            currentCustomerTxtField.setWidth(230, Unit.PIXELS);
 
-            addComponent(currentCustomer);
+            addComponent(currentCustomerTxtField);
             for (Component c : fieldGroup.getFields()) {
                 addComponents(c);
             }
@@ -134,36 +132,18 @@ public class FSPROP_Form extends FormLayout {
         }
     }
 
-    public FSPROP_Form(Item existingFSProp, final IRefreshVisualContainer visualContainer) {
+    public FSPROP_Form(Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingFSProp);
+        currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
+        FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+
+        fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
 
-        currentCustomer.setWidth(230, Unit.PIXELS);
-        currentCustomer.setValue(beanItem.getBean().getFkIdo() == null ? "" : beanItem.getBean().getFkIdo().getFKIDCustomer().getName());
-        currentCustomer.setEnabled(false);
-
-        Owner o = beanItem.getBean().getFkIdo();
-        String cName;
-        String fsName;
-
-        if (o != null) {
-            try {
-                cName = o.getFKIDCustomer().getName();
-            } catch (Exception e) {
-                cName = " C(n/a)! ";
-            }
-
-            try {
-                fsName = o.getFkIdFs().getName();
-            } catch (Exception e) {
-                fsName = " FS(n/a)! ";
-            }
-
-            setComboBoxCaption(ownerComboBox, o.getFkIdFs());
-            ownerComboBox.setItemCaption(o, cName + "->" + fsName);
-        }
+        currentCustomerTxtField.setWidth(230, Unit.PIXELS);
+        currentCustomerTxtField.setValue(currentOwner == null ? "" : currentOwner.getFKIDCustomer().getName());
+        currentCustomerTxtField.setEnabled(false);
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {
@@ -186,7 +166,7 @@ public class FSPROP_Form extends FormLayout {
 
         crudButton = new Button(btnCaption, clickListener);
 
-        addComponent(currentCustomer);
+        addComponent(currentCustomerTxtField);
         for (Component c : fieldGroup.getFields()) {
             addComponents(c);
         }
@@ -194,7 +174,7 @@ public class FSPROP_Form extends FormLayout {
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {
-        fsPropertyBean.setFkIdo((Owner) ownerComboBox.getValue());
+        fsPropertyBean.setFkIdo(currentOwner);
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
         fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
         fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));
@@ -211,7 +191,7 @@ public class FSPROP_Form extends FormLayout {
         Owner o;
 
         try {
-            o = DS.getFSOController().getFSOwner(f);
+            o = DS.getFSOController().getCurrentFSOwner(f);
 
             comboBox.removeAllItems();
             comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());

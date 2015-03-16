@@ -3,7 +3,6 @@ package Views.MainMenu.CDM;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Forms.SaDesneStraneForm;
-import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -14,20 +13,16 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import Tables.CustomerTable;
 import Trees.FSOwnerTree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
-import java.util.Arrays;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -49,7 +44,6 @@ public class CustomersView extends VerticalLayout implements View {
     private final SaDesneStraneForm form = new SaDesneStraneForm();
     private final CustomerTable customersTable = new CustomerTable();
 
-    private ComboBox tablePerspectiveCombo;
     private Button simpleViewMode;
     private Button fullViewMode;
 
@@ -115,17 +109,10 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
-        tablePerspectiveCombo = new ComboBox("", Arrays.asList("Simple mode", "Licence mode", "Full mode"));
-        tablePerspectiveCombo.setNullSelectionAllowed(false);
-        tablePerspectiveCombo.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                customersTable.setTablePerspective((String) tablePerspectiveCombo.getValue());
-            }
-        });
-
-        simpleViewMode = new Button("Simple");
-        simpleViewMode.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        simpleViewMode = new Button("Simple View");
+        simpleViewMode.setWidth(150, Unit.PIXELS);
+        simpleViewMode.setDescription("Basic Customer Information");
+        simpleViewMode.focus();
         simpleViewMode.setIcon(FontAwesome.BRIEFCASE);
         simpleViewMode.addClickListener(new Button.ClickListener() {
             @Override
@@ -135,8 +122,9 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
         
-        fullViewMode = new Button("Full");
-        fullViewMode.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        fullViewMode = new Button("Full View");
+        fullViewMode.setWidth(150, Unit.PIXELS);
+        fullViewMode.setDescription("Full Customer Information");
         fullViewMode.setIcon(FontAwesome.BUILDING);
         fullViewMode.addClickListener(new Button.ClickListener() {
             @Override

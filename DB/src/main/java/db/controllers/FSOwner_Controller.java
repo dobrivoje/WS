@@ -35,6 +35,11 @@ public class FSOwner_Controller implements IFSOController {
     public List<Owner> getByName(String partialName) {
         throw new UnsupportedOperationException("Not supported.");
     }
+
+    @Override
+    public Owner getCurrentFSOwner(Fuelstation fuelstation) {
+        return dbh.getFSOwner(fuelstation);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
@@ -52,15 +57,10 @@ public class FSOwner_Controller implements IFSOController {
     public void updateExisting(Owner object) throws Exception {
         dbh.updateOwner(object);
     }
-    //</editor-fold>
 
     @Override
     public void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception {
         dbh.updateAllOwnerFSActiveFalse(fuelstation);
     }
-
-    @Override
-    public Owner getFSOwner(Fuelstation fuelstation) {
-        return dbh.getFSOwner(fuelstation);
-    }
+    //</editor-fold>
 }

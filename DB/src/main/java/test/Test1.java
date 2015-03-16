@@ -6,7 +6,11 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.FsProp;
 import db.ent.Fuelstation;
+import db.ent.Owner;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  *
@@ -18,14 +22,25 @@ public class Test1 {
 
     public static void main(String[] args) {
         Fuelstation fs = DS.getFSController().getByID(1L);
+        System.out.println("Fuelstation : " + fs.toString());
 
-        System.out.println(fs.toString());
-        
-        try {
-            System.out.println(DS.getFSOController().getFSOwner(fs).toString());
-        } catch (Exception e) {
+        Owner currentOwner = DS.getFSOController().getCurrentFSOwner(fs);
+        System.err.println("currentOwner  : " + currentOwner.getFKIDCustomer().getName());
+
+        FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        System.err.println(currentFsProp == null ? "currentFsProp : n/a!" : currentFsProp.toString());
+
+        FsProp newFsProp = new FsProp();
+
+        if (currentFsProp != null) {
+            currentFsProp.setActive(false);
+            // DS.getFSPROPController().updateExisting(existingFsProp);
+
+            newFsProp.setNewFsProp(currentFsProp);
         }
-        
-        System.err.println("getNewestFSPropForFS  : " + DS.getFSPROPController().getNewestFSPropForFS(fs));
+
+        newFsProp.setPropertiesDate(new Date());
+        newFsProp.setActive(true);
+        // DS.getFSPROPController().addNew(newFsProp);
     }
 }
