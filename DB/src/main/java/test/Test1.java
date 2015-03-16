@@ -17,18 +17,15 @@ public class Test1 {
     static dataservice.DataService DS = DataService.getDefault();
 
     public static void main(String[] args) {
-        Fuelstation fs = DS.getFSController().getByID(2L);
+        Fuelstation fs = DS.getFSController().getByID(1L);
 
-        // System.err.println("getAllFSPropertiesByCustomer  : " + DS.getFSOController().getAllOwners(fs));
-        // System.err.println("getNewestFSPropForFS  : " + DS.getFSPROPController().getNewestFSPropForFS(fs));
-        /*
-         try {
-         DS.getFSOController().updateAllOwnerFSActiveFalse(fs);
-         } catch (Exception ex) {
-         Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         */
         System.out.println(fs.toString());
-        System.out.println(DS.getFSOController().getFSOwner(fs));
+        
+        try {
+            System.out.println(DS.getFSOController().getFSOwner(fs).toString());
+        } catch (Exception e) {
+        }
+        
+        System.err.println("getNewestFSPropForFS  : " + DS.getFSPROPController().getNewestFSPropForFS(fs));
     }
 }

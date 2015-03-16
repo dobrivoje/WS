@@ -688,16 +688,6 @@ public class DBHandler {
         }
     }
 
-    public List<FsProp> getAllFSProperties(String FSpartName) {
-        try {
-            return getEm().createNamedQuery("FsProp.FSPropByPartCustomerName")
-                    .setParameter("partName", FSpartName.concat("%"))
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public List<FsProp> getAllFSProperties(Owner owner) {
         try {
             return getEm().createNamedQuery("FsProp.findByOwner")

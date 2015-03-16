@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.LockModeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -43,12 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
     @NamedQuery(name = "FsProp.FSPropByFS",
             query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = :active"),
-    
-    @NamedQuery(name = "FsProp.NewestFSPropForFS",
-            query = "SELECT fsp FROM FsProp fsp WHERE fsp.fkIdo.fkIdFs = :fuelstation ORDER BY fsp.idfsp DESC"),
 
-    @NamedQuery(name = "FsProp.FSPropByPartCustomerName",
-            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fKIDCustomer.name LIKE :partName"),
+    @NamedQuery(name = "FsProp.NewestFSPropForFS",
+            query = "SELECT fsp FROM FsProp fsp "
+            + "WHERE fsp.fkIdo.fkIdFs = :fuelstation AND fsp.active = TRUE"),
 
     @NamedQuery(name = "FsProp.findByNoOfTanks", query = "SELECT f FROM FsProp f WHERE f.noOfTanks = :noOfTanks"),
     @NamedQuery(name = "FsProp.findByRestaurant", query = "SELECT f FROM FsProp f WHERE f.restaurant = :restaurant"),

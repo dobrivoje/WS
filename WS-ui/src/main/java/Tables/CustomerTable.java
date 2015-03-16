@@ -19,6 +19,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import db.ent.City;
 import db.ent.Customer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
@@ -32,6 +34,11 @@ import static ws.MyUI.DS;
  * @author root
  */
 public class CustomerTable extends GENTable<Customer> {
+
+    private static final List<String> tableColumnsID = new ArrayList(Arrays.asList(
+            "navCode", "name", "licence", "options", "fKIDCity", "matBr"));
+    private static final String[] tableColumns = new String[]{
+        "NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "MATBR"};
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
@@ -109,7 +116,6 @@ public class CustomerTable extends GENTable<Customer> {
                     try {
                         navID = (String) property.getValue();
                     } catch (Exception e) {
-                        navID = "";
                     }
                 }
 
@@ -127,7 +133,6 @@ public class CustomerTable extends GENTable<Customer> {
                     try {
                         matBrojID = (String) property.getValue();
                     } catch (Exception e) {
-                        matBrojID = "";
                     }
                 }
 
@@ -151,6 +156,8 @@ public class CustomerTable extends GENTable<Customer> {
         setColumnWidth("name", 300);
         setColumnWidth("licence", 120);
         setColumnWidth("options", 90);
+
+        setTablePerspective("Simple mode");
     }
 
     public void setFilter(String filterString) {
@@ -174,6 +181,30 @@ public class CustomerTable extends GENTable<Customer> {
                             nameFilter, licenceFilter,
                             matBrFilter, cityFilter)
             );
+        }
+    }
+
+    private void setTableView(String... columns) {
+        for (String c : tableColumnsID) {
+            setColumnCollapsed(c, true);
+        }
+
+        for (String c : columns) {
+            setColumnCollapsed(c, false);
+        }
+    }
+
+    public final void setTablePerspective(String mode) {
+        switch (mode) {
+            case "Simple mode":
+                setTableView("navCode", "name", "matBr");
+                break;
+            case "Licence mode":
+                setTableView("name", "licence", "matBr");
+                break;
+            case "Full mode":
+            default:
+                setTableView("navCode", "name", "licence", "options", "city", "matBr");
         }
     }
 }

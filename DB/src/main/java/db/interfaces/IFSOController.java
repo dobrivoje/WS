@@ -17,7 +17,7 @@ public interface IFSOController extends CRUDInterface<Owner> {
      * @param fuelstation
      * @return Owner
      */
-    Owner getFSOwner(Fuelstation fuelstation);
+    Owner getFSOwner(Fuelstation fuelstation) throws Exception;
 
     void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 

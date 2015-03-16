@@ -2,10 +2,8 @@ package Views.MainMenu.CDM;
 
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
-import Forms.FSM.FSOWNER_Form;
 import Forms.SaDesneStraneForm;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
-import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -23,12 +21,13 @@ import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
+import java.util.Arrays;
 import org.superb.apps.utilities.Enums.CrudOperations;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -50,8 +49,9 @@ public class CustomersView extends VerticalLayout implements View {
     private final SaDesneStraneForm form = new SaDesneStraneForm();
     private final CustomerTable customersTable = new CustomerTable();
 
-    private Button newCustomer;
-    private Button newCustomerOwnerFS;
+    private ComboBox tablePerspectiveCombo;
+    private Button simpleViewMode;
+    private Button fullViewMode;
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -115,30 +115,40 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
-        newCustomer = new Button("New Customer");
-        newCustomer.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        newCustomer.setIcon(FontAwesome.YOUTUBE_PLAY);
-        newCustomer.addClickListener(new Button.ClickListener() {
+        tablePerspectiveCombo = new ComboBox("", Arrays.asList("Simple mode", "Licence mode", "Full mode"));
+        tablePerspectiveCombo.setNullSelectionAllowed(false);
+        tablePerspectiveCombo.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+            public void valueChange(Property.ValueChangeEvent event) {
+                customersTable.setTablePerspective((String) tablePerspectiveCombo.getValue());
             }
         });
 
-        newCustomerOwnerFS = new Button("New FS Owner");
-        newCustomerOwnerFS.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        newCustomerOwnerFS.setIcon(FontAwesome.YOUTUBE_PLAY);
-        newCustomerOwnerFS.addClickListener(new Button.ClickListener() {
+        simpleViewMode = new Button("Simple");
+        simpleViewMode.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        simpleViewMode.setIcon(FontAwesome.BRIEFCASE);
+        simpleViewMode.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
+                // getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+                customersTable.setTablePerspective("Simple mode");
+            }
+        });
+        
+        fullViewMode = new Button("Full");
+        fullViewMode.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        fullViewMode.setIcon(FontAwesome.BUILDING);
+        fullViewMode.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                customersTable.setTablePerspective("Full mode");
             }
         });
 
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setSpacing(true);
         topLayout.setWidth(100, Unit.PERCENTAGE);
-        topLayout.addComponents(filter, newCustomer, newCustomerOwnerFS);
+        topLayout.addComponents(filter, simpleViewMode, fullViewMode);
         topLayout.setComponentAlignment(filter, Alignment.MIDDLE_LEFT);
         topLayout.setExpandRatio(filter, 1);
         topLayout.setStyleName("top-bar");

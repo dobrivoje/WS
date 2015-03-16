@@ -16,10 +16,9 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
     List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active);
 
     /**
-     * @param fuelstation
-     *
      * Za unetu stanicu, vrati njeno poslednje svojstvo.
-     * @return FsProp
+     * @param fuelstation
+     * @return 
      */
     FsProp getNewestFSPropForFS(Fuelstation fuelstation);
 

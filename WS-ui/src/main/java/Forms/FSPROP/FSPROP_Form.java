@@ -208,10 +208,21 @@ public class FSPROP_Form extends FormLayout {
     }
 
     private void setComboBoxCaption(ComboBox comboBox, Fuelstation f) {
-        Owner o = DS.getFSOController().getFSOwner(f);
-        
-        comboBox.removeAllItems();
-        comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
-        comboBox.addItem(o);
+        Owner o;
+
+        try {
+            o = DS.getFSOController().getFSOwner(f);
+
+            comboBox.removeAllItems();
+            comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
+            comboBox.addItem(o);
+
+        } catch (Exception e) {
+            Notification.show(
+                    "Error",
+                    "This FS must have exaclty one active owner !\n"
+                    + "Error description: " + e.toString(),
+                    Notification.Type.ERROR_MESSAGE);
+        }
     }
 }
