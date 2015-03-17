@@ -97,7 +97,7 @@ public class CustomerForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
-        setTFWidth(250, Unit.PIXELS);
+        settextFieldWidth(250, Unit.PIXELS);
 
         licence.addItem(Boolean.FALSE);
         licence.setItemCaption(Boolean.FALSE, "No licence");
@@ -209,7 +209,7 @@ public class CustomerForm extends FormLayout {
         addComponents(crudButton);
     }
 
-    private void setTFWidth(float width, Sizeable.Unit unit) {
+    private void settextFieldWidth(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {
             if (c instanceof TextField) {
                 ((TextField) c).setWidth(width, unit);

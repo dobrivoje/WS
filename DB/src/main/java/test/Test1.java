@@ -9,7 +9,6 @@ import dataservice.DataService;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -42,5 +41,7 @@ public class Test1 {
         newFsProp.setPropertiesDate(new Date());
         newFsProp.setActive(true);
         // DS.getFSPROPController().addNew(newFsProp);
+        
+        System.err.println("date : " + new Date());
     }
 }

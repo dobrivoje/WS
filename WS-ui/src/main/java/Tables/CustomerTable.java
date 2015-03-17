@@ -38,9 +38,9 @@ import static ws.MyUI.DS;
 public class CustomerTable extends GENTable<Customer> {
 
     private static final List<String> tableColumnsID = new ArrayList(Arrays.asList(
-            "navCode", "name", "licence", "options", "fKIDCity", "matBr"));
+            "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
     private static final String[] tableColumns = new String[]{
-        "NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "MATBR"};
+        "NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "ZONE", "MATBR"};
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
@@ -125,6 +125,23 @@ public class CustomerTable extends GENTable<Customer> {
             }
         });
 
+        addGeneratedColumn("zone", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object row, Object column) {
+                Property property = source.getItem(row).getItemProperty(column);
+                String zone1 = " - ";
+
+                if (property != null) {
+                    try {
+                        zone1 = (String) property.getValue();
+                    } catch (Exception e) {
+                    }
+                }
+
+                return zone1;
+            }
+        });
+
         addGeneratedColumn("matBr", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(Table source, Object row, Object column) {
@@ -150,12 +167,15 @@ public class CustomerTable extends GENTable<Customer> {
             }
         });
 
-        setVisibleColumns("navCode", "name", "licence", "options", "city", "matBr" /*, "munic", "district"*/);
-        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "MATBR" /*, "MUNIC.", "DISTRICT"*/);
+        setVisibleColumns("navCode", "name", "licence", "options", "myCity",
+                "zone", "matBr", "myCityMunicipality", "myCityDistrict", "myCityRegion");
+        setColumnHeaders("NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY",
+                "ZONE", "MATBR", "MUNIC.", "DISTRICT", "REGION");
 
         setColumnWidth("navCode", 90);
         setColumnWidth("matBr", 90);
-        setColumnWidth("name", 300);
+        setColumnWidth("zone", 90);
+        setColumnWidth("myCity", 220);
         setColumnWidth("licence", 120);
         setColumnWidth("options", 90);
 
@@ -174,14 +194,22 @@ public class CustomerTable extends GENTable<Customer> {
                     "licence", filterString, true, false);
             SimpleStringFilter matBrFilter = new SimpleStringFilter(
                     "matBr", filterString, true, false);
-            SimpleStringFilter cityFilter = new SimpleStringFilter(
-                    "city", filterString, true, false);
+            SimpleStringFilter myCityFilter = new SimpleStringFilter(
+                    "myCity", filterString, true, false);
+            SimpleStringFilter zoneFilter = new SimpleStringFilter(
+                    "zone", filterString, true, false);
+            SimpleStringFilter myCityDistrictFilter = new SimpleStringFilter(
+                    "myCityDistrict", filterString, true, false);
+            SimpleStringFilter myCityRegionFilter = new SimpleStringFilter(
+                    "myCityRegion", filterString, true, false);
 
             beanContainer.addContainerFilter(
                     new Or(
                             navCodeFilter,
                             nameFilter, licenceFilter,
-                            matBrFilter, cityFilter)
+                            matBrFilter, myCityFilter, zoneFilter,
+                            myCityDistrictFilter, myCityRegionFilter
+                    )
             );
         }
     }
@@ -199,14 +227,14 @@ public class CustomerTable extends GENTable<Customer> {
     public final void setTablePerspective(ViewModes mode) {
         switch (mode) {
             case SIMPLE:
-                setTableView("navCode", "name", "matBr");
+                setTableView("navCode", "name", "zone", "matBr", "myCity", "myCityDistrict", "myCityRegion");
                 break;
             case LICENCE:
                 setTableView("name", "licence", "matBr");
                 break;
             case FULL:
             default:
-                setTableView("navCode", "name", "licence", "options", "city", "matBr");
+                setTableView("navCode", "name", "licence", "options", "myCity", "zone", "matBr");
         }
     }
 }

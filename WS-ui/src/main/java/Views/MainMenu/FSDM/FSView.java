@@ -22,6 +22,7 @@ import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.DS;
 
 public class FSView extends VerticalLayout implements View {
 
@@ -33,8 +34,9 @@ public class FSView extends VerticalLayout implements View {
 
     private final FSTable FS_Table = new FSTable();
 
-    private Button newFS;
-    private Button newFSO;
+    private Button newFSPropButton;
+    private Button newFSButton;
+    private Button newFSOButton;
 
     public FSView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -70,7 +72,7 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Fuelstation fs = (Fuelstation) FS_Table.getValue();
-                openProperties(fs);
+                openProperties(fs, true);
             }
         });
 
@@ -95,31 +97,55 @@ public class FSView extends VerticalLayout implements View {
             }
         });
 
-        newFS = new Button("New FS");
-        newFS.setWidth(150, Unit.PIXELS);
-        newFS.setIcon(FontAwesome.BRIEFCASE);
-        newFS.focus();
-        newFS.addClickListener(new Button.ClickListener() {
+        newFSPropButton = new Button("New FS Property");
+        newFSPropButton.setEnabled(false);
+        newFSPropButton.setWidth(170, Unit.PIXELS);
+        newFSPropButton.setIcon(FontAwesome.ARCHIVE);
+        newFSPropButton.focus();
+        newFSPropButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+            }
+        });
+
+        newFSButton = new Button("New FS");
+        newFSButton.setWidth(150, Unit.PIXELS);
+        newFSButton.setIcon(FontAwesome.BRIEFCASE);
+        newFSButton.focus();
+        newFSButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), false, new FSForm(CrudOperations.CREATE)));
             }
         });
 
-        newFSO = new Button("New FS Owner");
-        newFSO.setWidth(150, Unit.PIXELS);
-        newFSO.setIcon(FontAwesome.BULLSEYE);
-        newFSO.addClickListener(new Button.ClickListener() {
+        newFSOButton = new Button("New FS Owner");
+        newFSOButton.setWidth(150, Unit.PIXELS);
+        newFSOButton.setIcon(FontAwesome.BULLSEYE);
+        newFSOButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
+                Fuelstation f = (Fuelstation) FS_Table.getValue();
+                FSOWNER_Form fsoForm;
+
+                if (f != null) {
+                    fsoForm = new FSOWNER_Form(f, new IRefreshVisualContainer() {
+                        @Override
+                        public void refreshVisualContainer() {
+                            FS_Table.markAsDirtyRecursive();
+                        }
+                    });
+                    getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+                } else {
+                    getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
+                }
             }
         });
 
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setSpacing(true);
         topLayout.setWidth(100, Unit.PERCENTAGE);
-        topLayout.addComponents(filter, newFS, newFSO);
+        topLayout.addComponents(filter, newFSPropButton, newFSButton, newFSOButton);
         topLayout.setComponentAlignment(filter, Alignment.MIDDLE_LEFT);
         topLayout.setExpandRatio(filter, 1);
         topLayout.setStyleName("top-bar");
@@ -127,9 +153,9 @@ public class FSView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
-    private void openProperties(Fuelstation fs) {
+    private void openProperties(Fuelstation fs, boolean formFieldsEnabled) {
         if (fs != null) {
-
+            newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
             HL.setSplitPosition(50, Unit.PERCENTAGE);
 
             if (propVL.getComponentCount() > 0) {
@@ -137,7 +163,7 @@ public class FSView extends VerticalLayout implements View {
             }
 
             propVL.addComponent(
-                    new FSPROP_Form(fs, new IRefreshVisualContainer() {
+                    new FSPROP_Form(fs, formFieldsEnabled, new IRefreshVisualContainer() {
                         @Override
                         public void refreshVisualContainer() {
                             FS_Table.refreshVisualContainer();
@@ -145,6 +171,7 @@ public class FSView extends VerticalLayout implements View {
                     }));
 
         } else {
+            newFSPropButton.setEnabled(false);
             propVL.removeAllComponents();
             HL.setSplitPosition(100, Unit.PERCENTAGE);
         }

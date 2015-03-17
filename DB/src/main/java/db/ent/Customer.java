@@ -241,6 +241,28 @@ public class Customer implements Serializable {
         return fKIDCity;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Custom Customer City getters">
+    public String getMyCity() {
+        return fKIDCity != null
+                ? fKIDCity.getName() : " - ";
+    }
+
+    public String getMyCityMunicipality() {
+        return fKIDCity != null
+                ? fKIDCity.getMunicipality() : " - ";
+    }
+
+    public String getMyCityDistrict() {
+        return fKIDCity != null
+                ? fKIDCity.getDistrict() : " - ";
+    }
+
+    public String getMyCityRegion() {
+        return fKIDCity != null
+                ? fKIDCity.getRegion() : " - ";
+    }
+    //</editor-fold>
+
     public void setFKIDCity(City fKIDCity) {
         this.fKIDCity = fKIDCity;
     }

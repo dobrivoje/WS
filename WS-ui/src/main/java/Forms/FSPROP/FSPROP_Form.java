@@ -76,6 +76,9 @@ public class FSPROP_Form extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
+        currentCustomerTxtField.setWidth(230, Unit.PIXELS);
+        currentCustomerTxtField.setEnabled(false);
+
         for (Component c : fieldGroup.getFields()) {
             if (c instanceof DateField) {
                 DateField df = (DateField) c;
@@ -130,28 +133,25 @@ public class FSPROP_Form extends FormLayout {
         }
     }
 
-    public FSPROP_Form(Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
+    public FSPROP_Form(Fuelstation existingFS, boolean formFieldsEnabled, final IRefreshVisualContainer visualContainer) {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        final FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
 
         fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
 
-        currentCustomerTxtField.setWidth(230, Unit.PIXELS);
-        currentCustomerTxtField.setValue(currentOwner == null ? "" : currentOwner.getFKIDCustomer().getName());
-        currentCustomerTxtField.setEnabled(false);
+        currentCustomerTxtField.setValue(currentOwner == null ? "This FS belongs to no one !" : currentOwner.getFKIDCustomer().getName());
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                FsProp existingFSProp = beanItem.getBean();
-                bindFieldsToBean(existingFSProp);
+                bindFieldsToBean(fsProp);
 
                 try {
-                    DS.getFSPROPController().updateExisting(existingFSProp);
+                    DS.getFSPROPController().updateExisting(fsProp);
                     visualContainer.refreshVisualContainer();
                     Notification n = new Notification("FS Property Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
@@ -165,10 +165,14 @@ public class FSPROP_Form extends FormLayout {
         crudButton = new Button(btnCaption, clickListener);
 
         addComponent(currentCustomerTxtField);
+
         for (Component c : fieldGroup.getFields()) {
+            c.setEnabled(!formFieldsEnabled);
             addComponents(c);
         }
-        addComponents(active, crudButton);
+
+        crudButton.setEnabled(!formFieldsEnabled);
+        addComponents(crudButton);
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {
@@ -189,7 +193,6 @@ public class FSPROP_Form extends FormLayout {
 
         fsPropertyBean.setRestaurant((boolean) restaurant.getValue());
         fsPropertyBean.setCarWash((boolean) carWash.getValue());
-
         fsPropertyBean.setCompliance(compliance.getValue());
         fsPropertyBean.setLicence(licence.getValue());
         fsPropertyBean.setLicDateFrom(licDateFrom.getValue());

@@ -40,7 +40,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private static final String[] propPanelsCaptions = new String[]{
-        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer Options "};
+        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer Operations"};
     private final Panel[] propPanels = new Panel[propPanelsCaptions.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();

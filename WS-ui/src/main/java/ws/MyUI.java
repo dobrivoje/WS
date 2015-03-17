@@ -19,7 +19,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
-import date.formats.DateFormat;
+import org.dobrivoje.utils.date.formats.DateFormat;
 
 /**
  *

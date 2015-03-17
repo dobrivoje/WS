@@ -13,20 +13,18 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
-import date.formats.DateFormat;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
 import db.interfaces.IRELCBTController;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class RELCBTForm extends FormLayout {
 
     private static final IRELCBTController RELCBTController = DS.getRELCBTController();
 
-    private static final String DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
     private final FieldGroup fieldGroup = new BeanFieldGroup(RelCBType.class);
 
     private final BeanItemContainer<CustomerBussinesType> bicbt = new BeanItemContainer(

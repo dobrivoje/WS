@@ -7,7 +7,7 @@ package org.superb.apps.utilities.vaadin.Trees;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.Tree;
-import date.formats.DateFormat;
+import org.dobrivoje.utils.date.formats.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
