@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.superb.apps.utilities.Enums.Statuses;
+import org.superb.apps.utilities.Enums.ViewModes;
+import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
@@ -157,7 +159,7 @@ public class CustomerTable extends GENTable<Customer> {
         setColumnWidth("licence", 120);
         setColumnWidth("options", 90);
 
-        setTablePerspective("Simple mode");
+        setTablePerspective(SIMPLE);
     }
 
     public void setFilter(String filterString) {
@@ -194,15 +196,15 @@ public class CustomerTable extends GENTable<Customer> {
         }
     }
 
-    public final void setTablePerspective(String mode) {
+    public final void setTablePerspective(ViewModes mode) {
         switch (mode) {
-            case "Simple mode":
+            case SIMPLE:
                 setTableView("navCode", "name", "matBr");
                 break;
-            case "Licence mode":
+            case LICENCE:
                 setTableView("name", "licence", "matBr");
                 break;
-            case "Full mode":
+            case FULL:
             default:
                 setTableView("navCode", "name", "licence", "options", "city", "matBr");
         }

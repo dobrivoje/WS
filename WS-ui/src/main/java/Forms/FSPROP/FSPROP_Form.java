@@ -87,12 +87,10 @@ public class FSPROP_Form extends FormLayout {
             c.setWidth(230, Unit.PIXELS);
         }
 
-        //owner.setNullSelectionAllowed(false);
-        //ownerComboBox.focus();
-        noOfTanks.setNullRepresentation("0");
-        //noOfTanks.addValidator(new MyNumberValidator());
-        truckCapable.setNullRepresentation("0");
-        //truckCapable.addValidator(new MyNumberValidator());
+        noOfTanks.setNullRepresentation("");
+        truckCapable.setNullRepresentation("");
+        restaurant.setValue(false);
+        carWash.setValue(false);
         compliance.setNullRepresentation("");
         licence.setNullRepresentation("");
     }
@@ -176,10 +174,22 @@ public class FSPROP_Form extends FormLayout {
     private void bindFieldsToBean(FsProp fsPropertyBean) {
         fsPropertyBean.setFkIdo(currentOwner);
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
-        fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
-        fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));
+
+        try {
+            fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
+        } catch (Exception e) {
+            fsPropertyBean.setNoOfTanks(0);
+        }
+
+        try {
+            fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));
+        } catch (Exception e) {
+            fsPropertyBean.setTruckCapable(0);
+        }
+
         fsPropertyBean.setRestaurant((boolean) restaurant.getValue());
         fsPropertyBean.setCarWash((boolean) carWash.getValue());
+
         fsPropertyBean.setCompliance(compliance.getValue());
         fsPropertyBean.setLicence(licence.getValue());
         fsPropertyBean.setLicDateFrom(licDateFrom.getValue());

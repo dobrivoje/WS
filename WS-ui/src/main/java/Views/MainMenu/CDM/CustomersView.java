@@ -23,6 +23,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
+import static org.superb.apps.utilities.Enums.ViewModes.FULL;
+import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -118,7 +120,7 @@ public class CustomersView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 // getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
-                customersTable.setTablePerspective("Simple mode");
+                customersTable.setTablePerspective(SIMPLE);
             }
         });
         
@@ -129,7 +131,7 @@ public class CustomersView extends VerticalLayout implements View {
         fullViewMode.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                customersTable.setTablePerspective("Full mode");
+                customersTable.setTablePerspective(FULL);
             }
         });
 
