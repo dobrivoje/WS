@@ -135,24 +135,35 @@ public class FSOWNER_Form extends FormLayout {
         addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
     }
 
-    public FSOWNER_Form(Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
+    public FSOWNER_Form(final Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
         this();
 
+        Owner currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
         final Owner newOwner;
-        BeanItem<Owner> biOwner;
+
+        if (currentOwner == null) {
+            newOwner = new Owner();
+            newOwner.setFkIdFs(existingFS);
+            newOwner.setDateTo(null);
+        } else {
+            newOwner = currentOwner;
+            newOwner.setFKIDCustomer(null);
+        }
+        newOwner.setDateFrom(new Date());
+        newOwner.setActive(true);
+
+        BeanItem<Owner> biOwner = new BeanItem(newOwner);
+        fieldGroup.setItemDataSource(biOwner);
 
         try {
-            newOwner = DS.getFSOController().changeFSOwner(existingFS);
-            biOwner = new BeanItem(newOwner);
-            fieldGroup.setItemDataSource(biOwner);
-
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(newOwner);
-
                     try {
-                        DS.getFSOController().updateExisting(newOwner);
+                        bindFieldsToBean(newOwner);
+
+                        DS.getFSOController().changeFSOwner(existingFS, newOwner.getFKIDCustomer());
+
                         visualContainer.refreshVisualContainer();
                         Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
