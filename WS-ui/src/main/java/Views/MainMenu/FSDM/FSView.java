@@ -153,7 +153,7 @@ public class FSView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
-    private void openProperties(Fuelstation fs, boolean formFieldsEnabled) {
+    private void openProperties(Fuelstation fs, boolean formFieldsLocked) {
         if (fs != null) {
             newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
             HL.setSplitPosition(50, Unit.PERCENTAGE);
@@ -163,7 +163,7 @@ public class FSView extends VerticalLayout implements View {
             }
 
             propVL.addComponent(
-                    new FSPROP_Form(fs, formFieldsEnabled, new IRefreshVisualContainer() {
+                    new FSPROP_Form(fs, formFieldsLocked, new IRefreshVisualContainer() {
                         @Override
                         public void refreshVisualContainer() {
                             FS_Table.refreshVisualContainer();

@@ -62,5 +62,34 @@ public class FSOwner_Controller implements IFSOController {
     public void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception {
         dbh.updateAllOwnerFSActiveFalse(fuelstation);
     }
+
+    @Override
+    public Owner changeFSOwner(Fuelstation fs) throws Exception {
+        Owner oldOwner = getCurrentFSOwner(fs);
+        if (oldOwner != null) {
+            oldOwner.setActive(false);
+            oldOwner.setDateTo(new Date());
+
+            try {
+                updateExisting(oldOwner);
+            } catch (Exception e) {
+                throw new Exception("Old FS owner update not successful !");
+            }
+        }
+
+        Owner newOwner = new Owner();
+        newOwner.setFkIdFs(fs);
+        newOwner.setActive(true);
+        newOwner.setDateFrom(new Date());
+
+        try {
+            updateExisting(newOwner);
+        } catch (Exception e) {
+            throw new Exception("New FS owner update not successful !");
+        }
+
+        return newOwner;
+    }
     //</editor-fold>
+
 }

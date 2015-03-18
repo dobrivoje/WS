@@ -18,7 +18,6 @@ import db.ent.Fuelstation;
 import db.ent.Owner;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
@@ -133,7 +132,7 @@ public class FSPROP_Form extends FormLayout {
         }
     }
 
-    public FSPROP_Form(Fuelstation existingFS, boolean formFieldsEnabled, final IRefreshVisualContainer visualContainer) {
+    public FSPROP_Form(Fuelstation existingFS, boolean formFieldsLocked, final IRefreshVisualContainer visualContainer) {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
@@ -142,37 +141,14 @@ public class FSPROP_Form extends FormLayout {
         fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
 
-        currentCustomerTxtField.setValue(currentOwner == null ? "This FS belongs to no one !" : currentOwner.getFKIDCustomer().getName());
-
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                bindFieldsToBean(fsProp);
-
-                try {
-                    DS.getFSPROPController().updateExisting(fsProp);
-                    visualContainer.refreshVisualContainer();
-                    Notification n = new Notification("FS Property Updated.", Notification.Type.TRAY_NOTIFICATION);
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-                } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        };
-
-        crudButton = new Button(btnCaption, clickListener);
+        currentCustomerTxtField.setValue(currentOwner == null ? "This FS has NO owner!" : currentOwner.getFKIDCustomer().getName());
 
         addComponent(currentCustomerTxtField);
 
         for (Component c : fieldGroup.getFields()) {
-            c.setEnabled(!formFieldsEnabled);
+            c.setEnabled(!formFieldsLocked);
             addComponents(c);
         }
-
-        crudButton.setEnabled(!formFieldsEnabled);
-        addComponents(crudButton);
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {

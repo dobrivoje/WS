@@ -33,4 +33,12 @@ public interface IFSOController extends CRUDInterface<Owner> {
      */
     void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception;
 
+    /**
+     * Izmeni vlasništvo FS-a.
+     *
+     * @param fs
+     * @return 
+     * @throws java.lang.Exception
+     */
+    Owner changeFSOwner(Fuelstation fs) throws Exception;
 }
