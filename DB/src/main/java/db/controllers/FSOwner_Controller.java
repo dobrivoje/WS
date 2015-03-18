@@ -38,7 +38,7 @@ public class FSOwner_Controller implements IFSOController {
 
     @Override
     public Owner getCurrentFSOwner(Fuelstation fuelstation) {
-        return dbh.getFSOwner(fuelstation);
+        return dbh.getCurrentFSOwner(fuelstation);
     }
     //</editor-fold>
 
@@ -59,12 +59,7 @@ public class FSOwner_Controller implements IFSOController {
     }
 
     @Override
-    public void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception {
-        dbh.updateAllOwnerFSActiveFalse(fuelstation);
-    }
-
-    @Override
-    public Owner changeFSOwner(Fuelstation fs) throws Exception {
+    public Owner changeFSOwner(Fuelstation fs, Customer newCustomer) throws Exception {
         Owner oldOwner = getCurrentFSOwner(fs);
         if (oldOwner != null) {
             oldOwner.setActive(false);
@@ -79,13 +74,14 @@ public class FSOwner_Controller implements IFSOController {
 
         Owner newOwner = new Owner();
         newOwner.setFkIdFs(fs);
+        newOwner.setFKIDCustomer(newCustomer);
         newOwner.setActive(true);
         newOwner.setDateFrom(new Date());
 
         try {
-            updateExisting(newOwner);
+            addNew(newOwner);
         } catch (Exception e) {
-            throw new Exception("New FS owner update not successful !");
+            throw new Exception("New FS owner addition not successful !");
         }
 
         return newOwner;

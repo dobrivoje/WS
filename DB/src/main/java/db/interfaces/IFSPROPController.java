@@ -41,6 +41,15 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
      */
     List<FsProp> getAllFSPropertiesByCustomer(Customer customer, Fuelstation fuelstation, boolean active);
 
+    /**
+     * Izmeni vlasništvo FS-a.
+     *
+     * @param owner
+     * @return
+     * @throws java.lang.Exception
+     */
+    FsProp changeFSProp(Owner owner) throws Exception;
+
     void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
             Date dateLicenceFrom, Date dateLicenceTo, boolean active)

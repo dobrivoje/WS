@@ -587,7 +587,7 @@ public class DBHandler {
         }
     }
 
-    public Owner getFSOwner(Fuelstation fuelstation) {
+    public Owner getCurrentFSOwner(Fuelstation fuelstation) {
         try {
             return (Owner) getEm().createNamedQuery("Owner.findByFuelstation")
                     .setParameter("fuelstation", fuelstation)
@@ -622,14 +622,6 @@ public class DBHandler {
     public void updateOwner(Owner existingOwner) throws Exception {
         getEm().getTransaction().begin();
         em.merge(existingOwner);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception {
-        getEm().getTransaction().begin();
-        getEm().createNamedQuery("Owner.updateAllFSActiveFalse")
-                .setParameter("fs", fuelstation)
-                .executeUpdate();
         getEm().getTransaction().commit();
     }
     //</editor-fold>

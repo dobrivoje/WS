@@ -33,6 +33,7 @@ public class FSView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private final FSTable FS_Table = new FSTable();
+    private FSPROP_Form fSPROP_Form = null;
 
     private Button newFSPropButton;
     private Button newFSButton;
@@ -72,7 +73,7 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Fuelstation fs = (Fuelstation) FS_Table.getValue();
-                openProperties(fs, true);
+                openProperties(fs, true, false);
             }
         });
 
@@ -81,6 +82,10 @@ public class FSView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
+    }
+
+    public FSPROP_Form getfSPROP_Form() {
+        return fSPROP_Form;
     }
 
     //<editor-fold defaultstate="collapsed" desc="createTopBar">
@@ -105,6 +110,8 @@ public class FSView extends VerticalLayout implements View {
         newFSPropButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                Fuelstation f = (Fuelstation) FS_Table.getValue();
+                openProperties(f, false, true);
             }
         });
 
@@ -153,7 +160,7 @@ public class FSView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
-    private void openProperties(Fuelstation fs, boolean formFieldsLocked) {
+    public void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
         if (fs != null) {
             newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
             HL.setSplitPosition(50, Unit.PERCENTAGE);
@@ -162,15 +169,12 @@ public class FSView extends VerticalLayout implements View {
                 propVL.removeAllComponents();
             }
 
-            propVL.addComponent(
-                    new FSPROP_Form(fs, formFieldsLocked, new IRefreshVisualContainer() {
-                        @Override
-                        public void refreshVisualContainer() {
-                            FS_Table.refreshVisualContainer();
-                        }
-                    }));
+            fSPROP_Form = new FSPROP_Form(fs, formFieldsLocked, crudButtonOnForm);
+
+            propVL.addComponent(fSPROP_Form);
 
         } else {
+            fSPROP_Form = null;
             newFSPropButton.setEnabled(false);
             propVL.removeAllComponents();
             HL.setSplitPosition(100, Unit.PERCENTAGE);

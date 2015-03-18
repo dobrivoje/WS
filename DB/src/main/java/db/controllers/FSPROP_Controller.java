@@ -79,4 +79,9 @@ public class FSPROP_Controller implements IFSPROPController {
         dbh.updateExistingFSProp(object);
     }
     //</editor-fold>
+
+    @Override
+    public FsProp changeFSProp(Owner owner) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

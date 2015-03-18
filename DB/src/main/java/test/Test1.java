@@ -6,6 +6,7 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.Customer;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
@@ -25,29 +26,40 @@ public class Test1 {
 
         Owner currentOwner = DS.getFSOController().getCurrentFSOwner(fs);
         System.err.println("currentOwner  : " + currentOwner != null ? currentOwner.getFKIDCustomer().getName() : " n/a!");
+        try {
+            Customer newCustomer = DS.getCustomerController().getByID(1L);
+            Owner newOwner = DS.getFSOController().changeFSOwner(fs, newCustomer);
+            System.err.println("newOwner  : " + newOwner != null ? newOwner.getFKIDCustomer().getName() : " n/a!");
+        } catch (Exception ex) {
+            System.err.println("greška : " + ex.toString());
 
-        FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
-        System.err.println(currentFsProp == null ? "currentFsProp : n/a!" : currentFsProp.toString());
-
-        FsProp newFsProp = new FsProp();
-
-        if (currentFsProp != null) {
-            currentFsProp.setActive(false);
-            currentFsProp.setLicDateTo(new Date());
-            // DS.getFSPROPController().updateExisting(existingFsProp);
-
-            newFsProp.setNewFsProp(currentFsProp);
-            newFsProp.setLicDateFrom(new Date());
-            newFsProp.setLicDateTo(null);
         }
 
-        newFsProp.setPropertiesDate(new Date());
-        newFsProp.setActive(true);
-        // DS.getFSPROPController().addNew(newFsProp);
+        /*
+         FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+         System.err.println(currentFsProp == null ? "currentFsProp : n/a!" : currentFsProp.toString());
 
-        System.err.println("stari property : " + currentFsProp.toString()
-                + ", from: " + currentFsProp.getLicDateFrom() + " - " + currentFsProp.getLicDateTo());
-        System.err.println("novi property : " + newFsProp.toString()
-                + ", from: " + newFsProp.getLicDateFrom() + " - " + newFsProp.getLicDateTo());
+         FsProp newFsProp = new FsProp();
+
+         if (currentFsProp != null) {
+         currentFsProp.setActive(false);
+         currentFsProp.setLicDateTo(new Date());
+         // DS.getFSPROPController().updateExisting(existingFsProp);
+
+         newFsProp.setNewFsProp(currentFsProp);
+         newFsProp.setLicDateFrom(new Date());
+         newFsProp.setLicDateTo(null);
+
+         System.err.println("stari property : " + currentFsProp.toString()
+         + ", from: " + currentFsProp.getLicDateFrom() + " - " + currentFsProp.getLicDateTo());
+
+         System.err.println("novi property : " + newFsProp.toString()
+         + ", from: " + newFsProp.getLicDateFrom() + " - " + newFsProp.getLicDateTo());
+         }
+
+         newFsProp.setPropertiesDate(new Date());
+         newFsProp.setActive(true);
+         // DS.getFSPROPController().addNew(newFsProp);
+         */
     }
 }

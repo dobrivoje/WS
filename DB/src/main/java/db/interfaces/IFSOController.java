@@ -24,21 +24,12 @@ public interface IFSOController extends CRUDInterface<Owner> {
     void addNew(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception;
 
     /**
-     * Posle definisanja vlasnika FS, radi se update svih Active polja na False
-     * u Owner-u za tu FS, pošto dodavanje novog Owner-a znači da je samo
-     * poslednji aktivan, (a svi eventualni prethodni moraju biti neaktivni).
-     *
-     * @param fuelstation
-     * @throws java.lang.Exception
-     */
-    void updateAllOwnerFSActiveFalse(Fuelstation fuelstation) throws Exception;
-
-    /**
      * Izmeni vlasništvo FS-a.
      *
      * @param fs
-     * @return 
+     * @param newCustomer
+     * @return
      * @throws java.lang.Exception
      */
-    Owner changeFSOwner(Fuelstation fs) throws Exception;
+    Owner changeFSOwner(Fuelstation fs, Customer newCustomer) throws Exception;
 }

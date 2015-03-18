@@ -18,7 +18,6 @@ import db.ent.Fuelstation;
 import db.ent.Owner;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
@@ -27,7 +26,7 @@ public class FSPROP_Form extends FormLayout {
     private final FieldGroup fieldGroup = new BeanFieldGroup(FsProp.class);
     private Button crudButton;
     private BeanItem<FsProp> beanItem;
-    private Owner currentOwner;
+    private Owner currentOwner = null;
 
     private Button.ClickListener clickListener;
     private String btnCaption;
@@ -132,11 +131,11 @@ public class FSPROP_Form extends FormLayout {
         }
     }
 
-    public FSPROP_Form(Fuelstation existingFS, boolean formFieldsLocked, final IRefreshVisualContainer visualContainer) {
+    public FSPROP_Form(Fuelstation existingFS, boolean formFieldsLocked, boolean crudButtonOnForm) {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        final FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        final FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner.getFkIdFs());
 
         fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
@@ -148,6 +147,32 @@ public class FSPROP_Form extends FormLayout {
         for (Component c : fieldGroup.getFields()) {
             c.setEnabled(!formFieldsLocked);
             addComponents(c);
+        }
+
+        if (crudButtonOnForm) {
+            btnCaption = BUTTON_CAPTION_NEW.toString();
+
+            clickListener = new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    FsProp newFSProp = new FsProp();
+                    bindFieldsToBean(newFSProp);
+
+                    try {
+                        DS.getFSPROPController().addNew(newFSProp);
+                        Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
+                        n.setDelayMsec(500);
+                        n.show(getUI().getPage());
+                    } catch (Exception ex) {
+                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+            };
+
+            crudButton = new Button(btnCaption, clickListener);
+            crudButton.setWidth(150, Unit.PIXELS);
+
+            addComponents(crudButton);
         }
     }
 
@@ -167,8 +192,18 @@ public class FSPROP_Form extends FormLayout {
             fsPropertyBean.setTruckCapable(0);
         }
 
-        fsPropertyBean.setRestaurant((boolean) restaurant.getValue());
-        fsPropertyBean.setCarWash((boolean) carWash.getValue());
+        try {
+            fsPropertyBean.setRestaurant((boolean) restaurant.getValue());
+        } catch (Exception e) {
+            fsPropertyBean.setRestaurant(false);
+        }
+
+        try {
+            fsPropertyBean.setCarWash((boolean) carWash.getValue());
+        } catch (Exception e) {
+            fsPropertyBean.setCarWash(false);
+        }
+
         fsPropertyBean.setCompliance(compliance.getValue());
         fsPropertyBean.setLicence(licence.getValue());
         fsPropertyBean.setLicDateFrom(licDateFrom.getValue());
