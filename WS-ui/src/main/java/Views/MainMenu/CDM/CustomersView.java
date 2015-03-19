@@ -123,7 +123,7 @@ public class CustomersView extends VerticalLayout implements View {
                 customersTable.setTablePerspective(SIMPLE);
             }
         });
-        
+
         fullViewMode = new Button("Full View");
         fullViewMode.setWidth(150, Unit.PIXELS);
         fullViewMode.setDescription("Full Customer Information");
@@ -158,7 +158,7 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(Customer c) {
         if (c != null) {
             propPanels[0].setContent(new RELCBT_Tree("", c));
-            propPanels[1].setContent(new FSOwnerTree("", c));
+            propPanels[1].setContent(new FSOwnerTree("", c, true));
             propPanels[2].setContent(buildCustomerOptions(c, customersTable));
 
         } else {

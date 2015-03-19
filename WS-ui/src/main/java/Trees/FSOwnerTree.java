@@ -23,8 +23,8 @@ public class FSOwnerTree extends CustomTree<Owner> {
         createSubItems();
     }
 
-    public FSOwnerTree(String caption, Customer customer) {
-        super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer));
+    public FSOwnerTree(String caption, Customer customer, boolean justActive) {
+        super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer, justActive));
         createSubItems();
     }
 

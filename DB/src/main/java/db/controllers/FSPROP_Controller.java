@@ -34,7 +34,9 @@ public class FSPROP_Controller implements IFSPROPController {
 
     @Override
     public FsProp getCurrentFSProp(Fuelstation fuelstation) {
-        return dbh.getCurrentFSProp(fuelstation);
+        throw new UnsupportedOperationException(
+                "Metod NE RADI : DBhandler -> FsProp getCurrentFSProp(Fuelstation fuelstation)");
+        // return dbh.getCurrentFSProp(fuelstation);
     }
 
     @Override
@@ -82,6 +84,29 @@ public class FSPROP_Controller implements IFSPROPController {
 
     @Override
     public FsProp changeFSProp(Owner owner) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FsProp newFSProp = new FsProp();
+        FsProp currentFSProp = getCurrentFSProp(owner);
+
+        if (currentFSProp != null) {
+            currentFSProp.setActive(false);
+
+            try {
+                updateExisting(currentFSProp);
+            } catch (Exception e) {
+                throw new Exception("Old FS property update not successful !");
+            }
+        }
+
+        newFSProp.setFkIdo(owner);
+        newFSProp.setActive(true);
+        newFSProp.setPropertiesDate(new Date());
+
+        try {
+            addNew(newFSProp);
+        } catch (Exception e) {
+            throw new Exception("New FS property addition not successful !");
+        }
+
+        return newFSProp;
     }
 }

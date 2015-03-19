@@ -28,7 +28,7 @@ public class FSOwner_Controller implements IFSOController {
 
     @Override
     public Owner getByID(Long ID) {
-        throw new UnsupportedOperationException("Not supported.");
+        return dbh.getOwner(ID);
     }
 
     @Override
@@ -60,23 +60,24 @@ public class FSOwner_Controller implements IFSOController {
 
     @Override
     public Owner changeFSOwner(Fuelstation fs, Customer newCustomer) throws Exception {
-        Owner oldOwner = getCurrentFSOwner(fs);
-        if (oldOwner != null) {
-            oldOwner.setActive(false);
-            oldOwner.setDateTo(new Date());
-
-            try {
-                updateExisting(oldOwner);
-            } catch (Exception e) {
-                throw new Exception("Old FS owner update not successful !");
-            }
-        }
-
         Owner newOwner = new Owner();
+        Owner currentOwner = getCurrentFSOwner(fs);
+
         newOwner.setFkIdFs(fs);
         newOwner.setFKIDCustomer(newCustomer);
         newOwner.setActive(true);
         newOwner.setDateFrom(new Date());
+
+        if (currentOwner != null) {
+            currentOwner.setActive(false);
+            currentOwner.setDateTo(new Date());
+
+            try {
+                updateExisting(currentOwner);
+            } catch (Exception e) {
+                throw new Exception("Old FS owner update not successful !");
+            }
+        }
 
         try {
             addNew(newOwner);

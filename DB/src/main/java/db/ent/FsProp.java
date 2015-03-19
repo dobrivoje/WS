@@ -44,11 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FsProp.FSPropByFS",
             query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = :active"),
 
-    @NamedQuery(name = "FsProp.NewestFSPropForFS",
-            query = "SELECT fsp FROM FsProp fsp "
-            + "WHERE fsp.fkIdo.fkIdFs = :fuelstation AND fsp.active = TRUE"),
+    @NamedQuery(name = "FsProp.CurrentFSPropForFS",
+            query = "SELECT f FROM FsProp f WHERE f.fkIdo.fkIdFs = :fuelstation AND f.active = TRUE"),
 
-    @NamedQuery(name = "FsProp.NewestFSPropForOwner",
+    @NamedQuery(name = "FsProp.CurrentFSPropForOwner",
             query = "SELECT fsp FROM FsProp fsp WHERE fsp.fkIdo = :owner AND fsp.active = TRUE"),
 
     @NamedQuery(name = "FsProp.findByNoOfTanks", query = "SELECT f FROM FsProp f WHERE f.noOfTanks = :noOfTanks"),
@@ -72,10 +71,10 @@ public class FsProp implements Serializable {
     private Date propertiesDate;
     @Column(name = "NoOfTanks")
     private Integer noOfTanks;
-    @Column(name = "Restaurant")
-    private Boolean restaurant;
     @Column(name = "TruckCapable")
     private int truckCapable;
+    @Column(name = "Restaurant")
+    private Boolean restaurant;
     @Column(name = "CarWash")
     private Boolean carWash;
     @Column(name = "Compliance")
@@ -102,20 +101,68 @@ public class FsProp implements Serializable {
     public FsProp(FsProp existingFsProp) {
         initFsProp(existingFsProp);
     }
-
+    
     private void initFsProp(FsProp existingFsProp) {
-        this.propertiesDate = existingFsProp.getPropertiesDate();
-        this.noOfTanks = existingFsProp.getNoOfTanks();
-        this.restaurant = existingFsProp.getRestaurant();
-        this.truckCapable = existingFsProp.getTruckCapable();
-        this.carWash = existingFsProp.getCarWash();
-        this.compliance = existingFsProp.getCompliance();
-        this.licence = existingFsProp.getLicence();
-        this.licDateFrom = existingFsProp.getLicDateFrom();
-        this.licDateTo = existingFsProp.getLicDateTo();
-        this.active = existingFsProp.getActive();
-        this.fkIdo = existingFsProp.getFkIdo();
-        this.relFSPROPPRODUCTList = existingFsProp.getRelFSPROPPRODUCTList();
+
+        try {
+            this.propertiesDate = existingFsProp.getPropertiesDate();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.noOfTanks = existingFsProp.getNoOfTanks();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.restaurant = existingFsProp.getRestaurant();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.truckCapable = existingFsProp.getTruckCapable();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.carWash = existingFsProp.getCarWash();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.compliance = existingFsProp.getCompliance();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.licence = existingFsProp.getLicence();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.licDateFrom = existingFsProp.getLicDateFrom();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.licDateTo = existingFsProp.getLicDateTo();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.active = existingFsProp.getActive();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.fkIdo = existingFsProp.getFkIdo();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.relFSPROPPRODUCTList.addAll(existingFsProp.getRelFSPROPPRODUCTList());
+        } catch (Exception e) {
+        }
     }
 
     public void setNewFsProp(FsProp existingFsProp) {

@@ -26,7 +26,7 @@ public interface ICustomerController extends CRUDInterface<Customer> {
 
     List<Fuelstation> getAllCustomerFS(Customer customer);
 
-    List<Owner> getAllFSOwnedByCustomer(Customer customer);
+    List<Owner> getAllFSOwnedByCustomer(Customer customer, boolean justActive);
 
     List<RelCBType> getAllCustomerBussinesTypes(Customer customer);
 

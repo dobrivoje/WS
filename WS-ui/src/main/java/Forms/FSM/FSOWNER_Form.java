@@ -119,11 +119,11 @@ public class FSOWNER_Form extends FormLayout {
 
                 try {
                     DS.getFSOController().updateExisting(existingOwner);
-                    
+
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
                     }
-                    
+
                     Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
@@ -142,18 +142,13 @@ public class FSOWNER_Form extends FormLayout {
     public FSOWNER_Form(final Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
         this();
 
-        Owner currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        final Owner newOwner = new Owner();;
+        final Owner newOwner = new Owner(DS.getFSOController().getCurrentFSOwner(existingFS));
 
         newOwner.setFkIdFs(existingFS);
         newOwner.setDateTo(null);
         newOwner.setDateFrom(new Date());
         newOwner.setActive(true);
 
-        if (currentOwner != null) {
-            currentOwner.setDateTo(new Date());
-            currentOwner.setActive(false);
-        }
 
         BeanItem<Owner> biOwner = new BeanItem(newOwner);
         fieldGroup.setItemDataSource(biOwner);
@@ -170,7 +165,7 @@ public class FSOWNER_Form extends FormLayout {
                         if (visualContainer != null) {
                             visualContainer.refreshVisualContainer();
                         }
-                        
+
                         Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());

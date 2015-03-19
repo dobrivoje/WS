@@ -6,6 +6,7 @@
 package test;
 
 import dataservice.DataService;
+import db.DBHandler;
 import db.ent.Customer;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
@@ -18,48 +19,55 @@ import java.util.Date;
  */
 public class Test1 {
 
-    static dataservice.DataService DS = DataService.getDefault();
+    static DataService DS = DataService.getDefault();
 
     public static void main(String[] args) {
         Fuelstation fs = DS.getFSController().getByID(1L);
         System.out.println("Fuelstation : " + fs.toString());
 
         Owner currentOwner = DS.getFSOController().getCurrentFSOwner(fs);
-        System.err.println("currentOwner  : " + currentOwner != null ? currentOwner.getFKIDCustomer().getName() : " n/a!");
-        try {
-            Customer newCustomer = DS.getCustomerController().getByID(1L);
-            Owner newOwner = DS.getFSOController().changeFSOwner(fs, newCustomer);
-            System.err.println("newOwner  : " + newOwner != null ? newOwner.getFKIDCustomer().getName() : " n/a!");
-        } catch (Exception ex) {
-            System.err.println("greška : " + ex.toString());
+        System.err.println("currentOwner  : " + (currentOwner != null ? currentOwner.getFKIDCustomer().getName() : " n/a!"));
 
+        FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        System.err.println("currentFsProp  : " + (currentFsProp != null
+                ? currentFsProp.getPropertiesDate() + ", "
+                + (currentFsProp.getActive() ? "active" : "not active") + ", "
+                + (currentFsProp.getCarWash() ? "car wash" : "car wash-na") + ", "
+                + (currentFsProp.getNoOfTanks() != null ? "NoOfTanks=" + currentFsProp.getNoOfTanks() : "NoOfTanks n/a") + ", "
+                + "TruckCapable=" + currentFsProp.getTruckCapable()
+                : " n/a!"));
+
+        Owner o1 = DS.getFSOController().getByID(52L);
+        Owner newOwner = new Owner(o1);
+        System.err.println("o1==newOwner ? " + (o1 == newOwner));
+        System.err.println("");
+
+        System.err.println("o1  : " + (o1 != null
+                ? o1.getDateFrom() + ", "
+                + (o1.getActive() ? " o1 active" : " o1 not active") + ", "
+                + (o1.getFKIDCustomer() != null ? " o1 Cust:" + o1.getFKIDCustomer() : " o1 cust n/a")
+                : " o1 n/a!"));
+
+        System.err.println("newOwner  : " + (o1 != null
+                ? newOwner.getDateFrom() + ", "
+                + (newOwner.getActive() ? " newOwner active" : " newOwner not active") + ", "
+                + (newOwner.getFKIDCustomer() != null ? " newOwner Cust:" + newOwner.getFKIDCustomer() : " newOwner cust n/a")
+                : " newOwner n/a!"));
+
+        FsProp fsProp = new FsProp();
+
+        try {
+            fsProp = DS.getFSPROPController().getCurrentFSProp(o1);
+        } catch (Exception e) {
         }
 
-        /*
-         FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
-         System.err.println(currentFsProp == null ? "currentFsProp : n/a!" : currentFsProp.toString());
+        fsProp.setActive(false);
+        fsProp.setPropertiesDate(new Date());
 
-         FsProp newFsProp = new FsProp();
-
-         if (currentFsProp != null) {
-         currentFsProp.setActive(false);
-         currentFsProp.setLicDateTo(new Date());
-         // DS.getFSPROPController().updateExisting(existingFsProp);
-
-         newFsProp.setNewFsProp(currentFsProp);
-         newFsProp.setLicDateFrom(new Date());
-         newFsProp.setLicDateTo(null);
-
-         System.err.println("stari property : " + currentFsProp.toString()
-         + ", from: " + currentFsProp.getLicDateFrom() + " - " + currentFsProp.getLicDateTo());
-
-         System.err.println("novi property : " + newFsProp.toString()
-         + ", from: " + newFsProp.getLicDateFrom() + " - " + newFsProp.getLicDateTo());
-         }
-
-         newFsProp.setPropertiesDate(new Date());
-         newFsProp.setActive(true);
-         // DS.getFSPROPController().addNew(newFsProp);
-         */
+        System.err.println("fsProp : " + fsProp.toString());
+        
+        
+        FsProp fsProp1 = DBHandler.getDefault().getCurrentFSProp(currentOwner);
+        System.err.println("feprop1 : "+fsProp1);
     }
 }

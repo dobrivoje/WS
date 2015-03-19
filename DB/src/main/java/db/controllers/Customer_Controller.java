@@ -66,8 +66,8 @@ public class Customer_Controller implements ICustomerController {
     }
 
     @Override
-    public List<Owner> getAllFSOwnedByCustomer(Customer customer) {
-        return dbh.getAllFSOwnedByCustomer(customer);
+    public List<Owner> getAllFSOwnedByCustomer(Customer customer, boolean justActive) {
+        return dbh.getAllFSOwnedByCustomer(customer,justActive);
     }
     //</editor-fold>
 

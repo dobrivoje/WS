@@ -16,6 +16,7 @@ import com.vaadin.ui.themes.Reindeer;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
+import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static ws.MyUI.DATE_FORMAT;
@@ -94,6 +95,10 @@ public class FSPROP_Form extends FormLayout {
         carWash.setValue(false);
         compliance.setNullRepresentation("");
         licence.setNullRepresentation("");
+
+        // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
+        // mogu napraviti problem sa prikazom u formi !
+        active.setEnabled(false);
     }
 
     public FSPROP_Form(final CrudOperations crudOperation) {
@@ -135,18 +140,23 @@ public class FSPROP_Form extends FormLayout {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        FsProp fsProp;
+        currentCustomerTxtField.setValue(currentOwner == null ? "This FS has NO owner!" : currentOwner.getFKIDCustomer().getName());
 
-        try {
-            fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner.getFkIdFs());
-        } catch (Exception e) {
-            fsProp = null;
+        FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        final FsProp newFsProp;
+
+        if (currentFsProp != null) {
+            currentFsProp.setActive(false);
+            newFsProp = new FsProp(currentFsProp);
+        } else {
+            newFsProp = new FsProp();
         }
 
-        fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
-        beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
+        newFsProp.setActive(true);
+        newFsProp.setPropertiesDate(new Date());
 
-        currentCustomerTxtField.setValue(currentOwner == null ? "This FS has NO owner!" : currentOwner.getFKIDCustomer().getName());
+        fieldGroup.setItemDataSource(new BeanItem(newFsProp));
+        beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
 
         addComponent(currentCustomerTxtField);
 
@@ -161,11 +171,10 @@ public class FSPROP_Form extends FormLayout {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    FsProp newFSProp = new FsProp();
-                    bindFieldsToBean(newFSProp);
+                    bindFieldsToBean(newFsProp);
 
                     try {
-                        DS.getFSPROPController().addNew(newFSProp);
+                        DS.getFSPROPController().addNew(newFsProp);
                         Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -180,6 +189,7 @@ public class FSPROP_Form extends FormLayout {
 
             addComponents(crudButton);
         }
+
     }
 
     private void bindFieldsToBean(FsProp fsPropertyBean) {

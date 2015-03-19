@@ -577,10 +577,31 @@ public class DBHandler {
         }
     }
 
+    public Owner getOwner(long ID) {
+        try {
+            return (Owner) getEm().createNamedQuery("Owner.findByIdo")
+                    .setParameter("ido", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Owner> getAllFSOwnedByCustomer(Customer customer) {
         try {
             return getEm().createNamedQuery("Owner.findByCustomer")
                     .setParameter("customer", customer)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Owner> getAllFSOwnedByCustomer(Customer customer, boolean justActive) {
+        try {
+            return getEm().createNamedQuery("Owner.ByCustomerAndActive")
+                    .setParameter("customer", customer)
+                    .setParameter("active", justActive)
                     .getResultList();
         } catch (Exception ex) {
             return null;
@@ -626,10 +647,9 @@ public class DBHandler {
     }
     //</editor-fold>
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="FS PROPERTIES">
     //<editor-fold defaultstate="collapsed" desc="READ">
-
     public FsProp getFSProp(FsProp fsProp) {
         try {
             return (FsProp) getEm().createNamedQuery("FsProp.findByFSPROP")
@@ -670,19 +690,21 @@ public class DBHandler {
         }
     }
 
-    public FsProp getCurrentFSProp(Fuelstation fuelstation) {
-        try {
-            return (FsProp) getEm().createNamedQuery("FsProp.NewestFSPropForFS")
-                    .setParameter("fuelstation", fuelstation)
-                    .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-    
+    // Ovaj metod NE radi !!!
+    /*
+     public FsProp getCurrentFSProp(Fuelstation fuelstation) {
+     try {
+     return (FsProp) getEm().createNamedQuery("FsProp.CurrentFSPropForFS")
+     .setParameter("fuelstation", fuelstation)
+     .getSingleResult();
+     } catch (Exception ex) {
+     return null;
+     }
+     }
+     */
     public FsProp getCurrentFSProp(Owner owner) {
         try {
-            return (FsProp) getEm().createNamedQuery("FsProp.NewestFSPropForOwner")
+            return (FsProp) getEm().createNamedQuery("FsProp.CurrentFSPropForOwner")
                     .setParameter("owner", owner)
                     .getSingleResult();
         } catch (Exception ex) {

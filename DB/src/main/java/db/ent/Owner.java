@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Owner.findByIdo", query = "SELECT o FROM Owner o WHERE o.ido = :ido"),
     @NamedQuery(name = "Owner.findByCustomer", query = "SELECT o FROM Owner o WHERE o.fKIDCustomer = :customer"),
 
+    @NamedQuery(name = "Owner.ByCustomerAndActive",
+            query = "SELECT o FROM Owner o WHERE o.fKIDCustomer = :customer AND o.active = :active"),
+
     @NamedQuery(name = "Owner.updateAllFSActiveFalse",
             query = "UPDATE Owner o SET o.active = FALSE WHERE o.fkIdFs = :fs"),
 
@@ -72,6 +75,40 @@ public class Owner implements Serializable {
     private List<FsProp> fsPropList;
 
     public Owner() {
+    }
+
+    public Owner(Owner newOwner) {
+        this();
+
+        try {
+            this.dateFrom = newOwner.getDateFrom();
+        } catch (Exception e) {
+
+        }
+        try {
+            this.dateTo = newOwner.getDateTo();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.active = newOwner.getActive();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.fKIDCustomer = newOwner.getFKIDCustomer();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.fkIdFs = newOwner.getFkIdFs();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.fsPropList.addAll(newOwner.getFsPropList());
+        } catch (Exception e) {
+        }
     }
 
     public Owner(Long ido) {
