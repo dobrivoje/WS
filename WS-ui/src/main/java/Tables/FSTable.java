@@ -58,12 +58,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
 
-                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                source.markAsDirtyRecursive();
-                            }
-                        });
+                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
                         getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
                     }
                 });

@@ -163,6 +163,7 @@ public class CustomerForm extends FormLayout {
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
                     }
+                    
                     Notification n = new Notification("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
 
                     n.setDelayMsec(500);

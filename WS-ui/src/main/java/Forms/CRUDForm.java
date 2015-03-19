@@ -71,7 +71,11 @@ public abstract class CRUDForm<T> extends FormLayout {
 
                 try {
                     updateExistingBean(bean);
-                    visualContainer.refreshVisualContainer();
+                    
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+                    
                     Notification.show("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
                     Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);

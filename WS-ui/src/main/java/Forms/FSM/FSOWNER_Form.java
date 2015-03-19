@@ -119,7 +119,11 @@ public class FSOWNER_Form extends FormLayout {
 
                 try {
                     DS.getFSOController().updateExisting(existingOwner);
-                    visualContainer.refreshVisualContainer();
+                    
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+                    
                     Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
@@ -139,18 +143,17 @@ public class FSOWNER_Form extends FormLayout {
         this();
 
         Owner currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        final Owner newOwner;
+        final Owner newOwner = new Owner();;
 
-        if (currentOwner == null) {
-            newOwner = new Owner();
-            newOwner.setFkIdFs(existingFS);
-            newOwner.setDateTo(null);
-        } else {
-            newOwner = currentOwner;
-            newOwner.setFKIDCustomer(null);
-        }
+        newOwner.setFkIdFs(existingFS);
+        newOwner.setDateTo(null);
         newOwner.setDateFrom(new Date());
         newOwner.setActive(true);
+
+        if (currentOwner != null) {
+            currentOwner.setDateTo(new Date());
+            currentOwner.setActive(false);
+        }
 
         BeanItem<Owner> biOwner = new BeanItem(newOwner);
         fieldGroup.setItemDataSource(biOwner);
@@ -164,7 +167,10 @@ public class FSOWNER_Form extends FormLayout {
 
                         DS.getFSOController().changeFSOwner(existingFS, newOwner.getFKIDCustomer());
 
-                        visualContainer.refreshVisualContainer();
+                        if (visualContainer != null) {
+                            visualContainer.refreshVisualContainer();
+                        }
+                        
                         Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());

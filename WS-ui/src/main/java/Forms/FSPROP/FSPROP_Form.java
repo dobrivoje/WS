@@ -135,7 +135,13 @@ public class FSPROP_Form extends FormLayout {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        final FsProp fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner.getFkIdFs());
+        FsProp fsProp;
+
+        try {
+            fsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner.getFkIdFs());
+        } catch (Exception e) {
+            fsProp = null;
+        }
 
         fieldGroup.setItemDataSource(new BeanItem(fsProp != null ? fsProp : new FsProp()));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
