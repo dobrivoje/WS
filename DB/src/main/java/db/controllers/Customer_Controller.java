@@ -67,7 +67,17 @@ public class Customer_Controller implements ICustomerController {
 
     @Override
     public List<Owner> getAllFSOwnedByCustomer(Customer customer, boolean justActive) {
-        return dbh.getAllFSOwnedByCustomer(customer,justActive);
+        return dbh.getAllFSOwnedByCustomer(customer, justActive);
+    }
+
+    @Override
+    public Customer getCustomerByMatBr(String matBr) {
+        return dbh.getCustomerByMatBr(matBr);
+    }
+
+    @Override
+    public List<Customer> getCustomerByNavCode(boolean licence) {
+        return dbh.getCustomerByLicence(licence);
     }
     //</editor-fold>
 
@@ -75,11 +85,6 @@ public class Customer_Controller implements ICustomerController {
     @Override
     public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {
         dbh.addNewCustomer(name, address, city, PIB);
-    }
-
-    @Override
-    public void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception {
-        dbh.updateCustomer(customerID, name, address, PIB);
     }
 
     @Override
@@ -92,14 +97,4 @@ public class Customer_Controller implements ICustomerController {
         dbh.updateCustomer(object);
     }
     //</editor-fold>
-
-    @Override
-    public Customer getCustomerByMatBr(String matBr) {
-        return dbh.getCustomerByMatBr(matBr);
-    }
-
-    @Override
-    public List<Customer> getCustomerByNavCode(boolean licence) {
-        return dbh.getCustomerByLicence(licence);
-    }
 }

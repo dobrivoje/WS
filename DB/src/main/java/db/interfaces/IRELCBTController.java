@@ -18,7 +18,4 @@ public interface IRELCBTController extends CRUDInterface<RelCBType> {
 
     void addNew(Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active)
             throws Exception;
-
-    void updateExisting(Long ID, Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active)
-            throws Exception;
 }

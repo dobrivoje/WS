@@ -7,11 +7,11 @@ package Tables;
 
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
-import Views.MainMenu.FSDM.FSView;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
+import com.vaadin.event.Action;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -28,6 +28,9 @@ import static ws.MyUI.DS;
  */
 public class FSTable extends GENTable<Fuelstation> {
 
+    private static final Action ACTION_FS_UPDATE = new Action("Fuelstation Data Update");
+    private static final Action ACTION_FS_OWNER = new Action("New Fuelstation Owner");
+
     public FSTable() {
         this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
     }
@@ -43,23 +46,13 @@ public class FSTable extends GENTable<Fuelstation> {
                 final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Fuelstation f = (Fuelstation) row;
-                        FSForm customerForm = new FSForm(new BeanItem(f), new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                source.markAsDirtyRecursive();
-                            }
-                        });
-                        getUI().addWindow(new WindowForm("FS Update Form", false, customerForm));
+                        showFSForm(source);
                     }
                 });
                 final Button ownerBtn = new Button("o", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Fuelstation f = (Fuelstation) row;
-
-                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
-                        getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+                        showFSOwnerForm(source);
                     }
                 });
 
@@ -81,6 +74,25 @@ public class FSTable extends GENTable<Fuelstation> {
         setColumnWidth("options", 110);
     }
 
+    private void showFSForm(final Table sourceTable) throws IllegalArgumentException, NullPointerException {
+        Fuelstation f = (Fuelstation) sourceTable.getValue();
+
+        FSForm customerForm = new FSForm(f, new IRefreshVisualContainer() {
+            @Override
+            public void refreshVisualContainer() {
+                sourceTable.markAsDirtyRecursive();
+            }
+        });
+        getUI().addWindow(new WindowForm("FS Update Form", false, customerForm));
+    }
+
+    private void showFSOwnerForm(Table sourceTable) throws IllegalArgumentException, NullPointerException {
+        Fuelstation f = (Fuelstation) sourceTable.getValue();
+
+        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
+        getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+    }
+
     public void setFilter(String filterString) {
         beanContainer.removeAllContainerFilters();
 
@@ -95,4 +107,28 @@ public class FSTable extends GENTable<Fuelstation> {
             beanContainer.addContainerFilter(new Or(nameFilter, cityFilter, addressFilter));
         }
     }
+
+    @Override
+    public void addActionHandler(Action.Handler actionHandler) {
+        super.addActionHandler(new Action.Handler() {
+
+            @Override
+            public Action[] getActions(Object target, Object sender) {
+                return new Action[]{ACTION_FS_OWNER, ACTION_FS_UPDATE};
+            }
+
+            @Override
+            public void handleAction(Action action, Object sender, Object target) {
+                final FSTable sourceTable = (FSTable) sender;
+
+                if (action.equals(FSTable.ACTION_FS_OWNER)) {
+                    showFSOwnerForm(sourceTable);
+                }
+                if (action.equals(FSTable.ACTION_FS_UPDATE)) {
+                    showFSForm(sourceTable);
+                }
+            }
+        });
+    }
+
 }

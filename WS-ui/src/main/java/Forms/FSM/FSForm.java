@@ -1,12 +1,10 @@
 package Forms.FSM;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -61,7 +59,6 @@ public class FSForm extends FormLayout {
 
         // city.setNullSelectionAllowed(false);
         // city.setFilteringMode(FilteringMode.CONTAINS);
-
         name.focus();
     }
 
@@ -78,6 +75,8 @@ public class FSForm extends FormLayout {
                     bindFieldsToBean(newFuelstation);
 
                     try {
+                        fieldGroup.commit();
+
                         DS.getFSController().addNew(newFuelstation);
                         Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
@@ -95,10 +94,10 @@ public class FSForm extends FormLayout {
         }
     }
 
-    public FSForm(Item existingFS, final IRefreshVisualContainer visualContainer) {
+    public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingFS);
+        fieldGroup.setItemDataSource(new BeanItem(fuelstation));
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
@@ -109,6 +108,8 @@ public class FSForm extends FormLayout {
                 bindFieldsToBean(FSToUpdate);
 
                 try {
+                    fieldGroup.commit();
+
                     DS.getFSController().updateExisting(FSToUpdate);
 
                     if (visualContainer != null) {

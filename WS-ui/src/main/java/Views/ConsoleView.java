@@ -1,7 +1,6 @@
 package Views;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
@@ -122,7 +121,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     CBT_DateTo_TextField.setDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        DS.getCBTController().addNewCBT(
+                        DS.getRELCBTController().addNew(
                                 (Customer) Customer_ComboBox.getValue(),
                                 (CustomerBussinesType) CBT_ComboBox.getValue(),
                                 CBT_DateFrom_TextField.getValue(),
@@ -213,7 +212,7 @@ public class ConsoleView extends VerticalLayout implements View {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
-                        CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
+                        CustomerForm customerForm = new CustomerForm(c, allCustomersTable);
                         getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
                     }
                 });
@@ -255,7 +254,7 @@ public class ConsoleView extends VerticalLayout implements View {
             public void itemClick(ItemClickEvent event) {
                 if (event.isDoubleClick()) {
                     Customer c = (Customer) event.getItemId();
-                    CustomerForm customerForm = new CustomerForm(new BeanItem(c), allCustomersTable);
+                    CustomerForm customerForm = new CustomerForm(c, allCustomersTable);
                     getUI().addWindow(new WindowForm("Customer Update Form", true, customerForm));
                 }
             }

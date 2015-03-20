@@ -62,13 +62,13 @@ public class FSPROP_Controller implements IFSPROPController {
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
-    public void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant, int truckCapable, boolean carWash, String compliance, String licence, Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
-        dbh.addNewFSProp(owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, active);
+    public void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant, int truckCapable, boolean carWash, String compliance, String licence, Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
+        dbh.addNewFSProp(owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, comment, active);
     }
 
     @Override
-    public void updateExisting(FsProp fsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant, int truckCapable, boolean carWash, String compliance, String licence, Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
-        dbh.updateExistingFSProp(fsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, active);
+    public void updateExisting(FsProp fsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant, int truckCapable, boolean carWash, String compliance, String licence, Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
+        dbh.updateExistingFSProp(fsProp, owner, propDate, noOfTanks, restaurant, truckCapable, carWash, compliance, licence, dateLicenceFrom, dateLicenceTo, comment, active);
     }
 
     @Override

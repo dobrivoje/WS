@@ -1,6 +1,5 @@
 package Forms.FSM;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -104,51 +103,16 @@ public class FSOWNER_Form extends FormLayout {
         }
     }
 
-    public FSOWNER_Form(Item existingOwner, final IRefreshVisualContainer visualContainer) {
+    public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingOwner);
-        beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+        final Owner newOwner = new Owner(DS.getFSOController().getCurrentFSOwner(fuelstation));
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                Owner existingOwner = beanItem.getBean();
-                bindFieldsToBean(existingOwner);
-
-                try {
-                    DS.getFSOController().updateExisting(existingOwner);
-
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
-
-                    Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-                } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        };
-
-        crudButton = new Button(btnCaption, clickListener);
-        crudButton.setWidth(150, Unit.PIXELS);
-
-        addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
-    }
-
-    public FSOWNER_Form(final Fuelstation existingFS, final IRefreshVisualContainer visualContainer) {
-        this();
-
-        final Owner newOwner = new Owner(DS.getFSOController().getCurrentFSOwner(existingFS));
-
-        newOwner.setFkIdFs(existingFS);
+        newOwner.setFkIdFs(fuelstation);
+        newOwner.setFKIDCustomer(null);
         newOwner.setDateTo(null);
         newOwner.setDateFrom(new Date());
         newOwner.setActive(true);
-
 
         BeanItem<Owner> biOwner = new BeanItem(newOwner);
         fieldGroup.setItemDataSource(biOwner);
@@ -160,15 +124,23 @@ public class FSOWNER_Form extends FormLayout {
                     try {
                         bindFieldsToBean(newOwner);
 
-                        DS.getFSOController().changeFSOwner(existingFS, newOwner.getFKIDCustomer());
+                        if (((Customer) customer.getValue()).equals(
+                                DS.getFSOController().getCurrentFSOwner(fuelstation).getFKIDCustomer())) {
+                            Notification.show("Wrong assigment",
+                                    "You cannot assign this fuelstation to this customer,\n"
+                                    + "as it is already assigned to it !",
+                                    Notification.Type.ERROR_MESSAGE);
+                        } else {
+                            DS.getFSOController().changeFSOwner(fuelstation, newOwner.getFKIDCustomer());
 
-                        if (visualContainer != null) {
-                            visualContainer.refreshVisualContainer();
+                            if (visualContainer != null) {
+                                visualContainer.refreshVisualContainer();
+                            }
+
+                            Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
+                            n.setDelayMsec(500);
+                            n.show(getUI().getPage());
                         }
-
-                        Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
                     } catch (Exception ex) {
                         Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }

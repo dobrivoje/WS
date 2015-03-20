@@ -6,8 +6,8 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -97,7 +97,7 @@ public class CustomerForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
-        settextFieldWidth(250, Unit.PIXELS);
+        setTextFieldWidth(250, Unit.PIXELS);
 
         licence.addItem(Boolean.FALSE);
         licence.setItemCaption(Boolean.FALSE, "No licence");
@@ -108,8 +108,9 @@ public class CustomerForm extends FormLayout {
         comment.setRows(5);
         comment.setNullRepresentation("");
 
-        // city.setNullSelectionAllowed(false);
-        // city.setFilteringMode(FilteringMode.CONTAINS);
+        // postavi validatore
+        email1.addValidator(new EmailValidator("Must be an email address !"));
+        email2.addValidator(new EmailValidator("Must be an email address !"));
 
         name.focus();
     }
@@ -127,6 +128,8 @@ public class CustomerForm extends FormLayout {
                     bindFieldsToBean(newCustomer);
 
                     try {
+                        fieldGroup.commit();
+
                         customerController.addNew(newCustomer);
                         Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
@@ -144,10 +147,10 @@ public class CustomerForm extends FormLayout {
         }
     }
 
-    public CustomerForm(Item existingCustomer, final IRefreshVisualContainer visualContainer) {
+    public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(existingCustomer);
+        fieldGroup.setItemDataSource(new BeanItem(customer));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
@@ -158,12 +161,14 @@ public class CustomerForm extends FormLayout {
                 bindFieldsToBean(customerToUpdate);
 
                 try {
+                    fieldGroup.commit();
+
                     customerController.updateExisting(customerToUpdate);
 
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
                     }
-                    
+
                     Notification n = new Notification("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
 
                     n.setDelayMsec(500);
@@ -210,7 +215,7 @@ public class CustomerForm extends FormLayout {
         addComponents(crudButton);
     }
 
-    private void settextFieldWidth(float width, Sizeable.Unit unit) {
+    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {
             if (c instanceof TextField) {
                 ((TextField) c).setWidth(width, unit);

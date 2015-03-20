@@ -13,7 +13,7 @@ public class SysNotifView extends DashboardView {
     public SysNotifView() {
         super("System Notification Board");
         buildContentWithComponents(
-                cardsPanel(), notesPanel(), fuelPanel(), lubPanel(), customersPanel());
+                cardsPanel(), blackListCustomersPanel(), fuelPanel(), notesPanel());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
@@ -26,7 +26,7 @@ public class SysNotifView extends DashboardView {
     }
 
     private Component notesPanel() {
-        TextArea notes = new TextArea("Notes");
+        TextArea notes = new TextArea("NOTES");
         notes.setValue("Remember to:\n· Zoom in and out in the Sales view\n· Filter the transactions and drag a set of them to the Reports tab\n· Create a new report\n· Change the schedule");
         notes.setSizeFull();
         notes.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
@@ -44,17 +44,9 @@ public class SysNotifView extends DashboardView {
         return contentWrapper;
     }
 
-    private Component lubPanel() {
+    private Component blackListCustomersPanel() {
         VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("LUB SECTOR");
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
-    }
-
-    private Component customersPanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("MOL SERBIA Customers");
+        VL.setCaption("BLACK LIST CUSTOMERS !");
 
         Component contentWrapper = createContentWrapper(VL);
 

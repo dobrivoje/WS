@@ -31,6 +31,4 @@ public interface ICustomerController extends CRUDInterface<Customer> {
     List<RelCBType> getAllCustomerBussinesTypes(Customer customer);
 
     void addNewCustomer(String name, String address, City city, String PIB) throws Exception;
-
-    void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception;
 }

@@ -11,6 +11,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import db.ent.FsProp;
@@ -64,8 +65,11 @@ public class FSPROP_Form extends FormLayout {
     @PropertyId("licDateTo")
     private final DateField licDateTo = new DateField("Licence To");
 
+    @PropertyId("comment")
+    private final TextArea comment = new TextArea("Comment");
+
     @PropertyId("active")
-    private final CheckBox active = new CheckBox("Active ?");
+    private final CheckBox active = new CheckBox("Active ?", true);
     //</editor-fold>
 
     public FSPROP_Form() {
@@ -82,6 +86,8 @@ public class FSPROP_Form extends FormLayout {
             if (c instanceof DateField) {
                 DateField df = (DateField) c;
 
+                df.setConverter(Date.class);
+                
                 df.setWidth(150, Unit.PIXELS);
                 df.setDateFormat(DATE_FORMAT);
             }
@@ -95,6 +101,14 @@ public class FSPROP_Form extends FormLayout {
         carWash.setValue(false);
         compliance.setNullRepresentation("");
         licence.setNullRepresentation("");
+        comment.setRows(5);
+        comment.setNullRepresentation("");
+
+        // postavi validatore
+        noOfTanks.setConverter(Integer.class);
+        noOfTanks.setConversionError("Must be natural number !");
+        truckCapable.setConverter(Integer.class);
+        truckCapable.setConversionError("Must be natural number !");
 
         // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
         // mogu napraviti problem sa prikazom u formi !
@@ -114,6 +128,8 @@ public class FSPROP_Form extends FormLayout {
                     bindFieldsToBean(newFSProp);
 
                     try {
+                        fieldGroup.commit();
+                        
                         DS.getFSPROPController().addNew(newFSProp);
                         Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
@@ -132,7 +148,7 @@ public class FSPROP_Form extends FormLayout {
             for (Component c : fieldGroup.getFields()) {
                 addComponents(c);
             }
-            addComponents(active, crudButton);
+            addComponents(crudButton);
         }
     }
 
@@ -140,20 +156,15 @@ public class FSPROP_Form extends FormLayout {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(existingFS);
-        currentCustomerTxtField.setValue(currentOwner == null ? "This FS has NO owner!" : currentOwner.getFKIDCustomer().getName());
-
-        FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
-        final FsProp newFsProp;
-
-        if (currentFsProp != null) {
-            currentFsProp.setActive(false);
-            newFsProp = new FsProp(currentFsProp);
-        } else {
-            newFsProp = new FsProp();
+        final FsProp currentFsProp = DS.getFSPROPController().getCurrentFSProp(currentOwner);
+        final FsProp newFsProp = currentFsProp != null ? new FsProp(currentFsProp) : new FsProp();
+        if (!formFieldsLocked) {
+            newFsProp.setPropertiesDate(new Date());
+            newFsProp.setComment("");
         }
 
-        newFsProp.setActive(true);
-        newFsProp.setPropertiesDate(new Date());
+        currentCustomerTxtField.setValue(currentOwner == null
+                ? "This FS has NO owner!" : currentOwner.getFKIDCustomer().getName());
 
         fieldGroup.setItemDataSource(new BeanItem(newFsProp));
         beanItem = (BeanItem<FsProp>) fieldGroup.getItemDataSource();
@@ -161,7 +172,11 @@ public class FSPROP_Form extends FormLayout {
         addComponent(currentCustomerTxtField);
 
         for (Component c : fieldGroup.getFields()) {
-            c.setEnabled(!formFieldsLocked);
+            if (!(c instanceof CheckBox && ((CheckBox) c).equals(active))) {
+                c.setEnabled(!formFieldsLocked);
+            } else {
+                c.setEnabled(false);
+            }
             addComponents(c);
         }
 
@@ -174,7 +189,15 @@ public class FSPROP_Form extends FormLayout {
                     bindFieldsToBean(newFsProp);
 
                     try {
+                        fieldGroup.commit();
+                        
+                        if (currentFsProp != null) {
+                            currentFsProp.setActive(false);
+                            DS.getFSPROPController().updateExisting(currentFsProp);
+                        }
+
                         DS.getFSPROPController().addNew(newFsProp);
+
                         Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -221,10 +244,12 @@ public class FSPROP_Form extends FormLayout {
         }
 
         fsPropertyBean.setCompliance(compliance.getValue());
+        fsPropertyBean.setComment(comment.getValue());
         fsPropertyBean.setLicence(licence.getValue());
         fsPropertyBean.setLicDateFrom(licDateFrom.getValue());
         fsPropertyBean.setLicDateTo(licDateTo.getValue());
-        fsPropertyBean.setActive(active.getValue());
+
+        fsPropertyBean.setActive(true);
     }
 
     private void setComboBoxCaption(ComboBox comboBox, Fuelstation f) {

@@ -52,11 +52,11 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
 
     void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
-            Date dateLicenceFrom, Date dateLicenceTo, boolean active)
+            Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active)
             throws Exception;
 
     void updateExisting(FsProp fsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
-            Date dateLicenceFrom, Date dateLicenceTo, boolean active)
+            Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active)
             throws Exception;
 }

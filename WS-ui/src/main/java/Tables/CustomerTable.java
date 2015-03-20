@@ -9,10 +9,10 @@ import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
+import com.vaadin.event.Action;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -37,6 +37,9 @@ import static ws.MyUI.DS;
  */
 public class CustomerTable extends GENTable<Customer> {
 
+    private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
+    private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
+
     private static final List<String> tableColumnsID = new ArrayList(Arrays.asList(
             "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
     private static final String[] tableColumns = new String[]{
@@ -57,27 +60,13 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Customer c = (Customer) row;
-
-                        CustomerForm customerForm = new CustomerForm(new BeanItem(c), new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                source.markAsDirtyRecursive();
-                            }
-                        });
-
-                        getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
+                        showCustomerUpdateForm(source);
                     }
                 });
                 final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Customer c = (Customer) row;
-
-                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                        RELCBTForm relCBT_Form = new RELCBTForm(c);
-
-                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                        showBussinesTypeForm(source);
                     }
                 });
 
@@ -237,4 +226,49 @@ public class CustomerTable extends GENTable<Customer> {
                 setTableView("navCode", "name", "licence", "options", "myCity", "zone", "matBr");
         }
     }
+
+    private void showCustomerUpdateForm(final Table sourceTable) {
+        Customer c = (Customer) sourceTable.getValue();
+
+        CustomerForm customerForm = new CustomerForm(c, new IRefreshVisualContainer() {
+            @Override
+            public void refreshVisualContainer() {
+                sourceTable.markAsDirtyRecursive();
+            }
+        });
+
+        getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
+    }
+
+    private void showBussinesTypeForm(Table sourceTable) {
+        Customer c = (Customer) sourceTable.getValue();
+
+        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+        RELCBTForm relCBT_Form = new RELCBTForm(c);
+
+        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+    }
+
+    @Override
+    public void addActionHandler(Action.Handler actionHandler) {
+        super.addActionHandler(new Action.Handler() {
+
+            @Override
+            public Action[] getActions(Object target, Object sender) {
+                return new Action[]{ACTION_CUSTOMER_UPDATE, ACTION_CUSTOMER_BUSSINES_TYPE};
+            }
+
+            @Override
+            public void handleAction(Action action, Object sender, Object target) {
+                final CustomerTable sourceTable = (CustomerTable) sender;
+
+                if (action.equals(ACTION_CUSTOMER_UPDATE)) {
+                    showCustomerUpdateForm(sourceTable);
+                } else {
+                    showBussinesTypeForm(sourceTable);
+                }
+            }
+        });
+    }
+
 }

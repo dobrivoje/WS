@@ -8,7 +8,6 @@ package db.interfaces;
 import java.util.List;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
-import java.util.Date;
 
 /**
  *
@@ -19,10 +18,4 @@ public interface ICBTController extends CRUDInterface<CustomerBussinesType> {
     List<Customer> getAllCustomersForBussinesType(Long cBTID);
 
     List<Customer> getAllCustomersForBussinesType(CustomerBussinesType cBT);
-
-    void addNewCBT(Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
-            throws Exception;
-
-    public void updateExisting(Long ID, Customer customer, CustomerBussinesType CBType, Date dateFrom, Date dateTo, boolean active)
-            throws Exception;
 }

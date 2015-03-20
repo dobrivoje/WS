@@ -112,9 +112,13 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewCustomer(Customer newCustomer) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newCustomer);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newCustomer);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Customer Addition Failed ! Error message : " + e.toString());
+        }
     }
 
     public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {
@@ -125,39 +129,17 @@ public class DBHandler {
         newCustomer.setFKIDCity(city);
         newCustomer.setPib(PIB);
 
-        getEm().getTransaction().begin();
-        em.persist(newCustomer);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateCustomer(Long customerID, String name, String address, String PIB) throws Exception {
-        Customer customer = getCustomerByID(customerID);
-
-        customer.setName(name);
-        customer.setAddress(address);
-        customer.setPib(PIB);
-
-        getEm().getTransaction().begin();
-        em.merge(customer);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateCustomer2(Long customerID, String name, City city, String PIB) throws Exception {
-        Customer customer = getCustomerByID(customerID);
-
-        customer.setName(name);
-        customer.setFKIDCity(city);
-        customer.setPib(PIB);
-
-        getEm().getTransaction().begin();
-        em.merge(customer);
-        getEm().getTransaction().commit();
+        addNewCustomer(newCustomer);
     }
 
     public void updateCustomer(Customer customer) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(customer);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.merge(customer);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Customer Update Failed ! Error message : " + e.toString());
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -194,6 +176,16 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
+    public void addNewFS(Fuelstation newFuelstation) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newFuelstation);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Fuelstation Addition Failed ! Error message : " + e.toString());
+        }
+    }
+
     public void addNewFS(String name, City city, String address, String coordinates) throws Exception {
         Fuelstation newFuelstation = new Fuelstation();
 
@@ -202,34 +194,17 @@ public class DBHandler {
         newFuelstation.setFkIdc(city);
         newFuelstation.setCoordinates(coordinates);
 
-        getEm().getTransaction().begin();
-        em.persist(newFuelstation);
-        getEm().getTransaction().commit();
-    }
-
-    public void addNewFS(Fuelstation newFuelstation) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newFuelstation);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateFS(Long fuelstationID, String name, City city, String address, String coordinates) throws Exception {
-        Fuelstation customer = getFuelstationByID(fuelstationID);
-
-        customer.setName(name);
-        customer.setAddress(address);
-        customer.setFkIdc(city);
-        customer.setCoordinates(coordinates);
-
-        getEm().getTransaction().begin();
-        em.merge(customer);
-        getEm().getTransaction().commit();
+        addNewFS(newFuelstation);
     }
 
     public void updateFS(Fuelstation fuelstation) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(fuelstation);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.merge(fuelstation);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Fuelstation Update Failed ! Error message : " + e.toString());
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -277,24 +252,23 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newCustomerBussinesType);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newCustomerBussinesType);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Customer Bussines Type Addition Failed ! Error message : " + e.toString());
+        }
     }
 
     public void updateCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(newCustomerBussinesType);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateCustomerBussinesType(Long IDCBT, String newCustomerBussinesType) throws Exception {
-        CustomerBussinesType newCBT = getCustomerBussinesType(IDCBT);
-        newCBT.setCustomerActivity(newCustomerBussinesType);
-
-        getEm().getTransaction().begin();
-        em.merge(newCBT);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.merge(newCustomerBussinesType);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Customer Bussines Type Update Failed ! Error message : " + e.toString());
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -329,7 +303,17 @@ public class DBHandler {
         }
     }
 
-    public void addNew_RelCBT(Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
+    public void addNewRelCBT(RelCBType newRelCBType) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newRelCBType);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Customer Bussines Type Relation Addition Failed ! Error message : " + e.toString());
+        }
+    }
+
+    public void addNewRelCBT(Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
         newRelCBType.setFkIdc(IDC);
         newRelCBType.setFkIdcbt(IDCBT);
@@ -337,35 +321,17 @@ public class DBHandler {
         newRelCBType.setDateFrom(dateTo);
         newRelCBType.setActive(active);
 
-        getEm().getTransaction().begin();
-        em.persist(newRelCBType);
-        getEm().getTransaction().commit();
+        addNewRelCBT(newRelCBType);
     }
 
-    public void addNew_RelCBT(RelCBType newRelCBType) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newRelCBType);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateRelCBT(RelCBType relCBType) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(relCBType);
-        getEm().getTransaction().commit();
-    }
-
-    public void updateRelCBT(Long ID, Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
-        RelCBType rcbt = getRelCBType(ID);
-
-        rcbt.setFkIdc(IDC);
-        rcbt.setFkIdcbt(IDCBT);
-        rcbt.setDateFrom(dateFrom);
-        rcbt.setDateFrom(dateTo);
-        rcbt.setActive(active);
-
-        getEm().getTransaction().begin();
-        em.merge(rcbt);
-        getEm().getTransaction().commit();
+    public void updateRelCBT(RelCBType newRelCBType) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.merge(newRelCBType);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Customer Bussines Type Relation Update Failed ! Error message : " + e.toString());
+        }
     }
     //</editor-fold>
 
@@ -629,21 +595,27 @@ public class DBHandler {
         newOwner.setDateTo(dateTo);
         newOwner.setActive(active);
 
-        getEm().getTransaction().begin();
-        em.persist(newOwner);
-        getEm().getTransaction().commit();
+        addNewOwner(newOwner);
     }
 
     public void addNewOwner(Owner newOwner) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newOwner);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newOwner);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Owner Addition Failed ! Error message : " + e.toString());
+        }
     }
 
     public void updateOwner(Owner existingOwner) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(existingOwner);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.merge(existingOwner);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Owner Update Failed ! Error message : " + e.toString());
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -737,14 +709,18 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     public void addNewFSProp(FsProp newFsProp) throws Exception {
-        getEm().getTransaction().begin();
-        em.persist(newFsProp);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newFsProp);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Fuelstation property Addition Failed ! Error message : " + e.toString());
+        }
     }
 
     public void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
-            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
+            Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
 
         FsProp newFsProp = new FsProp();
 
@@ -758,22 +734,25 @@ public class DBHandler {
         newFsProp.setLicence(licence);
         newFsProp.setLicDateFrom(dateLicenceFrom);
         newFsProp.setLicDateTo(dateLicenceTo);
+        newFsProp.setComment(comment);
         newFsProp.setActive(active);
 
-        getEm().getTransaction().begin();
-        em.persist(newFsProp);
-        getEm().getTransaction().commit();
+        addNewFSProp(newFsProp);
     }
 
     public void updateExistingFSProp(FsProp existingFsProp) throws Exception {
-        getEm().getTransaction().begin();
-        em.merge(existingFsProp);
-        getEm().getTransaction().commit();
+        try {
+            getEm().getTransaction().begin();
+            em.merge(existingFsProp);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Fuelstation property Update Failed ! Error message : " + e.toString());
+        }
     }
 
     public void updateExistingFSProp(FsProp existingFsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
-            Date dateLicenceFrom, Date dateLicenceTo, boolean active) throws Exception {
+            Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
 
         existingFsProp.setFkIdo(owner);
         existingFsProp.setPropertiesDate(propDate);
@@ -785,11 +764,10 @@ public class DBHandler {
         existingFsProp.setLicence(licence);
         existingFsProp.setLicDateFrom(dateLicenceFrom);
         existingFsProp.setLicDateTo(dateLicenceTo);
+        existingFsProp.setComment(comment);
         existingFsProp.setActive(active);
 
-        getEm().getTransaction().begin();
-        em.merge(existingFsProp);
-        getEm().getTransaction().commit();
+        updateExistingFSProp(existingFsProp);
     }
     //</editor-fold>
     //</editor-fold>

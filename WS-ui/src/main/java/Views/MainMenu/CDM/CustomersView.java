@@ -18,7 +18,6 @@ import Trees.FSOwnerTree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
@@ -88,6 +87,10 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
+        // ubaciti getActionManager() kao parametar samo da bi se pokrenuo handler !
+        // vrednost getActionManager() se ovde uopšte ne koristi !!!
+        customersTable.addActionHandler(getActionManager());
+
         //</editor-fold>
         addComponent(VL);
     }
@@ -119,7 +122,6 @@ public class CustomersView extends VerticalLayout implements View {
         simpleViewMode.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                // getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
                 customersTable.setTablePerspective(SIMPLE);
             }
         });
@@ -178,7 +180,7 @@ public class CustomersView extends VerticalLayout implements View {
         Button editBtn = new Button("u", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                CustomerForm customerForm = new CustomerForm(new BeanItem(c), new IRefreshVisualContainer() {
+                CustomerForm customerForm = new CustomerForm(c, new IRefreshVisualContainer() {
                     @Override
                     public void refreshVisualContainer() {
                         customersTable.refreshVisualContainer();

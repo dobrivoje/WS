@@ -26,7 +26,6 @@ public class RelCBT_Controller implements IRELCBTController {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Read Data">
-
     @Override
     public List<RelCBType> getAll() {
         return dbh.getAllRelCBT();
@@ -46,23 +45,17 @@ public class RelCBT_Controller implements IRELCBTController {
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
     @Override
     public void addNew(Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active) throws Exception {
-        dbh.addNew_RelCBT(customer, customerBussinesType, dateFrom, dateTo, active);
+        dbh.addNewRelCBT(customer, customerBussinesType, dateFrom, dateTo, active);
     }
 
     @Override
     public void addNew(RelCBType newObject) throws Exception {
-        dbh.addNew_RelCBT(newObject);
+        dbh.addNewRelCBT(newObject);
     }
 
     @Override
     public void updateExisting(RelCBType object) throws Exception {
         dbh.updateRelCBT(object);
     }
-
-    @Override
-    public void updateExisting(Long ID, Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active) throws Exception {
-        dbh.updateRelCBT(ID, customer, customerBussinesType, dateFrom, dateTo, active);
-    }
     //</editor-fold>
-
 }

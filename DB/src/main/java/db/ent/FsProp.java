@@ -87,6 +87,8 @@ public class FsProp implements Serializable {
     @Column(name = "LicDateTo")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date licDateTo;
+    @Column(name = "Comment")
+    private String comment;
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_IDO", referencedColumnName = "IDO")
@@ -101,7 +103,7 @@ public class FsProp implements Serializable {
     public FsProp(FsProp existingFsProp) {
         initFsProp(existingFsProp);
     }
-    
+
     private void initFsProp(FsProp existingFsProp) {
 
         try {
@@ -146,6 +148,11 @@ public class FsProp implements Serializable {
 
         try {
             this.licDateTo = existingFsProp.getLicDateTo();
+        } catch (Exception e) {
+        }
+
+        try {
+            this.comment = existingFsProp.getComment();
         } catch (Exception e) {
         }
 
@@ -251,6 +258,14 @@ public class FsProp implements Serializable {
 
     public void setLicDateTo(Date licDateTo) {
         this.licDateTo = licDateTo;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Boolean getActive() {

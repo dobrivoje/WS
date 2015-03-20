@@ -76,16 +76,16 @@ public class FSView extends VerticalLayout implements View {
                 openProperties(fs, true, false);
             }
         });
+        
+        // ubaciti getActionManager() kao parametar samo da bi se pokrenuo handler !
+        // vrednost getActionManager() se ovde uopšte ne koristi !!!
+        FS_Table.addActionHandler(getActionManager());
 
         addComponent(VL);
     }
 
     @Override
     public void enter(ViewChangeEvent event) {
-    }
-
-    public FSPROP_Form getfSPROP_Form() {
-        return fSPROP_Form;
     }
 
     //<editor-fold defaultstate="collapsed" desc="createTopBar">
@@ -160,19 +160,20 @@ public class FSView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="openProperties">
     public void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
         if (fs != null) {
             newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
             HL.setSplitPosition(50, Unit.PERCENTAGE);
-
+            
             if (propVL.getComponentCount() > 0) {
                 propVL.removeAllComponents();
             }
-
+            
             fSPROP_Form = new FSPROP_Form(fs, formFieldsLocked, crudButtonOnForm);
-
+            
             propVL.addComponent(fSPROP_Form);
-
+            
         } else {
             fSPROP_Form = null;
             newFSPropButton.setEnabled(false);
@@ -180,4 +181,5 @@ public class FSView extends VerticalLayout implements View {
             HL.setSplitPosition(100, Unit.PERCENTAGE);
         }
     }
+    //</editor-fold>
 }
