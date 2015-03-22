@@ -29,49 +29,56 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "IMAGE")
+@Table(name = "DOCUMENT")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
-    @NamedQuery(name = "Image.findByIdi", query = "SELECT i FROM Image i WHERE i.idi = :idi"),
-    @NamedQuery(name = "Image.findByName", query = "SELECT i FROM Image i WHERE i.name = :name"),
-    @NamedQuery(name = "Image.findByUploadDate", query = "SELECT i FROM Image i WHERE i.uploadDate = :uploadDate")})
-public class Image implements Serializable {
+    @NamedQuery(name = "Document.findAll", query = "SELECT d FROM Document d"),
+    @NamedQuery(name = "Document.findByIdd", query = "SELECT d FROM Document d WHERE d.idd = :idd"),
+    @NamedQuery(name = "Document.findByGallery", query = "SELECT d FROM Document d WHERE d.FK_Gallery = :idg"),
+    @NamedQuery(name = "Document.findByUploadDate", query = "SELECT d FROM Document d WHERE d.uploadDate = :uploadDate")})
+public class Document implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDI")
-    private Long idi;
+    @Column(name = "IDD")
+    private Long idd;
     @Column(name = "Name")
     private String name;
     @Lob
-    @Column(name = "ImageData")
-    private Serializable imageData;
+    @Column(name = "DocData")
+    private Serializable docData;
+    @Column(name = "DocLocation")
+    private String docLocation;
     @Column(name = "UploadDate")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date uploadDate;
-    @OneToOne(mappedBy = "fkIdi")
-    private RelFSImage relFSImage;
-    @OneToOne(mappedBy = "fkImage")
+    @OneToOne(mappedBy = "FK_DOCUMENT")
+    private RelFSDocument relFSImage;
+    @OneToOne(mappedBy = "FK_DOCUMENT")
     private RelSALESMANIMAGE relSALESMANIMAGE;
     @JoinColumn(name = "FK_IDG", referencedColumnName = "IDG")
     @ManyToOne
-    private Gallery fkIdg;
+    private Gallery FK_Gallery;
 
-    public Image() {
+    public Document() {
     }
 
-    public Image(Long idi) {
-        this.idi = idi;
+    public Document(String name, Serializable docData, String docLocation, Date uploadDate, Gallery FK_Gallery) {
+        this.name = name;
+        this.docData = docData;
+        this.docLocation = docLocation;
+        this.uploadDate = uploadDate;
+        this.FK_Gallery = FK_Gallery;
     }
 
-    public Long getIdi() {
-        return idi;
+    public Long getIdd() {
+        return idd;
     }
 
-    public void setIdi(Long idi) {
-        this.idi = idi;
+    public void setIdd(Long idd) {
+        this.idd = idd;
     }
 
     public String getName() {
@@ -82,12 +89,20 @@ public class Image implements Serializable {
         this.name = name;
     }
 
-    public Serializable getImageData() {
-        return imageData;
+    public Serializable getDocData() {
+        return docData;
     }
 
-    public void setImageData(Serializable imageData) {
-        this.imageData = imageData;
+    public void setDocData(Serializable docData) {
+        this.docData = docData;
+    }
+
+    public String getDocLocation() {
+        return docLocation;
+    }
+
+    public void setDocLocation(String docLocation) {
+        this.docLocation = docLocation;
     }
 
     public Date getUploadDate() {
@@ -98,11 +113,11 @@ public class Image implements Serializable {
         this.uploadDate = uploadDate;
     }
 
-    public RelFSImage getRelFSImage() {
+    public RelFSDocument getRelFSImage() {
         return relFSImage;
     }
 
-    public void setRelFSImage(RelFSImage relFSImage) {
+    public void setRelFSImage(RelFSDocument relFSImage) {
         this.relFSImage = relFSImage;
     }
 
@@ -114,37 +129,34 @@ public class Image implements Serializable {
         this.relSALESMANIMAGE = relSALESMANIMAGE;
     }
 
-    public Gallery getFkIdg() {
-        return fkIdg;
+    public Gallery getFK_Gallery() {
+        return FK_Gallery;
     }
 
-    public void setFkIdg(Gallery fkIdg) {
-        this.fkIdg = fkIdg;
+    public void setFK_Gallery(Gallery FK_Gallery) {
+        this.FK_Gallery = FK_Gallery;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idi != null ? idi.hashCode() : 0);
+        hash += (idd != null ? idd.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Image)) {
+        if (!(object instanceof Document)) {
             return false;
         }
-        Image other = (Image) object;
-        if ((this.idi == null && other.idi != null) || (this.idi != null && !this.idi.equals(other.idi))) {
-            return false;
-        }
-        return true;
+        Document other = (Document) object;
+        return !((this.idd == null && other.idd != null) || (this.idd != null && !this.idd.equals(other.idd)));
     }
 
     @Override
     public String toString() {
-        return "db.Image[ idi=" + idi + " ]";
+        return "db.Image[ idi=" + idd + " ]";
     }
-    
+
 }

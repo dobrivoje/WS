@@ -7,8 +7,6 @@
     <class>db.ent.RelFSPROPPRODUCT</class>
     <class>db.ent.Customer</class>
     <class>db.ent.Product</class>
-    <class>db.ent.Image</class>
-    <class>db.ent.RelFSImage</class>
     <class>db.ent.FsProp</class>
     <class>db.ent.RelSALESMANIMAGE</class>
     <class>db.ent.Fuelstation</class>
@@ -18,6 +16,8 @@
     <class>db.ent.BussinesLine</class>
     <class>db.ent.City</class>
     <class>db.ent.RelSALESMEANCUST</class>
+    <class>db.ent.Document</class>
+    <class>db.ent.RelFSDocument</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>

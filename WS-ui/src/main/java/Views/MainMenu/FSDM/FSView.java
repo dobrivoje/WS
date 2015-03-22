@@ -1,9 +1,7 @@
 package Views.MainMenu.FSDM;
 
-import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
 import Forms.FSPROP.FSPROP_Form;
-import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
@@ -35,7 +33,6 @@ public class FSView extends VerticalLayout implements View {
     private FSPROP_Form fSPROP_Form = null;
 
     private Button newFSPropButton;
-    private Button newFSButton;
     private Button newFSOButton;
 
     public FSView() {
@@ -114,17 +111,6 @@ public class FSView extends VerticalLayout implements View {
             }
         });
 
-        newFSButton = new Button("New FS");
-        newFSButton.setWidth(150, Unit.PIXELS);
-        newFSButton.setIcon(FontAwesome.BRIEFCASE);
-        newFSButton.focus();
-        newFSButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), false, new FSForm(CrudOperations.CREATE)));
-            }
-        });
-
         newFSOButton = new Button("New FS Owner");
         newFSOButton.setWidth(150, Unit.PIXELS);
         newFSOButton.setIcon(FontAwesome.BULLSEYE);
@@ -146,7 +132,7 @@ public class FSView extends VerticalLayout implements View {
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setSpacing(true);
         topLayout.setWidth(100, Unit.PERCENTAGE);
-        topLayout.addComponents(filter, newFSPropButton, newFSButton, newFSOButton);
+        topLayout.addComponents(filter, newFSPropButton, newFSOButton);
         topLayout.setComponentAlignment(filter, Alignment.MIDDLE_LEFT);
         topLayout.setExpandRatio(filter, 1);
         topLayout.setStyleName("top-bar");

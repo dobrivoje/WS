@@ -6,6 +6,7 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.Gallery;
 
 /**
  *
@@ -96,5 +97,8 @@ public class Test1 {
          }
          */
         //</editor-fold>
+
+        Gallery g = DS.getGalleryController().getByID(1L);
+        System.err.println(g.toString());
     }
 }

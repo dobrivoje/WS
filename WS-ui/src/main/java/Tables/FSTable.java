@@ -19,7 +19,6 @@ import com.vaadin.ui.VerticalLayout;
 import db.ent.Fuelstation;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -70,7 +69,7 @@ public class FSTable extends GENTable<Fuelstation> {
             }
         });
 
-        setVisibleColumns("name", "options", "fkIdc", "address");
+        setVisibleColumns("name", "options", "FK_City", "address");
         setColumnHeaders("FUEL STATION", "OPTIONS", "CITY", "ADDRESS");
 
         setColumnWidth("options", 110);
@@ -102,7 +101,7 @@ public class FSTable extends GENTable<Fuelstation> {
             SimpleStringFilter nameFilter = new SimpleStringFilter(
                     "name", filterString, true, false);
             SimpleStringFilter cityFilter = new SimpleStringFilter(
-                    "fkIdc", filterString, true, false);
+                    "FK_City", filterString, true, false);
             SimpleStringFilter addressFilter = new SimpleStringFilter(
                     "address", filterString, true, false);
 

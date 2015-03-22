@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Gallery.findByIdg", query = "SELECT g FROM Gallery g WHERE g.idg = :idg"),
     @NamedQuery(name = "Gallery.findByName", query = "SELECT g FROM Gallery g WHERE g.name = :name")})
 public class Gallery implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,19 +42,19 @@ public class Gallery implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @OneToMany(mappedBy = "fkIdg")
-    private List<Image> imageList;
+    @Basic(optional = false)
+    @Column(name = "StoreLocation")
+    private String storeLocation;
+    @OneToMany(mappedBy = "FK_Gallery")
+    private List<Document> documentsList;
 
     public Gallery() {
     }
 
-    public Gallery(Long idg) {
-        this.idg = idg;
-    }
-
-    public Gallery(Long idg, String name) {
-        this.idg = idg;
+    public Gallery(String name, String storeLocation, List<Document> documentsList) {
         this.name = name;
+        this.storeLocation = storeLocation;
+        this.documentsList = documentsList;
     }
 
     public Long getIdg() {
@@ -72,13 +73,21 @@ public class Gallery implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
-    public List<Image> getImageList() {
-        return imageList;
+    public String getStoreLocation() {
+        return storeLocation;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setStoreLocation(String storeLocation) {
+        this.storeLocation = storeLocation;
+    }
+
+    @XmlTransient
+    public List<Document> getDocumentsList() {
+        return documentsList;
+    }
+
+    public void setDocumentsList(List<Document> documentsList) {
+        this.documentsList = documentsList;
     }
 
     @Override
@@ -95,15 +104,14 @@ public class Gallery implements Serializable {
             return false;
         }
         Gallery other = (Gallery) object;
-        if ((this.idg == null && other.idg != null) || (this.idg != null && !this.idg.equals(other.idg))) {
-            return false;
-        }
-        return true;
+        return !((this.idg == null && other.idg != null) || (this.idg != null && !this.idg.equals(other.idg)));
     }
 
     @Override
     public String toString() {
-        return "db.Gallery[ idg=" + idg + " ]";
+        return "Gallery : "
+                + getName() + ", path: "
+                + getStoreLocation();
     }
-    
+
 }

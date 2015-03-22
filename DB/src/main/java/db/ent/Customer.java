@@ -92,11 +92,22 @@ public class Customer implements Serializable {
         this.idc = idc;
     }
 
-    public Customer(Long idc, String name, String address, String pib) {
-        this.idc = idc;
+    public Customer(String name, String address, String pib, String matBr, String navCode, boolean licence, String zone, String comment, String tel1, String tel2, String fax, String mob, String email1, String email2, City fKIDCity) {
         this.name = name;
         this.address = address;
         this.pib = pib;
+        this.matBr = matBr;
+        this.navCode = navCode;
+        this.licence = licence;
+        this.zone = zone;
+        this.comment = comment;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.fax = fax;
+        this.mob = mob;
+        this.email1 = email1;
+        this.email2 = email2;
+        this.fKIDCity = fKIDCity;
     }
 
     public Long getIdc() {

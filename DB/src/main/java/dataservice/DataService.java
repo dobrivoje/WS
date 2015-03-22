@@ -9,17 +9,21 @@ import db.DBHandler;
 import db.controllers.CBT_Controller;
 import db.controllers.City_Controller;
 import db.controllers.Customer_Controller;
+import db.controllers.Document_Controller;
 import db.controllers.FSOwner_Controller;
 import db.controllers.FSPROP_Controller;
 import db.controllers.FS_Controller;
+import db.controllers.Gallery_Controller;
 import db.controllers.RelCBT_Controller;
 import db.controllers.Salesman_Controller;
 import db.interfaces.ICBTController;
 import db.interfaces.ICityController;
 import db.interfaces.ICustomerController;
+import db.interfaces.IDocumentController;
 import db.interfaces.IFSController;
 import db.interfaces.IFSOController;
 import db.interfaces.IFSPROPController;
+import db.interfaces.IGalleryController;
 import db.interfaces.IRELCBTController;
 import db.interfaces.ISalesmanController;
 
@@ -50,6 +54,8 @@ public class DataService {
     private final IFSPROPController fSPROPController = new FSPROP_Controller(DBH);
     private final IRELCBTController rELCBTController = new RelCBT_Controller(DBH);
     private final ISalesmanController salesmanController = new Salesman_Controller(DBH);
+    private final IGalleryController galleryController = new Gallery_Controller(DBH);
+    private final IDocumentController documentController = new Document_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -83,4 +89,11 @@ public class DataService {
         return salesmanController;
     }
 
+    public IGalleryController getGalleryController() {
+        return galleryController;
+    }
+
+    public IDocumentController getDocumentController() {
+        return documentController;
+    }
 }

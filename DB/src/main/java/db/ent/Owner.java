@@ -200,7 +200,7 @@ public class Owner implements Serializable {
     @Override
     public String toString() {
         return fkIdFs.getName() + " - "
-                + fkIdFs.getFkIdc().getName()
+                + fkIdFs.getFK_City().getName()
                 + (active ? " (a)" : " (na!)");
     }
 

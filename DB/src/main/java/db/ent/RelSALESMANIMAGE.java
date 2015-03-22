@@ -31,15 +31,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RelSALESMANIMAGE.findAll", query = "SELECT r FROM RelSALESMANIMAGE r"),
     @NamedQuery(name = "RelSALESMANIMAGE.findByIdsi", query = "SELECT r FROM RelSALESMANIMAGE r WHERE r.idsi = :idsi")})
 public class RelSALESMANIMAGE implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDSI")
     private Long idsi;
-    @JoinColumn(name = "FK_IMAGE", referencedColumnName = "IDI")
+    @JoinColumn(name = "FK_IDD", referencedColumnName = "IDD")
     @OneToOne
-    private Image fkImage;
+    private Document FK_DOCUMENT;
     @JoinColumn(name = "FK_SALESMAN", referencedColumnName = "IDS")
     @ManyToOne
     private Salesman fkSalesman;
@@ -47,8 +48,9 @@ public class RelSALESMANIMAGE implements Serializable {
     public RelSALESMANIMAGE() {
     }
 
-    public RelSALESMANIMAGE(Long idsi) {
-        this.idsi = idsi;
+    public RelSALESMANIMAGE(Salesman salesman, Document document) {
+        this.FK_DOCUMENT = document;
+        this.fkSalesman = salesman;
     }
 
     public Long getIdsi() {
@@ -59,20 +61,20 @@ public class RelSALESMANIMAGE implements Serializable {
         this.idsi = idsi;
     }
 
-    public Image getFkImage() {
-        return fkImage;
+    public Document getFkDocument() {
+        return FK_DOCUMENT;
     }
 
-    public void setFkImage(Image fkImage) {
-        this.fkImage = fkImage;
+    public void setFkDocument(Document document) {
+        this.FK_DOCUMENT = document;
     }
 
     public Salesman getFkSalesman() {
         return fkSalesman;
     }
 
-    public void setFkSalesman(Salesman fkSalesman) {
-        this.fkSalesman = fkSalesman;
+    public void setFkSalesman(Salesman salesman) {
+        this.fkSalesman = salesman;
     }
 
     @Override
@@ -99,5 +101,5 @@ public class RelSALESMANIMAGE implements Serializable {
     public String toString() {
         return "db.RelSALESMANIMAGE[ idsi=" + idsi + " ]";
     }
-    
+
 }

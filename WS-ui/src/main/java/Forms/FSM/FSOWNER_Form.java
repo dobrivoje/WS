@@ -116,7 +116,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                     if (currentOwner != null) {
                         if (((Customer) customer.getValue()).equals(currentOwner.getFKIDCustomer())) {
                             throw new Exception(
-                                    "Wrong assigment.\n"
+                                    "Wrong assignment.\n"
                                     + "You cannot assign this fuelstation to this customer,\n"
                                     + "as it is already assigned to it !"
                             );

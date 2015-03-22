@@ -49,13 +49,13 @@ public class Fuelstation implements Serializable {
     private String address;
     @Column(name = "Coordinates")
     private String coordinates;
-    @OneToMany(mappedBy = "fkIdfs")
-    private List<RelFSImage> relFSImageList;
+    @OneToMany(mappedBy = "fkIdFs")
+    private List<RelFSDocument> relFSDocumentsList;
     @OneToMany(mappedBy = "fkIdFs")
     private List<Owner> ownerList;
     @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
     @ManyToOne
-    private City fkIdc;
+    private City FK_City;
 
     public Fuelstation() {
     }
@@ -97,12 +97,12 @@ public class Fuelstation implements Serializable {
     }
 
     @XmlTransient
-    public List<RelFSImage> getRelFSImageList() {
-        return relFSImageList;
+    public List<RelFSDocument> getRelFSDocumentsList() {
+        return relFSDocumentsList;
     }
 
-    public void setRelFSImageList(List<RelFSImage> relFSImageList) {
-        this.relFSImageList = relFSImageList;
+    public void setRelFSDocumentsList(List<RelFSDocument> relFSDocumentsList) {
+        this.relFSDocumentsList = relFSDocumentsList;
     }
 
     @XmlTransient
@@ -114,12 +114,12 @@ public class Fuelstation implements Serializable {
         this.ownerList = ownerList;
     }
 
-    public City getFkIdc() {
-        return fkIdc;
+    public City getFK_City() {
+        return FK_City;
     }
 
-    public void setFkIdc(City fkIdc) {
-        this.fkIdc = fkIdc;
+    public void setFK_City(City FK_City) {
+        this.FK_City = FK_City;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Fuelstation implements Serializable {
 
     @Override
     public String toString() {
-        return name + ", " + fkIdc.getName();
+        return name + ", " + FK_City.getName();
     }
 
 }

@@ -26,7 +26,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     @PropertyId("name")
     private final TextField name = new TextField("Fuelstation Name");
 
-    @PropertyId("fkIdc")
+    @PropertyId("FK_City")
     private final ComboBox city = new ComboBox("City", bicc);
 
     @PropertyId("address")
@@ -112,7 +112,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     protected void bindFieldsToBean(Fuelstation FSBean) {
         FSBean.setName(name.getValue());
         FSBean.setAddress(address.getValue());
-        FSBean.setFkIdc((City) city.getValue());
+        FSBean.setFK_City((City) city.getValue());
         FSBean.setCoordinates(coordinates.getValue());
     }
 }

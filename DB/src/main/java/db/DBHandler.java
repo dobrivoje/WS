@@ -18,7 +18,7 @@ import db.ent.CustomerBussinesType;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
-import db.ent.Image;
+import db.ent.Document;
 import db.ent.Owner;
 import db.ent.RelCBType;
 import db.ent.RelSALESMANIMAGE;
@@ -191,7 +191,7 @@ public class DBHandler {
 
         newFuelstation.setName(name);
         newFuelstation.setAddress(address);
-        newFuelstation.setFkIdc(city);
+        newFuelstation.setFK_City(city);
         newFuelstation.setCoordinates(coordinates);
 
         addNewFS(newFuelstation);
@@ -465,43 +465,77 @@ public class DBHandler {
         }
     }
 
-    public Image getImage(long IDI) {
+    public Document getDocument(long idd) {
         try {
-            return (Image) getEm().createNamedQuery("Image.findByIdi")
-                    .setParameter("idi", IDI)
+            return (Document) getEm().createNamedQuery("Document.findByIdd")
+                    .setParameter("idd", idd)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public List<Image> getAllGalleryImages(Gallery gallery) {
-        return gallery.getImageList();
+    public List<Document> getDocumentsByGallery(Gallery g) {
+        try {
+            return getEm().createNamedQuery("Document.findByGallery")
+                    .setParameter("idg", g)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
-    public void addNewGallery(String name) throws Exception {
+    public void addNewGallery(Gallery newGallery) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newGallery);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Gallery Not Added.");
+        }
+    }
+    
+    public void addNewGallery(String galleryName, String storeLocation) throws Exception {
         Gallery newGallery = new Gallery();
 
-        newGallery.setName(name);
+        newGallery.setName(galleryName);
+        newGallery.setStoreLocation(storeLocation);
 
-        getEm().getTransaction().begin();
-        em.persist(newGallery);
-        getEm().getTransaction().commit();
+        addNewGallery(newGallery);
     }
 
-    public void addNewImage(Gallery gallery, String imageName, Serializable imageData, Date imageUploadDate) throws Exception {
-        Image newImage = new Image();
+    public void addNewDocument(Document newDoc) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newDoc);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New Document Not Added.");
+        }
+    }
 
-        newImage.setFkIdg(gallery);
-        newImage.setName(imageName);
-        newImage.setImageData(imageData);
-        newImage.setUploadDate(imageUploadDate);
+    public void addNewDocument(Gallery gallery, String documentName, String documentLocation, Serializable documentBinaryData, Date documentUploadDate) throws Exception {
+        Document newDoc = new Document();
 
-        getEm().getTransaction().begin();
-        em.persist(newImage);
-        getEm().getTransaction().commit();
+        newDoc.setFK_Gallery(gallery);
+        newDoc.setName(documentName);
+        newDoc.setDocLocation(documentLocation);
+        newDoc.setDocData(documentBinaryData);
+        newDoc.setUploadDate(documentUploadDate);
+
+        addNewDocument(newDoc);
+    }
+
+    public void updateDocument(Document document) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.merge(document);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Document Not updated.");
+        }
     }
     //</editor-fold>
     //</editor-fold>
@@ -519,11 +553,11 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
-    public void addSalesmanImage(Salesman salesman, Image image) throws Exception {
+    public void addSalesmanImage(Salesman salesman, Document image) throws Exception {
         RelSALESMANIMAGE newASALESMANIMAGE = new RelSALESMANIMAGE();
 
         newASALESMANIMAGE.setFkSalesman(salesman);
-        newASALESMANIMAGE.setFkImage(image);
+        newASALESMANIMAGE.setFkDocument(image);
 
         getEm().getTransaction().begin();
         em.persist(newASALESMANIMAGE);
