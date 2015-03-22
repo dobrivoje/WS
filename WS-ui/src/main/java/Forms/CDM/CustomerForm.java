@@ -1,22 +1,17 @@
 package Forms.CDM;
 
+import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.ValoTheme;
 import db.ent.City;
 import db.ent.Customer;
 import db.interfaces.ICustomerController;
@@ -28,16 +23,9 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDA
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class CustomerForm extends FormLayout {
+public class CustomerForm extends CRUDForm2<Customer> {
 
     private final ICustomerController customerController = DS.getCustomerController();
-
-    private final FieldGroup fieldGroup = new BeanFieldGroup(Customer.class);
-    private Button crudButton;
-    private BeanItem<Customer> beanItem;
-
-    private Button.ClickListener clickListener;
-    private String btnCaption;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -90,14 +78,10 @@ public class CustomerForm extends FormLayout {
     //</editor-fold>
 
     public CustomerForm() {
-        setSizeFull();
-        setMargin(true);
-        setSpacing(true);
-        addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        super(new BeanFieldGroup(Customer.class));
 
         fieldGroup.bindMemberFields(this);
-
-        setTextFieldWidth(250, Unit.PIXELS);
+        setFormFieldsWidths(250, Unit.PIXELS);
 
         licence.addItem(Boolean.FALSE);
         licence.setItemCaption(Boolean.FALSE, "No licence");
@@ -142,9 +126,6 @@ public class CustomerForm extends FormLayout {
                 }
             };
 
-            crudButton = new Button(btnCaption, clickListener);
-            crudButton.setWidth(150, Unit.PIXELS);
-
             addBeansToForm();
         }
     }
@@ -181,13 +162,11 @@ public class CustomerForm extends FormLayout {
             }
         };
 
-        crudButton = new Button(btnCaption, clickListener);
-        crudButton.setWidth(150, Unit.PIXELS);
-
         addBeansToForm();
     }
 
-    private void bindFieldsToBean(Customer customerBean) {
+    @Override
+    protected void bindFieldsToBean(Customer customerBean) {
         customerBean.setName(name.getValue());
         customerBean.setAddress(address.getValue());
         customerBean.setFKIDCity((City) city.getValue());
@@ -203,34 +182,5 @@ public class CustomerForm extends FormLayout {
         customerBean.setEmail1(email1.getValue());
         customerBean.setEmail2(email2.getValue());
         customerBean.setComment(comment.getValue());
-    }
-
-    private void addBeansToForm() {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
-            addComponent(c);
-        }
-
-        addComponents(crudButton);
-    }
-
-    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                ((TextField) c).setWidth(width, unit);
-            }
-            if (c instanceof ComboBox) {
-                ((ComboBox) c).setWidth(width, unit);
-            }
-            if (c instanceof DateField) {
-                ((DateField) c).setWidth(width, unit);
-            }
-            if (c instanceof TextArea) {
-                ((TextArea) c).setWidth(width, unit);
-            }
-        }
     }
 }

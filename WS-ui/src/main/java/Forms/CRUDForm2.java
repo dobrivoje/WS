@@ -23,8 +23,10 @@ public abstract class CRUDForm2<T> extends FormLayout {
     protected CRUDForm2() {
         setSizeFull();
         setMargin(true);
+        setSpacing(true);
 
-        setFormFieldsWidths(250, Unit.PIXELS);
+        crudButton = new Button();
+        crudButton.setWidth(150, Unit.PIXELS);
     }
 
     public CRUDForm2(BeanItem<T> beanItem) {
@@ -35,7 +37,6 @@ public abstract class CRUDForm2<T> extends FormLayout {
     public CRUDForm2(FieldGroup fieldGroup) {
         this();
         this.fieldGroup = fieldGroup;
-        fieldGroup.bindMemberFields(this);
     }
 
     protected abstract void bindFieldsToBean(T t);
@@ -65,6 +66,9 @@ public abstract class CRUDForm2<T> extends FormLayout {
             }
             addComponent(c);
         }
+
+        crudButton.setCaption(btnCaption);
+        crudButton.addClickListener(clickListener);
 
         addComponents(crudButton);
     }

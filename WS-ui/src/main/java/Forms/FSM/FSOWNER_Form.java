@@ -1,21 +1,15 @@
 package Forms.FSM;
 
+import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
 import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
@@ -27,17 +21,10 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
-public class FSOWNER_Form extends FormLayout {
-
-    private final FieldGroup fieldGroup = new BeanFieldGroup(Owner.class);
-    private Button crudButton;
-    private BeanItem<Owner> beanItem;
+public class FSOWNER_Form extends CRUDForm2<Owner> {
 
     private final BeanItemContainer<Customer> bicc = new BeanItemContainer(Customer.class, DS.getCustomerController().getAll());
     private final BeanItemContainer<Fuelstation> bicf = new BeanItemContainer(Fuelstation.class, DS.getFSController().getAll());
-
-    private Button.ClickListener clickListener;
-    private String btnCaption;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("fKIDCustomer")
@@ -57,13 +44,10 @@ public class FSOWNER_Form extends FormLayout {
     //</editor-fold>
 
     public FSOWNER_Form() {
-        setSizeFull();
-        setMargin(true);
-        setStyleName(Reindeer.LAYOUT_BLACK);
+        super(new BeanFieldGroup(Owner.class));
 
         fieldGroup.bindMemberFields(this);
-
-        setTextFieldWidth(250, Unit.PIXELS);
+        setFormFieldsWidths(250, Unit.PIXELS);
 
         dateFrom.setDateFormat(DATE_FORMAT);
         dateTo.setDateFormat(DATE_FORMAT);
@@ -106,9 +90,6 @@ public class FSOWNER_Form extends FormLayout {
                 }
             };
 
-            crudButton = new Button(btnCaption, clickListener);
-            crudButton.setWidth(150, Unit.PIXELS);
-
             addBeansToForm();
         }
     }
@@ -121,6 +102,8 @@ public class FSOWNER_Form extends FormLayout {
 
         fieldGroup.setItemDataSource(new BeanItem(newOwner));
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+
+        btnCaption = BUTTON_CAPTION_UPDATE.toString();
 
         clickListener = new Button.ClickListener() {
             @Override
@@ -161,48 +144,15 @@ public class FSOWNER_Form extends FormLayout {
             }
         };
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
-
-        crudButton = new Button(btnCaption, clickListener);
-        crudButton.setWidth(150, Unit.PIXELS);
-
         addBeansToForm();
     }
 
-    private void bindFieldsToBean(Owner ownerBean) {
+    @Override
+    protected void bindFieldsToBean(Owner ownerBean) {
         ownerBean.setFKIDCustomer((Customer) customer.getValue());
         ownerBean.setFkIdFs((Fuelstation) fs.getValue());
-        ownerBean.setDateFrom(dateFrom.getValue() == null ? new Date() : dateFrom.getValue());
+        ownerBean.setDateFrom(dateFrom.getValue());
         ownerBean.setDateTo(dateTo.getValue());
         ownerBean.setActive(active.getValue());
-    }
-
-    private void addBeansToForm() {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
-            addComponent(c);
-        }
-
-        addComponents(crudButton);
-    }
-
-    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                ((TextField) c).setWidth(width, unit);
-            }
-            if (c instanceof ComboBox) {
-                ((ComboBox) c).setWidth(width, unit);
-            }
-            if (c instanceof DateField) {
-                ((DateField) c).setWidth(width, unit);
-            }
-            if (c instanceof TextArea) {
-                ((TextArea) c).setWidth(width, unit);
-            }
-        }
     }
 }

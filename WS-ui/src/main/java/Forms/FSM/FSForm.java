@@ -1,20 +1,14 @@
 package Forms.FSM;
 
+import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
 import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
@@ -23,17 +17,10 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDA
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class FSForm extends FormLayout {
+public class FSForm extends CRUDForm2<Fuelstation> {
 
-    private final FieldGroup fieldGroup = new BeanFieldGroup(Fuelstation.class);
     private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class,
             DS.getCityController().getAll());
-
-    private Button crudButton;
-    private BeanItem<Fuelstation> beanItem;
-
-    private Button.ClickListener clickListener;
-    private String btnCaption;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -50,14 +37,10 @@ public class FSForm extends FormLayout {
     //</editor-fold>
 
     public FSForm() {
-        setSizeFull();
-        setMargin(true);
-        setStyleName(Reindeer.LAYOUT_BLACK);
+        super(new BeanFieldGroup(Fuelstation.class));
 
         fieldGroup.bindMemberFields(this);
-
-        setTextFieldWidth(250, Unit.PIXELS);
-
+        setFormFieldsWidths(250, Unit.PIXELS);
         name.focus();
     }
 
@@ -87,9 +70,6 @@ public class FSForm extends FormLayout {
                     }
                 }
             };
-
-            crudButton = new Button(btnCaption, clickListener);
-            crudButton.setWidth(150, Unit.PIXELS);
 
             addBeansToForm();
         }
@@ -125,46 +105,14 @@ public class FSForm extends FormLayout {
             }
         };
 
-        crudButton = new Button(btnCaption, clickListener);
-        crudButton.setWidth(150, Unit.PIXELS);
-
         addBeansToForm();
     }
 
-    private void bindFieldsToBean(Fuelstation FSBean) {
+    @Override
+    protected void bindFieldsToBean(Fuelstation FSBean) {
         FSBean.setName(name.getValue());
         FSBean.setAddress(address.getValue());
         FSBean.setFkIdc((City) city.getValue());
         FSBean.setCoordinates(coordinates.getValue());
     }
-
-    private void addBeansToForm() {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
-            addComponent(c);
-        }
-
-        addComponents(crudButton);
-    }
-
-    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                ((TextField) c).setWidth(width, unit);
-            }
-            if (c instanceof ComboBox) {
-                ((ComboBox) c).setWidth(width, unit);
-            }
-            if (c instanceof DateField) {
-                ((DateField) c).setWidth(width, unit);
-            }
-            if (c instanceof TextArea) {
-                ((TextArea) c).setWidth(width, unit);
-            }
-        }
-    }
-
 }

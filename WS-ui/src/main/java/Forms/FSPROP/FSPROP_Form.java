@@ -1,20 +1,16 @@
 package Forms.FSPROP;
 
+import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
 import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
@@ -23,15 +19,9 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
-public class FSPROP_Form extends FormLayout {
+public class FSPROP_Form extends CRUDForm2<FsProp> {
 
-    private final FieldGroup fieldGroup = new BeanFieldGroup(FsProp.class);
-    private Button crudButton;
-    private BeanItem<FsProp> beanItem;
-    private Owner currentOwner = null;
-
-    private Button.ClickListener clickListener;
-    private String btnCaption;
+    private Owner currentOwner;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final TextField currentCustomerTxtField = new TextField("Current Customer");
@@ -73,13 +63,12 @@ public class FSPROP_Form extends FormLayout {
     //</editor-fold>
 
     public FSPROP_Form() {
-        setSizeFull();
-        setMargin(true);
-        setStyleName(Reindeer.LAYOUT_BLACK);
+        super(new BeanFieldGroup(FsProp.class));
 
         fieldGroup.bindMemberFields(this);
+        setFormFieldsWidths(250, Unit.PIXELS);
 
-        currentCustomerTxtField.setWidth(230, Unit.PIXELS);
+        currentCustomerTxtField.setWidth(150, Unit.PIXELS);
         currentCustomerTxtField.setEnabled(false);
 
         for (Component c : fieldGroup.getFields()) {
@@ -92,17 +81,22 @@ public class FSPROP_Form extends FormLayout {
                 df.setDateFormat(DATE_FORMAT);
             }
 
-            c.setWidth(230, Unit.PIXELS);
+            if (c instanceof TextField) {
+                TextField tf = (TextField) c;
+                tf.setNullRepresentation("");
+            }
+            
+            if (c instanceof TextArea) {
+                TextArea ta = (TextArea) c;
+                ta.setNullRepresentation("");
+            }
+
+            c.setWidth(250, Unit.PIXELS);
         }
 
-        noOfTanks.setNullRepresentation("");
-        truckCapable.setNullRepresentation("");
         restaurant.setValue(false);
         carWash.setValue(false);
-        compliance.setNullRepresentation("");
-        licence.setNullRepresentation("");
         comment.setRows(5);
-        comment.setNullRepresentation("");
 
         // postavi validatore
         noOfTanks.setConverter(Integer.class);
@@ -181,7 +175,8 @@ public class FSPROP_Form extends FormLayout {
 
     }
 
-    private void bindFieldsToBean(FsProp fsPropertyBean) {
+    @Override
+    protected void bindFieldsToBean(FsProp fsPropertyBean) {
         fsPropertyBean.setFkIdo(currentOwner);
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
 
@@ -216,53 +211,5 @@ public class FSPROP_Form extends FormLayout {
         fsPropertyBean.setLicDateTo(licDateTo.getValue());
 
         fsPropertyBean.setActive(true);
-    }
-
-    private void addBeansToForm() {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
-            addComponent(c);
-        }
-
-        addComponents(crudButton);
-    }
-
-    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                ((TextField) c).setWidth(width, unit);
-            }
-            if (c instanceof ComboBox) {
-                ((ComboBox) c).setWidth(width, unit);
-            }
-            if (c instanceof DateField) {
-                ((DateField) c).setWidth(width, unit);
-            }
-            if (c instanceof TextArea) {
-                ((TextArea) c).setWidth(width, unit);
-            }
-        }
-    }
-
-    private void setComboBoxCaption(ComboBox comboBox, Fuelstation f) {
-        Owner o;
-
-        try {
-            o = DS.getFSOController().getCurrentFSOwner(f);
-
-            comboBox.removeAllItems();
-            comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
-            comboBox.addItem(o);
-
-        } catch (Exception e) {
-            Notification.show(
-                    "Error",
-                    "This FS must have exaclty one active owner !\n"
-                    + "Error description: " + e.toString(),
-                    Notification.Type.ERROR_MESSAGE);
-        }
     }
 }
