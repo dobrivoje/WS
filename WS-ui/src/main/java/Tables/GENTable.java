@@ -24,8 +24,8 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         this.beanContainer = beanContainer;
         this.list = list;
 
-        setContainerDataSource(beanContainer);
         updateBeanItemContainer(list);
+        setContainerDataSource(beanContainer);
 
         setSizeFull();
 
@@ -37,7 +37,9 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     }
 
     protected final void updateBeanItemContainer(List list) {
-        this.beanContainer.removeAllItems();
+        if (this.beanContainer.size() > 0) {
+            this.beanContainer.removeAllItems();
+        }
         this.beanContainer.addAll(list);
     }
 

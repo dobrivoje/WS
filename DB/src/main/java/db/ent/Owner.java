@@ -111,6 +111,14 @@ public class Owner implements Serializable {
         }
     }
 
+    public Owner(Customer fKIDCustomer, Fuelstation fkIdFs, Date dateFrom, Date dateTo, Boolean active) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.active = active;
+        this.fKIDCustomer = fKIDCustomer;
+        this.fkIdFs = fkIdFs;
+    }
+
     public Owner(Long ido) {
         this.ido = ido;
     }

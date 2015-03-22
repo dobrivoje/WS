@@ -32,13 +32,13 @@ import Menu.Menu;
 import Menu.MenuDefinitions;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG;
-import static Menu.MenuDefinitions.CUST_DATA_MANAG_BROWSER;
+import static Menu.MenuDefinitions.CUST_DATA_MANAG_SEARCH_ENGINE;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_CBT_LIST;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_CUST_DOCS;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CBT;
 import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
 import static Menu.MenuDefinitions.FS_DATA_MANAG;
-import static Menu.MenuDefinitions.FS_DATA_MANAG_BROWSER;
+import static Menu.MenuDefinitions.FS_DATA_MANAG_SEARCH_ENGINE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_DOCS;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_IMAGES;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
@@ -157,23 +157,23 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, false);
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD_LICENCES_OVERDUE, false);
 
-        customersTree.setParent(CUST_DATA_MANAG_BROWSER, CUST_DATA_MANAG);
+        customersTree.setParent(CUST_DATA_MANAG_SEARCH_ENGINE, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_NEW_CUST, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_CUST_DOCS, CUST_DATA_MANAG);
 
-        customersTree.setChildrenAllowed(CUST_DATA_MANAG_BROWSER, false);
+        customersTree.setChildrenAllowed(CUST_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CUST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CBT, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
 
-        customersTree.setParent(FS_DATA_MANAG_BROWSER, FS_DATA_MANAG);
+        customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_IMAGES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_DOCS, FS_DATA_MANAG);
 
-        customersTree.setChildrenAllowed(FS_DATA_MANAG_BROWSER, false);
+        customersTree.setChildrenAllowed(FS_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS_OWNER, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_IMAGES, false);
@@ -187,7 +187,7 @@ public class MainMenu extends CssLayout {
                     case SYS_NOTIF_BOARD:
                         navigator.navigateTo(SysNotifView.class.getSimpleName());
                         break;
-                    case CUST_DATA_MANAG_BROWSER:
+                    case CUST_DATA_MANAG_SEARCH_ENGINE:
                         navigator.navigateTo(CustomersView.class.getSimpleName());
                         break;
                     case CUST_DATA_MANAG_NEW_CUST:
@@ -204,11 +204,9 @@ public class MainMenu extends CssLayout {
                     case FS_DATA_MANAG_NEW_FS_OWNER:
                         getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
                         break;
-                    case FS_DATA_MANAG_BROWSER:
+                    case FS_DATA_MANAG_SEARCH_ENGINE:
                         navigator.navigateTo(FSView.class.getSimpleName());
-                        ;
                         break;
-
                 }
             }
         });

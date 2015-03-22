@@ -7,7 +7,6 @@ package Tables;
 
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
@@ -16,9 +15,12 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
 import db.ent.Fuelstation;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -83,14 +85,14 @@ public class FSTable extends GENTable<Fuelstation> {
                 sourceTable.markAsDirtyRecursive();
             }
         });
-        getUI().addWindow(new WindowForm("FS Update Form", false, customerForm));
+        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, new VerticalLayout()));
     }
 
     private void showFSOwnerForm(Table sourceTable) throws IllegalArgumentException, NullPointerException {
         Fuelstation f = (Fuelstation) sourceTable.getValue();
 
         FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
-        getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+        getUI().addWindow(new WindowForm("Fuelstation Owner Form", false, fsoForm));
     }
 
     public void setFilter(String filterString) {

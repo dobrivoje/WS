@@ -1,6 +1,5 @@
 package Forms.CDM;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -11,6 +10,7 @@ import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
@@ -118,19 +118,21 @@ public class CustomerForm extends FormLayout {
     public CustomerForm(final CrudOperations crudOperation) {
         this();
 
+        fieldGroup.setItemDataSource(new BeanItem(new Customer()));
+        beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
+
         if (crudOperation.equals(CrudOperations.CREATE)) {
             btnCaption = BUTTON_CAPTION_NEW.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    Customer newCustomer = new Customer();
-                    bindFieldsToBean(newCustomer);
+                    bindFieldsToBean(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
+                        customerController.addNew(beanItem.getBean());
 
-                        customerController.addNew(newCustomer);
                         Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -219,6 +221,15 @@ public class CustomerForm extends FormLayout {
         for (Component c : fieldGroup.getFields()) {
             if (c instanceof TextField) {
                 ((TextField) c).setWidth(width, unit);
+            }
+            if (c instanceof ComboBox) {
+                ((ComboBox) c).setWidth(width, unit);
+            }
+            if (c instanceof DateField) {
+                ((DateField) c).setWidth(width, unit);
+            }
+            if (c instanceof TextArea) {
+                ((TextArea) c).setWidth(width, unit);
             }
         }
     }

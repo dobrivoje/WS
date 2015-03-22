@@ -14,32 +14,30 @@ import java.util.List;
  * @author root
  */
 public enum MenuDefinitions {
-
+    //
     // Main menu options
-// Main menu options
-// Main menu options
-// Main menu options
+    //
     SYS_NOTIF_BOARD("System Notifications Board"),
-    CUST_DATA_MANAG("Customers Data Management"),
+    CUST_DATA_MANAG("Customers Management"),
     CUST_CRM_MANAG("Customers CRM Management"),
-    FS_DATA_MANAG("FS Data Management"),
+    FS_DATA_MANAG("Fuelstations Management"),
     //
     // Submenus
     //
     SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST("Customer Blacklist"),
     SYS_NOTIF_BOARD_LICENCES_OVERDUE("Licences Overdue"),
     //
-    CUST_DATA_MANAG_BROWSER("Customer Search Engine"),
+    CUST_DATA_MANAG_SEARCH_ENGINE("Customer Search Engine"),
     CUST_DATA_MANAG_NEW_CUST("New Customer"),
     CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
     //
-    FS_DATA_MANAG_BROWSER("FS Search Engine"),
-    FS_DATA_MANAG_NEW_FS("New FS"),
-    FS_DATA_MANAG_NEW_FS_OWNER("New FS Owner"),
-    FS_DATA_MANAG_IMAGES("FS's Images"),
-    FS_DATA_MANAG_DOCS("FS's Documents");
+    FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
+    FS_DATA_MANAG_NEW_FS("New Fuelstation"),
+    FS_DATA_MANAG_NEW_FS_OWNER("New Fuelstation Owner"),
+    FS_DATA_MANAG_IMAGES("Fuelstation's Images"),
+    FS_DATA_MANAG_DOCS("Fuelstation's Documents");
 
     private final String menuItem;
 
@@ -69,15 +67,14 @@ public enum MenuDefinitions {
     }
 
     public static List<MenuDefinitions> get_CUSTOMER_SubItems() {
-        return new ArrayList<>(Arrays.asList(
-                CUST_DATA_MANAG_BROWSER,
+        return new ArrayList<>(Arrays.asList(CUST_DATA_MANAG_SEARCH_ENGINE,
                 CUST_DATA_MANAG_NEW_CUST,
                 CUST_DATA_MANAG_CUST_DOCS
         ));
     }
 
     public static List<MenuDefinitions> get_FS_SubItems() {
-        return new ArrayList<>(Arrays.asList(FS_DATA_MANAG_BROWSER,
+        return new ArrayList<>(Arrays.asList(FS_DATA_MANAG_SEARCH_ENGINE,
                 FS_DATA_MANAG_NEW_FS,
                 FS_DATA_MANAG_NEW_FS_OWNER,
                 FS_DATA_MANAG_IMAGES,

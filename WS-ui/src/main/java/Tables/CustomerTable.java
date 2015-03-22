@@ -42,8 +42,6 @@ public class CustomerTable extends GENTable<Customer> {
 
     private static final List<String> tableColumnsID = new ArrayList(Arrays.asList(
             "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
-    private static final String[] tableColumns = new String[]{
-        "NAV ID", "CLIENT NAME", "LICENCE", "OPTIONS", "CITY", "ZONE", "MATBR"};
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());

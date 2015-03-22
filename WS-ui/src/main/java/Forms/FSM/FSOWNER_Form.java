@@ -5,12 +5,16 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import db.ent.Customer;
 import db.ent.Fuelstation;
@@ -49,7 +53,7 @@ public class FSOWNER_Form extends FormLayout {
     private final DateField dateTo = new DateField("Date To");
 
     @PropertyId("active")
-    private final CheckBox active = new CheckBox("Active ?");
+    private final CheckBox active = new CheckBox("Active ?", true);
     //</editor-fold>
 
     public FSOWNER_Form() {
@@ -59,16 +63,18 @@ public class FSOWNER_Form extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
+        setTextFieldWidth(250, Unit.PIXELS);
+
         dateFrom.setDateFormat(DATE_FORMAT);
         dateTo.setDateFormat(DATE_FORMAT);
 
+        dateFrom.setConverter(Date.class);
+        dateTo.setConverter(Date.class);
+
+        active.setEnabled(false);
+
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
-
-        customer.setWidth(50, Unit.PERCENTAGE);
-        fs.setWidth(50, Unit.PERCENTAGE);
-        dateFrom.setWidth(50, Unit.PERCENTAGE);
-        dateTo.setWidth(50, Unit.PERCENTAGE);
 
         customer.focus();
     }
@@ -76,17 +82,21 @@ public class FSOWNER_Form extends FormLayout {
     public FSOWNER_Form(final CrudOperations crudOperation) {
         this();
 
+        fieldGroup.setItemDataSource(new BeanItem(new Owner()));
+        beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+
         if (crudOperation.equals(CrudOperations.CREATE)) {
             btnCaption = BUTTON_CAPTION_NEW.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    Owner newOwner = new Owner();
-                    bindFieldsToBean(newOwner);
+                    bindFieldsToBean(beanItem.getBean());
 
                     try {
-                        DS.getFSOController().addNew(newOwner);
+                        fieldGroup.commit();
+                        DS.getFSOController().addNew(beanItem.getBean());
+
                         Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -99,66 +109,64 @@ public class FSOWNER_Form extends FormLayout {
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
 
-            addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
+            addBeansToForm();
         }
     }
 
     public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
         this();
 
-        final Owner newOwner = new Owner(DS.getFSOController().getCurrentFSOwner(fuelstation));
+        final Owner currentOwner = DS.getFSOController().getCurrentFSOwner(fuelstation);
+        final Owner newOwner = new Owner(null, fuelstation, new Date(), null, true);
 
-        newOwner.setFkIdFs(fuelstation);
-        newOwner.setFKIDCustomer(null);
-        newOwner.setDateTo(null);
-        newOwner.setDateFrom(new Date());
-        newOwner.setActive(true);
-
-        BeanItem<Owner> biOwner = new BeanItem(newOwner);
-        fieldGroup.setItemDataSource(biOwner);
-
-        try {
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        bindFieldsToBean(newOwner);
-
-                        if (((Customer) customer.getValue()).equals(
-                                DS.getFSOController().getCurrentFSOwner(fuelstation).getFKIDCustomer())) {
-                            Notification.show("Wrong assigment",
-                                    "You cannot assign this fuelstation to this customer,\n"
-                                    + "as it is already assigned to it !",
-                                    Notification.Type.ERROR_MESSAGE);
-                        } else {
-                            DS.getFSOController().changeFSOwner(fuelstation, newOwner.getFKIDCustomer());
-
-                            if (visualContainer != null) {
-                                visualContainer.refreshVisualContainer();
-                            }
-
-                            Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
-                            n.setDelayMsec(500);
-                            n.show(getUI().getPage());
-                        }
-                    } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
-                    }
-                }
-            };
-
-        } catch (Exception e) {
-            Notification.show("Error", "Existing owner not updated.", Notification.Type.ERROR_MESSAGE);
-        }
-
+        fieldGroup.setItemDataSource(new BeanItem(newOwner));
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                bindFieldsToBean(beanItem.getBean());
+
+                try {
+                    fieldGroup.commit();
+
+                    if (currentOwner != null) {
+                        if (((Customer) customer.getValue()).equals(currentOwner.getFKIDCustomer())) {
+                            throw new Exception(
+                                    "Wrong assigment.\n"
+                                    + "You cannot assign this fuelstation to this customer,\n"
+                                    + "as it is already assigned to it !"
+                            );
+                        }
+
+                        currentOwner.setDateTo(new Date());
+                        currentOwner.setActive(false);
+
+                        DS.getFSOController().updateExisting(currentOwner);
+                    }
+
+                    DS.getFSOController().addNew(beanItem.getBean());
+
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+
+                    Notification n = new Notification("FS Owner Updated.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
+
+                } catch (Exception ex) {
+                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        };
 
         btnCaption = BUTTON_CAPTION_UPDATE.toString();
 
         crudButton = new Button(btnCaption, clickListener);
         crudButton.setWidth(150, Unit.PIXELS);
 
-        addComponents(customer, fs, dateFrom, dateTo, active, crudButton);
+        addBeansToForm();
     }
 
     private void bindFieldsToBean(Owner ownerBean) {
@@ -167,5 +175,34 @@ public class FSOWNER_Form extends FormLayout {
         ownerBean.setDateFrom(dateFrom.getValue() == null ? new Date() : dateFrom.getValue());
         ownerBean.setDateTo(dateTo.getValue());
         ownerBean.setActive(active.getValue());
+    }
+
+    private void addBeansToForm() {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                TextField tf = (TextField) c;
+                tf.setNullRepresentation("");
+            }
+            addComponent(c);
+        }
+
+        addComponents(crudButton);
+    }
+
+    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                ((TextField) c).setWidth(width, unit);
+            }
+            if (c instanceof ComboBox) {
+                ((ComboBox) c).setWidth(width, unit);
+            }
+            if (c instanceof DateField) {
+                ((DateField) c).setWidth(width, unit);
+            }
+            if (c instanceof TextArea) {
+                ((TextArea) c).setWidth(width, unit);
+            }
+        }
     }
 }

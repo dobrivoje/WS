@@ -5,10 +5,14 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import db.ent.City;
@@ -52,18 +56,16 @@ public class FSForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
-        name.setWidth(50, Unit.PERCENTAGE);
-        city.setWidth(50, Unit.PERCENTAGE);
-        address.setWidth(50, Unit.PERCENTAGE);
-        coordinates.setWidth(50, Unit.PERCENTAGE);
+        setTextFieldWidth(250, Unit.PIXELS);
 
-        // city.setNullSelectionAllowed(false);
-        // city.setFilteringMode(FilteringMode.CONTAINS);
         name.focus();
     }
 
     public FSForm(final CrudOperations crudOperation) {
         this();
+
+        fieldGroup.setItemDataSource(new BeanItem(new Fuelstation()));
+        beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
             btnCaption = BUTTON_CAPTION_NEW.toString();
@@ -71,13 +73,12 @@ public class FSForm extends FormLayout {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    Fuelstation newFuelstation = new Fuelstation();
-                    bindFieldsToBean(newFuelstation);
+                    bindFieldsToBean(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
+                        DS.getFSController().addNew(beanItem.getBean());
 
-                        DS.getFSController().addNew(newFuelstation);
                         Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
@@ -90,7 +91,7 @@ public class FSForm extends FormLayout {
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
 
-            addComponents(name, address, city, coordinates, crudButton);
+            addBeansToForm();
         }
     }
 
@@ -104,13 +105,12 @@ public class FSForm extends FormLayout {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Fuelstation FSToUpdate = beanItem.getBean();
-                bindFieldsToBean(FSToUpdate);
+                bindFieldsToBean(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
 
-                    DS.getFSController().updateExisting(FSToUpdate);
+                    DS.getFSController().updateExisting(beanItem.getBean());
 
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
@@ -128,7 +128,7 @@ public class FSForm extends FormLayout {
         crudButton = new Button(btnCaption, clickListener);
         crudButton.setWidth(150, Unit.PIXELS);
 
-        addComponents(name, address, city, coordinates, crudButton);
+        addBeansToForm();
     }
 
     private void bindFieldsToBean(Fuelstation FSBean) {
@@ -137,4 +137,34 @@ public class FSForm extends FormLayout {
         FSBean.setFkIdc((City) city.getValue());
         FSBean.setCoordinates(coordinates.getValue());
     }
+
+    private void addBeansToForm() {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                TextField tf = (TextField) c;
+                tf.setNullRepresentation("");
+            }
+            addComponent(c);
+        }
+
+        addComponents(crudButton);
+    }
+
+    private void setTextFieldWidth(float width, Sizeable.Unit unit) {
+        for (Component c : fieldGroup.getFields()) {
+            if (c instanceof TextField) {
+                ((TextField) c).setWidth(width, unit);
+            }
+            if (c instanceof ComboBox) {
+                ((ComboBox) c).setWidth(width, unit);
+            }
+            if (c instanceof DateField) {
+                ((DateField) c).setWidth(width, unit);
+            }
+            if (c instanceof TextArea) {
+                ((TextArea) c).setWidth(width, unit);
+            }
+        }
+    }
+
 }

@@ -21,7 +21,6 @@ import com.vaadin.server.FontAwesome;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
 public class FSView extends VerticalLayout implements View {
@@ -136,13 +135,8 @@ public class FSView extends VerticalLayout implements View {
                 FSOWNER_Form fsoForm;
 
                 if (f != null) {
-                    fsoForm = new FSOWNER_Form(f, new IRefreshVisualContainer() {
-                        @Override
-                        public void refreshVisualContainer() {
-                            FS_Table.markAsDirtyRecursive();
-                        }
-                    });
-                    getUI().addWindow(new WindowForm("FS Owner Form", false, fsoForm));
+                    fsoForm = new FSOWNER_Form(f, null);
+                    getUI().addWindow(new WindowForm("New Fuelstation Owner", false, fsoForm));
                 } else {
                     getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
                 }

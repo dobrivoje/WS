@@ -1,9 +1,9 @@
 package Forms.CDM;
 
+import Forms.CRUDForm;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import Forms.CRUDForm;
 import Forms.IFormNotification;
 import db.ent.CustomerBussinesType;
 import static ws.MyUI.DS;
