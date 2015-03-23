@@ -14,13 +14,13 @@ import com.vaadin.event.Action;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import db.ent.Fuelstation;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
 /**
@@ -31,6 +31,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
     private static final Action ACTION_FS_UPDATE = new Action("Fuelstation Data Update");
     private static final Action ACTION_FS_OWNER = new Action("New Fuelstation Owner");
+    private static int IMG_INDEX = 1;
 
     public FSTable() {
         this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
@@ -69,8 +70,21 @@ public class FSTable extends GENTable<Fuelstation> {
             }
         });
 
-        setVisibleColumns("name", "options", "FK_City", "address");
-        setColumnHeaders("FUEL STATION", "OPTIONS", "CITY", "ADDRESS");
+        addGeneratedColumn("img", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(final Table source, final Object row, Object column) {
+                VerticalLayout VL = new VerticalLayout();
+                Image i = createImage(IMG_INDEX, 80, 80);
+
+                VL.setSizeFull();
+                VL.addComponent(i);
+                VL.setComponentAlignment(i, Alignment.MIDDLE_CENTER);
+                return VL;
+            }
+        });
+
+        setVisibleColumns("name", "options", "img", "FK_City", "address");
+        setColumnHeaders("FUEL STATION", "OPTIONS", "IMAGE", "CITY", "ADDRESS");
 
         setColumnWidth("options", 110);
     }
@@ -78,13 +92,8 @@ public class FSTable extends GENTable<Fuelstation> {
     private void showFSForm(final Table sourceTable) throws IllegalArgumentException, NullPointerException {
         Fuelstation f = (Fuelstation) sourceTable.getValue();
 
-        FSForm customerForm = new FSForm(f, new IRefreshVisualContainer() {
-            @Override
-            public void refreshVisualContainer() {
-                sourceTable.markAsDirtyRecursive();
-            }
-        });
-        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, new VerticalLayout()));
+        FSForm customerForm = new FSForm(f, null);
+        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImage(IMG_INDEX, 220, 220)));
     }
 
     private void showFSOwnerForm(Table sourceTable) throws IllegalArgumentException, NullPointerException {

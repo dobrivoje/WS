@@ -30,9 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "RelFSDocument.findAll", query = "SELECT r FROM RelFSDocument r"),
     @NamedQuery(name = "RelFSDocument.findByIdfsi", query = "SELECT r FROM RelFSDocument r WHERE r.idfsd = :idfsd"),
-    
+
     @NamedQuery(name = "RelFSDocument.findByFS", query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs")
-    
+
 })
 public class RelFSDocument implements Serializable {
 
@@ -44,6 +44,8 @@ public class RelFSDocument implements Serializable {
     @Column(name = "DocumentDate")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date documentDate;
+    @Column(name = "DefaultDocument")
+    private Boolean defaultDocument;
     @JoinColumn(name = "FK_IDFS", referencedColumnName = "IDFS")
     @ManyToOne
     private Fuelstation fkIdFs;
@@ -54,10 +56,11 @@ public class RelFSDocument implements Serializable {
     public RelFSDocument() {
     }
 
-    public RelFSDocument(Fuelstation fkIdfs, Document FK_DOCUMENT, Date documentDate) {
+    public RelFSDocument(Fuelstation fkIdfs, Document FK_DOCUMENT, Date documentDate, boolean defaultDocument) {
         this.documentDate = documentDate;
         this.fkIdFs = fkIdfs;
         this.FK_DOCUMENT = FK_DOCUMENT;
+        this.defaultDocument = defaultDocument;
     }
 
     public Long getIdfsd() {
@@ -90,6 +93,14 @@ public class RelFSDocument implements Serializable {
 
     public void setFK_DOCUMENT(Document FK_DOCUMENT) {
         this.FK_DOCUMENT = FK_DOCUMENT;
+    }
+
+    public Boolean getDefaultDocument() {
+        return defaultDocument;
+    }
+
+    public void setDefaultDocument(Boolean defaultDocument) {
+        this.defaultDocument = defaultDocument;
     }
 
     @Override
