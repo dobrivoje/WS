@@ -8,6 +8,7 @@ package db.controllers;
 import java.util.List;
 import db.DBHandler;
 import db.ent.Document;
+import db.ent.Fuelstation;
 import db.ent.Gallery;
 import db.interfaces.IDocumentController;
 import java.io.Serializable;
@@ -43,7 +44,7 @@ public class Document_Controller implements IDocumentController {
 
     @Override
     public List<Document> getDocumentsByGallery(Gallery gallery) {
-        return dbh.getDocumentsByGallery(gallery);
+        return dbh.getAllDocumentsByGallery(gallery);
     }
     //</editor-fold>
 
@@ -64,5 +65,20 @@ public class Document_Controller implements IDocumentController {
 
     }
     //</editor-fold>
+
+    @Override
+    public List<Document> getAllFSDocuments(Fuelstation fuelstation) {
+        return dbh.getAllFSDocuments(fuelstation);
+    }
+
+    @Override
+    public Document getFSImage(Fuelstation fuelstation) {
+        return dbh.getFSDefaultImage(fuelstation, true);
+    }
+
+    @Override
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, boolean defaultDocument) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

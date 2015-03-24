@@ -475,7 +475,30 @@ public class DBHandler {
         }
     }
 
-    public List<Document> getDocumentsByGallery(Gallery g) {
+    public List<Document> getAllFSDocuments(Fuelstation fuelstation) {
+        try {
+            return getEm().createNamedQuery("RelFSDocument.getAllFSDocuments")
+                    .setParameter("IDFS", fuelstation)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Document getFSDefaultImage(Fuelstation fuelstation, boolean defaultDocument) {
+        try {
+            List<Document> docs = getEm().createNamedQuery("RelFSDocument.getFSDefaultImage")
+                    .setParameter("IDFS", fuelstation)
+                    .setParameter("DefaultDocument", defaultDocument)
+                    .getResultList();
+            
+            return docs.iterator().next();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Document> getAllDocumentsByGallery(Gallery g) {
         try {
             return getEm().createNamedQuery("Document.findByGallery")
                     .setParameter("idg", g)
@@ -496,7 +519,7 @@ public class DBHandler {
             throw new Exception("New Gallery Not Added.");
         }
     }
-    
+
     public void addNewGallery(String galleryName, String storeLocation) throws Exception {
         Gallery newGallery = new Gallery();
 

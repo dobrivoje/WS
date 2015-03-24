@@ -7,6 +7,7 @@ package db.ent;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,13 +52,15 @@ public class Document implements Serializable {
     private Serializable docData;
     @Column(name = "DocLocation")
     private String docLocation;
+    @Column(name = "DocType")
+    private String docType;
     @Column(name = "UploadDate")
     @Temporal(TemporalType.DATE)
     private Date uploadDate;
-    @OneToOne(mappedBy = "FK_DOCUMENT")
-    private RelFSDocument relFSImage;
-    @OneToOne(mappedBy = "FK_DOCUMENT")
-    private RelSALESMANIMAGE relSALESMANIMAGE;
+    @OneToMany(mappedBy = "FK_DOCUMENT")
+    private List<RelFSDocument> relFSImage;
+    @OneToMany(mappedBy = "FK_DOCUMENT")
+    private List<RelSALESMANIMAGE> relSALESMANIMAGE;
     @JoinColumn(name = "FK_IDG", referencedColumnName = "IDG")
     @ManyToOne
     private Gallery FK_Gallery;
@@ -65,12 +68,13 @@ public class Document implements Serializable {
     public Document() {
     }
 
-    public Document(String name, Serializable docData, String docLocation, Date uploadDate, Gallery FK_Gallery) {
+    public Document(String name, Serializable docData, String docLocation, Date uploadDate, String docType, Gallery FK_Gallery) {
         this.name = name;
         this.docData = docData;
         this.docLocation = docLocation;
         this.uploadDate = uploadDate;
         this.FK_Gallery = FK_Gallery;
+        this.docType = docType;
     }
 
     public Long getIdd() {
@@ -105,6 +109,14 @@ public class Document implements Serializable {
         this.docLocation = docLocation;
     }
 
+    public String getDocType() {
+        return docType;
+    }
+
+    public void setDocType(String docType) {
+        this.docType = docType;
+    }
+
     public Date getUploadDate() {
         return uploadDate;
     }
@@ -113,19 +125,19 @@ public class Document implements Serializable {
         this.uploadDate = uploadDate;
     }
 
-    public RelFSDocument getRelFSImage() {
+    public List<RelFSDocument> getRelFSImage() {
         return relFSImage;
     }
 
-    public void setRelFSImage(RelFSDocument relFSImage) {
+    public void setRelFSImage(List<RelFSDocument> relFSImage) {
         this.relFSImage = relFSImage;
     }
 
-    public RelSALESMANIMAGE getRelSALESMANIMAGE() {
+    public List<RelSALESMANIMAGE> getRelSALESMANIMAGE() {
         return relSALESMANIMAGE;
     }
 
-    public void setRelSALESMANIMAGE(RelSALESMANIMAGE relSALESMANIMAGE) {
+    public void setRelSALESMANIMAGE(List<RelSALESMANIMAGE> relSALESMANIMAGE) {
         this.relSALESMANIMAGE = relSALESMANIMAGE;
     }
 
@@ -154,9 +166,18 @@ public class Document implements Serializable {
         return !((this.idd == null && other.idd != null) || (this.idd != null && !this.idd.equals(other.idd)));
     }
 
+    /**
+     * Vrati FQDN putanju do fajla koji se nalazi na fizičkoj lokaciji
+     * definisanu kao getFK_Gallery().getStoreLocation() + getDocLocation() +
+     * getName()
+     *
+     * @return
+     */
     @Override
     public String toString() {
-        return "db.Image[ idi=" + idd + " ]";
+        return getFK_Gallery().getStoreLocation()
+                // + getDocLocation() != null ? getDocLocation() + "\\" : ""
+                + (getDocLocation() != null ? getDocLocation() + "\\\\" : "")
+                + getName();
     }
-
 }

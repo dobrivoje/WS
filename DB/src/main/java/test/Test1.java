@@ -6,6 +6,8 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.Document;
+import db.ent.Fuelstation;
 import db.ent.Gallery;
 
 /**
@@ -13,9 +15,9 @@ import db.ent.Gallery;
  * @author root
  */
 public class Test1 {
-    
+
     static DataService DS = DataService.getDefault();
-    
+
     public static void main(String[] args) {
 
         //<editor-fold defaultstate="collapsed" desc="test FS, FSOWNER, i FSPROP">
@@ -97,13 +99,16 @@ public class Test1 {
          }
          */
         //</editor-fold>
+        
+        Fuelstation fs = DS.getFSController().getByID(1L);
         Gallery g = DS.getGalleryController().getByID(1L);
         System.err.println(g.toString());
-        
-        for (int i = 0; i < 10; i++) {
-            int ii = 1 + (int) (5 * Math.random());
-            System.err.println("ii: " + ii);
+
+        for (Document d : DS.getDocumentController().getAllFSDocuments(fs)) {
+            System.err.println(d.toString());
         }
+        
+        System.err.println("Default image : " + DS.getDocumentController().getFSImage(fs));
         
     }
 }

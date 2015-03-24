@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,13 +26,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Rel_FS_Document")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "RelFSDocument.findAll", query = "SELECT r FROM RelFSDocument r"),
-    @NamedQuery(name = "RelFSDocument.findByIdfsi", query = "SELECT r FROM RelFSDocument r WHERE r.idfsd = :idfsd"),
+@NamedQueries(
+        {
+            @NamedQuery(name = "RelFSDocument.findAll", query = "SELECT r FROM RelFSDocument r"),
+            @NamedQuery(name = "RelFSDocument.findByIdfsi", query = "SELECT r FROM RelFSDocument r WHERE r.idfsd = :idfsd"),
 
-    @NamedQuery(name = "RelFSDocument.findByFS", query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs")
+            @NamedQuery(name = "RelFSDocument.getAllFSDocuments", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS"),
 
-})
+            @NamedQuery(name = "RelFSDocument.getFSDefaultImage", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :DefaultDocument"),
+
+            @NamedQuery(name = "RelFSDocument.findByFS", query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs")
+
+        })
 public class RelFSDocument implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +54,7 @@ public class RelFSDocument implements Serializable {
     @ManyToOne
     private Fuelstation fkIdFs;
     @JoinColumn(name = "FK_IDD", referencedColumnName = "IDD")
-    @OneToOne
+    @ManyToOne
     private Document FK_DOCUMENT;
 
     public RelFSDocument() {

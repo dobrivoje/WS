@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -39,7 +38,7 @@ public class RelSALESMANIMAGE implements Serializable {
     @Column(name = "IDSI")
     private Long idsi;
     @JoinColumn(name = "FK_IDD", referencedColumnName = "IDD")
-    @OneToOne
+    @ManyToOne
     private Document FK_DOCUMENT;
     @JoinColumn(name = "FK_SALESMAN", referencedColumnName = "IDS")
     @ManyToOne
