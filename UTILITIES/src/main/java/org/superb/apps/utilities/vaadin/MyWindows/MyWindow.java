@@ -63,6 +63,19 @@ public class MyWindow extends Window {
         setContent(layout);
     }
 
+    public MyWindow(Layout layout, String caption, float height, float width) {
+        this(layout);
+        setCaption(caption);
+
+        if (height != 0) {
+            setHeight(height, Unit.PIXELS);
+        }
+
+        if (width != 0) {
+            setHeight(width, Unit.PIXELS);
+        }
+    }
+
     public void setText(String text) {
         label.setValue(text);
     }

@@ -45,13 +45,18 @@ public class FSTable extends GENTable<Fuelstation> {
                 final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        showFSForm(source);
+                        Fuelstation f = (Fuelstation) row;
+                        FSForm customerForm = new FSForm(f, null);
+
+                        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f)));
                     }
                 });
                 final Button ownerBtn = new Button("o", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        showFSOwnerForm(source);
+                        Fuelstation f = (Fuelstation) row;
+                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
+                        getUI().addWindow(new WindowForm("Fuelstation Owner Form", false, fsoForm));
                     }
                 });
 
@@ -80,20 +85,6 @@ public class FSTable extends GENTable<Fuelstation> {
         setColumnWidth("options", 110);
     }
 
-    private void showFSForm(final Table sourceTable) throws IllegalArgumentException, NullPointerException {
-        Fuelstation f = (Fuelstation) sourceTable.getValue();
-        FSForm customerForm = new FSForm(f, null);
-                       
-        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f)));
-    }
-
-    private void showFSOwnerForm(Table sourceTable) throws IllegalArgumentException, NullPointerException {
-        Fuelstation f = (Fuelstation) sourceTable.getValue();
-
-        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
-        getUI().addWindow(new WindowForm("Fuelstation Owner Form", false, fsoForm));
-    }
-
     public void setFilter(String filterString) {
         beanContainer.removeAllContainerFilters();
 
@@ -120,13 +111,17 @@ public class FSTable extends GENTable<Fuelstation> {
 
             @Override
             public void handleAction(Action action, Object sender, Object target) {
-                final FSTable sourceTable = (FSTable) sender;
+                final FSTable source = (FSTable) sender;
 
                 if (action.equals(FSTable.ACTION_FS_OWNER)) {
-                    showFSOwnerForm(sourceTable);
+                    Fuelstation f = (Fuelstation) source.getValue();
+                    FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
+                    getUI().addWindow(new WindowForm("Fuelstation Owner Form", false, fsoForm));
                 }
                 if (action.equals(FSTable.ACTION_FS_UPDATE)) {
-                    showFSForm(sourceTable);
+                    Fuelstation f = (Fuelstation) source.getValue();
+                    FSForm customerForm = new FSForm(f, null);
+                    getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f)));
                 }
             }
         });

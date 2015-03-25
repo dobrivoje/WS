@@ -40,15 +40,15 @@ public class CustomerTable extends GENTable<Customer> {
     private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
     private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
 
-    private static final List<String> tableColumnsID = new ArrayList(Arrays.asList(
-            "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
-
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
     }
 
     public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {
         super(beanContainer, list);
+
+        tableColumnsID = new ArrayList(Arrays.asList(
+                "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
 
         addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override
@@ -58,13 +58,27 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button editBtn = new Button("u", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        showCustomerUpdateForm(source);
+                        Customer c = (Customer) row;
+
+                        CustomerForm cf = new CustomerForm(c, new IRefreshVisualContainer() {
+                            @Override
+                            public void refreshVisualContainer() {
+                                source.markAsDirtyRecursive();
+                            }
+                        });
+
+                        getUI().addWindow(new WindowForm2("Customer Update Form", cf));
                     }
                 });
                 final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        showBussinesTypeForm(source);
+                        Customer c = (Customer) row;
+
+                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        RELCBTForm relCBT_Form = new RELCBTForm(c);
+
+                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
                     }
                 });
 
@@ -201,17 +215,7 @@ public class CustomerTable extends GENTable<Customer> {
         }
     }
 
-    private void setTableView(String... columns) {
-        for (String c : tableColumnsID) {
-            setColumnCollapsed(c, true);
-        }
-
-        for (String c : columns) {
-            setColumnCollapsed(c, false);
-        }
-    }
-
-    public final void setTablePerspective(ViewModes mode) {
+    public final void setTablePerspective(ViewModes mode, String... visibleColumns) {
         switch (mode) {
             case SIMPLE:
                 setTableView("navCode", "name", "zone", "matBr", "myCity", "myCityDistrict", "myCityRegion");
@@ -225,28 +229,6 @@ public class CustomerTable extends GENTable<Customer> {
         }
     }
 
-    private void showCustomerUpdateForm(final Table sourceTable) {
-        Customer c = (Customer) sourceTable.getValue();
-
-        CustomerForm customerForm = new CustomerForm(c, new IRefreshVisualContainer() {
-            @Override
-            public void refreshVisualContainer() {
-                sourceTable.markAsDirtyRecursive();
-            }
-        });
-
-        getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
-    }
-
-    private void showBussinesTypeForm(Table sourceTable) {
-        Customer c = (Customer) sourceTable.getValue();
-
-        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-        RELCBTForm relCBT_Form = new RELCBTForm(c);
-
-        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-    }
-
     @Override
     public void addActionHandler(Action.Handler actionHandler) {
         super.addActionHandler(new Action.Handler() {
@@ -258,12 +240,26 @@ public class CustomerTable extends GENTable<Customer> {
 
             @Override
             public void handleAction(Action action, Object sender, Object target) {
-                final CustomerTable sourceTable = (CustomerTable) sender;
+                final CustomerTable source = (CustomerTable) sender;
 
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
-                    showCustomerUpdateForm(sourceTable);
+                    Customer c = (Customer) (source.getValue());
+
+                    CustomerForm cf = new CustomerForm(c, new IRefreshVisualContainer() {
+                        @Override
+                        public void refreshVisualContainer() {
+                            source.markAsDirtyRecursive();
+                        }
+                    });
+
+                    getUI().addWindow(new WindowForm2("Customer Update Form", cf));
                 } else {
-                    showBussinesTypeForm(sourceTable);
+                    Customer c = (Customer) source.getValue();
+
+                    RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                    RELCBTForm relCBT_Form = new RELCBTForm(c);
+
+                    getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
                 }
             }
         });

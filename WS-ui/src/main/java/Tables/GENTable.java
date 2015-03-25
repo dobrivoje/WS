@@ -16,11 +16,11 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
 import java.util.List;
+import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -31,6 +31,7 @@ import static ws.MyUI.DS;
  */
 public abstract class GENTable<T> extends Table implements IRefreshVisualContainer {
 
+    protected List<String> tableColumnsID;
     protected final BeanItemContainer<T> beanContainer;
     protected List list;
 
@@ -63,7 +64,25 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         markAsDirtyRecursive();
     }
 
-    protected Image createImage(Fuelstation fuelstation, float height, float width) {
+    /**
+     * Metod za kreiranje pogleda na tabelu. Biranjem kolona, biramo i prikaz
+     * kolona tabele, čime pravimo različite "poglede" nad istom tabelom. Ovim
+     * metodom osim biznis funkcionalnosti, možemo kontrolisati i performanse
+     * iscrtavanja tabele sa velikom količinom podataka.
+     *
+     * @param columns
+     */
+    protected void setTableView(String... columns) {
+        for (String c : tableColumnsID) {
+            setColumnCollapsed(c, true);
+        }
+
+        for (String c : columns) {
+            setColumnCollapsed(c, false);
+        }
+    }
+
+    protected Image createImage(final Fuelstation fuelstation, float height, float width) {
         Document defaultImage = DS.getDocumentController().getFSImage(fuelstation);
 
         final Image image;
@@ -83,24 +102,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 if (event.isDoubleClick()) {
-
-                    VerticalLayout VLI = new VerticalLayout();
-                    VLI.setSizeFull();
-                    VLI.setMargin(true);
-
-                    Image i = new Image();
-                    i.setSource(image.getSource());
-
-                    VLI.addComponent(i);
-                    VLI.setComponentAlignment(i, Alignment.MIDDLE_CENTER);
-
-                    Window w = new Window("Fuelstation image(s)", VLI);
-
-                    w.setWidth(60, Unit.PERCENTAGE);
-                    w.setHeight(75, Unit.PERCENTAGE);
-                    w.center();
-
-                    getUI().addWindow(w);
+                    openFSGalleryWindow("Fuelstation - " + fuelstation.getName(), image.getSource());
                 }
             }
         });
@@ -108,68 +110,64 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return image;
     }
 
-    protected VerticalLayout createImageGallery(Fuelstation f) {
+    protected VerticalLayout createImageGallery(final Fuelstation f) {
 
-        VerticalLayout imagePlaceHolder = new VerticalLayout();
-        imagePlaceHolder.setSizeFull();
-        imagePlaceHolder.setSpacing(true);
-        imagePlaceHolder.setMargin(true);
+        VerticalLayout rootLayout = new VerticalLayout();
+        rootLayout.setSizeFull();
+        rootLayout.setSpacing(true);
+        rootLayout.setMargin(true);
 
         Image defaultimage = createImage(f, 210, 210);
 
-        imagePlaceHolder.addComponent(defaultimage);
-        imagePlaceHolder.setComponentAlignment(defaultimage, Alignment.TOP_CENTER);
+        rootLayout.addComponent(defaultimage);
+        rootLayout.setComponentAlignment(defaultimage, Alignment.TOP_CENTER);
 
-        CssLayout allFSImagesPlaceHolder = new CssLayout() {
+        CssLayout allFSImagesLayout = new CssLayout() {
             @Override
             protected String getCss(Component c) {
                 return "display: inline-block";
             }
         };
 
-        // otherImagesPlaceHolder.setSizeFull();
-        Image image;
-
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
-            if (d.getDocType().equals("image")) {
-                image = new Image(null, new FileResource(new File(d.toString())));
+            if (d.getName().contains("jpg") || d.getDocType().equals("image")) {
+                final Image image = new Image(null, new FileResource(new File(d.toString())));
+
                 image.setHeight(70, Unit.PIXELS);
                 image.setWidth(70, Unit.PIXELS);
 
-                final Resource imgResource = image.getSource();
-                
                 image.addClickListener(new MouseEvents.ClickListener() {
                     @Override
                     public void click(MouseEvents.ClickEvent event) {
                         if (event.isDoubleClick()) {
-
-                            VerticalLayout VLI = new VerticalLayout();
-                            VLI.setMargin(true);
-
-                            Image i = new Image();
-                            i.setSource(imgResource);
-
-                            VLI.addComponent(i);
-                            VLI.setComponentAlignment(i, Alignment.MIDDLE_CENTER);
-
-                            Window w = new Window("Fuelstation image", VLI);
-
-                            w.setWidth(60, Unit.PERCENTAGE);
-                            w.setHeight(75, Unit.PERCENTAGE);
-                            w.center();
-
-                            getUI().addWindow(w);
+                            openFSGalleryWindow("Fuelstation - " + f.getName(), image.getSource());
                         }
                     }
                 });
 
-                allFSImagesPlaceHolder.addComponent(image);
+                allFSImagesLayout.addComponent(image);
             }
         }
 
-        imagePlaceHolder.addComponent(allFSImagesPlaceHolder);
-        imagePlaceHolder.setComponentAlignment(allFSImagesPlaceHolder, Alignment.BOTTOM_CENTER);
+        rootLayout.addComponent(allFSImagesLayout);
+        rootLayout.setComponentAlignment(allFSImagesLayout, Alignment.BOTTOM_CENTER);
 
-        return imagePlaceHolder;
+        return rootLayout;
+    }
+
+    private void openFSGalleryWindow(String caption, Resource resource) {
+        VerticalLayout VLI = new VerticalLayout();
+        VLI.setSizeFull();
+
+        Image img = new Image();
+        img.setSource(resource);
+
+        img.setHeight(97, Unit.PERCENTAGE);
+        img.setWidth(97, Unit.PERCENTAGE);
+
+        VLI.addComponent(img);
+        VLI.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+
+        getUI().addWindow(new MyWindow(VLI, caption, 0, 0));
     }
 }
