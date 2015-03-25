@@ -24,6 +24,11 @@ public class Gallery_Controller implements IGalleryController {
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
+    public Gallery getDefaultImageGallery() {
+        return getByID(1L);
+    }
+
+    @Override
     public List<Gallery> getAll() {
         return dbh.getAllGalleries();
     }
@@ -37,8 +42,8 @@ public class Gallery_Controller implements IGalleryController {
     public List<Gallery> getByName(String partialName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Add/Update">
     @Override
     public void addNew(Gallery newGallery) throws Exception {

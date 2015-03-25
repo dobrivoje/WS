@@ -15,11 +15,13 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
 import java.util.List;
+import org.superb.apps.utilities.files.uploader.UploadReceiver;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -88,7 +90,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         final Image image;
 
         if (defaultImage != null) {
-            image = new Image(null, new FileResource(new File(defaultImage.toString())));
+            image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
         } else {
             image = new Image(null, new ThemeResource("img/fs/1.png"));
         }
@@ -113,26 +115,37 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     protected VerticalLayout createImageGallery(final Fuelstation f) {
 
         VerticalLayout rootLayout = new VerticalLayout();
-        rootLayout.setSizeFull();
         rootLayout.setSpacing(true);
-        rootLayout.setMargin(true);
 
-        Image defaultimage = createImage(f, 210, 210);
+        Image defaultFSImage = createImage(f, 210, 210);
+        Upload imageUploader = new Upload(null,
+                new UploadReceiver(
+                        null,
+                        DS.getGalleryController().getDefaultImageGallery().getStoreLocation()
+                        + f.getName() + "\\img\\"
+                )
+        );
 
-        rootLayout.addComponent(defaultimage);
-        rootLayout.setComponentAlignment(defaultimage, Alignment.TOP_CENTER);
+        VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader);
+        mainImageLayout.setSpacing(true);
 
-        CssLayout allFSImagesLayout = new CssLayout() {
+        rootLayout.addComponents(mainImageLayout);
+
+        CssLayout fsImagesCssLayout = new CssLayout() {
             @Override
             protected String getCss(Component c) {
-                return "display: inline-block";
+                return "display: inline-block;";
             }
         };
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
-            if (d.getName().contains("jpg") || d.getDocType().equals("image")) {
-                final Image image = new Image(null, new FileResource(new File(d.toString())));
+            if (d.getName().contains("jpg")
+                    || d.getName().contains("jpeg")
+                    || d.getName().contains("gif")
+                    || d.getName().contains("png")
+                    || d.getDocType().equals("img")) {
 
+                final Image image = new Image(null, new FileResource(new File(d.getAbsolutePath(true))));
                 image.setHeight(70, Unit.PIXELS);
                 image.setWidth(70, Unit.PIXELS);
 
@@ -145,12 +158,11 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                     }
                 });
 
-                allFSImagesLayout.addComponent(image);
+                fsImagesCssLayout.addComponent(image);
             }
         }
 
-        rootLayout.addComponent(allFSImagesLayout);
-        rootLayout.setComponentAlignment(allFSImagesLayout, Alignment.BOTTOM_CENTER);
+        rootLayout.addComponent(fsImagesCssLayout);
 
         return rootLayout;
     }

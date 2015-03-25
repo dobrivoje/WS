@@ -5,7 +5,6 @@
  */
 package org.superb.apps.utilities.files.uploader;
 
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.ProgressBar;
 import com.vaadin.ui.Upload;
@@ -21,13 +20,11 @@ import java.io.OutputStream;
 public class UploadReceiver implements Upload.Receiver, Upload.ProgressListener, Upload.StartedListener, Upload.FinishedListener {
 
     private final ProgressBar indicator;
-    private final Layout layout;
     private final String filePath;
     private File file;
 
-    public UploadReceiver(ProgressBar indicator, Layout layout, String filePath) {
+    public UploadReceiver(ProgressBar indicator, String filePath) {
         this.indicator = indicator;
-        this.layout = layout;
         this.filePath = filePath;
     }
 
@@ -38,7 +35,7 @@ public class UploadReceiver implements Upload.Receiver, Upload.ProgressListener,
             file = new File(filePath.concat(filename));
             fos = new FileOutputStream(file);
         } catch (FileNotFoundException ex) {
-            Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            Notification.show("File Upload Has Failed !", Notification.Type.ERROR_MESSAGE);
             return null;
         }
 
@@ -47,19 +44,17 @@ public class UploadReceiver implements Upload.Receiver, Upload.ProgressListener,
 
     @Override
     public void updateProgress(long readBytes, long contentLength) {
-        float fs = ((float)readBytes / contentLength);
+        float fs = ((float) readBytes / contentLength);
         indicator.setValue(fs);
     }
 
     @Override
     public void uploadStarted(Upload.StartedEvent event) {
-        layout.addComponent(indicator);
         Notification.show("upload started.", Notification.Type.HUMANIZED_MESSAGE);
     }
 
     @Override
     public void uploadFinished(Upload.FinishedEvent event) {
-        layout.removeComponent(indicator);
         Notification.show("upload finished.", Notification.Type.HUMANIZED_MESSAGE);
     }
 

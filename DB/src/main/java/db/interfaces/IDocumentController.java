@@ -23,16 +23,26 @@ public interface IDocumentController extends CRUDInterface<Document> {
     void addNewDocument(String name, String location, Serializable binaryContent, Date uploadDate, Gallery gallery) throws Exception;
 
     //<editor-fold defaultstate="collapsed" desc="FS Document Handler">
+    /**
+     * Vrati sve dokumente za FS. Dokumenta mogu biti bilo koji fajlovi, s tim
+     * da će se u ovom projektu dokumenti dele na slike, office dokumenta, pdf,
+     * i eventualno multimedijalni sadržaji.
+     *
+     * @param fuelstation
+     * @return
+     */
     List<Document> getAllFSDocuments(Fuelstation fuelstation);
 
     /**
-     * Vrati podrazumevanu sliku za ovu stanicu
+     * Vrati podrazumevanu sliku za ovu stanicu. Ako slika stanice ne postoji
+     * vraća se podrazumevana slika iz webinf resursa.
+     *
      * @param fuelstation
      * @return
      */
     Document getFSImage(Fuelstation fuelstation);
 
-    void addNewFSDocument(Fuelstation fuelstation, Document document, boolean defaultDocument) throws Exception;
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception;
 
     //</editor-fold>
 }

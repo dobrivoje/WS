@@ -166,18 +166,39 @@ public class Document implements Serializable {
         return !((this.idd == null && other.idd != null) || (this.idd != null && !this.idd.equals(other.idd)));
     }
 
-    /**
-     * Vrati FQDN putanju do fajla koji se nalazi na fizičkoj lokaciji
-     * definisanu kao getFK_Gallery().getStoreLocation() + getDocLocation() +
-     * getName()
-     *
-     * @return
-     */
     @Override
     public String toString() {
-        return getFK_Gallery().getStoreLocation()
-                // + getDocLocation() != null ? getDocLocation() + "\\" : ""
-                + (getDocLocation() != null ? getDocLocation() + "\\\\" : "")
+        return getFK_Gallery() + "/"
+                + (getDocLocation() != null ? getDocLocation() + "/" : "")
+                + (getDocType() != null ? getDocType() + "/" : "")
                 + getName();
+    }
+
+    /**
+     * <p>
+     * Dokument se nalazi na fizičkoj lokaciji definisanoj kao
+     * getFK_Gallery().getStoreLocation() / getDocLocation() / getDocType() / za
+     * UX operativen sisteme, odn. getFK_Gallery().getStoreLocation() \
+     * getDocLocation() \ getDocType() \ za Windows OS.
+     * </p>
+     *
+     * @param winOS
+     * @return
+     */
+    public String getAbsoluteLocation(boolean winOS) {
+        return getFK_Gallery().getStoreLocation()
+                + (getDocLocation() != null ? getDocLocation() + (winOS ? "\\\\" : "/") : "")
+                + (getDocType() != null ? getDocType() + (winOS ? "\\\\" : "/") : "");
+    }
+
+    /**
+     * Apsolutna putanja dokumenta u zavisnosti od operativnog sistema.
+     * Pogledati {@link getAbsoluteLocation(boolean winOS)}
+     *
+     * @param winOS
+     * @return
+     */
+    public String getAbsolutePath(boolean winOS) {
+        return getAbsoluteLocation(winOS) + getName();
     }
 }

@@ -66,6 +66,7 @@ public class Document_Controller implements IDocumentController {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="FS Documents Handler">
     @Override
     public List<Document> getAllFSDocuments(Fuelstation fuelstation) {
         return dbh.getAllFSDocuments(fuelstation);
@@ -77,8 +78,9 @@ public class Document_Controller implements IDocumentController {
     }
 
     @Override
-    public void addNewFSDocument(Fuelstation fuelstation, Document document, boolean defaultDocument) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception {
+        dbh.addNewFSDocument(fuelstation, document, docDate, defaultDocument);
     }
+    //</editor-fold>
 
 }

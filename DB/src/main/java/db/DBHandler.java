@@ -21,6 +21,7 @@ import db.ent.Gallery;
 import db.ent.Document;
 import db.ent.Owner;
 import db.ent.RelCBType;
+import db.ent.RelFSDocument;
 import db.ent.RelSALESMANIMAGE;
 import db.ent.Salesman;
 import java.util.ArrayList;
@@ -444,7 +445,7 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="GALLERY & IMAGES">
+    //<editor-fold defaultstate="collapsed" desc="GALLERY & DOCUMENTS">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public Gallery getGallery(Long IDG) {
         try {
@@ -491,7 +492,7 @@ public class DBHandler {
                     .setParameter("IDFS", fuelstation)
                     .setParameter("DefaultDocument", defaultDocument)
                     .getResultList();
-            
+
             return docs.iterator().next();
         } catch (Exception ex) {
             return null;
@@ -540,14 +541,7 @@ public class DBHandler {
     }
 
     public void addNewDocument(Gallery gallery, String documentName, String documentLocation, Serializable documentBinaryData, Date documentUploadDate) throws Exception {
-        Document newDoc = new Document();
-
-        newDoc.setFK_Gallery(gallery);
-        newDoc.setName(documentName);
-        newDoc.setDocLocation(documentLocation);
-        newDoc.setDocData(documentBinaryData);
-        newDoc.setUploadDate(documentUploadDate);
-
+        Document newDoc = new Document(documentName, documentBinaryData, documentLocation, documentUploadDate, documentName, gallery);
         addNewDocument(newDoc);
     }
 
@@ -559,6 +553,25 @@ public class DBHandler {
         } catch (Exception e) {
             throw new Exception("Document Not updated.");
         }
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Realation : FS DOCUMENT">
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addNewFSDocument(RelFSDocument newFSDocument) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newFSDocument);
+            getEm().getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("New FS Document Not Added.");
+        }
+    }
+
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception {
+        RelFSDocument newFSDoc = new RelFSDocument(fuelstation, document, docDate, defaultDocument);
+        addNewFSDocument(newFSDoc);
     }
     //</editor-fold>
     //</editor-fold>
