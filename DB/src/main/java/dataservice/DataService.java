@@ -20,6 +20,7 @@ import db.interfaces.ICBTController;
 import db.interfaces.ICityController;
 import db.interfaces.ICustomerController;
 import db.interfaces.IDocumentController;
+import db.interfaces.IDocumentTypeController;
 import db.interfaces.IFSController;
 import db.interfaces.IFSOController;
 import db.interfaces.IFSPROPController;
@@ -56,6 +57,7 @@ public class DataService {
     private final ISalesmanController salesmanController = new Salesman_Controller(DBH);
     private final IGalleryController galleryController = new Gallery_Controller(DBH);
     private final IDocumentController documentController = new Document_Controller(DBH);
+    private final IDocumentTypeController documentTypeController = new Document_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -96,4 +98,9 @@ public class DataService {
     public IDocumentController getDocumentController() {
         return documentController;
     }
+
+    public IDocumentTypeController getDocumentTypeController() {
+        return documentTypeController;
+    }
+
 }

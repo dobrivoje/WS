@@ -68,12 +68,12 @@ public class Document implements Serializable {
     public Document() {
     }
 
-    public Document(String name, Serializable docData, String docLocation, Date uploadDate, String docType, Gallery FK_Gallery) {
+    public Document(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) {
+        this.FK_Gallery = gallery;
         this.name = name;
         this.docData = docData;
         this.docLocation = docLocation;
         this.uploadDate = uploadDate;
-        this.FK_Gallery = FK_Gallery;
         this.docType = docType;
     }
 

@@ -9,6 +9,7 @@ import dataservice.DataService;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
+import java.util.Date;
 
 /**
  *
@@ -101,15 +102,22 @@ public class Test1 {
         //</editor-fold>
         Fuelstation fs = DS.getFSController().getByID(1L);
         Gallery g = DS.getGalleryController().getDefaultImageGallery();
-        System.err.println(g.toString());
 
-        for (Document d : DS.getDocumentController().getAllFSDocuments(fs)) {
-            System.err.println(d.getAbsolutePath(true));
+        try {
+            Document newDocument = DS.getDocumentController().addNewDocument(
+                    DS.getGalleryController().getDefaultImageGallery(),
+                    "test.jpg",
+                    null,
+                    "BoskoPetrolDOO",
+                    new Date(),
+                    "img"
+            );
+
+            DS.getDocumentController().addNewFSDocument(fs, newDocument, new Date(), true);
+            
+            System.err.println("New doc id : " +newDocument.getIdd());
+
+        } catch (Exception ex) {
         }
-
-        System.err.println("Default image : " + DS.getDocumentController().getFSImage(fs).getAbsolutePath(true));
-
-        boolean os = System.getProperty("os.name").trim().toLowerCase().contains("windows");
-        System.err.println("OS Windows ? : "+os);
     }
 }

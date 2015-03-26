@@ -21,7 +21,10 @@ import com.vaadin.ui.VerticalLayout;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+import org.dobrivoje.utils.chars.translators.CharsAdapter;
+import org.superb.apps.utilities.Enums.ImageTypes;
 import org.superb.apps.utilities.files.uploader.UploadReceiver;
 import org.superb.apps.utilities.os.OS;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
@@ -38,6 +41,26 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     protected List<String> tableColumnsID;
     protected final BeanItemContainer<T> beanContainer;
     protected List list;
+
+    //<editor-fold defaultstate="collapsed" desc="Notif">
+    class Notif {
+
+        private String msg;
+
+        public Notif() {
+            msg = "";
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+    };
+    //</editor-fold>
 
     public GENTable(BeanItemContainer<T> beanContainer, List list) {
         this.beanContainer = beanContainer;
@@ -115,33 +138,77 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     }
 
     protected VerticalLayout createImageGallery(final Fuelstation f) {
+        final String imgGalleryLoc = DS.getGalleryController().getDefaultImageGallery().getStoreLocation();
+        final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
+        final Notif notif = new Notif();
 
+        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()) + docType;
+
+        //<editor-fold defaultstate="collapsed" desc="Kreiraj glavni layout">
         VerticalLayout rootLayout = new VerticalLayout();
         rootLayout.setSpacing(true);
+        //</editor-fold>
 
-        Image defaultFSImage = createImage(f, 210, 210);
-        UploadReceiver ur = new UploadReceiver(
-                null,
-                DS.getGalleryController().getDefaultImageGallery().getStoreLocation()
-                + f.getName()
+        //<editor-fold defaultstate="collapsed" desc="Kreiraj uploader">
+        UploadReceiver ur = new UploadReceiver(null,
+                imgGalleryLoc
+                //adaptiraj filename tako da sadrži samo slova eng. alfabeta !
+                + CharsAdapter.safeAdapt(f.getName())
                 + OS.getSeparator()
-                + "img"
+                + docType
                 + OS.getSeparator()
         );
+        // proveri da li postoji direktorijum sa imenom stanice :
+        ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()));
+
         final Upload imageUploader = new Upload(null, ur);
-        imageUploader.addFinishedListener(new Upload.FinishedListener() {
+
+        imageUploader.addFinishedListener(
+                new Upload.FinishedListener() {
+                    @Override
+                    public void uploadFinished(Upload.FinishedEvent event) {
+                        notif.setMsg(event.getFilename());
+
+                        Document newDocument;
+                        try {
+                            newDocument = DS.getDocumentController().addNewDocument(
+                                    DS.getGalleryController().getDefaultImageGallery(),
+                                    event.getFilename(),
+                                    null,
+                                    CharsAdapter.safeAdapt(f.getName()),
+                                    new Date(),
+                                    docType
+                            );
+
+                            DS.getDocumentController().addNewFSDocument(f, newDocument, new Date(), true);
+
+                            Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
+                        } catch (Exception ex) {
+                            new File(absPath + event.getFilename()).delete();
+                            Notification.show("Error.", "File Upload Failed !", Notification.Type.ERROR_MESSAGE);
+                        }
+                    }
+                }
+        );
+
+        imageUploader.addFailedListener(new Upload.FailedListener() {
             @Override
-            public void uploadFinished(Upload.FinishedEvent event) {
-                Notification.show("File name : ", event.getFilename(), Notification.Type.ERROR_MESSAGE);
+            public void uploadFailed(Upload.FailedEvent event) {
+
             }
         });
+        //</editor-fold>
 
-        VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader);
-        mainImageLayout.setSpacing(true);
+        //<editor-fold defaultstate="collapsed" desc="Kreiraj glavnu sliku">
+        Image defaultFSImage = createImage(f, 210, 210);
+        VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader, imageUploader);
 
-        rootLayout.addComponents(mainImageLayout);
+        mainImageLayout.setSpacing(
+                true);
+        //</editor-fold>
 
-        CssLayout fsImagesCssLayout = new CssLayout() {
+        //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
+        CssLayout FSLowerImagesCssLayout = new CssLayout() {
             @Override
             protected String getCss(Component c) {
                 return "display: inline-block;";
@@ -149,11 +216,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         };
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
-            if (d.getName().contains("jpg")
-                    || d.getName().contains("jpeg")
-                    || d.getName().contains("gif")
-                    || d.getName().contains("png")
-                    || d.getDocType().equals("img")) {
+            if (ImageTypes.contains(d.getName())) {
 
                 final Image image = new Image(null, new FileResource(new File(d.getAbsolutePath(true))));
                 image.setHeight(70, Unit.PIXELS);
@@ -168,11 +231,14 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                     }
                 });
 
-                fsImagesCssLayout.addComponent(image);
+                FSLowerImagesCssLayout.addComponent(image);
             }
         }
+        //</editor-fold>
 
-        rootLayout.addComponent(fsImagesCssLayout);
+        rootLayout.addComponents(mainImageLayout);
+
+        rootLayout.addComponent(FSLowerImagesCssLayout);
 
         return rootLayout;
     }

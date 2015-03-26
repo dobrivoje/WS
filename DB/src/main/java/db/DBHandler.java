@@ -19,6 +19,7 @@ import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
 import db.ent.Document;
+import db.ent.DocumentType;
 import db.ent.Owner;
 import db.ent.RelCBType;
 import db.ent.RelFSDocument;
@@ -445,7 +446,7 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="GALLERY & DOCUMENTS">
+    //<editor-fold defaultstate="collapsed" desc="GALLERY, DOCUMENTS, DOCUMENT TYPE">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public Gallery getGallery(Long IDG) {
         try {
@@ -470,6 +471,35 @@ public class DBHandler {
         try {
             return (Document) getEm().createNamedQuery("Document.findByIdd")
                     .setParameter("idd", idd)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<DocumentType> getAllDocumentTypes() {
+        try {
+            return getEm().createNamedQuery("DocumentType.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public DocumentType getDocumentType(long ID) {
+        try {
+            return (DocumentType) getEm().createNamedQuery("DocumentType.findByIddt")
+                    .setParameter("iddt", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public DocumentType getDocumentType(String docType) {
+        try {
+            return (DocumentType) getEm().createNamedQuery("DocumentType.findByDocType")
+                    .setParameter("docType", docType)
                     .getSingleResult();
         } catch (Exception ex) {
             return null;
@@ -530,19 +560,21 @@ public class DBHandler {
         addNewGallery(newGallery);
     }
 
-    public void addNewDocument(Document newDoc) throws Exception {
+    public Document addNewDocument(Document newDoc) throws Exception {
         try {
             getEm().getTransaction().begin();
             em.persist(newDoc);
+            getEm().flush();
             getEm().getTransaction().commit();
         } catch (Exception e) {
             throw new Exception("New Document Not Added.");
         }
+
+        return newDoc;
     }
 
-    public void addNewDocument(Gallery gallery, String documentName, String documentLocation, Serializable documentBinaryData, Date documentUploadDate) throws Exception {
-        Document newDoc = new Document(documentName, documentBinaryData, documentLocation, documentUploadDate, documentName, gallery);
-        addNewDocument(newDoc);
+    public Document addNewDocument(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) throws Exception {
+        return addNewDocument(new Document(gallery, name, docData, docLocation, uploadDate, docType));
     }
 
     public void updateDocument(Document document) throws Exception {

@@ -8,9 +8,11 @@ package db.controllers;
 import java.util.List;
 import db.DBHandler;
 import db.ent.Document;
+import db.ent.DocumentType;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
 import db.interfaces.IDocumentController;
+import db.interfaces.IDocumentTypeController;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,7 +20,7 @@ import java.util.Date;
  *
  * @author root
  */
-public class Document_Controller implements IDocumentController {
+public class Document_Controller implements IDocumentController, IDocumentTypeController {
 
     private static DBHandler dbh;
 
@@ -55,14 +57,41 @@ public class Document_Controller implements IDocumentController {
     }
 
     @Override
-    public void addNewDocument(String name, String location, Serializable binaryContent, Date uploadDate, Gallery gallery) throws Exception {
-        dbh.addNewDocument(gallery, name, location, binaryContent, uploadDate);
+    public Document addNewDocument(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) throws Exception {
+        return dbh.addNewDocument(gallery, name, docData, docLocation, uploadDate, docType);
     }
 
     @Override
     public void updateExisting(Document document) throws Exception {
         dbh.updateDocument(document);
 
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Document type">
+    @Override
+    public List<DocumentType> getAllDocumentTypes() {
+        return dbh.getAllDocumentTypes();
+    }
+
+    @Override
+    public DocumentType getDocumentType(long ID) {
+        return dbh.getDocumentType(ID);
+    }
+
+    @Override
+    public DocumentType getImageDocumentType() {
+        return dbh.getDocumentType(1L);
+    }
+
+    @Override
+    public DocumentType getDocDocumentType() {
+        return dbh.getDocumentType(2L);
+    }
+
+    @Override
+    public DocumentType getMMDocumentType() {
+        return dbh.getDocumentType(3L);
     }
     //</editor-fold>
 

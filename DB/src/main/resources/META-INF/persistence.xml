@@ -18,6 +18,7 @@
     <class>db.ent.RelSALESMEANCUST</class>
     <class>db.ent.Document</class>
     <class>db.ent.RelFSDocument</class>
+    <class>db.ent.DocumentType</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>

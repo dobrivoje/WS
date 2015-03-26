@@ -20,7 +20,7 @@ public interface IDocumentController extends CRUDInterface<Document> {
 
     List<Document> getDocumentsByGallery(Gallery gallery);
 
-    void addNewDocument(String name, String location, Serializable binaryContent, Date uploadDate, Gallery gallery) throws Exception;
+    Document addNewDocument(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) throws Exception;
 
     //<editor-fold defaultstate="collapsed" desc="FS Document Handler">
     /**
