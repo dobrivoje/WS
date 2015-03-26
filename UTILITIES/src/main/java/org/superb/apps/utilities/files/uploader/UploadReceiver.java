@@ -31,9 +31,20 @@ public class UploadReceiver implements Upload.Receiver, Upload.ProgressListener,
     @Override
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos;
+        File dir = new File(filePath);
+
         try {
+            if (!dir.exists()) {
+                try {
+                    dir.mkdir();
+                } catch (SecurityException e) {
+                    throw new SecurityException("Directory could not be created !\nCheck destination security details !");
+                }
+            }
+
             file = new File(filePath.concat(filename));
             fos = new FileOutputStream(file);
+
         } catch (FileNotFoundException ex) {
             Notification.show("File Upload Has Failed !", Notification.Type.ERROR_MESSAGE);
             return null;
@@ -50,12 +61,10 @@ public class UploadReceiver implements Upload.Receiver, Upload.ProgressListener,
 
     @Override
     public void uploadStarted(Upload.StartedEvent event) {
-        Notification.show("upload started.", Notification.Type.HUMANIZED_MESSAGE);
     }
 
     @Override
     public void uploadFinished(Upload.FinishedEvent event) {
-        Notification.show("upload finished.", Notification.Type.HUMANIZED_MESSAGE);
     }
 
 }

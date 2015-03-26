@@ -99,16 +99,17 @@ public class Test1 {
          }
          */
         //</editor-fold>
-        
         Fuelstation fs = DS.getFSController().getByID(1L);
-        Gallery g = DS.getGalleryController().getByID(1L);
+        Gallery g = DS.getGalleryController().getDefaultImageGallery();
         System.err.println(g.toString());
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(fs)) {
-            System.err.println(d.toString());
+            System.err.println(d.getAbsolutePath(true));
         }
-        
-        System.err.println("Default image : " + DS.getDocumentController().getFSImage(fs));
-        
+
+        System.err.println("Default image : " + DS.getDocumentController().getFSImage(fs).getAbsolutePath(true));
+
+        boolean os = System.getProperty("os.name").trim().toLowerCase().contains("windows");
+        System.err.println("OS Windows ? : "+os);
     }
 }

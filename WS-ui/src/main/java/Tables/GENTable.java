@@ -14,6 +14,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
@@ -22,6 +23,7 @@ import db.ent.Fuelstation;
 import java.io.File;
 import java.util.List;
 import org.superb.apps.utilities.files.uploader.UploadReceiver;
+import org.superb.apps.utilities.os.OS;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -118,13 +120,21 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         rootLayout.setSpacing(true);
 
         Image defaultFSImage = createImage(f, 210, 210);
-        Upload imageUploader = new Upload(null,
-                new UploadReceiver(
-                        null,
-                        DS.getGalleryController().getDefaultImageGallery().getStoreLocation()
-                        + f.getName() + "\\img\\"
-                )
+        UploadReceiver ur = new UploadReceiver(
+                null,
+                DS.getGalleryController().getDefaultImageGallery().getStoreLocation()
+                + f.getName()
+                + OS.getSeparator()
+                + "img"
+                + OS.getSeparator()
         );
+        final Upload imageUploader = new Upload(null, ur);
+        imageUploader.addFinishedListener(new Upload.FinishedListener() {
+            @Override
+            public void uploadFinished(Upload.FinishedEvent event) {
+                Notification.show("File name : ", event.getFilename(), Notification.Type.ERROR_MESSAGE);
+            }
+        });
 
         VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader);
         mainImageLayout.setSpacing(true);

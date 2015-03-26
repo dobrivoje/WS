@@ -186,9 +186,11 @@ public class Document implements Serializable {
      * @return
      */
     public String getAbsoluteLocation(boolean winOS) {
+        String s = winOS ? "\\\\" : "/";
+
         return getFK_Gallery().getStoreLocation()
-                + (getDocLocation() != null ? getDocLocation() + (winOS ? "\\\\" : "/") : "")
-                + (getDocType() != null ? getDocType() + (winOS ? "\\\\" : "/") : "");
+                + (getDocLocation() != null ? getDocLocation() + s : "")
+                + (getDocType() != null ? getDocType() + s : "");
     }
 
     /**
