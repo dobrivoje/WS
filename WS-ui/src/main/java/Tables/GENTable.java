@@ -110,7 +110,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     }
 
     protected Image createImage(final Fuelstation fuelstation, float height, float width) {
-        Document defaultImage = DS.getDocumentController().getFSImage(fuelstation);
+        Document defaultImage = DS.getDocumentController().getDefaultFSImage(fuelstation);
 
         final Image image;
 
@@ -142,7 +142,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
         final Notif notif = new Notif();
 
-        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()) + docType;
+        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()) + OS.getSeparator() + docType + OS.getSeparator();
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj glavni layout">
         VerticalLayout rootLayout = new VerticalLayout();
@@ -171,6 +171,10 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
 
                         Document newDocument;
                         try {
+                            if (new File(absPath + event.getFilename()).length() < 1200L) {
+                                throw new Exception("File Empty !");
+                            }
+
                             newDocument = DS.getDocumentController().addNewDocument(
                                     DS.getGalleryController().getDefaultImageGallery(),
                                     event.getFilename(),
@@ -180,9 +184,12 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                                     docType
                             );
 
-                            DS.getDocumentController().addNewFSDocument(f, newDocument, new Date(), true);
+                            int priority = DS.getDocumentController().getAllFSDocuments(f).size();
+                            DS.getDocumentController().addNewFSDocument(f, newDocument, new Date(), true, 1 + priority);
 
-                            Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
+                            refreshVisualContainer();
+
+                            Notification.show("File name : ", notif.getMsg(), Notification.Type.ASSISTIVE_NOTIFICATION);
                         } catch (Exception ex) {
                             new File(absPath + event.getFilename()).delete();
                             Notification.show("Error.", "File Upload Failed !", Notification.Type.ERROR_MESSAGE);
@@ -203,8 +210,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         Image defaultFSImage = createImage(f, 210, 210);
         VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader, imageUploader);
 
-        mainImageLayout.setSpacing(
-                true);
+        mainImageLayout.setSpacing(true);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
@@ -218,26 +224,29 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
             if (ImageTypes.contains(d.getName())) {
 
-                final Image image = new Image(null, new FileResource(new File(d.getAbsolutePath(true))));
-                image.setHeight(70, Unit.PIXELS);
-                image.setWidth(70, Unit.PIXELS);
+                FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
 
-                image.addClickListener(new MouseEvents.ClickListener() {
-                    @Override
-                    public void click(MouseEvents.ClickEvent event) {
-                        if (event.isDoubleClick()) {
-                            openFSGalleryWindow("Fuelstation - " + f.getName(), image.getSource());
+                if (fr.getSourceFile().exists()) {
+                    final Image image = new Image(null, fr);
+                    image.setHeight(70, Unit.PIXELS);
+                    image.setWidth(70, Unit.PIXELS);
+
+                    image.addClickListener(new MouseEvents.ClickListener() {
+                        @Override
+                        public void click(MouseEvents.ClickEvent event) {
+                            if (event.isDoubleClick()) {
+                                openFSGalleryWindow("Fuelstation - " + f.getName(), image.getSource());
+                            }
                         }
-                    }
-                });
+                    });
 
-                FSLowerImagesCssLayout.addComponent(image);
+                    FSLowerImagesCssLayout.addComponent(image);
+                }
             }
         }
         //</editor-fold>
 
         rootLayout.addComponents(mainImageLayout);
-
         rootLayout.addComponent(FSLowerImagesCssLayout);
 
         return rootLayout;

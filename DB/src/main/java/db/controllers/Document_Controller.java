@@ -21,9 +21,9 @@ import java.util.Date;
  * @author root
  */
 public class Document_Controller implements IDocumentController, IDocumentTypeController {
-
+    
     private static DBHandler dbh;
-
+    
     public Document_Controller(DBHandler dbh) {
         Document_Controller.dbh = dbh;
     }
@@ -33,17 +33,17 @@ public class Document_Controller implements IDocumentController, IDocumentTypeCo
     public List<Document> getAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public Document getByID(Long ID) {
         return dbh.getDocument(ID);
     }
-
+    
     @Override
     public List<Document> getByName(String partialName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public List<Document> getDocumentsByGallery(Gallery gallery) {
         return dbh.getAllDocumentsByGallery(gallery);
@@ -55,16 +55,16 @@ public class Document_Controller implements IDocumentController, IDocumentTypeCo
     public void addNew(Document newObject) throws Exception {
         dbh.addNewDocument(newObject);
     }
-
+    
     @Override
     public Document addNewDocument(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) throws Exception {
         return dbh.addNewDocument(gallery, name, docData, docLocation, uploadDate, docType);
     }
-
+    
     @Override
     public void updateExisting(Document document) throws Exception {
         dbh.updateDocument(document);
-
+        
     }
     //</editor-fold>
 
@@ -73,22 +73,22 @@ public class Document_Controller implements IDocumentController, IDocumentTypeCo
     public List<DocumentType> getAllDocumentTypes() {
         return dbh.getAllDocumentTypes();
     }
-
+    
     @Override
     public DocumentType getDocumentType(long ID) {
         return dbh.getDocumentType(ID);
     }
-
+    
     @Override
     public DocumentType getImageDocumentType() {
         return dbh.getDocumentType(1L);
     }
-
+    
     @Override
     public DocumentType getDocDocumentType() {
         return dbh.getDocumentType(2L);
     }
-
+    
     @Override
     public DocumentType getMMDocumentType() {
         return dbh.getDocumentType(3L);
@@ -100,15 +100,16 @@ public class Document_Controller implements IDocumentController, IDocumentTypeCo
     public List<Document> getAllFSDocuments(Fuelstation fuelstation) {
         return dbh.getAllFSDocuments(fuelstation);
     }
-
+    
     @Override
-    public Document getFSImage(Fuelstation fuelstation) {
-        return dbh.getFSDefaultImage(fuelstation, true);
+    public Document getDefaultFSImage(Fuelstation fuelstation) {
+        Document d = dbh.getHighPriorityFSImage(fuelstation);
+        return d != null ? d : dbh.getLastFSDocument(fuelstation);
     }
-
+    
     @Override
-    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception {
-        dbh.addNewFSDocument(fuelstation, document, docDate, defaultDocument);
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument, int prioroty) throws Exception {
+        dbh.addNewFSDocument(fuelstation, document, docDate, defaultDocument, prioroty);
     }
     //</editor-fold>
 

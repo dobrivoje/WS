@@ -80,7 +80,6 @@ public class FSPROP_Controller implements IFSPROPController {
     public void updateExisting(FsProp object) throws Exception {
         dbh.updateExistingFSProp(object);
     }
-    //</editor-fold>
 
     @Override
     public FsProp changeFSProp(Owner owner) throws Exception {
@@ -109,4 +108,5 @@ public class FSPROP_Controller implements IFSPROPController {
 
         return newFSProp;
     }
+    //</editor-fold>
 }

@@ -35,6 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "RelFSDocument.getAllFSDocuments", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS"),
 
+            @NamedQuery(name = "RelFSDocument.getFSActiveDocuments",
+                    query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :defaultDocument"),
+            
+            @NamedQuery(name = "RelFSDocument.getHighPriorityFSImage",
+                    query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS ORDER BY R.priority DESC"),
+
             @NamedQuery(name = "RelFSDocument.getFSDefaultImage", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :DefaultDocument"),
 
             @NamedQuery(name = "RelFSDocument.findByFS", query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs")
@@ -53,6 +59,8 @@ public class RelFSDocument implements Serializable {
     private Date documentDate;
     @Column(name = "DefaultDocument")
     private Boolean defaultDocument;
+    @Column(name = "Priority")
+    private int priority;
     @JoinColumn(name = "FK_IDFS", referencedColumnName = "IDFS")
     @ManyToOne
     private Fuelstation fkIdFs;
@@ -63,11 +71,12 @@ public class RelFSDocument implements Serializable {
     public RelFSDocument() {
     }
 
-    public RelFSDocument(Fuelstation fkIdfs, Document FK_DOCUMENT, Date documentDate, boolean defaultDocument) {
+    public RelFSDocument(Fuelstation fkIdfs, Document FK_DOCUMENT, Date documentDate, boolean defaultDocument, int priority) {
         this.documentDate = documentDate;
         this.fkIdFs = fkIdfs;
         this.FK_DOCUMENT = FK_DOCUMENT;
         this.defaultDocument = defaultDocument;
+        this.priority = priority;
     }
 
     public Long getIdfsd() {
@@ -108,6 +117,14 @@ public class RelFSDocument implements Serializable {
 
     public void setDefaultDocument(Boolean defaultDocument) {
         this.defaultDocument = defaultDocument;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     @Override

@@ -83,6 +83,7 @@ public class FSTable extends GENTable<Fuelstation> {
         setColumnHeaders("FUEL STATION", "OPTIONS", "FS IMAGE", "CITY", "ADDRESS");
 
         setColumnWidth("options", 110);
+        setColumnWidth("img", 90);
     }
 
     public void setFilter(String filterString) {
@@ -112,16 +113,16 @@ public class FSTable extends GENTable<Fuelstation> {
             @Override
             public void handleAction(Action action, Object sender, Object target) {
                 final FSTable source = (FSTable) sender;
+                Fuelstation f = (Fuelstation) source.getValue();
+                String caption;
 
                 if (action.equals(FSTable.ACTION_FS_OWNER)) {
-                    Fuelstation f = (Fuelstation) source.getValue();
-                    FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
-                    getUI().addWindow(new WindowForm("Fuelstation Owner Form", false, fsoForm));
+                    caption = "Fuelstation Owner Form";
+                    getUI().addWindow(new WindowForm(caption, false, new FSOWNER_Form(f, null)));
                 }
                 if (action.equals(FSTable.ACTION_FS_UPDATE)) {
-                    Fuelstation f = (Fuelstation) source.getValue();
-                    FSForm customerForm = new FSForm(f, null);
-                    getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f)));
+                    caption = "Fuelstation Update Form";
+                    getUI().addWindow(new WindowFormProp(caption, false, new FSForm(f, null), createImageGallery(f)));
                 }
             }
         });

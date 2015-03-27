@@ -24,9 +24,11 @@ public interface IDocumentController extends CRUDInterface<Document> {
 
     //<editor-fold defaultstate="collapsed" desc="FS Document Handler">
     /**
-     * Vrati sve dokumente za FS. Dokumenta mogu biti bilo koji fajlovi, s tim
-     * da će se u ovom projektu dokumenti dele na slike, office dokumenta, pdf,
-     * i eventualno multimedijalni sadržaji.
+     * <b>Lista svih dokumenata FS.</b>
+     * <p>
+     * Dokumenta mogu biti bilo koji fajlovi, s tim da u ovom projektu dokumente
+     * delimo na slike, office dokumenta, pdf, i eventualno multimedijalni
+     * sadržaji.</p>
      *
      * @param fuelstation
      * @return
@@ -34,15 +36,18 @@ public interface IDocumentController extends CRUDInterface<Document> {
     List<Document> getAllFSDocuments(Fuelstation fuelstation);
 
     /**
-     * Vrati podrazumevanu sliku za ovu stanicu. Ako slika stanice ne postoji
-     * vraća se podrazumevana slika iz webinf resursa.
+     * <b>Podrazumevana slika stanice</b>.
+     * <p>
+     * Ako slika stanice ne postoji vraća se podrazumevana slika iz webinf
+     * resursa.
+     * </p>
      *
      * @param fuelstation
      * @return
      */
-    Document getFSImage(Fuelstation fuelstation);
+    Document getDefaultFSImage(Fuelstation fuelstation);
 
-    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception;
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument, int prioroty) throws Exception;
 
     //</editor-fold>
 }

@@ -5,6 +5,7 @@
  */
 package test;
 
+import Tables.GENTable;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
@@ -45,5 +46,12 @@ public class Tests {
                 System.err.println("OK !!!  OK !!!  OK !!!  OK !!!  ");
             }
         }
+
+        final String imgGalleryLoc = DS.getGalleryController().getDefaultImageGallery().getStoreLocation();
+        final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
+
+        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()) + OS.getSeparator() + docType + OS.getSeparator();
+
+        System.err.println("putanja : "+absPath);
     }
 }

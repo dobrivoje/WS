@@ -516,19 +516,6 @@ public class DBHandler {
         }
     }
 
-    public Document getFSDefaultImage(Fuelstation fuelstation, boolean defaultDocument) {
-        try {
-            List<Document> docs = getEm().createNamedQuery("RelFSDocument.getFSDefaultImage")
-                    .setParameter("IDFS", fuelstation)
-                    .setParameter("DefaultDocument", defaultDocument)
-                    .getResultList();
-
-            return docs.iterator().next();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public List<Document> getAllDocumentsByGallery(Gallery g) {
         try {
             return getEm().createNamedQuery("Document.findByGallery")
@@ -590,6 +577,45 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Realation : FS DOCUMENT">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public Document getFSDefaultImage(Fuelstation fuelstation, boolean defaultDocument) {
+        try {
+            List<Document> docs = getEm().createNamedQuery("RelFSDocument.getFSDefaultImage")
+                    .setParameter("IDFS", fuelstation)
+                    .setParameter("DefaultDocument", defaultDocument)
+                    .getResultList();
+
+            return docs.iterator().next();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Document getLastFSDocument(Fuelstation f) {
+        try {
+            List<Document> L = getEm().createNamedQuery("RelFSDocument.getAllFSDocuments")
+                    .setParameter("IDFS", f)
+                    .getResultList();
+
+            return L.get(L.size() - 1);
+
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Document getHighPriorityFSImage(Fuelstation f) {
+        try {
+            List<Document> L = getEm().createNamedQuery("RelFSDocument.getHighPriorityFSImage")
+                    .setParameter("IDFS", f)
+                    .getResultList();
+            return L.get(0);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     public void addNewFSDocument(RelFSDocument newFSDocument) throws Exception {
         try {
@@ -601,8 +627,8 @@ public class DBHandler {
         }
     }
 
-    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument) throws Exception {
-        RelFSDocument newFSDoc = new RelFSDocument(fuelstation, document, docDate, defaultDocument);
+    public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument, int priority) throws Exception {
+        RelFSDocument newFSDoc = new RelFSDocument(fuelstation, document, docDate, defaultDocument, priority);
         addNewFSDocument(newFSDoc);
     }
     //</editor-fold>

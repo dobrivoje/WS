@@ -6,10 +6,9 @@
 package test;
 
 import dataservice.DataService;
-import db.ent.Document;
+import db.DBHandler;
 import db.ent.Fuelstation;
 import db.ent.Gallery;
-import java.util.Date;
 
 /**
  *
@@ -103,21 +102,9 @@ public class Test1 {
         Fuelstation fs = DS.getFSController().getByID(1L);
         Gallery g = DS.getGalleryController().getDefaultImageGallery();
 
-        try {
-            Document newDocument = DS.getDocumentController().addNewDocument(
-                    DS.getGalleryController().getDefaultImageGallery(),
-                    "test.jpg",
-                    null,
-                    "BoskoPetrolDOO",
-                    new Date(),
-                    "img"
-            );
-
-            DS.getDocumentController().addNewFSDocument(fs, newDocument, new Date(), true);
-            
-            System.err.println("New doc id : " +newDocument.getIdd());
-
-        } catch (Exception ex) {
-        }
+        // System.err.println(DS.getDocumentController().getDefaultFSImage(fs).getName());
+        
+        System.err.println(
+                DBHandler.getDefault().getHighPriorityFSImage(fs));
     }
 }

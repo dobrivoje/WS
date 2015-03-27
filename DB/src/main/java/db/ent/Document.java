@@ -175,14 +175,18 @@ public class Document implements Serializable {
     }
 
     /**
+     * Fizička lokacija dokumena.
      * <p>
-     * Dokument se nalazi na fizičkoj lokaciji definisanoj kao
-     * getFK_Gallery().getStoreLocation() / getDocLocation() / getDocType() / za
-     * UX operativen sisteme, odn. getFK_Gallery().getStoreLocation() \
-     * getDocLocation() \ getDocType() \ za Windows OS.
+     * Definisana je kao
+     * getFK_Gallery().getStoreLocation()/getDocLocation()/getDocType()/ za UX
+     * operativen sisteme,
+     * <p>
+     * odn. kao
+     * getFK_Gallery().getStoreLocation()\getDocLocation()\getDocType()\</p>
+     * za Windows OS.
      * </p>
      *
-     * @param winOS
+     * @param winOS Ako je Windows OS, parametar je true
      * @return
      */
     public String getAbsoluteLocation(boolean winOS) {
@@ -195,9 +199,10 @@ public class Document implements Serializable {
 
     /**
      * Apsolutna putanja dokumenta u zavisnosti od operativnog sistema.
-     * Pogledati {@link getAbsoluteLocation(boolean winOS)}
+     * <p>
+     * Pogledati {@link getAbsoluteLocation(boolean winOS)} </p>
      *
-     * @param winOS
+     * @param winOS Ako je Windows OS, parametar je true
      * @return
      */
     public String getAbsolutePath(boolean winOS) {

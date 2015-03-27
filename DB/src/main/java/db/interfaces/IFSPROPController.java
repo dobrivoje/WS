@@ -16,7 +16,7 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
     List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active);
 
     /**
-     * Za unetog vlasnika, vrati poslednje svojstvo stanice.
+     * <b>Trenutno svojstvo stanice.</b>
      *
      * @param owner
      * @return
@@ -24,7 +24,7 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
     FsProp getCurrentFSProp(Owner owner);
 
     /**
-     * Za unetu stanicu vrati poslednje svojstvo stanice.
+     * <b>Trenutno svojstvo stanice.</b>
      *
      * @param fuelstation
      * @return
@@ -32,17 +32,19 @@ public interface IFSPROPController extends CRUDInterface<FsProp> {
     FsProp getCurrentFSProp(Fuelstation fuelstation);
 
     /**
+     * <b>Lista svih svojstava.</b>
+     * Za unetu stanicu i vlasnika, i aktivnosti, vraćanje liste svojstava
+     * stanice.
+     *
      * @param customer
      * @param fuelstation
      * @param active
-     * @return List FsProp
-     *
-     * Za unetu stanicu i vlasnika, vrati listu svih svojstava.
+     * @return List FsProp Lista svih svojstava.
      */
     List<FsProp> getAllFSPropertiesByCustomer(Customer customer, Fuelstation fuelstation, boolean active);
 
     /**
-     * Izmeni vlasništvo FS-a.
+     * <b>Izmena vlasništva FS.</b>
      *
      * @param owner
      * @return
