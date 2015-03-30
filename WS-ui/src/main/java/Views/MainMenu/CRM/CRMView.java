@@ -11,15 +11,31 @@ public class CRMView extends DashboardView {
     public static final String VIEW_NAME = "CRMView";
 
     public CRMView() {
-        super("CRM Relationship Management");
+        super("Customer Relationship Management");
         buildContentWithComponents(
-                customersPanel(), salesmanPanel(), notesPanel());
+                overduePanel(), opportunitiesPanel(), leadsPanel(), notesPanel());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
-    private Component customersPanel() {
+    private Component overduePanel() {
         VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("CUSTOMERS");
+        VL.setCaption("Overdue Processes");
+        Component contentWrapper = createContentWrapper(VL);
+
+        return contentWrapper;
+    }
+
+    private Component leadsPanel() {
+        VerticalLayout VL = new VerticalLayout();
+        VL.setCaption("Leads");
+        Component contentWrapper = createContentWrapper(VL);
+
+        return contentWrapper;
+    }
+
+    private Component opportunitiesPanel() {
+        VerticalLayout VL = new VerticalLayout();
+        VL.setCaption("Opportunities");
         Component contentWrapper = createContentWrapper(VL);
 
         return contentWrapper;
@@ -34,14 +50,6 @@ public class CRMView extends DashboardView {
         panel.addStyleName("notes");
 
         return panel;
-    }
-
-    private Component salesmanPanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("SALESMAN");
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
     }
     //</editor-fold>
 }

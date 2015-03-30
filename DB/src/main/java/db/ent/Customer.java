@@ -301,10 +301,7 @@ public class Customer implements Serializable {
             return false;
         }
         Customer other = (Customer) object;
-        if ((this.idc == null && other.idc != null) || (this.idc != null && !this.idc.equals(other.idc))) {
-            return false;
-        }
-        return true;
+        return !((this.idc == null && other.idc != null) || (this.idc != null && !this.idc.equals(other.idc)));
     }
 
     @Override
