@@ -28,6 +28,7 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import Forms.CDM.CBTForm;
 import Forms.CDM.CustomerForm;
+import Forms.CRM.SCR_Form;
 import Menu.Menu;
 import Menu.MenuDefinitions;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG;
@@ -49,7 +50,12 @@ import db.ent.CustomerBussinesType;
 import Views.MainMenu.CDM.CustomersView;
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_PROCESS;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_STARTED_PROCESSES;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
+import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
@@ -149,7 +155,9 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CUST_CRM_MANAG, true);
         customersTree.setChildrenAllowed(FS_DATA_MANAG, true);
 
+        // definicije gl. stavki čije su podstavke otvorene !
         customersTree.expandItemsRecursively(CUST_DATA_MANAG);
+        customersTree.expandItemsRecursively(CUST_CRM_MANAG);
         customersTree.expandItemsRecursively(FS_DATA_MANAG);
 
         customersTree.setParent(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, SYS_NOTIF_BOARD);
@@ -166,6 +174,16 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CBT, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
+
+        customersTree.setParent(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CUST_CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
+        customersTree.setParent(CUST_CRM_MANAG_STARTED_PROCESSES, CUST_CRM_MANAG);
+
+        customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
+        customersTree.setChildrenAllowed(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
+        customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_PROCESS, false);
+        customersTree.setChildrenAllowed(CUST_CRM_MANAG_STARTED_PROCESSES, false);
 
         customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
@@ -196,6 +214,13 @@ public class MainMenu extends CssLayout {
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
+                        break;
+                    case CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL:
+                        getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
+                                false, new SCR_Form(CrudOperations.CREATE)));
+                        break;
+                    case CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
+                        navigator.navigateTo(CRMView.class.getSimpleName());
                         break;
                     case FS_DATA_MANAG_NEW_FS:
                         navigator.navigateTo(FSView.class.getSimpleName());

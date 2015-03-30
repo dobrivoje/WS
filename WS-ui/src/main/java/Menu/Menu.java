@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import static Menu.MenuDefinitions.CUST_CRM_MANAG;
 import com.vaadin.ui.Tree;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,11 +48,13 @@ public class Menu {
         // Create submenu
         mainMenuSubOptions.put(SYS_NOTIF_BOARD, MenuDefinitions.get_SYS_NOTIF_BOARD_SubItems());
         mainMenuSubOptions.put(CUST_DATA_MANAG, MenuDefinitions.get_CUSTOMER_SubItems());
+        mainMenuSubOptions.put(CUST_CRM_MANAG, MenuDefinitions.get_CRM_SubItems());
         mainMenuSubOptions.put(FS_DATA_MANAG, MenuDefinitions.get_FS_SubItems());
 
         allMenuItems.addAll(mainMenuItems);
         allMenuItems.addAll(MenuDefinitions.get_SYS_NOTIF_BOARD_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_CUSTOMER_SubItems());
+        allMenuItems.addAll(MenuDefinitions.get_CRM_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_FS_SubItems());
         //</editor-fold>
     }

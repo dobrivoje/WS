@@ -14,7 +14,11 @@ import java.util.List;
  * @author root
  */
 public enum MenuDefinitions {
+
     //
+    // Main menu options
+    //
+//
     // Main menu options
     //
     SYS_NOTIF_BOARD("System Notifications Board"),
@@ -32,6 +36,11 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
+    //
+    CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL("New Salesman Customer Relationship"),
+    CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing Salesman Customer Relationship"),
+    CUST_CRM_MANAG_NEW_PROCESS("New CRM Process"),
+    CUST_CRM_MANAG_STARTED_PROCESSES("Started CRM Processes"),
     //
     FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
     FS_DATA_MANAG_NEW_FS("New Fuelstation"),
@@ -70,6 +79,15 @@ public enum MenuDefinitions {
         return new ArrayList<>(Arrays.asList(CUST_DATA_MANAG_SEARCH_ENGINE,
                 CUST_DATA_MANAG_NEW_CUST,
                 CUST_DATA_MANAG_CUST_DOCS
+        ));
+    }
+
+    public static List<MenuDefinitions> get_CRM_SubItems() {
+        return new ArrayList<>(Arrays.asList(
+                CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL,
+                CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL,
+                CUST_CRM_MANAG_NEW_PROCESS,
+                CUST_CRM_MANAG_STARTED_PROCESSES
         ));
     }
 

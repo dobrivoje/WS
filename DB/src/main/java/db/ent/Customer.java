@@ -83,7 +83,7 @@ public class Customer implements Serializable {
     @ManyToOne
     private City fKIDCity;
     @OneToMany(mappedBy = "fkIdc")
-    private List<RelSALESMEANCUST> relSALESMEANCUSTList;
+    private List<RelSALESMANCUST> relSALESMEANCUSTList;
 
     public Customer() {
     }
@@ -279,11 +279,11 @@ public class Customer implements Serializable {
     }
 
     @XmlTransient
-    public List<RelSALESMEANCUST> getRelSALESMEANCUSTList() {
+    public List<RelSALESMANCUST> getRelSALESMEANCUSTList() {
         return relSALESMEANCUSTList;
     }
 
-    public void setRelSALESMEANCUSTList(List<RelSALESMEANCUST> relSALESMEANCUSTList) {
+    public void setRelSALESMEANCUSTList(List<RelSALESMANCUST> relSALESMEANCUSTList) {
         this.relSALESMEANCUSTList = relSALESMEANCUSTList;
     }
 

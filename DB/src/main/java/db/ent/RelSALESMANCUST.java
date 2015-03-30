@@ -7,6 +7,7 @@ package db.ent;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,15 +29,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author dprtenjak
  */
 @Entity
-@Table(name = "Rel_SALESMEAN_CUST")
+@Table(name = "Rel_SALESMAN_CUST")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "RelSALESMEANCUST.findAll", query = "SELECT r FROM RelSALESMEANCUST r"),
-    @NamedQuery(name = "RelSALESMEANCUST.findByIdrblc", query = "SELECT r FROM RelSALESMEANCUST r WHERE r.idrblc = :idrblc"),
-    @NamedQuery(name = "RelSALESMEANCUST.findByDateFrom", query = "SELECT r FROM RelSALESMEANCUST r WHERE r.dateFrom = :dateFrom"),
-    @NamedQuery(name = "RelSALESMEANCUST.findByDateTo", query = "SELECT r FROM RelSALESMEANCUST r WHERE r.dateTo = :dateTo"),
-    @NamedQuery(name = "RelSALESMEANCUST.findByActive", query = "SELECT r FROM RelSALESMEANCUST r WHERE r.active = :active")})
-public class RelSALESMEANCUST implements Serializable {
+@NamedQueries(
+        {
+            @NamedQuery(name = "RelSALESMANCUST.findAll", query = "SELECT r FROM RelSALESMANCUST r"),
+            @NamedQuery(name = "RelSALESMANCUST.findByIdrblc", query = "SELECT r FROM RelSALESMANCUST r WHERE r.idrblc = :idrblc"),
+
+            @NamedQuery(name = "RelSALESMANCUST.findByCust",
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIdc = :IDC"),
+
+            @NamedQuery(name = "RelSALESMANCUST.findBySalesman",
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIds = :IDS")
+        })
+public class RelSALESMANCUST implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,12 +64,18 @@ public class RelSALESMEANCUST implements Serializable {
     @JoinColumn(name = "FK_IDS", referencedColumnName = "IDS")
     @ManyToOne
     private Salesman fkIds;
+    @OneToMany(mappedBy = "FK_IDRSMC")
+    private List<CrmProcess> CRMProcessList;
 
-    public RelSALESMEANCUST() {
+    public RelSALESMANCUST() {
     }
 
-    public RelSALESMEANCUST(Long idrblc) {
-        this.idrblc = idrblc;
+    public RelSALESMANCUST(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.active = active;
+        this.fkIdc = c;
+        this.fkIds = s;
     }
 
     public Long getIdrblc() {
@@ -113,6 +126,14 @@ public class RelSALESMEANCUST implements Serializable {
         this.fkIds = fkIds;
     }
 
+    public List<CrmProcess> getCRMProcessList() {
+        return CRMProcessList;
+    }
+
+    public void setCRMProcessList(List<CrmProcess> CRMProcessList) {
+        this.CRMProcessList = CRMProcessList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,19 +144,16 @@ public class RelSALESMEANCUST implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RelSALESMEANCUST)) {
+        if (!(object instanceof RelSALESMANCUST)) {
             return false;
         }
-        RelSALESMEANCUST other = (RelSALESMEANCUST) object;
-        if ((this.idrblc == null && other.idrblc != null) || (this.idrblc != null && !this.idrblc.equals(other.idrblc))) {
-            return false;
-        }
-        return true;
+        RelSALESMANCUST other = (RelSALESMANCUST) object;
+        return !((this.idrblc == null && other.idrblc != null) || (this.idrblc != null && !this.idrblc.equals(other.idrblc)));
     }
 
     @Override
     public String toString() {
-        return "db.ent.RelSALESMEANCUST[ idrblc=" + idrblc + " ]";
+        return "db.ent.RelSALESMANCUST[ idrblc=" + idrblc + " ]";
     }
 
 }

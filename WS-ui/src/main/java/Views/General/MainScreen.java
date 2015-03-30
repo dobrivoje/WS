@@ -1,11 +1,11 @@
 package Views.General;
 
-import Views.ConsoleView;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import Views.MainMenu.CDM.CustomersView;
+import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.FSDM.FSView;
 import Views.MainMenu.MainMenu;
 import Views.SYSNOTIF.SysNotifView;
@@ -39,6 +39,7 @@ public class MainScreen extends HorizontalLayout {
         // DODAVANJE VIEW-ova NOVIH AKCIJA I GL. MENIJA :
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
         navigator.addView(CustomersView.class.getSimpleName(), CustomersView.class);
+        navigator.addView(CRMView.class.getSimpleName(), CRMView.class);
         navigator.addView(FSView.class.getSimpleName(), FSView.class);
         navigator.addView(SysNotifView.class.getSimpleName(), SysNotifView.class);
 

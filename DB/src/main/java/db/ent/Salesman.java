@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Salesman.findByDateFrom", query = "SELECT s FROM Salesman s WHERE s.dateFrom = :dateFrom"),
     @NamedQuery(name = "Salesman.findByDateTo", query = "SELECT s FROM Salesman s WHERE s.dateTo = :dateTo")})
 public class Salesman implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,7 +64,7 @@ public class Salesman implements Serializable {
     @ManyToOne
     private BussinesLine fkIdbl;
     @OneToMany(mappedBy = "fkIds")
-    private List<RelSALESMEANCUST> relSALESMEANCUSTList;
+    private List<RelSALESMANCUST> relSALESMEANCUSTList;
 
     public Salesman() {
     }
@@ -145,6 +146,15 @@ public class Salesman implements Serializable {
         this.fkIdbl = fkIdbl;
     }
 
+    @XmlTransient
+    public List<RelSALESMANCUST> getRelSALESMEANCUSTList() {
+        return relSALESMEANCUSTList;
+    }
+
+    public void setRelSALESMEANCUSTList(List<RelSALESMANCUST> relSALESMEANCUSTList) {
+        this.relSALESMEANCUSTList = relSALESMEANCUSTList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -159,24 +169,11 @@ public class Salesman implements Serializable {
             return false;
         }
         Salesman other = (Salesman) object;
-        if ((this.ids == null && other.ids != null) || (this.ids != null && !this.ids.equals(other.ids))) {
-            return false;
-        }
-        return true;
+        return !((this.ids == null && other.ids != null) || (this.ids != null && !this.ids.equals(other.ids)));
     }
 
     @Override
     public String toString() {
-        return "db.Salesman[ ids=" + ids + " ]";
+        return getName() + " " + getSurname();
     }
-
-    @XmlTransient
-    public List<RelSALESMEANCUST> getRelSALESMEANCUSTList() {
-        return relSALESMEANCUSTList;
-    }
-
-    public void setRelSALESMEANCUSTList(List<RelSALESMEANCUST> relSALESMEANCUSTList) {
-        this.relSALESMEANCUSTList = relSALESMEANCUSTList;
-    }
-    
 }

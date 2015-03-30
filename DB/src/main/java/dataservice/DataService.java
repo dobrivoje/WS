@@ -7,6 +7,7 @@ package dataservice;
 
 import db.DBHandler;
 import db.controllers.CBT_Controller;
+import db.controllers.CRM_Controller;
 import db.controllers.City_Controller;
 import db.controllers.Customer_Controller;
 import db.controllers.Document_Controller;
@@ -17,6 +18,7 @@ import db.controllers.Gallery_Controller;
 import db.controllers.RelCBT_Controller;
 import db.controllers.Salesman_Controller;
 import db.interfaces.ICBTController;
+import db.interfaces.ICRMController;
 import db.interfaces.ICityController;
 import db.interfaces.ICustomerController;
 import db.interfaces.IDocumentController;
@@ -58,6 +60,7 @@ public class DataService {
     private final IGalleryController galleryController = new Gallery_Controller(DBH);
     private final IDocumentController documentController = new Document_Controller(DBH);
     private final IDocumentTypeController documentTypeController = new Document_Controller(DBH);
+    private final ICRMController crmController = new CRM_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -103,4 +106,7 @@ public class DataService {
         return documentTypeController;
     }
 
+    public ICRMController getCrmController() {
+        return crmController;
+    }
 }

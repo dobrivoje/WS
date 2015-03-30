@@ -5,7 +5,6 @@
  */
 package org.superb.apps.utilities.files.uploader;
 
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.ProgressBar;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.FailedListener;
@@ -49,17 +48,13 @@ public class UploadReceiver implements Receiver, ProgressListener, StartedListen
 
     @Override
     public OutputStream receiveUpload(String filename, String mimeType) {
-        FileOutputStream fos;
+        FileOutputStream fos = null;
 
         try {
             checkAndMakeRootDir(filePath);
-
             file = new File(filePath.concat(filename));
             fos = new FileOutputStream(file);
-
         } catch (FileNotFoundException ex) {
-            Notification.show("File Upload Has Failed !", Notification.Type.ERROR_MESSAGE);
-            return null;
         }
 
         return fos;

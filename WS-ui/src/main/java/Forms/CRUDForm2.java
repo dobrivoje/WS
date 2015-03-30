@@ -10,6 +10,8 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import java.util.Date;
+import static ws.MyUI.DATE_FORMAT;
 
 public abstract class CRUDForm2<T> extends FormLayout {
 
@@ -45,25 +47,27 @@ public abstract class CRUDForm2<T> extends FormLayout {
         for (Component c : fieldGroup.getFields()) {
             if (c instanceof TextField) {
                 ((TextField) c).setWidth(width, unit);
+                ((TextField) c).setNullRepresentation("");
+
             }
             if (c instanceof ComboBox) {
                 ((ComboBox) c).setWidth(width, unit);
             }
             if (c instanceof DateField) {
                 ((DateField) c).setWidth(width, unit);
+                ((DateField) c).setConverter(Date.class);
+                ((DateField) c).setDateFormat(DATE_FORMAT);
+
             }
             if (c instanceof TextArea) {
                 ((TextArea) c).setWidth(width, unit);
+                ((TextArea) c).setNullRepresentation("");
             }
         }
     }
 
     protected void addBeansToForm() {
         for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
             addComponent(c);
         }
 

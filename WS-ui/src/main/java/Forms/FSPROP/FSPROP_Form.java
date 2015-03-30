@@ -16,7 +16,6 @@ import db.ent.Fuelstation;
 import db.ent.Owner;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static ws.MyUI.DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class FSPROP_Form extends CRUDForm2<FsProp> {
@@ -66,33 +65,10 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         super(new BeanFieldGroup(FsProp.class));
 
         fieldGroup.bindMemberFields(this);
-        setFormFieldsWidths(250, Unit.PIXELS);
+        setFormFieldsWidths(200, Unit.PIXELS);
 
-        currentCustomerTxtField.setWidth(150, Unit.PIXELS);
+        currentCustomerTxtField.setWidth(200, Unit.PIXELS);
         currentCustomerTxtField.setEnabled(false);
-
-        for (Component c : fieldGroup.getFields()) {
-            if (c instanceof DateField) {
-                DateField df = (DateField) c;
-
-                df.setConverter(Date.class);
-
-                df.setWidth(150, Unit.PIXELS);
-                df.setDateFormat(DATE_FORMAT);
-            }
-
-            if (c instanceof TextField) {
-                TextField tf = (TextField) c;
-                tf.setNullRepresentation("");
-            }
-            
-            if (c instanceof TextArea) {
-                TextArea ta = (TextArea) c;
-                ta.setNullRepresentation("");
-            }
-
-            c.setWidth(250, Unit.PIXELS);
-        }
 
         restaurant.setValue(false);
         carWash.setValue(false);

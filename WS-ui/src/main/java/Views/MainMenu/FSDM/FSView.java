@@ -64,7 +64,7 @@ public class FSView extends VerticalLayout implements View {
 
         addComponent(VL);
         //</editor-fold>
-
+        
         FS_Table.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -72,7 +72,7 @@ public class FSView extends VerticalLayout implements View {
                 openProperties(fs, true, false);
             }
         });
-        
+
         // ubaciti getActionManager() kao parametar samo da bi se pokrenuo handler !
         // vrednost getActionManager() se ovde uopšte ne koristi !!!
         FS_Table.addActionHandler(getActionManager());
@@ -145,15 +145,15 @@ public class FSView extends VerticalLayout implements View {
         if (fs != null) {
             newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
             HL.setSplitPosition(50, Unit.PERCENTAGE);
-            
+
             if (propVL.getComponentCount() > 0) {
                 propVL.removeAllComponents();
             }
-            
+
             fSPROP_Form = new FSPROP_Form(fs, formFieldsLocked, crudButtonOnForm);
-            
+
             propVL.addComponent(fSPROP_Form);
-            
+
         } else {
             fSPROP_Form = null;
             newFSPropButton.setEnabled(false);

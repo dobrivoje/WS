@@ -109,6 +109,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Image i Gallery">
     protected Image createImage(final Fuelstation fuelstation, float height, float width) {
         Document defaultImage = DS.getDocumentController().getDefaultFSImage(fuelstation);
 
@@ -160,7 +161,6 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         );
         // proveri da li postoji direktorijum sa imenom stanice :
         ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()));
-
         final Upload imageUploader = new Upload(null, ur);
 
         imageUploader.addFinishedListener(
@@ -172,7 +172,11 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                         Document newDocument;
                         try {
                             if (new File(absPath + event.getFilename()).length() < 1200L) {
-                                throw new Exception("File Empty !");
+                                throw new Exception("File Size Too Small !");
+                            }
+
+                            if (event.getFilename().trim().isEmpty()) {
+                                throw new Exception("Nothing Selected !");
                             }
 
                             newDocument = DS.getDocumentController().addNewDocument(
@@ -185,29 +189,23 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                             );
 
                             int priority = DS.getDocumentController().getAllFSDocuments(f).size();
-                            DS.getDocumentController().addNewFSDocument(f, newDocument, new Date(), true, 1 + priority);
+                            DS.getDocumentController().addNewFSDocument(
+                                    f, newDocument, new Date(), true, 1 + priority);
 
                             refreshVisualContainer();
 
-                            Notification.show("File name : ", notif.getMsg(), Notification.Type.ASSISTIVE_NOTIFICATION);
+                            Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
                         } catch (Exception ex) {
-                            new File(absPath + event.getFilename()).delete();
-                            Notification.show("Error.", "File Upload Failed !", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("Error.", "File Upload Failed !\n"
+                                    + ex.toString(), Notification.Type.ERROR_MESSAGE);
                         }
                     }
                 }
         );
-
-        imageUploader.addFailedListener(new Upload.FailedListener() {
-            @Override
-            public void uploadFailed(Upload.FailedEvent event) {
-
-            }
-        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj glavnu sliku">
-        Image defaultFSImage = createImage(f, 210, 210);
+        Image defaultFSImage = createImage(f, 200, 200);
         VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader, imageUploader);
 
         mainImageLayout.setSpacing(true);
@@ -228,8 +226,8 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
 
                 if (fr.getSourceFile().exists()) {
                     final Image image = new Image(null, fr);
-                    image.setHeight(70, Unit.PIXELS);
-                    image.setWidth(70, Unit.PIXELS);
+                    image.setHeight(40, Unit.PIXELS);
+                    image.setWidth(40, Unit.PIXELS);
 
                     image.addClickListener(new MouseEvents.ClickListener() {
                         @Override
@@ -267,4 +265,5 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
 
         getUI().addWindow(new MyWindow(VLI, caption, 0, 0));
     }
+    //</editor-fold>
 }
