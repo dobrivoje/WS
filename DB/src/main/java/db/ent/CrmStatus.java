@@ -27,10 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "CRM_STATUS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "CrmStatus.findAll", query = "SELECT c FROM CrmStatus c"),
-    @NamedQuery(name = "CrmStatus.findByIdcs", query = "SELECT c FROM CrmStatus c WHERE c.idcs = :idcs"),
-    @NamedQuery(name = "CrmStatus.findByStatusName", query = "SELECT c FROM CrmStatus c WHERE c.statusName = :statusName")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "CrmStatus.findAll", query = "SELECT c FROM CrmStatus c"),
+            @NamedQuery(name = "CrmStatus.findByIdcs", query = "SELECT c FROM CrmStatus c WHERE c.idcs = :idcs"),
+            @NamedQuery(name = "CrmStatus.findByStatusName", query = "SELECT c FROM CrmStatus c WHERE c.statusName = :statusName"),
+            @NamedQuery(name = "CrmStatus.findByOverdueDays", query = "SELECT c FROM CrmStatus c WHERE c.daysForOverdue = :DFO")
+        })
 public class CrmStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,14 +44,26 @@ public class CrmStatus implements Serializable {
     private Long idcs;
     @Column(name = "StatusName")
     private String statusName;
+    @Column(name = "DaysForOverdue")
+    private String daysForOverdue;
     @OneToMany(mappedBy = "FK_IDCS")
     private List<CrmProcess> crmProcessList;
 
     public CrmStatus() {
     }
 
-    public CrmStatus(String statusName) {
+    /**
+     * <p>
+     * Za Status gde važi daysForOverdue==null || daysForOverdue < 1 </p>
+     * <p>
+     * se ne računaju dani sa zakašnjenjem</p>
+     *
+     * @param statusName
+     * @param daysForOverdue
+     */
+    public CrmStatus(String statusName, String daysForOverdue) {
         this.statusName = statusName;
+        this.daysForOverdue = daysForOverdue;
     }
 
     public Long getIdcs() {
@@ -65,6 +80,14 @@ public class CrmStatus implements Serializable {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public String getDaysForOverdue() {
+        return daysForOverdue;
+    }
+
+    public void setDaysForOverdue(String daysForOverdue) {
+        this.daysForOverdue = daysForOverdue;
     }
 
     @XmlTransient

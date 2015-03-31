@@ -19,23 +19,31 @@ import java.util.List;
  */
 public interface ICRMController {
 
-    public List<CrmProcess> getAllCRMProcesses();
+    //<editor-fold defaultstate="collapsed" desc="data to read">
+    List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
-    public List<CrmProcess> getCRMProcessesByCustomer(Customer customer);
+    List<CrmProcess> getCRM_Processes(Salesman salesman, Date dateFrom, Date dateTo);
 
-    public List<CrmProcess> getCRMProcessesBySalesman(Salesman salesman);
+    List<CrmProcess> getCRM_OverdueProcesses(Salesman salesman);
 
-    public List<CrmProcess> getCRMProcessesBySalesman(CrmStatus crmStatus);
+    List<CrmProcess> getCRM_OverdueProcesses(Customer customer);
 
-    void addNew_RelSalesman_Cust(RelSALESMANCUST newRel_Salesman_Customer) throws Exception;
+    List<CrmProcess> getCRM_Opportunities(Salesman salesman);
 
-    void addNew_RelSalesman_Cust(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) throws Exception;
+    List<CrmProcess> getCRM_Leads(Salesman salesman);
 
-    void update_SalesmanCustomer(RelSALESMANCUST newRel_Salesman_Customer) throws Exception;
+    List<CrmProcess> getCRM_Processes(CrmStatus crmStatus);
+    //</editor-fold>
 
-    void addNew_CRMProcess(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
+    //<editor-fold defaultstate="collapsed" desc="data to create, and update">
+    void addNew_R_Salesman_Cust(RelSALESMANCUST newRel_Salesman_Customer) throws Exception;
+
+    void addNew_R_Salesman_Cust(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) throws Exception;
+
+    void update_R_Salesman_Cust(RelSALESMANCUST R_SalesmanCustomer) throws Exception;
+
+    void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
 
     void addNew_CRMProcess(CrmProcess newCrmProcess) throws Exception;
-
-    void update_CRMProcess(CrmProcess crmProcess) throws Exception;
+    //</editor-fold>
 }

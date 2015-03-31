@@ -8,6 +8,7 @@ package db.controllers;
 import java.util.List;
 import db.DBHandler;
 import db.ent.BussinesLine;
+import db.ent.Customer;
 import db.ent.Salesman;
 import db.interfaces.ISalesmanController;
 
@@ -35,18 +36,8 @@ public class Salesman_Controller implements ISalesmanController {
     }
 
     @Override
-    public List<Salesman> getByName(String partialName) {
-        return dbh.getSalesmanByName(partialName);
-    }
-
-    @Override
-    public List<Salesman> getSalesmanBySurname(String partialSurname) {
-        return dbh.getSalesmanBySurname(partialSurname);
-    }
-
-    @Override
-    public List<Salesman> getAllActiveSalesman(boolean active) {
-        return dbh.getAllSalesmanByActivity(active);
+    public List<Customer> getSalesmanCustomers(Salesman salesman) {
+        return dbh.getCRM_AllCustomers(salesman);
     }
     //</editor-fold>
 
@@ -64,11 +55,6 @@ public class Salesman_Controller implements ISalesmanController {
     @Override
     public void updateExisting(Salesman salesman) throws Exception {
         dbh.updateSalesman(salesman);
-    }
-
-    @Override
-    public void updateSalesman(Long SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
-        dbh.updateSalesman(SalesmanID, name, surname, position, active, dateFrom, dateTo, BL);
     }
     //</editor-fold>
 

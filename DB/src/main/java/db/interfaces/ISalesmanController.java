@@ -5,25 +5,30 @@
  */
 package db.interfaces;
 
-import java.util.List;
 import db.ent.BussinesLine;
+import java.util.List;
+import db.ent.Customer;
 import db.ent.Salesman;
 
 /**
  *
  * @author dprtenjak
  */
-public interface ISalesmanController extends CRUDInterface<Salesman>{
+public interface ISalesmanController {
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
-    public List<Salesman> getSalesmanBySurname(String partialSurname);
+    List<Salesman> getAll();
 
-    public List<Salesman> getAllActiveSalesman(boolean active);
+    Salesman getByID(Long customerID);
+
+    List<Customer> getSalesmanCustomers(Salesman salesman);
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">
+    void addNew(Salesman newSalesman) throws Exception;
+
     void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
 
-    void updateSalesman(Long SalesmanID, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception;
+    void updateExisting(Salesman salesman) throws Exception;
     //</editor-fold>
 }

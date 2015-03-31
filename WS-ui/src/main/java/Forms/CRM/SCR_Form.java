@@ -67,7 +67,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
                     try {
                         fieldGroup.commit();
-                        CRMController.addNew_RelSalesman_Cust(beanItem.getBean());
+                        CRMController.addNew_R_Salesman_Cust(beanItem.getBean());
 
                         Notification n = new Notification("Relation Customer-Salesman Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
@@ -98,7 +98,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                 try {
                     fieldGroup.commit();
 
-                    CRMController.update_SalesmanCustomer(R_SalesmanCustomer_ToUpdate);
+                    CRMController.update_R_Salesman_Cust(R_SalesmanCustomer_ToUpdate);
 
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();

@@ -411,16 +411,7 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     public void addNewSalesman(String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
-        Salesman newSalesman = new Salesman();
-
-        newSalesman.setName(name);
-        newSalesman.setSurname(surname);
-        newSalesman.setPosition(position);
-        newSalesman.setActive(active);
-        newSalesman.setDateFrom(dateFrom);
-        newSalesman.setDateTo(dateTo);
-        newSalesman.setFkIdbl(BL);
-
+        Salesman newSalesman = new Salesman(name, surname, position, active, dateFrom, dateTo, BL);
         addNewSalesman(newSalesman);
     }
 
@@ -1016,17 +1007,19 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="CRM">
     //<editor-fold defaultstate="collapsed" desc="READ">
-    // RELATION SALESMAN CUSTOMER !
-    public List<RelSALESMANCUST> getAll_RelSalesman_Cust() {
+    //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">
+    public RelSALESMANCUST getCRM_R_Salesman_Cust(Salesman s, Customer c) {
         try {
-            return getEm().createNamedQuery("RelSALESMANCUST.findAll")
-                    .getResultList();
+            return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.RelSalesmanCustomer")
+                    .setParameter("IDC", c)
+                    .setParameter("IDS", s)
+                    .getSingleResult();
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public RelSALESMANCUST get_RelSalesman_Cust_ForCustomer(Customer customer) {
+    public RelSALESMANCUST getCRM_R_Salesman_Cust(Customer customer) {
         try {
             return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.findByCust")
                     .setParameter("IDC", customer)
@@ -1036,7 +1029,7 @@ public class DBHandler {
         }
     }
 
-    public RelSALESMANCUST get_RelSalesman_Cust_ForSalesman(Salesman salesman) {
+    public RelSALESMANCUST getCRM_RSalesman_Cust(Salesman salesman) {
         try {
             return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.findBySalesman")
                     .setParameter("IDS", salesman)
@@ -1046,30 +1039,36 @@ public class DBHandler {
         }
     }
 
-    // CRM PROCESS
-    public List<CrmProcess> getAllCRMProcesses() {
+    public List<Customer> getCRM_AllCustomers(Salesman salesman) {
         try {
-            return getEm().createNamedQuery("CrmProcess.findAll")
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<CrmProcess> getCRMProcessesByCustomer(Customer customer) {
-        try {
-            return getEm().createNamedQuery("CrmProcess.findByCustomer")
-                    .setParameter("IDC", customer)
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<CrmProcess> getCRMProcessesBySalesman(Salesman salesman) {
-        try {
-            return getEm().createNamedQuery("CrmProcess.findBySalesman")
+            return getEm().createNamedQuery("RelSALESMANCUST.CustomersBySalesman")
                     .setParameter("IDS", salesman)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
+    public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.CustomerProcessesByDate")
+                    .setParameter("IDC", customer)
+                    .setParameter("dateFrom", dateFrom)
+                    .setParameter("dateTo", dateTo)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, Date dateFrom, Date dateTo) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.SalesmanProcessesByDate")
+                    .setParameter("IDS", salesman)
+                    .setParameter("dateFrom", dateFrom)
+                    .setParameter("dateTo", dateTo)
                     .getResultList();
         } catch (Exception ex) {
             return null;
@@ -1085,10 +1084,11 @@ public class DBHandler {
             return null;
         }
     }
-
     //</editor-fold>
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
-    // RELATION SALESMAN CUSTOMER !
+    //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">
     public void addNew_RelSalesman_Cust(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) throws Exception {
         RelSALESMANCUST r = new RelSALESMANCUST(c, s, dateFrom, dateTo, active);
         addNew_RelSalesman_Cust(r);
@@ -1103,24 +1103,36 @@ public class DBHandler {
             rollBackTransaction("New Relation Salesman-Customer Addition Failed.");
         }
     }
-
-    public void update_RelSalesman_Cust(RelSALESMANCUST newRelSALESMANCUST) throws Exception {
+    
+    public void update_R_Salesman_Cust(RelSALESMANCUST R_Salesman_Cust) throws Exception {
         try {
             getEm().getTransaction().begin();
-            em.merge(newRelSALESMANCUST);
+            em.merge(R_Salesman_Cust);
             getEm().getTransaction().commit();
         } catch (Exception e) {
-            rollBackTransaction("Existing Relation Salesman-Customer Update Failed.");
+            rollBackTransaction("Relation Salesman-Customer Update Failed.");
         }
     }
+    //</editor-fold>
 
-    // CRM PROCESS !
-    public void addNew_CRMProcess(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
-        CrmProcess crmProcess=new CrmProcess(RelSalesmanCustomer, crmStatus, comment, actionDate);
-        addNew_CRMProcess(crmProcess);
+    //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
+    public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
+        RelSALESMANCUST r = getCRM_R_Salesman_Cust(s, c);
+
+        if (r == null) {
+            throw new Exception("Salesman not in relation with this customer !");
+        }
+
+        CrmProcess crmProcess = new CrmProcess(r, crmStatus, comment, actionDate);
+        addNewCRM_Process(crmProcess);
     }
 
-    public void addNew_CRMProcess(CrmProcess newCrmProcess) throws Exception {
+    public void addNewCRM_Process(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
+        CrmProcess crmProcess = new CrmProcess(RelSalesmanCustomer, crmStatus, comment, actionDate);
+        addNewCRM_Process(crmProcess);
+    }
+
+    public void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception {
         try {
             getEm().getTransaction().begin();
             em.persist(newCrmProcess);
@@ -1129,16 +1141,7 @@ public class DBHandler {
             rollBackTransaction("New CRM Process Addition Failed.");
         }
     }
-
-    public void update_CRMProcess(CrmProcess crmProcess) throws Exception {
-        try {
-            getEm().getTransaction().begin();
-            em.merge(crmProcess);
-            getEm().getTransaction().commit();
-        } catch (Exception e) {
-            rollBackTransaction("Existing CRM Process Update Failed.");
-        }
-    }
+    //</editor-fold>
     //</editor-fold>
     //</editor-fold>
 }

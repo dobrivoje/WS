@@ -33,14 +33,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries(
         {
-            @NamedQuery(name = "RelSALESMANCUST.findAll", query = "SELECT r FROM RelSALESMANCUST r"),
             @NamedQuery(name = "RelSALESMANCUST.findByIdrblc", query = "SELECT r FROM RelSALESMANCUST r WHERE r.idrblc = :idrblc"),
 
             @NamedQuery(name = "RelSALESMANCUST.findByCust",
                     query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIdc = :IDC"),
 
             @NamedQuery(name = "RelSALESMANCUST.findBySalesman",
-                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIds = :IDS")
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
+            
+            @NamedQuery(name = "RelSALESMANCUST.CustomersBySalesman",
+                    query = "SELECT r.fkIdc FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
+
+            @NamedQuery(name = "RelSALESMANCUST.RelSalesmanCustomer",
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIdc = :IDC AND r.fkIds = :IDS")
         })
 public class RelSALESMANCUST implements Serializable {
 

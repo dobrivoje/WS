@@ -6,9 +6,8 @@
 package test;
 
 import dataservice.DataService;
-import db.DBHandler;
-import db.ent.Fuelstation;
-import db.ent.Gallery;
+import db.ent.Customer;
+import db.ent.Salesman;
 
 /**
  *
@@ -99,12 +98,23 @@ public class Test1 {
          }
          */
         //</editor-fold>
-        Fuelstation fs = DS.getFSController().getByID(1L);
-        Gallery g = DS.getGalleryController().getDefaultImageGallery();
-
-        // System.err.println(DS.getDocumentController().getDefaultFSImage(fs).getName());
+        //<editor-fold defaultstate="collapsed" desc="test Galerija FS - ok">
+        /*
+         Fuelstation fs = DS.getFSController().getByID(1L);
+         Gallery g = DS.getGalleryController().getDefaultImageGallery();
         
-        System.err.println(
-                DBHandler.getDefault().getHighPriorityFSImage(fs));
+         // System.err.println(DS.getDocumentController().getDefaultFSImage(fs).getName());
+        
+         System.err.println(
+         DBHandler.getDefault().getHighPriorityFSImage(fs));
+         */
+        //</editor-fold>
+        Salesman s = DS.getSalesmanController().getByID(3L);
+        System.err.println("s : " + s.toString());
+        System.err.println("count : " + DS.getSalesmanController().getSalesmanCustomers(s).size());
+        
+        for (Customer c : DS.getSalesmanController().getSalesmanCustomers(s)) {
+            System.err.println(c.toString());
+        }
     }
 }
