@@ -53,8 +53,10 @@ import Forms.FSM.FSOWNER_Form;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_PROCESS;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_ACTIVE_PROCESSES;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.CRM.CRMView;
+import Views.MainMenu.CRM.CRM_SCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
@@ -177,10 +179,12 @@ public class MainMenu extends CssLayout {
         customersTree.setParent(CUST_CRM_MANAG_ACTIVE_PROCESSES, CUST_CRM_MANAG);
         customersTree.setParent(CUST_CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
         customersTree.setParent(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
 
         customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_PROCESS, false);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG_ACTIVE_PROCESSES, false);
+        customersTree.setChildrenAllowed(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
 
         customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
@@ -212,12 +216,15 @@ public class MainMenu extends CssLayout {
                     case CUST_DATA_MANAG_NEW_CBT:
                         getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
                         break;
+                    case CUST_CRM_MANAG:
+                        navigator.navigateTo(CRMView.class.getSimpleName());
+                        break;
                     case CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL:
                         getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                 false, new SCR_Form(CrudOperations.CREATE)));
                         break;
-                    case CUST_CRM_MANAG:
-                        navigator.navigateTo(CRMView.class.getSimpleName());
+                    case CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
+                        navigator.navigateTo(CRM_SCView.class.getSimpleName());
                         break;
                     case FS_DATA_MANAG_NEW_FS:
                         navigator.navigateTo(FSView.class.getSimpleName());

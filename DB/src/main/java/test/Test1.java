@@ -111,9 +111,9 @@ public class Test1 {
         //</editor-fold>
         Salesman s = DS.getSalesmanController().getByID(3L);
         System.err.println("s : " + s.toString());
-        System.err.println("count : " + DS.getSalesmanController().getSalesmanCustomers(s).size());
+        System.err.println("count : " + DS.getCrmController().getCRM_SalesmansCustomers(s).size());
         
-        for (Customer c : DS.getSalesmanController().getSalesmanCustomers(s)) {
+        for (Customer c : DS.getCrmController().getCRM_SalesmansCustomers(s)) {
             System.err.println(c.toString());
         }
     }

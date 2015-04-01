@@ -20,8 +20,6 @@ public interface ISalesmanController {
     List<Salesman> getAll();
 
     Salesman getByID(Long customerID);
-
-    List<Customer> getSalesmanCustomers(Salesman salesman);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">

@@ -34,11 +34,6 @@ public class Salesman_Controller implements ISalesmanController {
     public Salesman getByID(Long customerID) {
         return dbh.getSalesman(customerID);
     }
-
-    @Override
-    public List<Customer> getSalesmanCustomers(Salesman salesman) {
-        return dbh.getCRM_AllCustomers(salesman);
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update">

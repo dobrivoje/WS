@@ -18,15 +18,6 @@ public enum MenuDefinitions {
     //
     // Main menu options
     //
-//
-    // Main menu options
-    //
-//
-    // Main menu options
-    //
-//
-    // Main menu options
-    //
     SYS_NOTIF_BOARD("System Notifications Board"),
     CUST_DATA_MANAG("Customers Management"),
     CUST_CRM_MANAG("Customers CRM Management"),
@@ -43,9 +34,10 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
     //
-    CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
-    CUST_CRM_MANAG_NEW_PROCESS("New CRM Process"),
     CUST_CRM_MANAG_ACTIVE_PROCESSES("Active CRM Processes"),
+    CUST_CRM_MANAG_NEW_PROCESS("New CRM Process"),
+    CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
+    CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
     //
     FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
     FS_DATA_MANAG_NEW_FS("New Fuelstation"),
@@ -92,7 +84,8 @@ public enum MenuDefinitions {
         return new ArrayList<>(Arrays.asList(
                 CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL,
                 CUST_CRM_MANAG_NEW_PROCESS,
-                CUST_CRM_MANAG_ACTIVE_PROCESSES
+                CUST_CRM_MANAG_ACTIVE_PROCESSES,
+                CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL
         ));
     }
 

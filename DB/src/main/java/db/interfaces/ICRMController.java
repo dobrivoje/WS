@@ -20,6 +20,13 @@ import java.util.List;
 public interface ICRMController {
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
+    /**
+     *
+     * @param salesman
+     * @return All Customers by a Salesman
+     */
+    List<Customer> getCRM_SalesmansCustomers(Salesman salesman);
+
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
     List<CrmProcess> getCRM_Processes(Salesman salesman, Date dateFrom, Date dateTo);
@@ -44,6 +51,6 @@ public interface ICRMController {
 
     void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
 
-    void addNew_CRMProcess(CrmProcess newCrmProcess) throws Exception;
+    void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception;
     //</editor-fold>
 }

@@ -1039,7 +1039,7 @@ public class DBHandler {
         }
     }
 
-    public List<Customer> getCRM_AllCustomers(Salesman salesman) {
+    public List<Customer> getCRM_SalesmansCustomers(Salesman salesman) {
         try {
             return getEm().createNamedQuery("RelSALESMANCUST.CustomersBySalesman")
                     .setParameter("IDS", salesman)

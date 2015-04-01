@@ -29,6 +29,11 @@ public class CRM_Controller implements ICRMController {
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
+    public List<Customer> getCRM_SalesmansCustomers(Salesman salesman) {
+        return dbh.getCRM_SalesmansCustomers(salesman);
+    }
+
+    @Override
     public List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo) {
         return dbh.getCRM_CustomerProcessesByDate(customer, dateFrom, dateTo);
     }
@@ -90,7 +95,7 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public void addNew_CRMProcess(CrmProcess newCrmProcess) throws Exception {
+    public void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception {
         dbh.addNewCRM_Process(newCrmProcess);
     }
 
