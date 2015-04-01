@@ -5,31 +5,20 @@
  */
 package Trees;
 
-import com.vaadin.data.Container;
 import db.ent.Customer;
 import db.ent.Owner;
-import java.util.List;
-import org.superb.apps.utilities.vaadin.Trees.CustomTree;
+import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
 import static ws.MyUI.DS;
 
 /**
  *
  * @author root
  */
-public class FSOwnerTree extends CustomTree<Owner> {
+public class FSOwner_Tree extends CustomDateTree<Owner> {
 
-    public FSOwnerTree(String caption, List treeItems) {
-        super(caption, treeItems);
-        createSubItems();
-    }
-
-    public FSOwnerTree(String caption, Customer customer, boolean justActive) {
+    public FSOwner_Tree(String caption, Customer customer, boolean justActive) {
         super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer, justActive));
         createSubItems();
-    }
-
-    public FSOwnerTree(String caption, Container container) {
-        super(caption, container);
     }
 
     private void createSubItems() {

@@ -5,31 +5,20 @@
  */
 package Trees;
 
-import com.vaadin.data.Container;
 import db.ent.Customer;
 import db.ent.RelCBType;
-import java.util.List;
-import org.superb.apps.utilities.vaadin.Trees.CustomTree;
+import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
 import static ws.MyUI.DS;
 
 /**
  *
  * @author root
  */
-public class RELCBT_Tree extends CustomTree<RelCBType> {
-
-    public RELCBT_Tree(String caption, List treeItems) {
-        super(caption, treeItems);
-        createSubItems();
-    }
+public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
     public RELCBT_Tree(String caption, Customer customer) {
         super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer));
         createSubItems();
-    }
-
-    public RELCBT_Tree(String caption, Container container) {
-        super(caption, container);
     }
 
     public final void createSubItems() {

@@ -14,7 +14,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
-import Trees.FSOwnerTree;
+import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
@@ -160,7 +160,7 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(Customer c) {
         if (c != null) {
             propPanels[0].setContent(new RELCBT_Tree("", c));
-            propPanels[1].setContent(new FSOwnerTree("", c, true));
+            propPanels[1].setContent(new FSOwner_Tree("", c, true));
             propPanels[2].setContent(buildCustomerOptions(c, customersTable));
 
         } else {

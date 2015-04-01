@@ -1,0 +1,64 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.superb.apps.utilities.vaadin.Trees;
+
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import org.dobrivoje.utils.date.formats.DateFormat;
+
+/**
+ * <p>
+ * CustomDateTree klasa kao čvorove ima objekte tipa T.</p>
+ * Za svaki čvor, postoje dva podčvora, sa datumima od, i do
+ *
+ * @param <T>
+ */
+public class CustomDateTree<T> extends CustomTree<T> {
+
+    private static final String DATEFORMAT = DateFormat.DATE_FORMAT_SRB.toString();
+    private static final String[] MSG = new String[]{
+        "no start date !", "From: ",
+        "no end date !", "To: "
+    };
+
+    public CustomDateTree(String caption) {
+        super(caption);
+    }
+
+    /**
+     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.
+     *
+     * @param caption
+     * @param treeItems Lista čvorova
+     */
+    public CustomDateTree(String caption, List treeItems) {
+        super(caption, treeItems);
+    }
+
+    /**
+     * <p>
+     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
+     * postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
+     *
+     * @param t
+     * @param dateFrom podčvor 1
+     * @param dateTo podčvor 2
+     */
+    protected void createSubItems(T t, Date dateFrom, Date dateTo) {
+        String df;
+        String dt;
+
+        df = (dateFrom == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateFrom));
+        dt = (dateTo == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateTo));
+
+        setSubTreeItems(t, new ArrayList<>(
+                Arrays.asList(df.equals("") ? MSG[0] : MSG[1] + df, dt.equals("") ? MSG[2] : MSG[3] + dt)));
+    }
+}
