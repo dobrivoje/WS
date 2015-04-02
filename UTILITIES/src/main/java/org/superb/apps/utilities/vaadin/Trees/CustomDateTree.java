@@ -27,16 +27,6 @@ public class CustomDateTree<T> extends CustomTree<T> {
         "no end date !", "To: "
     };
 
-    public CustomDateTree(String caption) {
-        super(caption);
-    }
-
-    /**
-     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.
-     *
-     * @param caption
-     * @param treeItems Lista čvorova
-     */
     public CustomDateTree(String caption, List treeItems) {
         super(caption, treeItems);
     }
@@ -47,8 +37,8 @@ public class CustomDateTree<T> extends CustomTree<T> {
      * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
      *
      * @param t Čvor
-     * @param dateFrom Podčvor 1
-     * @param dateTo Podčvor 2
+     * @param dateFrom 1. Podčvor - Datum Od
+     * @param dateTo 2. Podčvor - Datum Do
      */
     protected void createSubItems(T t, Date dateFrom, Date dateTo) {
         String df;

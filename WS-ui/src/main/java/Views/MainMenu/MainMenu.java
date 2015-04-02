@@ -56,7 +56,7 @@ import static Menu.MenuDefinitions.CUST_CRM_MANAG_ACTIVE_PROCESSES;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.CRM.CRMView;
-import Views.MainMenu.CRM.CRM_SCView;
+import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
@@ -224,7 +224,7 @@ public class MainMenu extends CssLayout {
                                 false, new SCR_Form(CrudOperations.CREATE)));
                         break;
                     case CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
-                        navigator.navigateTo(CRM_SCView.class.getSimpleName());
+                        navigator.navigateTo(CRMSCView.class.getSimpleName());
                         break;
                     case FS_DATA_MANAG_NEW_FS:
                         navigator.navigateTo(FSView.class.getSimpleName());

@@ -76,6 +76,17 @@ public class CRM_Controller implements ICRMController {
     public List<CrmProcess> getCRM_Leads(Salesman salesman) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception {
+        RelSALESMANCUST r = dbh.getCRM_R_Salesman_Cust(s, c);
+
+        if (r == null) {
+            throw new Exception("Salesman not in relation with this customer !");
+        }
+
+        return r;
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">

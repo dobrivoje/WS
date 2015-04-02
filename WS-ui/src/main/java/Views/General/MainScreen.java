@@ -6,7 +6,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import Views.MainMenu.CDM.CustomersView;
 import Views.MainMenu.CRM.CRMView;
-import Views.MainMenu.CRM.CRM_SCView;
+import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.MainMenu.MainMenu;
 import Views.SYSNOTIF.SysNotifView;
@@ -41,7 +41,7 @@ public class MainScreen extends HorizontalLayout {
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
         navigator.addView(CustomersView.class.getSimpleName(), CustomersView.class);
         navigator.addView(CRMView.class.getSimpleName(), CRMView.class);
-        navigator.addView(CRM_SCView.class.getSimpleName(), CRM_SCView.class);
+        navigator.addView(CRMSCView.class.getSimpleName(), CRMSCView.class);
         navigator.addView(FSView.class.getSimpleName(), FSView.class);
         navigator.addView(SysNotifView.class.getSimpleName(), SysNotifView.class);
 

@@ -41,8 +41,8 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
     @PropertyId("active")
     private final CheckBox active = new CheckBox("Active?");
-
     //</editor-fold>
+
     public SCR_Form() {
         super(new BeanFieldGroup(RelSALESMANCUST.class));
 
@@ -82,39 +82,45 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         }
     }
 
-    public SCR_Form(RelSALESMANCUST R_SalesmanCustomer, final IRefreshVisualContainer visualContainer) {
+    public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer) {
         this();
 
-        fieldGroup.setItemDataSource(new BeanItem(R_SalesmanCustomer));
-        beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
+        try {
+            RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, c);
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                RelSALESMANCUST R_SalesmanCustomer_ToUpdate = beanItem.getBean();
-                bindFieldsToBean(R_SalesmanCustomer_ToUpdate);
+            fieldGroup.setItemDataSource(new BeanItem(r));
+            beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
 
-                try {
-                    fieldGroup.commit();
+            btnCaption = BUTTON_CAPTION_UPDATE.toString();
+            clickListener = new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    RelSALESMANCUST R_SalesmanCustomer_ToUpdate = beanItem.getBean();
+                    bindFieldsToBean(R_SalesmanCustomer_ToUpdate);
 
-                    CRMController.update_R_Salesman_Cust(R_SalesmanCustomer_ToUpdate);
+                    try {
+                        fieldGroup.commit();
 
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
+                        CRMController.update_R_Salesman_Cust(R_SalesmanCustomer_ToUpdate);
+
+                        if (visualContainer != null) {
+                            visualContainer.refreshVisualContainer();
+                        }
+
+                        Notification n = new Notification("Relation Customer-Salesman Updated.", Notification.Type.TRAY_NOTIFICATION);
+
+                        n.setDelayMsec(500);
+                        n.show(getUI().getPage());
+                    } catch (Exception ex) {
+                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
-
-                    Notification n = new Notification("Relation Customer-Salesman Updated.", Notification.Type.TRAY_NOTIFICATION);
-
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-                } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
-            }
-        };
+            };
 
-        addBeansToForm();
+            addBeansToForm();
+        } catch (Exception e) {
+            Notification.show("Error", "Description: " + e.toString(), Notification.Type.ERROR_MESSAGE);
+        }
     }
 
     @Override

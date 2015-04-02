@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Tree;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,26 @@ public class CustomTree<T> extends Tree {
         this(caption);
         addItems(treeItems);
 
+        elements.clear();
         elements.addAll(treeItems.subList(0, treeItems.size()));
+    }
+
+    /**
+     * <p>
+     * Kreiraj stablo sa čvorovima iz bean container-a.</p>
+     * Ova opcija je zgodna kod automatskog ažuriranja podataka, jer kad radimo
+     * sa kontejnerom, sve izmene na kontejneru su odmah vidljive i u UI
+     * komponenti.
+     *
+     * @param caption
+     * @param container BeanContainer za klasu koju pratimo.
+     */
+    public CustomTree(String caption, BeanItemContainer<T> container) {
+        this(caption);
+        setContainerDataSource(container);
+
+        elements.clear();
+        elements.addAll(container.getItemIds());
     }
 
     /**

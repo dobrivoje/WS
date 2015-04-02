@@ -40,6 +40,8 @@ public interface ICRMController {
     List<CrmProcess> getCRM_Leads(Salesman salesman);
 
     List<CrmProcess> getCRM_Processes(CrmStatus crmStatus);
+
+    RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">

@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
+import com.vaadin.data.util.BeanItemContainer;
 import java.util.List;
 
 /**
@@ -29,6 +30,16 @@ public class CustomSCTree<T> extends CustomTree<T> {
         super(caption, treeItems);
     }
 
+    public CustomSCTree(String caption, BeanItemContainer<T> container) {
+        super(caption, container);
+    }
+
+    /**
+     * Kreiraj stablo za zadati čvor T
+     *
+     * @param caption
+     * @param t Čvor
+     */
     public CustomSCTree(String caption, T t) {
         this(caption);
         addItem(t);
