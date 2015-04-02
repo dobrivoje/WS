@@ -7,7 +7,6 @@ package db.interfaces;
 
 import db.ent.BussinesLine;
 import java.util.List;
-import db.ent.Customer;
 import db.ent.Salesman;
 
 /**

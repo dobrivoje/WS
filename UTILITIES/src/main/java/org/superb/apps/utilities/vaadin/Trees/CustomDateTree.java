@@ -5,7 +5,6 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,11 +44,11 @@ public class CustomDateTree<T> extends CustomTree<T> {
     /**
      * <p>
      * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
-     * postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
+     * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
      *
-     * @param t
-     * @param dateFrom podčvor 1
-     * @param dateTo podčvor 2
+     * @param t Čvor
+     * @param dateFrom Podčvor 1
+     * @param dateTo Podčvor 2
      */
     protected void createSubItems(T t, Date dateFrom, Date dateTo) {
         String df;

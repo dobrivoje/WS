@@ -8,7 +8,6 @@ package db.controllers;
 import java.util.List;
 import db.DBHandler;
 import db.ent.BussinesLine;
-import db.ent.Customer;
 import db.ent.Salesman;
 import db.interfaces.ISalesmanController;
 
