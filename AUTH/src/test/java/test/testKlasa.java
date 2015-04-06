@@ -5,6 +5,7 @@
  */
 package test;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.dobrivoje.auth.ShiroAccessControl;
 
 /**

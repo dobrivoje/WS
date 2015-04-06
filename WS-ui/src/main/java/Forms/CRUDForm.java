@@ -41,7 +41,7 @@ public abstract class CRUDForm<T> extends FormLayout {
                     addNewBean(bean);
                     Notification.show("New " + notification.getNotification() + " Added.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };
@@ -78,7 +78,7 @@ public abstract class CRUDForm<T> extends FormLayout {
                     
                     Notification.show("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

@@ -121,7 +121,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -157,7 +157,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

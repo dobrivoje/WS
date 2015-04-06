@@ -25,13 +25,13 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     private final ICRMController CRMController = DS.getCrmController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    @PropertyId("fkIdc")
-    private final ComboBox customer = new ComboBox("Customer",
-            new BeanItemContainer(Customer.class, DS.getCustomerController().getAll()));
-
     @PropertyId("fkIds")
     private final ComboBox salesman = new ComboBox("Salesman",
             new BeanItemContainer(Salesman.class, DS.getSalesmanController().getAll()));
+
+    @PropertyId("fkIdc")
+    private final ComboBox customer = new ComboBox("Customer",
+            new BeanItemContainer(Customer.class, DS.getCustomerController().getAll()));
 
     @PropertyId("dateFrom")
     private final DateField dateFrom = new DateField("Date From");
@@ -48,7 +48,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
-        customer.focus();
+        salesman.focus();
     }
 
     public SCR_Form(final CrudOperations crudOperation) {
@@ -73,7 +73,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -112,7 +112,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };

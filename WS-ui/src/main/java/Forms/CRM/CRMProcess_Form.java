@@ -118,7 +118,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

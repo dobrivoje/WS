@@ -64,10 +64,10 @@ public class RelSALESMANCUST implements Serializable {
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Customer fkIdc;
     @JoinColumn(name = "FK_IDS", referencedColumnName = "IDS")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Salesman fkIds;
     @OneToMany(mappedBy = "FK_IDRSMC")
     private List<CrmProcess> CRMProcessList;

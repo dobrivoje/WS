@@ -98,7 +98,7 @@ public class RELCBTForm extends FormLayout {
                     // da se osveži.
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

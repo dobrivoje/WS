@@ -13,11 +13,12 @@ import java.io.Serializable;
  */
 public class Roles implements Serializable {
 
-    public static final String ROLE1 = "stampac_print_pdf";
-    public static final String ROLE2 = "stampac_print_all";
-    public static final String ROLE_ADMIN = "admin";
+    public static final String ROOT_PRIVILEGES = "rootPrivileges";
+    public static final String APP_SUPERUSER = "appSuperUser";
+    public static final String APP_TESTUSER = "appTestUser";
 
-    public static final String PERMISSION2 = "xerox5225:print:*";
-    public static final String PERMISSION1 = "xerox5225:print:pdf";
+    public static final String PERMISSION_APP_TESTUSER_BASIC_LOGIN = "appTestUser:basic:login";
+    public static final String PERMISSION_APP_TESTUSER_BASIC_USERMANAGEMENT = "appTestUser:basic:userManagement";
+    public static final String PERMISSION_APP_TESTUSER_BASIC_FSVIEW = "appTestUser:basic:FSView";
 
 }

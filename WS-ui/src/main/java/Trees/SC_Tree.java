@@ -24,10 +24,10 @@ import static ws.MyUI.DS;
  */
 public class SC_Tree extends CustomSCTree<Salesman> {
 
-    private static final Action ACTION_NEW_CRM_PROCESS = new Action("Add new CRM process");
-    private static final Action ACTION_NEW_CS_RELATION = new Action("Add new CRM Salesman Customer Relation");
-    private static final Action ACTION_CUSTOMER_DATA_UPDATE = new Action("Customer Update Form");
-    private static final Action ACTION_CUSTOMER_ACTIVE_NO_MORE = new Action("Remove this Customer from Salesman Responsibility");
+    private static final Action ACTION_NEW_CS_RELATION = new Action("New CRM Salesman Customer Relation");
+    private static final Action ACTION_NEW_CRM_PROCESS = new Action("New CRM process");
+    private static final Action ACTION_CUSTOMER_DATA_UPDATE = new Action("New Customer Update");
+    private static final Action ACTION_CUSTOMER_ACTIVE_NO_MORE = new Action("Customer Removal from Salesman Responsibility");
 
     public SC_Tree(String caption, List<Salesman> L) {
         super(caption, L);
@@ -65,18 +65,18 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
 
-                        getUI().addWindow(new WindowForm("", false, new SCR_Form(s, c, null)));
+                        getUI().addWindow(new WindowForm(ACTION_NEW_CS_RELATION.getCaption(), false, new SCR_Form(s, c, null)));
                     }
 
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {
-                        getUI().addWindow(new WindowForm2("Customer Form", new CustomerForm((Customer) source.getValue(), null)));
+                        getUI().addWindow(new WindowForm2(ACTION_CUSTOMER_DATA_UPDATE.getCaption(), new CustomerForm((Customer) source.getValue(), null)));
                     }
 
                     if (action.equals(ACTION_NEW_CRM_PROCESS) && (source.getValue() instanceof Customer)) {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
 
-                        getUI().addWindow(new WindowForm("New CRM Process", false, new CRMProcess_Form(s, c, null)));
+                        getUI().addWindow(new WindowForm(ACTION_NEW_CRM_PROCESS.getCaption(), false, new CRMProcess_Form(s, c, null)));
                     }
                 }
             }

@@ -66,7 +66,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -100,7 +100,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
-                    Notification.show("Error", "Description: " + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

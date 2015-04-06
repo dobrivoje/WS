@@ -1104,12 +1104,21 @@ public class DBHandler {
     }
 
     public void addNew_RelSalesman_Cust(RelSALESMANCUST newRelSALESMANCUST) throws Exception {
+        String m1 = "\nSalesman and Customer Must Be Selected !";
+        String m2 = "\nSalesman and Customer Relation Already Exists !";
+
         try {
             getEm().getTransaction().begin();
             em.persist(newRelSALESMANCUST);
             getEm().getTransaction().commit();
         } catch (Exception e) {
-            rollBackTransaction("New Relation Salesman-Customer Addition Failed.");
+            if (e.toString().contains("column does not allow nulls.")) {
+                rollBackTransaction(m1);
+            } else if (e.toString().contains("The duplicate key value")) {
+                rollBackTransaction(m2);
+            } else {
+                rollBackTransaction(e.toString());
+            }
         }
     }
 
@@ -1119,7 +1128,7 @@ public class DBHandler {
             em.merge(R_Salesman_Cust);
             getEm().getTransaction().commit();
         } catch (Exception e) {
-            rollBackTransaction("Relation Salesman-Customer Update Failed.");
+            rollBackTransaction("Relation Salesman-Customer Update Failed. " + e.toString());
         }
     }
     //</editor-fold>
@@ -1146,7 +1155,7 @@ public class DBHandler {
             em.persist(newCrmProcess);
             getEm().getTransaction().commit();
         } catch (Exception e) {
-            rollBackTransaction("\nNew CRM Process Addition Failed.\nSalesman, Customer and Status are mandatory !");
+            rollBackTransaction("\nSalesman and Customer Must Be Selected !");
         }
     }
     //</editor-fold>
