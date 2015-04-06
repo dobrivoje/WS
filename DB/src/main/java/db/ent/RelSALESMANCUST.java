@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "RelSALESMANCUST.findBySalesman",
                     query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
-            
+
             @NamedQuery(name = "RelSALESMANCUST.CustomersBySalesman",
                     query = "SELECT r.fkIdc FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
 
@@ -76,11 +76,11 @@ public class RelSALESMANCUST implements Serializable {
     }
 
     public RelSALESMANCUST(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) {
+        this.fkIdc = c;
+        this.fkIds = s;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.active = active;
-        this.fkIdc = c;
-        this.fkIds = s;
     }
 
     public Long getIdrblc() {

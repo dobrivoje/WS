@@ -6,8 +6,12 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.CrmProcess;
+import db.ent.CrmStatus;
 import db.ent.Customer;
+import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
+import java.util.Date;
 
 /**
  *
@@ -110,11 +114,16 @@ public class Test1 {
          */
         //</editor-fold>
         Salesman s = DS.getSalesmanController().getByID(3L);
-        System.err.println("s : " + s.toString());
-        System.err.println("count : " + DS.getCrmController().getCRM_SalesmansCustomers(s).size());
+        Customer cu = DS.getCustomerController().getByID(3500L);
+        CrmStatus st = DS.getCrmController().getCRM_AllStatuses().get(0);
         
-        for (Customer c : DS.getCrmController().getCRM_SalesmansCustomers(s)) {
-            System.err.println(c.toString());
+        try {
+            RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, cu);
+            CrmProcess crmProcess = new CrmProcess(r, null, "komentar", new Date());
+
+            DS.getCrmController().addNewCRM_Process(crmProcess);
+        } catch (Exception ex) {
+            System.err.println("GRESKA : ");
         }
     }
 }

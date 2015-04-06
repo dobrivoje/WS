@@ -20,12 +20,9 @@ import java.util.List;
 public interface ICRMController {
 
     //<editor-fold defaultstate="collapsed" desc="data to read">
-    /**
-     *
-     * @param salesman
-     * @return All Customers by a Salesman
-     */
-    List<Customer> getCRM_SalesmansCustomers(Salesman salesman);
+    List<CrmStatus> getCRM_AllStatuses();
+
+    List<Customer> getCRM_Customers(Salesman salesman);
 
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 

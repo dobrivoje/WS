@@ -113,15 +113,12 @@ public class CrmStatus implements Serializable {
             return false;
         }
         CrmStatus other = (CrmStatus) object;
-        if ((this.idcs == null && other.idcs != null) || (this.idcs != null && !this.idcs.equals(other.idcs))) {
-            return false;
-        }
-        return true;
+        return !((this.idcs == null && other.idcs != null) || (this.idcs != null && !this.idcs.equals(other.idcs)));
     }
 
     @Override
     public String toString() {
-        return "db.ent.CrmStatus[ idcs=" + idcs + " ]";
+        return getStatusName();
     }
 
 }

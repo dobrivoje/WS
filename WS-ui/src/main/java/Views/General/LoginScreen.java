@@ -1,6 +1,6 @@
 package Views.General;
 
-import authentication.AccessControl;
+import org.dobrivoje.auth.IAccessAuthControl;
 import java.io.Serializable;
 
 import com.vaadin.event.ShortcutAction;
@@ -24,16 +24,16 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class LoginScreen extends CssLayout {
 
-    private static final String PASSWORD_HINT = "Any password or blank is OK...";
+    private static final String PASSWORD_HINT = "Enter a password for your account";
 
     private TextField username;
     private PasswordField password;
     private Button login;
     private Button forgotPassword;
     private final LoginListener loginListener;
-    private final AccessControl accessControl;
+    private final IAccessAuthControl accessControl;
 
-    public LoginScreen(AccessControl accessControl, LoginListener loginListener) {
+    public LoginScreen(IAccessAuthControl accessControl, LoginListener loginListener) {
         this.loginListener = loginListener;
         this.accessControl = accessControl;
         buildUI();
@@ -123,25 +123,24 @@ public class LoginScreen extends CssLayout {
     }
 
     private void login() {
-        if (accessControl.signIn(username.getValue(), password.getValue())) {
-            loginListener.loginSuccessful();
+        if (accessControl.login(username.getValue(), password.getValue())) {
+            loginListener.doAfterLogin();
         } else {
             showNotification(new Notification("Login failed",
                     "Please check your username and password and try again.",
-                    Notification.Type.TRAY_NOTIFICATION));
+                    Notification.Type.ERROR_MESSAGE));
             username.focus();
+            password.setValue("");
         }
     }
 
     private void showNotification(Notification notification) {
-        // keep the notification visible a little while after moving the
-        // mouse, or until clicked
         notification.setDelayMsec(3000);
         notification.show(Page.getCurrent());
     }
 
     public interface LoginListener extends Serializable {
 
-        void loginSuccessful();
+        void doAfterLogin();
     }
 }

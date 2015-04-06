@@ -34,7 +34,6 @@ public class MainScreen extends HorizontalLayout {
         navigator.setErrorView(ErrorView.class);
         menu = new MainMenu(navigator);
         menu.createViewTree("mainMenu");
-        // menu.addViewTree(new ConsoleView(), ConsoleView.class.getSimpleName(), ConsoleView.VIEW_NAME);
         menu.addViewButton(new AboutView(), AboutView.class.getSimpleName(), AboutView.VIEW_NAME, FontAwesome.INFO_CIRCLE);
 
         // DODAVANJE VIEW-ova NOVIH AKCIJA I GL. MENIJA :

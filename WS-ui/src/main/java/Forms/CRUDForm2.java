@@ -11,7 +11,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import java.util.Date;
-import static ws.MyUI.DATE_FORMAT;
+import static ws.MyUI.APP_DATE_FORMAT;
 
 public abstract class CRUDForm2<T> extends FormLayout {
 
@@ -56,7 +56,7 @@ public abstract class CRUDForm2<T> extends FormLayout {
             if (c instanceof DateField) {
                 ((DateField) c).setWidth(width, unit);
                 ((DateField) c).setConverter(Date.class);
-                ((DateField) c).setDateFormat(DATE_FORMAT);
+                ((DateField) c).setDateFormat(APP_DATE_FORMAT);
 
             }
             if (c instanceof TextArea) {

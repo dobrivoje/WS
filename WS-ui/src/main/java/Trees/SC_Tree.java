@@ -6,13 +6,14 @@
 package Trees;
 
 import Forms.CDM.CustomerForm;
+import Forms.CRM.CRMProcess_Form;
 import Forms.CRM.SCR_Form;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
 import db.ent.Customer;
 import db.ent.Salesman;
 import java.util.List;
-import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.Trees.CustomSCTree;
 import static ws.MyUI.DS;
@@ -42,7 +43,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
 
     private void createSubItems() {
         for (Salesman s : elements) {
-            createSubItems(s, DS.getCrmController().getCRM_SalesmansCustomers(s));
+            createSubItems(s, DS.getCrmController().getCRM_Customers(s));
         }
     }
 
@@ -64,11 +65,18 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
 
-                        getUI().addWindow(new MyWindow(new SCR_Form(s, c, null)));
+                        getUI().addWindow(new WindowForm("", false, new SCR_Form(s, c, null)));
                     }
 
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {
                         getUI().addWindow(new WindowForm2("Customer Form", new CustomerForm((Customer) source.getValue(), null)));
+                    }
+
+                    if (action.equals(ACTION_NEW_CRM_PROCESS) && (source.getValue() instanceof Customer)) {
+                        Customer c = (Customer) target;
+                        Salesman s = (Salesman) source.getParent(target);
+
+                        getUI().addWindow(new WindowForm("New CRM Process", false, new CRMProcess_Form(s, c, null)));
                     }
                 }
             }

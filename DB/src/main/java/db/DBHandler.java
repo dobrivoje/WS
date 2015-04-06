@@ -56,8 +56,8 @@ public class DBHandler {
     private void rollBackTransaction(String message) throws Exception {
         if (getEm().getTransaction().isActive()) {
             getEm().getTransaction().rollback();
-            throw new Exception(message);
         }
+        throw new Exception(message);
     }
     //</editor-fold>
 
@@ -1008,14 +1008,14 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="CRM">
     //<editor-fold defaultstate="collapsed" desc="READ">
     //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">
-    public RelSALESMANCUST getCRM_R_Salesman_Cust(Salesman s, Customer c) {
+    public RelSALESMANCUST getCRM_R_Salesman_Cust(Salesman s, Customer c) throws Exception {
         try {
             return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.RelSalesmanCustomer")
                     .setParameter("IDC", c)
                     .setParameter("IDS", s)
                     .getSingleResult();
         } catch (Exception ex) {
-            return null;
+            throw new Exception("No relation between Salesman and Customer !");
         }
     }
 
@@ -1051,6 +1051,15 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
+    public List<CrmStatus> getCRM_AllStatuses() {
+        try {
+            return getEm().createNamedQuery("CrmStatus.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
         try {
             return getEm().createNamedQuery("CrmProcess.CustomerProcessesByDate")
@@ -1103,7 +1112,7 @@ public class DBHandler {
             rollBackTransaction("New Relation Salesman-Customer Addition Failed.");
         }
     }
-    
+
     public void update_R_Salesman_Cust(RelSALESMANCUST R_Salesman_Cust) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1119,10 +1128,9 @@ public class DBHandler {
     public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
         RelSALESMANCUST r = getCRM_R_Salesman_Cust(s, c);
 
-        if (r == null) {
-            throw new Exception("Salesman not in relation with this customer !");
-        }
-
+        /*if (r == null) {
+         throw new Exception("Salesman not in relation with this customer !");
+         }*/
         CrmProcess crmProcess = new CrmProcess(r, crmStatus, comment, actionDate);
         addNewCRM_Process(crmProcess);
     }
@@ -1138,7 +1146,7 @@ public class DBHandler {
             em.persist(newCrmProcess);
             getEm().getTransaction().commit();
         } catch (Exception e) {
-            rollBackTransaction("New CRM Process Addition Failed.");
+            rollBackTransaction("\nNew CRM Process Addition Failed.\nSalesman, Customer and Status are mandatory !");
         }
     }
     //</editor-fold>

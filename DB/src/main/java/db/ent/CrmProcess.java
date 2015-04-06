@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "CrmProcess.findByCustomer",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDRSMC.fkIdc = :IDC"),
-            
+
             @NamedQuery(name = "CrmProcess.CustomerProcessesByDate",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDRSMC.fkIdc = :IDC AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
@@ -62,20 +62,20 @@ public class CrmProcess implements Serializable {
     @Column(name = "Comment")
     private String comment;
     @JoinColumn(name = "FK_IDCS", referencedColumnName = "IDCS")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private CrmStatus FK_IDCS;
     @JoinColumn(name = "FK_IDRBLC", referencedColumnName = "IDRBLC")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private RelSALESMANCUST FK_IDRSMC;
 
     public CrmProcess() {
     }
 
     public CrmProcess(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) {
-        this.actionDate = actionDate;
-        this.comment = comment;
-        this.FK_IDCS = crmStatus;
         this.FK_IDRSMC = RelSalesmanCustomer;
+        this.FK_IDCS = crmStatus;
+        this.comment = comment;
+        this.actionDate = actionDate;
     }
 
     public Long getIdp() {

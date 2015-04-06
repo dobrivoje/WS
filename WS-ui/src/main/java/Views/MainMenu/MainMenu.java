@@ -28,6 +28,7 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import Forms.CDM.CBTForm;
 import Forms.CDM.CustomerForm;
+import Forms.CRM.CRMProcess_Form;
 import Forms.CRM.SCR_Form;
 import Menu.Menu;
 import Menu.MenuDefinitions;
@@ -55,6 +56,7 @@ import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_ACTIVE_PROCESSES;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
+import Views.General.MainScreen;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
@@ -75,7 +77,7 @@ public class MainMenu extends CssLayout {
     private final CssLayout menuItemsLayout;
     private final CssLayout menuPart;
 
-    public MainMenu(Navigator navigator) {
+    public MainMenu(final Navigator navigator) {
         this.navigator = navigator;
         setPrimaryStyleName(ValoTheme.MENU_ROOT);
         menuPart = new CssLayout();
@@ -218,6 +220,10 @@ public class MainMenu extends CssLayout {
                         break;
                     case CUST_CRM_MANAG:
                         navigator.navigateTo(CRMView.class.getSimpleName());
+                        break;
+                    case CUST_CRM_MANAG_NEW_PROCESS:
+                        getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_PROCESS.toString(),
+                                false, new CRMProcess_Form(null, null, null)));
                         break;
                     case CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL:
                         getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),

@@ -18,7 +18,7 @@ import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
 import db.interfaces.IRELCBTController;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
-import static ws.MyUI.DATE_FORMAT;
+import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class RELCBTForm extends FormLayout {
@@ -58,8 +58,8 @@ public class RELCBTForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
-        dateFrom.setDateFormat(DATE_FORMAT);
-        dateTo.setDateFormat(DATE_FORMAT);
+        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        dateTo.setDateFormat(APP_DATE_FORMAT);
 
         customer.setWidth(230, Unit.PIXELS);
         cBType.setWidth(230, Unit.PIXELS);

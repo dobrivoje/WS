@@ -29,7 +29,12 @@ public class CRM_Controller implements ICRMController {
 
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
-    public List<Customer> getCRM_SalesmansCustomers(Salesman salesman) {
+    public List<CrmStatus> getCRM_AllStatuses() {
+        return dbh.getCRM_AllStatuses();
+    }
+
+    @Override
+    public List<Customer> getCRM_Customers(Salesman salesman) {
         return dbh.getCRM_SalesmansCustomers(salesman);
     }
 

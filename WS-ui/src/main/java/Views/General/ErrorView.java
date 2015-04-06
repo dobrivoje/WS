@@ -5,7 +5,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import Views.ConsoleView;
+import Views.SYSNOTIF.SysNotifView;
 
 public class ErrorView extends VerticalLayout implements View {
 
@@ -18,7 +18,7 @@ public class ErrorView extends VerticalLayout implements View {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                getUI().getNavigator().navigateTo(ConsoleView.class.getSimpleName());
+                getUI().getNavigator().navigateTo(SysNotifView.class.getSimpleName());
             }
         }));
     }

@@ -18,7 +18,7 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.DATE_FORMAT;
+import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class FSOWNER_Form extends CRUDForm2<Owner> {
@@ -49,8 +49,8 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        dateFrom.setDateFormat(DATE_FORMAT);
-        dateTo.setDateFormat(DATE_FORMAT);
+        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        dateTo.setDateFormat(APP_DATE_FORMAT);
 
         dateFrom.setConverter(Date.class);
         dateTo.setConverter(Date.class);
