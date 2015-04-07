@@ -18,7 +18,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
-import org.dobrivoje.auth.ShiroAccessControl;
+import org.dobrivoje.auth.IntermolADAccessControl;
 import org.dobrivoje.utils.date.formats.DateFormat;
 
 /**
@@ -28,7 +28,7 @@ import org.dobrivoje.utils.date.formats.DateFormat;
 @Widgetset("ws.MyAppWidgetset")
 public class MyUI extends UI {
 
-    private final IAccessAuthControl accessControl = new ShiroAccessControl();
+    private final IAccessAuthControl accessControl = new IntermolADAccessControl();
     public static final DataService DS = DataService.getDefault();
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
@@ -42,12 +42,12 @@ public class MyUI extends UI {
         notification.setDescription(
                 "<span>This application covers wholesale bussines process.</span>"
                 + "<span>This is a <b>test phase release</b></span>"
-                + "<span>Please, use \"ws\" as username, with no password.</span>"
+                + "<span>Please, use your Windows username, with password.</span>"
                 + "<span>Just click the <b>Login</b> button to continue.</span>");
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(5000);
+        notification.setDelayMsec(8000);
         notification.show(Page.getCurrent());
 
         if (!accessControl.authenticated()) {

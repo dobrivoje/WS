@@ -22,11 +22,13 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
+import org.dobrivoje.auth.roles.Roles;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import ws.MyUI;
 
 public class CustomersView extends VerticalLayout implements View {
 
@@ -200,7 +202,10 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
+        editBtn.setEnabled(MyUI.get().getAccessControl().hasRole(Roles.APP_MANAGER));
         editBtn.setDescription("Update this customer with new data...");
+
+        cbTapeBtn.setEnabled(MyUI.get().getAccessControl().hasRole(Roles.APP_MANAGER));
         cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
 
         HL1.setSpacing(true);

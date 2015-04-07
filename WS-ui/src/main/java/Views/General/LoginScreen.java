@@ -6,9 +6,11 @@ import java.io.Serializable;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
@@ -18,6 +20,8 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * UI content when the user is not logged in yet.
@@ -25,9 +29,14 @@ import com.vaadin.ui.themes.ValoTheme;
 public class LoginScreen extends CssLayout {
 
     private static final String PASSWORD_HINT = "Enter a password for your account";
+    private static final String DOMAIN_HINT = "Select the domain";
+
+    public static final String[] DOMAINS = new String[]{"INTERMOL", "RIS", "LOCAL"};
 
     private TextField username;
     private PasswordField password;
+    private ComboBox domain;
+
     private Button login;
     private Button forgotPassword;
     private final LoginListener loginListener;
@@ -68,16 +77,25 @@ public class LoginScreen extends CssLayout {
         loginForm.setSizeUndefined();
         loginForm.setMargin(false);
 
-        username = new TextField("Username", "ws");
+        username = new TextField("Username");
         username.setIcon(FontAwesome.USER);
-        username.setWidth(15, Unit.EM);
+        username.setWidth(15, Sizeable.Unit.EM);
         loginForm.addComponent(username);
 
         password = new PasswordField("Password");
-        password.setWidth(15, Unit.EM);
+        password.setWidth(15, Sizeable.Unit.EM);
         password.setDescription(PASSWORD_HINT);
         password.setIcon(FontAwesome.LOCK);
         loginForm.addComponent(password);
+
+        domain = new ComboBox("Domain", new ArrayList<>(Arrays.asList(DOMAINS)));
+        domain.setWidth(15, Sizeable.Unit.EM);
+        domain.setDescription(DOMAIN_HINT);
+        domain.setIcon(FontAwesome.DASHBOARD);
+        domain.setNullSelectionAllowed(false);
+        domain.setTextInputAllowed(false);
+        domain.setValue(DOMAINS[0]);
+        loginForm.addComponent(domain);
 
         CssLayout buttons = new CssLayout();
         buttons.setStyleName("buttons");
@@ -115,15 +133,31 @@ public class LoginScreen extends CssLayout {
         Label loginInfoText = new Label(
                 "<h1>MOL Serbia SW<br>Platform</br></h1>"
                 + "<h2>Wholesale App</h2>"
-                + "Log in as &quot;ws&quot; to have full access."
-                + "<br>No password is needed now.</br>",
+                + "Please, use your Windows login account to have application access.",
                 ContentMode.HTML);
         loginInformation.addComponent(loginInfoText);
         return loginInformation;
     }
 
     private void login() {
-        if (accessControl.login(username.getValue(), password.getValue())) {
+        String un;
+
+        switch ((String) domain.getValue()) {
+            case "INTERMOL":
+                un = "INTERMOL\\";
+                break;
+            case "RIS":
+                un = "YU.RIS.CORP\\";
+                break;
+            case "LOCAL":
+            default:
+                un = "";
+                break;
+        }
+
+        un += username.getValue();
+
+        if (accessControl.login(un, password.getValue())) {
             loginListener.doAfterLogin();
         } else {
             showNotification(new Notification("Login failed",

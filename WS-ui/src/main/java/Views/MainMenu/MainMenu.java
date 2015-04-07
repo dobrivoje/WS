@@ -56,12 +56,12 @@ import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_ACTIVE_PROCESSES;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
-import Views.General.MainScreen;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import ws.MyUI;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.

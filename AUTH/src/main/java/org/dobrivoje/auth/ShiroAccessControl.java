@@ -14,17 +14,19 @@ public class ShiroAccessControl implements IAccessAuthControl {
     private final SecurityManager securityManager;
     private final Subject subject;
 
-    public ShiroAccessControl() {
-        factory = new IniSecurityManagerFactory("classpath:shiro.ini");
+    public ShiroAccessControl(String initFile) {
+        factory = new IniSecurityManagerFactory(initFile);
         securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
         subject = SecurityUtils.getSubject();
     }
 
+    @Override
     public SecurityManager getSecurityManager() {
         return securityManager;
     }
 
+    @Override
     public Subject getSubject() {
         return subject;
     }
@@ -54,6 +56,11 @@ public class ShiroAccessControl implements IAccessAuthControl {
     @Override
     public String getPrincipal() {
         return (String) subject.getPrincipal();
+    }
+
+    @Override
+    public void logout() {
+        securityManager.logout(subject);
     }
 
 }
