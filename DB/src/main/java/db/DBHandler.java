@@ -70,6 +70,9 @@ public class DBHandler {
     }
     //</editor-fold>
 
+    private static final String DB_DUPLICATE = "the duplicate key value is";
+    private static final String DB_NULLVALUES = "cannot insert the value null into column";
+
     //<editor-fold defaultstate="collapsed" desc="Customer">
     //<editor-fold defaultstate="collapsed" desc="Customer Read Data">
     public List<Customer> getAllCustomers() {
@@ -751,7 +754,11 @@ public class DBHandler {
             em.persist(newOwner);
             getEm().getTransaction().commit();
         } catch (Exception ex) {
-            rollBackTransaction("New Owner Addition Failed.");
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("New fuelstation owner addition failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
 
@@ -761,7 +768,11 @@ public class DBHandler {
             em.merge(existingOwner);
             getEm().getTransaction().commit();
         } catch (Exception ex) {
-            rollBackTransaction("Owner Update Failed.");
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Existing fuelstation ownerupdate failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
     //</editor-fold>
@@ -861,7 +872,11 @@ public class DBHandler {
             em.persist(newFsProp);
             getEm().getTransaction().commit();
         } catch (Exception ex) {
-            rollBackTransaction("New Fuelstation Addition Failed.");
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Fuelstation property update failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
 
@@ -893,7 +908,11 @@ public class DBHandler {
             em.merge(existingFsProp);
             getEm().getTransaction().commit();
         } catch (Exception ex) {
-            rollBackTransaction("Fuelstation property Update Failed ");
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Fuelstation property update failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
 
@@ -1113,18 +1132,15 @@ public class DBHandler {
     }
 
     public void addNew_RelSalesman_Cust(RelSALESMANCUST newRelSALESMANCUST) throws Exception {
-        String m1 = "Salesman and Customer Must Be Selected !";
-        String m2 = "Relation Between Salesman and Customer Already Exists !";
-
         try {
             getEm().getTransaction().begin();
             em.persist(newRelSALESMANCUST);
             getEm().getTransaction().commit();
         } catch (Exception ex) {
-            if (ex.toString().toLowerCase().contains("cannot insert the value null into column")) {
-                rollBackTransaction(new MyDBNullException(m1));
-            } else if (ex.toString().toLowerCase().contains("violation of unique key constraint")) {
-                rollBackTransaction(new MyDBViolationOfUniqueKeyException(m2));
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Salesman and Customer Must Be Selected !"));
+            } else if (ex.toString().toLowerCase().contains(DB_DUPLICATE)) {
+                rollBackTransaction(new MyDBViolationOfUniqueKeyException("Relation Between Salesman and Customer Already Exists !"));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
@@ -1160,8 +1176,13 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newCrmProcess);
             getEm().getTransaction().commit();
+
         } catch (Exception ex) {
-            rollBackTransaction(new MyDBNullException("Salesman, Customer and Status Must Be Selected !"));
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("New CRM process addition failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
     //</editor-fold>

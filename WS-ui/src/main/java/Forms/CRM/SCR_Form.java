@@ -2,6 +2,8 @@ package Forms.CRM;
 
 import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -10,8 +12,6 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
-import dataservice.exceptions.MyDBNullException;
-import dataservice.exceptions.MyDBViolationOfUniqueKeyException;
 import db.ent.Customer;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
@@ -72,18 +72,17 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
                     try {
                         fieldGroup.commit();
+
                         CRMController.addNew_R_Salesman_Cust(beanItem.getBean());
 
-                        Notification n = new Notification("Relation Customer-Salesman Added.", Notification.Type.TRAY_NOTIFICATION);
+                        Notification n = new Notification("New relation between Customer Salesman added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
-                        
-                    } catch (MyDBNullException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
-                    } catch (MyDBViolationOfUniqueKeyException ex) {
-                        Notification.show("Error", "Relation between salesman and customer already exists.", Notification.Type.ERROR_MESSAGE);
+
+                    } catch (CommitException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -117,12 +116,15 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                             visualContainer.refreshVisualContainer();
                         }
 
-                        Notification n = new Notification("Relation Customer-Salesman Updated.", Notification.Type.TRAY_NOTIFICATION);
+                        Notification n = new Notification("Relation between Customer and Salesman is updated.", Notification.Type.TRAY_NOTIFICATION);
 
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+
+                    } catch (FieldGroup.CommitException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };

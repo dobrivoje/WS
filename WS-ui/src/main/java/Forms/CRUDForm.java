@@ -41,7 +41,7 @@ public abstract class CRUDForm<T> extends FormLayout {
                     addNewBean(bean);
                     Notification.show("New " + notification.getNotification() + " Added.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", "Fields indicated by a red star must be provided", Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

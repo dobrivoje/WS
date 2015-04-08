@@ -91,9 +91,9 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                         n.show(getUI().getPage());
 
                     } catch (MyDBNullException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -147,9 +147,9 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                     n.show(getUI().getPage());
 
                 } catch (MyDBNullException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

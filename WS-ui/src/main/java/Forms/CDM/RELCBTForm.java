@@ -98,7 +98,7 @@ public class RELCBTForm extends FormLayout {
                     // da se osveži.
                     n.show(getUI().getPage());
                 } catch (Exception ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", "Fields indicated by a red star must be provided", Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

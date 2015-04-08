@@ -22,30 +22,27 @@ import org.dobrivoje.auth.roles.Roles;
  */
 public class testKlasa {
 
-    //<editor-fold defaultstate="collapsed" desc="f">
     @RequiresAuthentication()
     private static void testAutentifikacije(Subject subject) {
         System.err.println("testAutentifikacije, Subjekat " + subject.getPrincipal() + ", autentifikovan !");
     }
-    
+
     @RequiresPermissions(Roles.ROOT_PRIVILEGES)
     private static void testDozovle1(Subject subject) {
         System.err.println("testDozovle1 Subjekat " + subject.getPrincipal() + ", ima dozovlu za pravo : " + Roles.ROOT_PRIVILEGES);
     }
-    
+
     @RequiresRoles(value = Roles.ROOT_PRIVILEGES)
     private static void testDozovle2(Subject subject) {
         System.err.println("testDozovle2 Subjekat " + subject.getPrincipal() + ", ima ROLE : " + Roles.ROOT_PRIVILEGES);
     }
-    //</editor-fold>
 
     public static void main(String[] args) {
         IAccessAuthControl intermolAD = new IntermolADAccessControl();
 
         try {
-            // intermolAD.login("intermol\\dprtenjak", "dedaMocika2002");
-            // intermolAD.login("root", "dedaMocika2001");
-            intermolAD.login("ws", "");
+            intermolAD.login("intermol\\dprtenjak", "dedaMocika2002");
+            //intermolAD.login("ws", "");
 
             System.err.println(intermolAD.getSubject().getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -79,5 +76,11 @@ public class testKlasa {
             System.err.println("ExcessiveAttempts !");
         }
 
+        for (String s : Roles.getAllPermissions()) {
+            System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.isPermitted(s));
+        }
+        for (String s : Roles.getAllRoles()) {
+            System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.hasRole(s));
+        }
     }
 }

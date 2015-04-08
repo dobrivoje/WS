@@ -14,9 +14,4 @@ public class MyDBViolationOfUniqueKeyException extends Exception {
     public MyDBViolationOfUniqueKeyException(String message) {
         super(message);
     }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage(); //To change body of generated methods, choose Tools | Templates.
-    }
 }

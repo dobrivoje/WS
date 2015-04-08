@@ -8,6 +8,7 @@ package Forms.CRM;
 import Forms.CRUDForm2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -17,7 +18,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
-import dataservice.exceptions.MyDBNullException;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
@@ -122,10 +122,11 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
-                } catch (MyDBNullException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+
+                } catch (FieldGroup.CommitException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };
@@ -148,7 +149,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                             (Customer) customer.getValue()
                     ));
         } catch (Exception ex) {
-            Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+            Notification.show("Error", "Relation between Salesman and Customer\ndoes not exist !", Notification.Type.ERROR_MESSAGE);
         }
     }
 }

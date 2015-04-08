@@ -14,11 +14,11 @@ public interface IAccessAuthControl {
 
     public boolean login(String username, String password);
 
-    public void logout();
-
     public boolean authenticated();
 
     public boolean hasRole(String role);
+
+    public boolean isPermitted(String permission);
 
     public String getPrincipal();
 }

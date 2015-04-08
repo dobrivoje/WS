@@ -2,6 +2,7 @@ package Forms.FSM;
 
 import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -70,10 +71,10 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
 
-                    } catch (MyDBNullException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
+                    } catch (FieldGroup.CommitException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -106,11 +107,11 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                     Notification n = new Notification("Fuelstation Data Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
-                    
-                } catch (MyDBNullException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
+
+                } catch (FieldGroup.CommitException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };

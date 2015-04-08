@@ -2,6 +2,7 @@ package Forms.FSPROP;
 
 import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
@@ -137,8 +138,11 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
                         Notification n = new Notification("New FS Property Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+
+                    } catch (FieldGroup.CommitException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };

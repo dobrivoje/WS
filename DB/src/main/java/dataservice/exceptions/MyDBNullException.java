@@ -14,9 +14,4 @@ public class MyDBNullException extends Exception {
     public MyDBNullException(String message) {
         super(message);
     }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage(); //To change body of generated methods, choose Tools | Templates.
-    }
 }
