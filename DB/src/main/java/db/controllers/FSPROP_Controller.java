@@ -91,7 +91,7 @@ public class FSPROP_Controller implements IFSPROPController {
 
             try {
                 updateExisting(currentFSProp);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 throw new Exception("Old FS property update not successful !");
             }
         }
@@ -102,7 +102,7 @@ public class FSPROP_Controller implements IFSPROPController {
 
         try {
             addNew(newFSProp);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new Exception("New FS property addition not successful !");
         }
 

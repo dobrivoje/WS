@@ -118,7 +118,7 @@ public class CustomerTable extends GENTable<Customer> {
                 if (property != null) {
                     try {
                         navID = (String) property.getValue();
-                    } catch (Exception e) {
+                    } catch (Exception ex) {
                     }
                 }
 
@@ -135,7 +135,7 @@ public class CustomerTable extends GENTable<Customer> {
                 if (property != null) {
                     try {
                         zone1 = (String) property.getValue();
-                    } catch (Exception e) {
+                    } catch (Exception ex) {
                     }
                 }
 
@@ -152,7 +152,7 @@ public class CustomerTable extends GENTable<Customer> {
                 if (property != null) {
                     try {
                         matBrojID = (String) property.getValue();
-                    } catch (Exception e) {
+                    } catch (Exception ex) {
                     }
                 }
 

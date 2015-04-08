@@ -5,6 +5,8 @@
  */
 package db;
 
+import dataservice.exceptions.MyDBNullException;
+import dataservice.exceptions.MyDBViolationOfUniqueKeyException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +60,13 @@ public class DBHandler {
             getEm().getTransaction().rollback();
         }
         throw new Exception(message);
+    }
+
+    private void rollBackTransaction(Exception e) throws Exception {
+        if (getEm().getTransaction().isActive()) {
+            getEm().getTransaction().rollback();
+        }
+        throw new Exception(e);
     }
     //</editor-fold>
 
@@ -128,7 +137,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newCustomer);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Customer Addition Failed");
         }
     }
@@ -149,7 +158,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(customer);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Customer Update Failed");
         }
     }
@@ -193,8 +202,8 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newFuelstation);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
-            rollBackTransaction("New Fuelstation Addition Failed");
+        } catch (Exception ex) {
+            rollBackTransaction("New Fuelstation Addition Failed.\nFuelstation name must be entered.");
         }
     }
 
@@ -214,7 +223,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(fuelstation);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Fuelstation Update Failed");
         }
     }
@@ -268,7 +277,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newCustomerBussinesType);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Customer Bussines Type Addition Failed");
         }
     }
@@ -278,7 +287,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(newCustomerBussinesType);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Customer Bussines Type Update Failed");
         }
     }
@@ -320,7 +329,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newRelCBType);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Customer Bussines Type Relation Addition Failed");
         }
     }
@@ -341,7 +350,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(newRelCBType);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Customer Bussines Type Relation Update Failed");
         }
     }
@@ -420,7 +429,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newSalesman);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Salesman Update Failed.");
         }
     }
@@ -444,7 +453,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(newSalesman);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Salesman Update Failed.");
         }
     }
@@ -538,7 +547,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newGallery);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Gallery Not Added.");
         }
     }
@@ -558,7 +567,7 @@ public class DBHandler {
             em.persist(newDoc);
             getEm().flush();
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             newDoc = null;
             rollBackTransaction("New Document Not Added.");
         }
@@ -575,7 +584,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(document);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Document Not updated.");
         }
     }
@@ -628,7 +637,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newFSDocument);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New FS Document Not Added.");
         }
     }
@@ -663,7 +672,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newASALESMANIMAGE);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Salesman Image Addition Failed.");
         }
     }
@@ -741,7 +750,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newOwner);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Owner Addition Failed.");
         }
     }
@@ -751,7 +760,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(existingOwner);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Owner Update Failed.");
         }
     }
@@ -851,7 +860,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newFsProp);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New Fuelstation Addition Failed.");
         }
     }
@@ -883,7 +892,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(existingFsProp);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("Fuelstation property Update Failed ");
         }
     }
@@ -988,7 +997,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newCity);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("New City Addition Failed.");
         }
     }
@@ -998,7 +1007,7 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(newCity);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             rollBackTransaction("City Update Failed.");
         }
     }
@@ -1104,20 +1113,20 @@ public class DBHandler {
     }
 
     public void addNew_RelSalesman_Cust(RelSALESMANCUST newRelSALESMANCUST) throws Exception {
-        String m1 = "\nSalesman and Customer Must Be Selected !";
-        String m2 = "\nSalesman and Customer Relation Already Exists !";
+        String m1 = "Salesman and Customer Must Be Selected !";
+        String m2 = "Relation Between Salesman and Customer Already Exists !";
 
         try {
             getEm().getTransaction().begin();
             em.persist(newRelSALESMANCUST);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
-            if (e.toString().contains("column does not allow nulls.")) {
-                rollBackTransaction(m1);
-            } else if (e.toString().contains("The duplicate key value")) {
-                rollBackTransaction(m2);
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains("cannot insert the value null into column")) {
+                rollBackTransaction(new MyDBNullException(m1));
+            } else if (ex.toString().toLowerCase().contains("violation of unique key constraint")) {
+                rollBackTransaction(new MyDBViolationOfUniqueKeyException(m2));
             } else {
-                rollBackTransaction(e.toString());
+                rollBackTransaction(ex.getMessage());
             }
         }
     }
@@ -1127,8 +1136,8 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.merge(R_Salesman_Cust);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
-            rollBackTransaction("Relation Salesman-Customer Update Failed. " + e.toString());
+        } catch (Exception ex) {
+            rollBackTransaction("Relation Salesman-Customer Update Failed. " + ex.getMessage());
         }
     }
     //</editor-fold>
@@ -1137,9 +1146,6 @@ public class DBHandler {
     public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
         RelSALESMANCUST r = getCRM_R_Salesman_Cust(s, c);
 
-        /*if (r == null) {
-         throw new Exception("Salesman not in relation with this customer !");
-         }*/
         CrmProcess crmProcess = new CrmProcess(r, crmStatus, comment, actionDate);
         addNewCRM_Process(crmProcess);
     }
@@ -1154,8 +1160,8 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(newCrmProcess);
             getEm().getTransaction().commit();
-        } catch (Exception e) {
-            rollBackTransaction("\nSalesman and Customer Must Be Selected !");
+        } catch (Exception ex) {
+            rollBackTransaction(new MyDBNullException("Salesman, Customer and Status Must Be Selected !"));
         }
     }
     //</editor-fold>

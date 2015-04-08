@@ -88,7 +88,7 @@ public abstract class CRUDForm2<T> extends FormLayout {
      comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
      comboBox.addItem(o);
     
-     } catch (Exception e) {
+     } catch (Exception ex) {
      Notification.show(
      "Error",
      "This FS must have exaclty one active owner !\n"

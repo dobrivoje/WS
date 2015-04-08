@@ -74,14 +74,14 @@ public class FSOwner_Controller implements IFSOController {
 
             try {
                 updateExisting(currentOwner);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 throw new Exception("Old FS owner update not successful !");
             }
         }
 
         try {
             addNew(newOwner);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new Exception("New FS owner addition not successful !");
         }
 

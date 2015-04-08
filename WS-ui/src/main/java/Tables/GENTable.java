@@ -197,7 +197,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                             Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
                         } catch (Exception ex) {
                             Notification.show("Error.", "File Upload Failed !\n"
-                                    + ex.toString(), Notification.Type.ERROR_MESSAGE);
+                                    + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                         }
                     }
                 }

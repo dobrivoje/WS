@@ -10,6 +10,8 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
+import dataservice.exceptions.MyDBNullException;
+import dataservice.exceptions.MyDBViolationOfUniqueKeyException;
 import db.ent.Customer;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
@@ -49,6 +51,9 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
         salesman.focus();
+
+        salesman.setRequired(true);
+        customer.setRequired(true);
     }
 
     public SCR_Form(final CrudOperations crudOperation) {
@@ -72,6 +77,11 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         Notification n = new Notification("Relation Customer-Salesman Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+                        
+                    } catch (MyDBNullException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
+                    } catch (MyDBViolationOfUniqueKeyException ex) {
+                        Notification.show("Error", "Relation between salesman and customer already exists.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -112,14 +122,14 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
 
             addBeansToForm();
-        } catch (Exception e) {
-            Notification.show("Error", "Description: " + e.toString(), Notification.Type.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            Notification.show("Error", "Description: " + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
         }
     }
 

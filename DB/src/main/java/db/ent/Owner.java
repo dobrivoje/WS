@@ -59,6 +59,7 @@ public class Owner implements Serializable {
     private Long ido;
     @Column(name = "DateFrom")
     @Temporal(TemporalType.DATE)
+    @Basic(optional = false)
     private Date dateFrom;
     @Column(name = "DateTo")
     @Temporal(TemporalType.DATE)
@@ -66,10 +67,10 @@ public class Owner implements Serializable {
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_ID_Customer", referencedColumnName = "IDC")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Customer fKIDCustomer;
     @JoinColumn(name = "FK_ID_FS", referencedColumnName = "IDFS")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Fuelstation fkIdFs;
     @OneToMany(mappedBy = "fkIdo")
     private List<FsProp> fsPropList;
@@ -82,32 +83,32 @@ public class Owner implements Serializable {
 
         try {
             this.dateFrom = newOwner.getDateFrom();
-        } catch (Exception e) {
+        } catch (Exception ex) {
 
         }
         try {
             this.dateTo = newOwner.getDateTo();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.active = newOwner.getActive();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.fKIDCustomer = newOwner.getFKIDCustomer();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.fkIdFs = newOwner.getFkIdFs();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.fsPropList.addAll(newOwner.getFsPropList());
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
     }
 

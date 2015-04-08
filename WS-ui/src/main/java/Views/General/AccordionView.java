@@ -30,7 +30,7 @@ public class AccordionView extends VerticalLayout implements View {
          try {
          menu.createTabs();
          } catch (AccordionIndexException ex) {
-         Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
+         Notification.show("Error.", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
          }
          */
         HSP.setSplitPosition(33, Unit.PERCENTAGE);

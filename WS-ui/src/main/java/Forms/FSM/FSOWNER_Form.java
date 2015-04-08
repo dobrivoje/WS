@@ -10,6 +10,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
+import dataservice.exceptions.MyDBNullException;
 import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
@@ -60,6 +61,10 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
 
+        customer.setRequired(true);
+        fs.setRequired(true);
+        dateFrom.setRequired(true);
+
         customer.focus();
     }
 
@@ -84,6 +89,9 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                         Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+
+                    } catch (MyDBNullException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -138,6 +146,8 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
 
+                } catch (MyDBNullException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }

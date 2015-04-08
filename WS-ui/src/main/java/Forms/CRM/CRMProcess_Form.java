@@ -17,6 +17,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import dataservice.exceptions.MyDBNullException;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
@@ -64,9 +65,13 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         salesman.setWidth(250, Unit.PIXELS);
         customer.setWidth(250, Unit.PIXELS);
 
-        status.setNullSelectionAllowed(false);
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
+        status.setNullSelectionAllowed(false);
+
+        salesman.setRequired(true);
+        customer.setRequired(true);
+        status.setRequired(true);
 
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
@@ -117,6 +122,8 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
+                } catch (MyDBNullException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -141,7 +148,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                             (Customer) customer.getValue()
                     ));
         } catch (Exception ex) {
-            Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+            Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
         }
     }
 }

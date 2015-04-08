@@ -9,6 +9,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import dataservice.exceptions.MyDBNullException;
 import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
@@ -42,6 +43,9 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
         name.focus();
+
+        name.setRequired(true);
+        city.setRequired(true);
     }
 
     public FSForm(final CrudOperations crudOperation) {
@@ -65,6 +69,9 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                         Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+
+                    } catch (MyDBNullException ex) {
+                        Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -99,6 +106,9 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                     Notification n = new Notification("Fuelstation Data Updated.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
+                    
+                } catch (MyDBNullException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provieded.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }

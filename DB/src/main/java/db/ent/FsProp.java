@@ -92,7 +92,7 @@ public class FsProp implements Serializable {
     @Column(name = "Active")
     private Boolean active;
     @JoinColumn(name = "FK_IDO", referencedColumnName = "IDO")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Owner fkIdo;
     @OneToMany(mappedBy = "fkIdfsp")
     private List<RelFSPROPPRODUCT> relFSPROPPRODUCTList;
@@ -108,67 +108,67 @@ public class FsProp implements Serializable {
 
         try {
             this.propertiesDate = existingFsProp.getPropertiesDate();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.noOfTanks = existingFsProp.getNoOfTanks();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.restaurant = existingFsProp.getRestaurant();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.truckCapable = existingFsProp.getTruckCapable();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.carWash = existingFsProp.getCarWash();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.compliance = existingFsProp.getCompliance();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.licence = existingFsProp.getLicence();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.licDateFrom = existingFsProp.getLicDateFrom();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.licDateTo = existingFsProp.getLicDateTo();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.comment = existingFsProp.getComment();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.active = existingFsProp.getActive();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.fkIdo = existingFsProp.getFkIdo();
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
 
         try {
             this.relFSPROPPRODUCTList.addAll(existingFsProp.getRelFSPROPPRODUCTList());
-        } catch (Exception e) {
+        } catch (Exception ex) {
         }
     }
 

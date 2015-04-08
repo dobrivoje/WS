@@ -61,7 +61,7 @@ public class Test1 {
         
          try {
          fsProp = DS.getFSPROPController().getCurrentFSProp(o1);
-         } catch (Exception e) {
+         } catch (Exception ex) {
          }
         
          fsProp.setActive(false);
@@ -116,9 +116,14 @@ public class Test1 {
         Salesman s = DS.getSalesmanController().getByID(3L);
         Customer cu = DS.getCustomerController().getByID(3500L);
         CrmStatus st = DS.getCrmController().getCRM_AllStatuses().get(0);
+
+        RelSALESMANCUST r = null;
+        try {
+            r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, cu);
+        } catch (Exception e) {
+        }
         
         try {
-            RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, cu);
             CrmProcess crmProcess = new CrmProcess(r, null, "komentar", new Date());
 
             DS.getCrmController().addNewCRM_Process(crmProcess);

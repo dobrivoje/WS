@@ -92,7 +92,7 @@ public class ConsoleView extends VerticalLayout implements View {
                         updateBeanItemContainer(Customer_Container, DS.getCustomerController().getAll());
                         Notification.show("Saved.", Notification.Type.TRAY_NOTIFICATION);
                     } catch (Exception ex) {
-                        Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error.", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             });
@@ -130,7 +130,7 @@ public class ConsoleView extends VerticalLayout implements View {
 
                         Notification.show("Saved.", "Message", Notification.Type.TRAY_NOTIFICATION);
                     } catch (Exception ex) {
-                        Notification.show("Error.", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error.", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             });
@@ -162,8 +162,8 @@ public class ConsoleView extends VerticalLayout implements View {
 
                     HR_VL_RIGHT.removeAllComponents();
                     HR_VL_RIGHT.addComponent(cBT_Table);
-                } catch (Exception e) {
-                    Notification.show("Error.", e.toString(), Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error.", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
                 //</editor-fold>
             }

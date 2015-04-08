@@ -43,6 +43,7 @@ public class Fuelstation implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDFS")
     private Long idfs;
+    @Basic(optional = false)
     @Column(name = "Name")
     private String name;
     @Column(name = "Address")
@@ -54,7 +55,7 @@ public class Fuelstation implements Serializable {
     @OneToMany(mappedBy = "fkIdFs")
     private List<Owner> ownerList;
     @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private City FK_City;
 
     public Fuelstation() {

@@ -138,7 +138,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by a red star must be provieded", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -158,25 +158,25 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
 
         try {
             fsPropertyBean.setNoOfTanks(Integer.valueOf(noOfTanks.getValue()));
-        } catch (Exception e) {
+        } catch (Exception ex) {
             fsPropertyBean.setNoOfTanks(0);
         }
 
         try {
             fsPropertyBean.setTruckCapable(Integer.valueOf(truckCapable.getValue()));
-        } catch (Exception e) {
+        } catch (Exception ex) {
             fsPropertyBean.setTruckCapable(0);
         }
 
         try {
             fsPropertyBean.setRestaurant((boolean) restaurant.getValue());
-        } catch (Exception e) {
+        } catch (Exception ex) {
             fsPropertyBean.setRestaurant(false);
         }
 
         try {
             fsPropertyBean.setCarWash((boolean) carWash.getValue());
-        } catch (Exception e) {
+        } catch (Exception ex) {
             fsPropertyBean.setCarWash(false);
         }
 
