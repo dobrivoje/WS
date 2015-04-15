@@ -14,23 +14,38 @@ import java.io.Serializable;
 public class Roles implements Serializable {
 
     public static final String ROOT_PRIVILEGES = "rootPrivileges";
-    public static final String APP_OFFICE_MANAGER = "appOfficeManager";
-    public static final String APP_FS_USER = "appFSUser";
+    public static final String APP_CARDS_MANAGER = "appCardsManager";
+    public static final String APP_CARDS_USER = "appCardsUser";
+    public static final String APP_CARDS_SUPERUSER = "appCardsSuperUser";
+    public static final String APP_FUELSALE_MANAGER = "appFuelsaleManager";
+    public static final String APP_FUELSALE_USER = "appFuelsaleUser";
 
-    public static final String PERMISSION_APP_FS_USER_LOGIN = "appFSUser:login";
-    public static final String PERMISSION_APP_FS_USER_SEARCH_ALL_WORKPLANS = "appFSUser:search:AllWorkplans";
-    public static final String PERMISSION_APP_FS_USER_SEARCH_OWN_WORKPLAN = "appFSUser:search:OwnWorkplan";
-    public static final String PERMISSION_APP_FS_USER_EDIT_ALL_WORKPLANS = "appFSUser:edit:AllWorkplans";
-    public static final String PERMISSION_APP_FS_USER_EDIT_OWN_WORKPLANS = "appFSUser:edit:OwnWorkplans";
+    public static final String PERMISSION_USER_LOGIN = "appUser:login";
+
+    //CARD SECTOR 
+    public static final String PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL = "appCardsUser:customers:search:all";
+    public static final String PERMISSION_CARDS_CUSTOMERS_SEARCH_OWN = "appCardsUser:customers:search:own";
+    public static final String PERMISSION_CARDS_CUSTOMERS_EDIT_ALL = "appCardsUser:customers:edit:all";
+    public static final String PERMISSION_CARDS_CUSTOMERS_EDIT_OWN = "appCardsUser:customers:edit:own";
 
     public static String[] getAllRoles() {
-        return new String[]{ROOT_PRIVILEGES, APP_OFFICE_MANAGER, APP_FS_USER};
+        return new String[]{
+            ROOT_PRIVILEGES,
+            APP_CARDS_MANAGER,
+            APP_CARDS_USER,
+            APP_CARDS_SUPERUSER,
+            APP_FUELSALE_MANAGER,
+            APP_FUELSALE_USER
+        };
     }
 
     public static String[] getAllPermissions() {
         return new String[]{
-            PERMISSION_APP_FS_USER_LOGIN, PERMISSION_APP_FS_USER_SEARCH_ALL_WORKPLANS, PERMISSION_APP_FS_USER_SEARCH_OWN_WORKPLAN,
-            PERMISSION_APP_FS_USER_EDIT_ALL_WORKPLANS, PERMISSION_APP_FS_USER_EDIT_OWN_WORKPLANS
+            PERMISSION_USER_LOGIN,
+            PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL,
+            PERMISSION_CARDS_CUSTOMERS_SEARCH_OWN,
+            PERMISSION_CARDS_CUSTOMERS_EDIT_ALL,
+            PERMISSION_CARDS_CUSTOMERS_EDIT_OWN
         };
     }
 }

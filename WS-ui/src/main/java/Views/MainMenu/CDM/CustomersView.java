@@ -202,10 +202,10 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
-        editBtn.setEnabled(MyUI.get().getAccessControl().hasRole(Roles.APP_OFFICE_MANAGER));
+        editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL));
         editBtn.setDescription("Update this customer with new data...");
 
-        cbTapeBtn.setEnabled(MyUI.get().getAccessControl().hasRole(Roles.APP_OFFICE_MANAGER));
+        cbTapeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL));
         cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
 
         HL1.setSpacing(true);
