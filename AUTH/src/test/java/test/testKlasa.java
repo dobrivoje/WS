@@ -42,9 +42,9 @@ public class testKlasa {
         IAccessAuthControl intermolAD = new IntermolADAccessControl();
 
         try {
-            intermolAD.login("intermol\\dprtenjak", "dedaMocika2002");
-            //intermolAD.login("root", "root");
-            //intermolAD.login("dobri", "dobri");
+            //intermolAD.login("intermol\\dprtenjak", "dedaMocika2002");
+            //intermolAD.login("root", "");
+            intermolAD.login("ws", "");
 
             System.err.println(intermolAD.getSubject().getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -85,8 +85,20 @@ public class testKlasa {
             System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.hasRole(s));
         }
 
-        Sha256Hash sha256Hash = new Sha256Hash("");
+        Sha256Hash sha256Hash = new Sha256Hash("dedaMocika2001");
         System.out.println(sha256Hash.toHex());
 
+        System.err.println(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL
+                + " : "
+                + intermolAD.isPermitted(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL)
+        );
+        
+        System.err.println(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL
+                + " : "
+                + intermolAD.isPermitted(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL)
+        );
+
+        
+        System.err.println("ĐŠPĆČČLDJHNMLČĐŠ");
     }
 }

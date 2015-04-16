@@ -22,18 +22,16 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import db.ent.Customer;
-import org.dobrivoje.auth.roles.Roles;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import ws.MyUI;
 
 public class CustomersView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "Customers View";
-
+    
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
 
@@ -192,6 +190,7 @@ public class CustomersView extends VerticalLayout implements View {
                 getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
             }
         });
+        
         Button cbTapeBtn = new Button("t", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -202,10 +201,8 @@ public class CustomersView extends VerticalLayout implements View {
             }
         });
 
-        editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL));
         editBtn.setDescription("Update this customer with new data...");
 
-        cbTapeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_CUSTOMERS_EDIT_ALL));
         cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
 
         HL1.setSpacing(true);

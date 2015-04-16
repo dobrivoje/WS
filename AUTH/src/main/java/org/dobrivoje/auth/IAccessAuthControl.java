@@ -8,17 +8,17 @@ import org.apache.shiro.mgt.SecurityManager;
  */
 public interface IAccessAuthControl {
 
-    public SecurityManager getSecurityManager();
+    SecurityManager getSecurityManager();
 
-    public Subject getSubject();
+    Subject getSubject();
 
-    public boolean login(String username, String password);
+    boolean login(String username, String password);
 
-    public boolean authenticated();
+    boolean authenticated();
 
-    public boolean hasRole(String role);
+    boolean hasRole(String role);
 
-    public boolean isPermitted(String permission);
+    boolean isPermitted(String permission);
 
-    public String getPrincipal();
+    String getPrincipal();
 }

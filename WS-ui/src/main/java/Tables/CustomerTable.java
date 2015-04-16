@@ -22,6 +22,7 @@ import db.ent.Customer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.dobrivoje.auth.roles.Roles;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
@@ -29,6 +30,7 @@ import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -82,7 +84,10 @@ public class CustomerTable extends GENTable<Customer> {
                     }
                 });
 
+                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL));
                 editBtn.setDescription("Update this customer with new data...");
+
+                cbTapeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL));
                 cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
 
                 custOptionsHL.addComponents(editBtn, cbTapeBtn);
