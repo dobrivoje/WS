@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
+import db.Exceptions.CustomTreeNodesEmptyException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class CustomDateTree<T> extends CustomTree<T> {
         "no end date !", "To: "
     };
 
-    public CustomDateTree(String caption, List treeItems) {
+    public CustomDateTree(String caption, List treeItems) throws CustomTreeNodesEmptyException {
         super(caption, treeItems);
     }
 

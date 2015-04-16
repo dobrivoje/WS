@@ -7,6 +7,7 @@ package org.superb.apps.utilities.vaadin.Trees;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Tree;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +33,14 @@ public class CustomTree<T> extends Tree {
      *
      * @param caption Naziv stabla
      * @param treeItems Lista čvorova
+     * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
-    public CustomTree(String caption, List treeItems) {
+    public CustomTree(String caption, List treeItems) throws CustomTreeNodesEmptyException {
         this(caption);
+        if (treeItems.isEmpty()) {
+            throw new CustomTreeNodesEmptyException();
+        }
         addItems(treeItems);
-
         elements.clear();
         elements.addAll(treeItems.subList(0, treeItems.size()));
     }
@@ -50,13 +54,18 @@ public class CustomTree<T> extends Tree {
      *
      * @param caption
      * @param container BeanContainer za klasu koju pratimo.
+     * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
-    public CustomTree(String caption, BeanItemContainer<T> container) {
+    public CustomTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException {
         this(caption);
-        setContainerDataSource(container);
 
-        elements.clear();
-        elements.addAll(container.getItemIds());
+        if (container.size() > 0) {
+            setContainerDataSource(container);
+            elements.clear();
+            elements.addAll(container.getItemIds());
+        } else {
+            throw new CustomTreeNodesEmptyException();
+        }
     }
 
     /**

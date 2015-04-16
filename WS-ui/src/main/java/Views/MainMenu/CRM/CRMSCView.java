@@ -5,6 +5,9 @@ import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import db.Exceptions.CustomTreeNodesEmptyException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static ws.MyUI.DS;
 
 public class CRMSCView extends DashboardView {
@@ -27,7 +30,12 @@ public class CRMSCView extends DashboardView {
         VerticalLayout VL = new VerticalLayout();
         VL.setSizeFull();
 
-        propPanel.setContent(new SC_Tree("", DS.getSalesmanController().getAll()));
+        try {
+            propPanel.setContent(new SC_Tree("", DS.getSalesmanController().getAll()));
+        } catch (CustomTreeNodesEmptyException ex) {
+            Logger.getLogger(CRMSCView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         VL.addComponent(propPanel);
 
         return createContentWrapper(VL);

@@ -26,11 +26,12 @@ public class ShiroAccessControl implements IAccessAuthControl {
         return securityManager;
     }
 
-    @Override
-    public Subject getSubject() {
-        return subject;
-    }
-
+    /*
+     @Override
+     public Subject getSubject() {
+     return subject;
+     }
+     */
     @Override
     public boolean login(String username, String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);

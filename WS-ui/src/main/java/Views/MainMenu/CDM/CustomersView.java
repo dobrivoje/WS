@@ -21,7 +21,10 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
@@ -31,7 +34,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 public class CustomersView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "Customers View";
-    
+
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
 
@@ -159,8 +162,17 @@ public class CustomersView extends VerticalLayout implements View {
 
     private void showPropForm(Customer c) {
         if (c != null) {
-            propPanels[0].setContent(new RELCBT_Tree("", c));
-            propPanels[1].setContent(new FSOwner_Tree("", c, true));
+            try {
+                propPanels[0].setContent(new RELCBT_Tree("", c));
+            } catch (Exception ex) {
+                Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                propPanels[1].setContent(new FSOwner_Tree("", c, true));
+            } catch (Exception ex) {
+            }
+
             propPanels[2].setContent(buildCustomerOptions(c, customersTable));
 
         } else {
@@ -190,24 +202,26 @@ public class CustomersView extends VerticalLayout implements View {
                 getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
             }
         });
-        
-        Button cbTapeBtn = new Button("t", new Button.ClickListener() {
+
+        Button cbtypeBtn = new Button("t", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                RELCBTForm relCBT_Form = new RELCBTForm(c);
-
-                getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                try {
+                    RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                    RELCBTForm relCBT_Form = new RELCBTForm(c);
+                    getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                } catch (CustomTreeNodesEmptyException | IllegalArgumentException | NullPointerException e) {
+                }
             }
         });
 
         editBtn.setDescription("Update this customer with new data...");
 
-        cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
+        cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
         HL1.setSpacing(true);
         HL1.setMargin(true);
-        HL1.addComponents(editBtn, cbTapeBtn);
+        HL1.addComponents(editBtn, cbtypeBtn);
 
         VL1.addComponents(HL1);
 

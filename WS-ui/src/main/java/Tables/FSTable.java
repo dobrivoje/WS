@@ -14,11 +14,14 @@ import com.vaadin.event.Action;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import db.ent.Fuelstation;
 import java.util.List;
+import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -51,6 +54,7 @@ public class FSTable extends GENTable<Fuelstation> {
                         getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f)));
                     }
                 });
+
                 final Button ownerBtn = new Button("o", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
@@ -61,7 +65,10 @@ public class FSTable extends GENTable<Fuelstation> {
                 });
 
                 editBtn.setDescription("Update this Fuelstation with new data...");
+                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_CUSTOMERS_EDIT_ALL));
+
                 ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
+                ownerBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER));
 
                 optLayout.addComponents(editBtn, ownerBtn);
                 optLayout.setSizeFull();
@@ -118,11 +125,21 @@ public class FSTable extends GENTable<Fuelstation> {
 
                 if (action.equals(FSTable.ACTION_FS_OWNER)) {
                     caption = "Fuelstation Owner Form";
-                    getUI().addWindow(new WindowForm(caption, false, new FSOWNER_Form(f, null)));
+
+                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
+                        getUI().addWindow(new WindowForm(caption, false, new FSOWNER_Form(f, null)));
+                    } else {
+                        Notification.show("User Rights Error", "You don't have rights to change customer owner!", Notification.Type.ERROR_MESSAGE);
+                    }
                 }
                 if (action.equals(FSTable.ACTION_FS_UPDATE)) {
                     caption = "Fuelstation Update Form";
-                    getUI().addWindow(new WindowFormProp(caption, false, new FSForm(f, null), createImageGallery(f)));
+
+                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL)) {
+                        getUI().addWindow(new WindowFormProp(caption, false, new FSForm(f, null), createImageGallery(f)));
+                    } else {
+                        Notification.show("User Rights Error", "You don't have rights to change customer owner!", Notification.Type.ERROR_MESSAGE);
+                    }
                 }
             }
         });

@@ -10,6 +10,7 @@ import Forms.CRM.CRMProcess_Form;
 import Forms.CRM.SCR_Form;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.Salesman;
 import java.util.List;
@@ -29,13 +30,13 @@ public class SC_Tree extends CustomSCTree<Salesman> {
     private static final Action ACTION_CUSTOMER_DATA_UPDATE = new Action("New Customer Update");
     private static final Action ACTION_CUSTOMER_ACTIVE_NO_MORE = new Action("Customer Removal from Salesman Responsibility");
 
-    public SC_Tree(String caption, List<Salesman> L) {
+    public SC_Tree(String caption, List<Salesman> L) throws CustomTreeNodesEmptyException {
         super(caption, L);
         createSubItems();
         addActionHandler(getActionManager());
     }
 
-    public SC_Tree(String caption, BeanItemContainer<Salesman> bic) {
+    public SC_Tree(String caption, BeanItemContainer<Salesman> bic) throws CustomTreeNodesEmptyException {
         super(caption, bic);
         createSubItems();
         addActionHandler(getActionManager());

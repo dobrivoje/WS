@@ -7,6 +7,8 @@ package Tables;
 
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
+import Forms.CRM.CRMProcess_Form;
+import Trees.CRM_CurrCustProcesses_Tree;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -16,13 +18,15 @@ import com.vaadin.event.Action;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.City;
 import db.ent.Customer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.dobrivoje.auth.roles.Roles;
+import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
@@ -41,6 +45,8 @@ public class CustomerTable extends GENTable<Customer> {
 
     private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
     private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
+    private static final Action ACTION_CRM_ACTIVE_PROCESSES = new Action("Active Customer CRM Processes");
+    private static final Action ACTION_CRM_NEW_PROCESS = new Action("New Customer CRM Processes");
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
@@ -52,6 +58,7 @@ public class CustomerTable extends GENTable<Customer> {
         tableColumnsID = new ArrayList(Arrays.asList(
                 "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
 
+        //<editor-fold defaultstate="collapsed" desc="Generisane kolone tabele,...">
         addGeneratedColumn("options", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
@@ -72,29 +79,35 @@ public class CustomerTable extends GENTable<Customer> {
                         getUI().addWindow(new WindowForm2("Customer Update Form", cf));
                     }
                 });
-                final Button cbTapeBtn = new Button("t", new Button.ClickListener() {
+                final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
 
-                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                        RELCBTForm relCBT_Form = new RELCBTForm(c);
+                        RELCBT_Tree cbtTree;
+                        RELCBTForm relCBT_Form;
 
-                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                        try {
+                            cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                            relCBT_Form = new RELCBTForm(c);
+                            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                        } catch (CustomTreeNodesEmptyException ex) {
+                            Notification.show("Notification", "There's no bussines type for this customer!", Notification.Type.ERROR_MESSAGE);
+                        }
                     }
                 });
 
-                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL));
+                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 editBtn.setDescription("Update this customer with new data...");
 
-                cbTapeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(Roles.PERMISSION_CARDS_USER_CUSTOMERS_SEARCH_ALL));
-                cbTapeBtn.setDescription("Appoint this customer to a bussines type...");
+                cbtypeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
-                custOptionsHL.addComponents(editBtn, cbTapeBtn);
+                custOptionsHL.addComponents(editBtn, cbtypeBtn);
                 custOptionsHL.setSizeFull();
                 custOptionsHL.setSpacing(true);
                 custOptionsHL.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
-                custOptionsHL.setComponentAlignment(cbTapeBtn, Alignment.MIDDLE_CENTER);
+                custOptionsHL.setComponentAlignment(cbtypeBtn, Alignment.MIDDLE_CENTER);
 
                 return custOptionsHL;
             }
@@ -186,6 +199,7 @@ public class CustomerTable extends GENTable<Customer> {
         setColumnWidth("options", 90);
 
         setTablePerspective(SIMPLE);
+        //</editor-fold>
     }
 
     public void setFilter(String filterString) {
@@ -240,7 +254,12 @@ public class CustomerTable extends GENTable<Customer> {
 
             @Override
             public Action[] getActions(Object target, Object sender) {
-                return new Action[]{ACTION_CUSTOMER_UPDATE, ACTION_CUSTOMER_BUSSINES_TYPE};
+                return new Action[]{
+                    ACTION_CUSTOMER_UPDATE,
+                    ACTION_CUSTOMER_BUSSINES_TYPE,
+                    ACTION_CRM_ACTIVE_PROCESSES,
+                    ACTION_CRM_NEW_PROCESS
+                };
             }
 
             @Override
@@ -257,14 +276,60 @@ public class CustomerTable extends GENTable<Customer> {
                         }
                     });
 
-                    getUI().addWindow(new WindowForm2("Customer Update Form", cf));
-                } else {
+                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+                        getUI().addWindow(new WindowForm2("Customer Update Form", cf));
+                    } else {
+                        Notification.show("User Rights Error", "You don't have rights to update customers!", Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+
+                if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
                     Customer c = (Customer) source.getValue();
 
-                    RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                    RELCBTForm relCBT_Form = new RELCBTForm(c);
+                    try {
+                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        RELCBTForm relCBT_Form = new RELCBTForm(c);
 
-                    getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+                            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                        } else {
+                            Notification.show("User Rights Error",
+                                    "You don't have rights to add bussines type to customers! ",
+                                    Notification.Type.ERROR_MESSAGE);
+                        }
+                    } catch (CustomTreeNodesEmptyException e) {
+                        Notification.show("Notification", "There is no bussines type(s)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+
+                if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
+                    Customer c = (Customer) source.getValue();
+
+                    try {
+                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        RELCBTForm relCBT_Form = new RELCBTForm(c);
+                    } catch (CustomTreeNodesEmptyException ex) {
+                        Notification.show("Notification", "There is no active CRM process(es)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                    }
+                }
+
+                if (action.equals(ACTION_CRM_NEW_PROCESS)) {
+                    Customer c = (Customer) source.getValue();
+
+                    try {
+                        CRM_CurrCustProcesses_Tree cbtTree = new CRM_CurrCustProcesses_Tree("CRM Process(es)", c);
+                        CRMProcess_Form relCBT_Form = new CRMProcess_Form();
+
+                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            getUI().addWindow(new WindowFormProp("Customer's CRM Form", false, relCBT_Form, cbtTree));
+                        } else {
+                            Notification.show("User Rights Error",
+                                    "You don't have rights to add new CRM process! ",
+                                    Notification.Type.ERROR_MESSAGE);
+                        }
+                    } catch (CustomTreeNodesEmptyException e) {
+                        Notification.show("Notification", "There is no CRM process(es)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                    }
                 }
             }
         });

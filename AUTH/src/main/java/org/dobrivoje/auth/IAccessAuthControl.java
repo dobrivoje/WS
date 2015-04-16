@@ -1,6 +1,5 @@
 package org.dobrivoje.auth;
 
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.mgt.SecurityManager;
 
 /**
@@ -10,7 +9,7 @@ public interface IAccessAuthControl {
 
     SecurityManager getSecurityManager();
 
-    Subject getSubject();
+    // Subject getSubject();
 
     boolean login(String username, String password);
 

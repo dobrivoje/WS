@@ -5,6 +5,7 @@
  */
 package Trees;
 
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.Owner;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
@@ -16,7 +17,7 @@ import static ws.MyUI.DS;
  */
 public class FSOwner_Tree extends CustomDateTree<Owner> {
 
-    public FSOwner_Tree(String caption, Customer customer, boolean justActive) {
+    public FSOwner_Tree(String caption, Customer customer, boolean justActive) throws CustomTreeNodesEmptyException {
         super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer, justActive));
         createSubItems();
     }

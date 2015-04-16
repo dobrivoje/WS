@@ -6,6 +6,7 @@
 package org.superb.apps.utilities.vaadin.Trees;
 
 import com.vaadin.data.util.BeanItemContainer;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.List;
 
 /**
@@ -25,12 +26,13 @@ public class CustomSCTree<T> extends CustomTree<T> {
      *
      * @param caption
      * @param treeItems Lista čvorova
+     * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
-    public CustomSCTree(String caption, List treeItems) {
+    public CustomSCTree(String caption, List treeItems) throws CustomTreeNodesEmptyException {
         super(caption, treeItems);
     }
 
-    public CustomSCTree(String caption, BeanItemContainer<T> container) {
+    public CustomSCTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException {
         super(caption, container);
     }
 

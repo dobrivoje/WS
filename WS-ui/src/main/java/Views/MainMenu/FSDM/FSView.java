@@ -17,8 +17,10 @@ import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import db.ent.Fuelstation;
+import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 public class FSView extends VerticalLayout implements View {
@@ -64,7 +66,7 @@ public class FSView extends VerticalLayout implements View {
 
         addComponent(VL);
         //</editor-fold>
-        
+
         FS_Table.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -99,7 +101,7 @@ public class FSView extends VerticalLayout implements View {
         });
 
         newFSPropButton = new Button("New FS Property");
-        newFSPropButton.setEnabled(false);
+        newFSPropButton.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY));
         newFSPropButton.setWidth(170, Unit.PIXELS);
         newFSPropButton.setIcon(FontAwesome.ARCHIVE);
         newFSPropButton.focus();
@@ -112,6 +114,7 @@ public class FSView extends VerticalLayout implements View {
         });
 
         newFSOButton = new Button("New FS Owner");
+        newFSOButton.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER));
         newFSOButton.setWidth(150, Unit.PIXELS);
         newFSOButton.setIcon(FontAwesome.BULLSEYE);
         newFSOButton.addClickListener(new Button.ClickListener() {

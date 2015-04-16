@@ -5,6 +5,7 @@
  */
 package Trees;
 
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.RelCBType;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
@@ -16,7 +17,7 @@ import static ws.MyUI.DS;
  */
 public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
-    public RELCBT_Tree(String caption, Customer customer) {
+    public RELCBT_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException {
         super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer));
         createSubItems();
     }
