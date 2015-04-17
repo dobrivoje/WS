@@ -32,8 +32,8 @@ public class CRMSCView extends DashboardView {
 
         try {
             propPanel.setContent(new SC_Tree("", DS.getSalesmanController().getAll()));
-        } catch (CustomTreeNodesEmptyException ex) {
-            Logger.getLogger(CRMSCView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+            Logger.getLogger(CRMSCView.class.getName()).log(Level.WARNING, null, ex);
         }
         
         VL.addComponent(propPanel);

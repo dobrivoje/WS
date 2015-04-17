@@ -164,13 +164,13 @@ public class CustomersView extends VerticalLayout implements View {
         if (c != null) {
             try {
                 propPanels[0].setContent(new RELCBT_Tree("", c));
-            } catch (Exception ex) {
-                Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+                Logger.getLogger(CustomersView.class.getName()).log(Level.WARNING, null, ex);
             }
 
             try {
                 propPanels[1].setContent(new FSOwner_Tree("", c, true));
-            } catch (Exception ex) {
+            } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
             }
 
             propPanels[2].setContent(buildCustomerOptions(c, customersTable));
@@ -210,7 +210,8 @@ public class CustomersView extends VerticalLayout implements View {
                     RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
                     RELCBTForm relCBT_Form = new RELCBTForm(c);
                     getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                } catch (CustomTreeNodesEmptyException | IllegalArgumentException | NullPointerException e) {
+                } catch (CustomTreeNodesEmptyException | IllegalArgumentException | NullPointerException ex) {
+                    Logger.getLogger(CustomersView.class.getName()).log(Level.WARNING, null, ex);
                 }
             }
         });

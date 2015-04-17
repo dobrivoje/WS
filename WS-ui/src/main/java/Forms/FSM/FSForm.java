@@ -10,7 +10,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import dataservice.exceptions.MyDBNullException;
 import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;

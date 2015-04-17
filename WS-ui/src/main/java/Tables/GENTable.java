@@ -8,7 +8,6 @@ package Tables;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
-import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -21,6 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.dobrivoje.utils.chars.translators.CharsAdapter;
@@ -130,7 +130,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 if (event.isDoubleClick()) {
-                    openFSGalleryWindow("Fuelstation - " + fuelstation.getName(), image.getSource());
+                    openFSGalleryWindow2("Fuelstation - " + fuelstation.getName(), fuelstation);
                 }
             }
         });
@@ -219,28 +219,20 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             }
         };
 
-        for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
-            if (ImageTypes.contains(d.getName())) {
+        for (final Image si : getAllFSImages(f)) {
+            si.setHeight(40, Unit.PIXELS);
+            si.setWidth(40, Unit.PIXELS);
 
-                FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
-
-                if (fr.getSourceFile().exists()) {
-                    final Image image = new Image(null, fr);
-                    image.setHeight(40, Unit.PIXELS);
-                    image.setWidth(40, Unit.PIXELS);
-
-                    image.addClickListener(new MouseEvents.ClickListener() {
-                        @Override
-                        public void click(MouseEvents.ClickEvent event) {
-                            if (event.isDoubleClick()) {
-                                openFSGalleryWindow("Fuelstation - " + f.getName(), image.getSource());
-                            }
-                        }
-                    });
-
-                    FSLowerImagesCssLayout.addComponent(image);
+            si.addClickListener(new MouseEvents.ClickListener() {
+                @Override
+                public void click(MouseEvents.ClickEvent event) {
+                    if (event.isDoubleClick()) {
+                        openFSGalleryWindow2("Fuelstation - " + f.getName(), f);
+                    }
                 }
-            }
+            });
+
+            FSLowerImagesCssLayout.addComponent(si);
         }
         //</editor-fold>
 
@@ -250,20 +242,83 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return rootLayout;
     }
 
-    private void openFSGalleryWindow(String caption, Resource resource) {
+    private void openFSGalleryWindow2(String caption, Fuelstation f) {
         VerticalLayout VLI = new VerticalLayout();
-        VLI.setSizeFull();
+        VLI.setSpacing(true);
 
-        Image img = new Image();
-        img.setSource(resource);
+        final VerticalLayout VL_MainImage = new VerticalLayout();
+        VL_MainImage.setSizeFull();
 
-        img.setHeight(97, Unit.PERCENTAGE);
-        img.setWidth(97, Unit.PERCENTAGE);
+        final CssLayout CSS_SubImages = new CssLayout() {
+            @Override
+            public void setSizeFull() {
+                super.setSizeFull();
+            }
+            
+            @Override
+            protected String getCss(Component c) {
+                return "display: inline-block;";
+            }
+        };
+        
+        VLI.addComponents(VL_MainImage, CSS_SubImages);
+        VLI.setExpandRatio(VL_MainImage, 2);
+        VLI.setComponentAlignment(VL_MainImage, Alignment.MIDDLE_CENTER);
+        VLI.setComponentAlignment(CSS_SubImages, Alignment.MIDDLE_CENTER);
 
-        VLI.addComponent(img);
-        VLI.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+        //<editor-fold defaultstate="collapsed" desc="Glavna slika">
+        final Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
+        defaultImage.setHeight(97, Unit.PERCENTAGE);
+        defaultImage.setWidth(97, Unit.PERCENTAGE);
+
+        VL_MainImage.addComponent(defaultImage);
+        VL_MainImage.setComponentAlignment(defaultImage, Alignment.MIDDLE_CENTER);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Sve slike stanice,...">
+        for (final Image si : getAllFSImages(f)) {
+            si.setHeight(40, Unit.PIXELS);
+            si.setWidth(40, Unit.PIXELS);
+
+            si.addClickListener(new MouseEvents.ClickListener() {
+                @Override
+                public void click(MouseEvents.ClickEvent event) {
+                    if (event.isDoubleClick()) {
+                        VL_MainImage.removeAllComponents();
+
+                        si.setHeight(97, Unit.PERCENTAGE);
+                        si.setWidth(97, Unit.PERCENTAGE);
+
+                        VL_MainImage.addComponent(si);
+                        VL_MainImage.setComponentAlignment(si, Alignment.MIDDLE_CENTER);
+                    }
+                }
+            });
+
+            CSS_SubImages.addComponent(si);
+        }
+        //</editor-fold>
 
         getUI().addWindow(new MyWindow(VLI, caption, 0, 0));
+    }
+
+    private List<Image> getAllFSImages(Fuelstation f) {
+        List<Image> LI = new ArrayList<>();
+
+        for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
+            if (ImageTypes.contains(d.getName())) {
+
+                FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
+
+                if (fr.getSourceFile().exists()) {
+                    final Image image = new Image(null, fr);
+
+                    LI.add(image);
+                }
+            }
+        }
+
+        return LI;
     }
     //</editor-fold>
 }

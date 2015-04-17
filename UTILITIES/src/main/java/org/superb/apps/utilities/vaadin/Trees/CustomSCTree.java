@@ -28,11 +28,11 @@ public class CustomSCTree<T> extends CustomTree<T> {
      * @param treeItems Lista čvorova
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
-    public CustomSCTree(String caption, List treeItems) throws CustomTreeNodesEmptyException {
+    public CustomSCTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
     }
 
-    public CustomSCTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException {
+    public CustomSCTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, container);
     }
 

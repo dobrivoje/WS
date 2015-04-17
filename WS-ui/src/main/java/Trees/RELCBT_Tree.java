@@ -17,7 +17,7 @@ import static ws.MyUI.DS;
  */
 public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
-    public RELCBT_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException {
+    public RELCBT_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer));
         createSubItems();
     }

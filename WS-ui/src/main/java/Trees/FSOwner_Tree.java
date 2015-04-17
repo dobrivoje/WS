@@ -17,7 +17,7 @@ import static ws.MyUI.DS;
  */
 public class FSOwner_Tree extends CustomDateTree<Owner> {
 
-    public FSOwner_Tree(String caption, Customer customer, boolean justActive) throws CustomTreeNodesEmptyException {
+    public FSOwner_Tree(String caption, Customer customer, boolean justActive) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer, justActive));
         createSubItems();
     }

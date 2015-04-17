@@ -1089,6 +1089,16 @@ public class DBHandler {
     }
 
     public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
+        dateTo = dateTo == null ? new Date() : dateTo;
+
+        if (dateFrom == null) {
+            // dateFrom = dateTo - 1 godina !
+            long g = dateTo.getTime() - 1000 * 60 * 60 * 24 * 365 * 1;
+            g = g < 0 ? 0 : g;
+            
+            dateFrom = new Date(dateTo.getTime() - g);
+        }
+
         try {
             return getEm().createNamedQuery("CrmProcess.CustomerProcessesByDate")
                     .setParameter("IDC", customer)

@@ -28,7 +28,7 @@ public class CustomDateTree<T> extends CustomTree<T> {
         "no end date !", "To: "
     };
 
-    public CustomDateTree(String caption, List treeItems) throws CustomTreeNodesEmptyException {
+    public CustomDateTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
     }
 

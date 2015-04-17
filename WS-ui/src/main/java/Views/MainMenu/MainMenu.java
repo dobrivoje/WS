@@ -152,6 +152,7 @@ public class MainMenu extends CssLayout {
 
     public void createViewTree(final String name) {
         Tree customersTree = new Tree();
+
         //<editor-fold defaultstate="collapsed" desc="Menu UI Defs">
         customersTree.addItems(Menu.getDefault().getAllMenuItems());
 

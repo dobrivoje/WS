@@ -92,7 +92,7 @@ public class CustomerTable extends GENTable<Customer> {
                             cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
                             relCBT_Form = new RELCBTForm(c);
                             getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                        } catch (CustomTreeNodesEmptyException ex) {
+                        } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             Notification.show("Notification", "There's no bussines type for this customer !", Notification.Type.ERROR_MESSAGE);
                         }
                     }
@@ -298,7 +298,7 @@ public class CustomerTable extends GENTable<Customer> {
                                     "You don't have rights to add \nbussines type to this customers ! ",
                                     Notification.Type.ERROR_MESSAGE);
                         }
-                    } catch (CustomTreeNodesEmptyException e) {
+                    } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException e) {
                         Notification.show("Notification", "There is no bussines type(s)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
@@ -309,7 +309,7 @@ public class CustomerTable extends GENTable<Customer> {
                     try {
                         RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
                         RELCBTForm relCBT_Form = new RELCBTForm(c);
-                    } catch (CustomTreeNodesEmptyException ex) {
+                    } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                         Notification.show("Notification", "There is no active CRM process(es)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }

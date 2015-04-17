@@ -30,13 +30,13 @@ public class SC_Tree extends CustomSCTree<Salesman> {
     private static final Action ACTION_CUSTOMER_DATA_UPDATE = new Action("New Customer Update");
     private static final Action ACTION_CUSTOMER_ACTIVE_NO_MORE = new Action("Customer Removal from Salesman Responsibility");
 
-    public SC_Tree(String caption, List<Salesman> L) throws CustomTreeNodesEmptyException {
+    public SC_Tree(String caption, List<Salesman> L) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, L);
         createSubItems();
         addActionHandler(getActionManager());
     }
 
-    public SC_Tree(String caption, BeanItemContainer<Salesman> bic) throws CustomTreeNodesEmptyException {
+    public SC_Tree(String caption, BeanItemContainer<Salesman> bic) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, bic);
         createSubItems();
         addActionHandler(getActionManager());
