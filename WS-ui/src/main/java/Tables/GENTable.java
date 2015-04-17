@@ -12,11 +12,13 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
@@ -130,7 +132,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 if (event.isDoubleClick()) {
-                    openFSGalleryWindow2("Fuelstation - " + fuelstation.getName(), fuelstation);
+                    openFSGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
                 }
             }
         });
@@ -227,7 +229,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                 @Override
                 public void click(MouseEvents.ClickEvent event) {
                     if (event.isDoubleClick()) {
-                        openFSGalleryWindow2("Fuelstation - " + f.getName(), f);
+                        openFSGalleryWindow("Fuelstation - " + f.getName(), f);
                     }
                 }
             });
@@ -242,29 +244,24 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return rootLayout;
     }
 
-    private void openFSGalleryWindow2(String caption, Fuelstation f) {
-        VerticalLayout VLI = new VerticalLayout();
-        VLI.setSpacing(true);
+    private void openFSGalleryWindow(String caption, Fuelstation f) {
+        VerticalLayout VL_Root = new VerticalLayout();
+        VL_Root.setSpacing(true);
+
+        final Window W = new MyWindow(VL_Root, caption, 0, 0);
+        W.setModal(true);
 
         final VerticalLayout VL_MainImage = new VerticalLayout();
         VL_MainImage.setSizeFull();
 
-        final CssLayout CSS_SubImages = new CssLayout() {
-            @Override
-            public void setSizeFull() {
-                super.setSizeFull();
-            }
-            
-            @Override
-            protected String getCss(Component c) {
-                return "display: inline-block;";
-            }
-        };
-        
-        VLI.addComponents(VL_MainImage, CSS_SubImages);
-        VLI.setExpandRatio(VL_MainImage, 2);
-        VLI.setComponentAlignment(VL_MainImage, Alignment.MIDDLE_CENTER);
-        VLI.setComponentAlignment(CSS_SubImages, Alignment.MIDDLE_CENTER);
+        final HorizontalLayout HL_Footer = new HorizontalLayout();
+        final HorizontalLayout HL_Images = new HorizontalLayout();
+        HL_Footer.addComponents(HL_Images);
+
+        VL_Root.addComponents(VL_MainImage, HL_Footer, new VerticalLayout());
+        VL_Root.setExpandRatio(VL_MainImage, 1);
+        VL_Root.setComponentAlignment(VL_MainImage, Alignment.MIDDLE_CENTER);
+        VL_Root.setComponentAlignment(HL_Footer, Alignment.MIDDLE_CENTER);
 
         //<editor-fold defaultstate="collapsed" desc="Glavna slika">
         final Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
@@ -275,31 +272,31 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         VL_MainImage.setComponentAlignment(defaultImage, Alignment.MIDDLE_CENTER);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Sve slike stanice,...">
+        //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
         for (final Image si : getAllFSImages(f)) {
             si.setHeight(40, Unit.PIXELS);
             si.setWidth(40, Unit.PIXELS);
+            si.setDescription("Click to open the image.");
 
             si.addClickListener(new MouseEvents.ClickListener() {
                 @Override
                 public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        VL_MainImage.removeAllComponents();
+                    VL_MainImage.removeAllComponents();
 
-                        si.setHeight(97, Unit.PERCENTAGE);
-                        si.setWidth(97, Unit.PERCENTAGE);
+                    Image ni = new Image(null, si.getSource());
+                    ni.setHeight(97, Unit.PERCENTAGE);
+                    ni.setWidth(97, Unit.PERCENTAGE);
 
-                        VL_MainImage.addComponent(si);
-                        VL_MainImage.setComponentAlignment(si, Alignment.MIDDLE_CENTER);
-                    }
+                    VL_MainImage.addComponent(ni);
+                    VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
                 }
             });
 
-            CSS_SubImages.addComponent(si);
+            HL_Images.addComponent(si);
         }
         //</editor-fold>
 
-        getUI().addWindow(new MyWindow(VLI, caption, 0, 0));
+        getUI().addWindow(W);
     }
 
     private List<Image> getAllFSImages(Fuelstation f) {
@@ -307,7 +304,6 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
             if (ImageTypes.contains(d.getName())) {
-
                 FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
 
                 if (fr.getSourceFile().exists()) {
