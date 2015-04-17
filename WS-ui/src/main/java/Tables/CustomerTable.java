@@ -31,6 +31,7 @@ import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -92,7 +93,7 @@ public class CustomerTable extends GENTable<Customer> {
                             relCBT_Form = new RELCBTForm(c);
                             getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
                         } catch (CustomTreeNodesEmptyException ex) {
-                            Notification.show("Notification", "There's no bussines type for this customer!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("Notification", "There's no bussines type for this customer !", Notification.Type.ERROR_MESSAGE);
                         }
                     }
                 });
@@ -279,7 +280,7 @@ public class CustomerTable extends GENTable<Customer> {
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
                         getUI().addWindow(new WindowForm2("Customer Update Form", cf));
                     } else {
-                        Notification.show("User Rights Error", "You don't have rights to update customers!", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
@@ -294,11 +295,11 @@ public class CustomerTable extends GENTable<Customer> {
                             getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
                         } else {
                             Notification.show("User Rights Error",
-                                    "You don't have rights to add bussines type to customers! ",
+                                    "You don't have rights to add \nbussines type to this customers ! ",
                                     Notification.Type.ERROR_MESSAGE);
                         }
                     } catch (CustomTreeNodesEmptyException e) {
-                        Notification.show("Notification", "There is no bussines type(s)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Notification", "There is no bussines type(s)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
@@ -309,26 +310,25 @@ public class CustomerTable extends GENTable<Customer> {
                         RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
                         RELCBTForm relCBT_Form = new RELCBTForm(c);
                     } catch (CustomTreeNodesEmptyException ex) {
-                        Notification.show("Notification", "There is no active CRM process(es)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Notification", "There is no active CRM process(es)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
-                if (action.equals(ACTION_CRM_NEW_PROCESS)) {
+                if (action.equals(ACTION_CRM_NEW_PROCESS) && (source.getValue() instanceof Customer)) {
                     Customer c = (Customer) source.getValue();
 
                     try {
                         CRM_CurrCustProcesses_Tree cbtTree = new CRM_CurrCustProcesses_Tree("CRM Process(es)", c);
-                        CRMProcess_Form relCBT_Form = new CRMProcess_Form();
 
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            getUI().addWindow(new WindowFormProp("Customer's CRM Form", false, relCBT_Form, cbtTree));
+                            getUI().addWindow(new WindowForm("Customer's CRM Form", false, new CRMProcess_Form(null, c, null)));
                         } else {
                             Notification.show("User Rights Error",
-                                    "You don't have rights to add new CRM process! ",
+                                    "You don't have rights\nto add new CRM process ! ",
                                     Notification.Type.ERROR_MESSAGE);
                         }
                     } catch (CustomTreeNodesEmptyException e) {
-                        Notification.show("Notification", "There is no CRM process(es)\nfor this customers", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Notification", "There is no CRM process(es)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             }

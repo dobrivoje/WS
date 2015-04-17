@@ -218,14 +218,14 @@ public class MainMenu extends CssLayout {
                             navigator.navigateTo(CustomersView.class.getSimpleName());
                             getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to create new customer!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
                             getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to create \nnew customer bussines type!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case CUST_CRM_MANAG:
@@ -236,7 +236,7 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_PROCESS.toString(),
                                     false, new CRMProcess_Form(null, null, null)));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to create \nnew customer process!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL:
@@ -244,14 +244,14 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                     false, new SCR_Form(CrudOperations.CREATE)));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to create \nnew customer relationship !", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                             navigator.navigateTo(CRMSCView.class.getSimpleName());
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to enter\ncustomer relationship page!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case FS_DATA_MANAG_NEW_FS:
@@ -259,14 +259,14 @@ public class MainMenu extends CssLayout {
                             navigator.navigateTo(FSView.class.getSimpleName());
                             getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), false, new FSForm(CrudOperations.CREATE)));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to add\nnew fuelstation!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case FS_DATA_MANAG_NEW_FS_OWNER:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
                             getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights to appoint\nfuelstation to the customer!", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case FS_DATA_MANAG_SEARCH_ENGINE:

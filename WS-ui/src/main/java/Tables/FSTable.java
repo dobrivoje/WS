@@ -129,7 +129,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
                         getUI().addWindow(new WindowForm(caption, false, new FSOWNER_Form(f, null)));
                     } else {
-                        Notification.show("User Rights Error", "You don't have rights to change customer owner!", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
                 if (action.equals(FSTable.ACTION_FS_UPDATE)) {
@@ -138,7 +138,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL)) {
                         getUI().addWindow(new WindowFormProp(caption, false, new FSForm(f, null), createImageGallery(f)));
                     } else {
-                        Notification.show("User Rights Error", "You don't have rights to change customer owner!", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             }
