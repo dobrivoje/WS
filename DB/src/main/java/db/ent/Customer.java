@@ -82,7 +82,7 @@ public class Customer implements Serializable {
     @JoinColumn(name = "FK_IDCity", referencedColumnName = "IDC")
     @ManyToOne
     private City fKIDCity;
-    @OneToMany(mappedBy = "fkIdc")
+    @OneToMany(mappedBy = "FK_IDC")
     private List<RelSALESMANCUST> relSALESMEANCUSTList;
 
     public Customer() {

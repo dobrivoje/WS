@@ -30,7 +30,9 @@ import db.ent.RelFSDocument;
 import db.ent.RelSALESMANIMAGE;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
+import db.ent.InfSysUser;
 import java.util.ArrayList;
+import javax.persistence.Query;
 
 /**
  *
@@ -609,6 +611,27 @@ public class DBHandler {
         }
     }
 
+    public void setFSDefaultImage(Fuelstation fuelstation, Document defaultFSImage) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            
+            // sve slike stanice resetuj na 0.
+            getEm().createNamedQuery("RelFSDocument.Reset")
+                    .setParameter("fkIdfs", fuelstation)
+                    .executeUpdate();
+
+            // odabranu sliku postavi kao podrazumevanu
+            getEm().createNamedQuery("RelFSDocument.SetDefaultImage")
+                    .setParameter("FK_IDFS", fuelstation)
+                    .setParameter("FK_IDD", defaultFSImage)
+                    .executeUpdate();
+            
+            getEm().getTransaction().commit();
+        } catch (Exception ex) {
+            rollBackTransaction("Document Failed To Be Updated as Default !");
+        }
+    }
+
     public Document getLastFSDocument(Fuelstation f) {
         try {
             List<Document> L = getEm().createNamedQuery("RelFSDocument.getAllFSDocuments")
@@ -755,7 +778,7 @@ public class DBHandler {
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("New fuelstation owner addition failed.\nCheck fileds that must not be empty."));
+                rollBackTransaction(new MyDBNullException("New Fuelstation Owner Addition Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
@@ -769,7 +792,7 @@ public class DBHandler {
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("Existing fuelstation ownerupdate failed.\nCheck fileds that must not be empty."));
+                rollBackTransaction(new MyDBNullException("Existing Fuelstation Owner Update Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
@@ -873,7 +896,7 @@ public class DBHandler {
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("Fuelstation property update failed.\nCheck fileds that must not be empty."));
+                rollBackTransaction(new MyDBNullException("Fuelstation Property Update Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
@@ -909,7 +932,7 @@ public class DBHandler {
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("Fuelstation property update failed.\nCheck fileds that must not be empty."));
+                rollBackTransaction(new MyDBNullException("Fuelstation Property Update Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
@@ -1095,7 +1118,7 @@ public class DBHandler {
             // dateFrom = dateTo - 1 godina !
             long g = dateTo.getTime() - 1000 * 60 * 60 * 24 * 365 * 1;
             g = g < 0 ? 0 : g;
-            
+
             dateFrom = new Date(dateTo.getTime() - g);
         }
 
@@ -1189,13 +1212,74 @@ public class DBHandler {
 
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("New CRM process addition failed.\nCheck fileds that must not be empty."));
+                rollBackTransaction(new MyDBNullException("New CRM Process Addition Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }
         }
     }
     //</editor-fold>
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="USER">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public List<InfSysUser> getAllUsers() {
+        try {
+            return getEm().createNamedQuery("InfSysUser.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public InfSysUser getByID(long ID) {
+        try {
+            return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByIdun")
+                    .setParameter("idun", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="REL USER-SALESMAN">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public InfSysUser getUser(Salesman salesman) {
+        return getUser(salesman, true);
+    }
+
+    public Salesman getSalesman(InfSysUser user) {
+        return getSalesman(user, true);
+    }
+
+    public InfSysUser getUser(Salesman salesman, boolean active) {
+        try {
+            return (InfSysUser) getEm().createNamedQuery("RelUserSalesman.getInfSysUser")
+                    .setParameter("FK_IDS", salesman)
+                    .setParameter("active", active)
+                    .setMaxResults(1)
+                    .getResultList()
+                    .get(0);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Salesman getSalesman(InfSysUser user, boolean active) {
+        try {
+            return (Salesman) getEm().createNamedQuery("RelUserSalesman.getSalesman")
+                    .setParameter("FK_IDUN", user)
+                    .setParameter("active", active)
+                    .setMaxResults(1)
+                    .getResultList()
+                    .get(0);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     //</editor-fold>
     //</editor-fold>
 }

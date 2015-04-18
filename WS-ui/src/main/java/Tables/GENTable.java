@@ -19,6 +19,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
@@ -31,6 +33,7 @@ import org.superb.apps.utilities.files.uploader.UploadReceiver;
 import org.superb.apps.utilities.os.OS;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import org.vaadin.dialogs.ConfirmDialog;
 import static ws.MyUI.DS;
 
 /**
@@ -61,6 +64,27 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             this.msg = msg;
         }
 
+    };
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="DocImg">
+    class DocImg {
+
+        private final Image image;
+        private final Document doc;
+
+        public DocImg(Image image, Document doc) {
+            this.image = image;
+            this.doc = doc;
+        }
+
+        public Image getImage() {
+            return image;
+        }
+
+        public Document getDoc() {
+            return doc;
+        }
     };
     //</editor-fold>
 
@@ -123,7 +147,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             image = new Image(null, new ThemeResource("img/fs/1.png"));
         }
 
-        image.setDescription("Double click to open the image.");
+        image.setDescription("Double click to open\nan Image Gallery.");
 
         image.setHeight(height, Unit.PIXELS);
         image.setWidth(width, Unit.PIXELS);
@@ -221,11 +245,11 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             }
         };
 
-        for (final Image si : getAllFSImages(f)) {
-            si.setHeight(40, Unit.PIXELS);
-            si.setWidth(40, Unit.PIXELS);
+        for (final DocImg di : getAllFSImages(f)) {
+            di.getImage().setHeight(40, Unit.PIXELS);
+            di.getImage().setWidth(40, Unit.PIXELS);
 
-            si.addClickListener(new MouseEvents.ClickListener() {
+            di.getImage().addClickListener(new MouseEvents.ClickListener() {
                 @Override
                 public void click(MouseEvents.ClickEvent event) {
                     if (event.isDoubleClick()) {
@@ -234,7 +258,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(si);
+            FSLowerImagesCssLayout.addComponent(di.getImage());
         }
         //</editor-fold>
 
@@ -244,12 +268,13 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return rootLayout;
     }
 
-    private void openFSGalleryWindow(String caption, Fuelstation f) {
+    private void openFSGalleryWindow(String caption, final Fuelstation f) {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 
         final Window W = new MyWindow(VL_Root, caption, 0, 0);
         W.setModal(true);
+        W.setStyleName(Reindeer.WINDOW_BLACK);
 
         final VerticalLayout VL_MainImage = new VerticalLayout();
         VL_MainImage.setSizeFull();
@@ -258,13 +283,14 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         final HorizontalLayout HL_Images = new HorizontalLayout();
         HL_Footer.addComponents(HL_Images);
 
+        // na kraj dodaj i new VerticalLayout(), da sličice ne bi otišle na "dno" footer-a,...
         VL_Root.addComponents(VL_MainImage, HL_Footer, new VerticalLayout());
         VL_Root.setExpandRatio(VL_MainImage, 1);
         VL_Root.setComponentAlignment(VL_MainImage, Alignment.MIDDLE_CENTER);
         VL_Root.setComponentAlignment(HL_Footer, Alignment.MIDDLE_CENTER);
 
         //<editor-fold defaultstate="collapsed" desc="Glavna slika">
-        final Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
+        Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
         defaultImage.setHeight(97, Unit.PERCENTAGE);
         defaultImage.setWidth(97, Unit.PERCENTAGE);
 
@@ -273,34 +299,67 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
-        for (final Image si : getAllFSImages(f)) {
-            si.setHeight(40, Unit.PIXELS);
-            si.setWidth(40, Unit.PIXELS);
-            si.setDescription("Click to open the image.");
+        for (final DocImg di : getAllFSImages(f)) {
+            di.getImage().setHeight(40, Unit.PIXELS);
+            di.getImage().setWidth(40, Unit.PIXELS);
+            di.getImage().setDescription("Click to open the image.");
 
-            si.addClickListener(new MouseEvents.ClickListener() {
+            di.getImage().addClickListener(new MouseEvents.ClickListener() {
                 @Override
                 public void click(MouseEvents.ClickEvent event) {
                     VL_MainImage.removeAllComponents();
-
-                    Image ni = new Image(null, si.getSource());
+                    Image ni = new Image(null, di.getImage().getSource());
                     ni.setHeight(97, Unit.PERCENTAGE);
                     ni.setWidth(97, Unit.PERCENTAGE);
+
+                    ni.setDescription("Double click to make this image default for this FS.");
+                    ni.addClickListener(new MouseEvents.ClickListener() {
+                        @Override
+                        public void click(MouseEvents.ClickEvent event) {
+                            if (event.isDoubleClick()) {
+                                ConfirmDialog d = ConfirmDialog.show(
+                                        getUI(),
+                                        "Default FS Gallery Image",
+                                        "Do you want this selected image to be</br> the FS's default one ?",
+                                        "Yes",
+                                        "No!",
+                                        new ConfirmDialog.Listener() {
+                                            @Override
+                                            public void onClose(ConfirmDialog dialog) {
+                                                if (dialog.isConfirmed()) {
+                                                    try {
+                                                        DS.getDocumentController().setDefaultFSImage(f, di.getDoc());
+                                                        refreshVisualContainer();
+                                                    } catch (Exception ex) {
+                                                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
+                                d.getCancelButton().setWidth(100, Unit.PIXELS);
+                                d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
+                                d.getOkButton().setWidth(100, Unit.PIXELS);
+                                d.setContentMode(ConfirmDialog.ContentMode.HTML);
+                                d.setHeight("16em");
+                            }
+                        }
+                    });
 
                     VL_MainImage.addComponent(ni);
                     VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
                 }
             });
 
-            HL_Images.addComponent(si);
+            HL_Images.addComponent(di.getImage());
         }
         //</editor-fold>
 
         getUI().addWindow(W);
     }
 
-    private List<Image> getAllFSImages(Fuelstation f) {
-        List<Image> LI = new ArrayList<>();
+    private List<DocImg> getAllFSImages(Fuelstation f) {
+        List<DocImg> LI = new ArrayList<>();
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
             if (ImageTypes.contains(d.getName())) {
@@ -309,7 +368,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
                 if (fr.getSourceFile().exists()) {
                     final Image image = new Image(null, fr);
 
-                    LI.add(image);
+                    LI.add(new DocImg(image, d));
                 }
             }
         }

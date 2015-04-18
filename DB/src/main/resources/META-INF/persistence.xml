@@ -21,6 +21,8 @@
     <class>db.ent.CrmProcess</class>
     <class>db.ent.CrmStatus</class>
     <class>db.ent.RelSALESMANCUST</class>
+    <class>db.ent.RelUserSalesman</class>
+    <class>db.ent.InfSysUser</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>

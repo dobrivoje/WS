@@ -46,6 +46,8 @@ public interface IDocumentController extends CRUDInterface<Document> {
      * @return
      */
     Document getDefaultFSImage(Fuelstation fuelstation);
+    
+    void setDefaultFSImage(Fuelstation f, Document d) throws Exception;
 
     public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument, int prioroty) throws Exception;
 

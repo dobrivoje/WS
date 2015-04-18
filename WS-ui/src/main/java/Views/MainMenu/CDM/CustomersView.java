@@ -21,6 +21,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import java.util.logging.Level;
@@ -165,12 +166,13 @@ public class CustomersView extends VerticalLayout implements View {
             try {
                 propPanels[0].setContent(new RELCBT_Tree("", c));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
-                Logger.getLogger(CustomersView.class.getName()).log(Level.WARNING, null, ex);
+                propPanels[0].setContent(new Tree());
             }
 
             try {
                 propPanels[1].setContent(new FSOwner_Tree("", c, true));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+                propPanels[1].setContent(new Tree());
             }
 
             propPanels[2].setContent(buildCustomerOptions(c, customersTable));

@@ -115,5 +115,7 @@ public class testKlasa {
         );
 
         System.err.println("\nĐŠPĆČČLDJHNMLČĐŠ");
+        
+        System.err.println("Session Username: " + intermolAD.getSessionISUser());
     }
 }

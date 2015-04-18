@@ -8,7 +8,7 @@ package Tables;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Forms.CRM.CRMProcess_Form;
-import Trees.CRM_CurrCustProcesses_Tree;
+import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_PROCESS;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -20,6 +20,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.City;
 import db.ent.Customer;
@@ -269,7 +270,6 @@ public class CustomerTable extends GENTable<Customer> {
 
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
                     Customer c = (Customer) (source.getValue());
-
                     CustomerForm cf = new CustomerForm(c, new IRefreshVisualContainer() {
                         @Override
                         public void refreshVisualContainer() {
@@ -285,54 +285,53 @@ public class CustomerTable extends GENTable<Customer> {
                 }
 
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
-                    Customer c = (Customer) source.getValue();
+                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+                        Customer c = (Customer) source.getValue();
 
-                    try {
-                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        Tree cbtTree;
+
+                        try {
+                            cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+                            cbtTree = new Tree("No CB Type..");
+                        }
+
                         RELCBTForm relCBT_Form = new RELCBTForm(c);
 
-                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
-                            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                        } else {
-                            Notification.show("User Rights Error",
-                                    "You don't have rights to add \nbussines type to this customers ! ",
-                                    Notification.Type.ERROR_MESSAGE);
-                        }
-                    } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException e) {
-                        Notification.show("Notification", "There is no bussines type(s)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
+                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                    } else {
+                        Notification.show("User Rights Error",
+                                "You don't have rights to add \nbussines type to this customers ! ",
+                                Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
-
-                    try {
-                        RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                        RELCBTForm relCBT_Form = new RELCBTForm(c);
-                    } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
-                        Notification.show("Notification", "There is no active CRM process(es)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
+                    if (DS.getCrmController().getCRM_Processes(c, null, null) == null) {
+                        Notification.show("Warning", "No CRM process(es) \nfor this customer.", Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
-                if (action.equals(ACTION_CRM_NEW_PROCESS) && (source.getValue() instanceof Customer)) {
-                    Customer c = (Customer) source.getValue();
-
+                if (action.equals(ACTION_CRM_NEW_PROCESS)) {
                     try {
-                        CRM_CurrCustProcesses_Tree cbtTree = new CRM_CurrCustProcesses_Tree("CRM Process(es)", c);
-
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            getUI().addWindow(new WindowForm("Customer's CRM Form", false, new CRMProcess_Form(null, c, null)));
+                            Customer c = (Customer) source.getValue();
+
+                            getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_PROCESS.toString(),
+                                    false, new CRMProcess_Form(null, null, null)));
                         } else {
                             Notification.show("User Rights Error",
                                     "You don't have rights\nto add new CRM process ! ",
                                     Notification.Type.ERROR_MESSAGE);
                         }
-                    } catch (CustomTreeNodesEmptyException e) {
-                        Notification.show("Notification", "There is no CRM process(es)\nfor this customer !", Notification.Type.ERROR_MESSAGE);
+                    } catch (NullPointerException | IllegalArgumentException e) {
+                        Notification.show("Warning", e.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             }
-        });
+        }
+        );
     }
 
 }

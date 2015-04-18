@@ -63,8 +63,10 @@ public class Salesman implements Serializable {
     @JoinColumn(name = "FK_IDBL", referencedColumnName = "IDBL")
     @ManyToOne
     private BussinesLine fkIdbl;
-    @OneToMany(mappedBy = "fkIds")
+    @OneToMany(mappedBy = "FK_IDS")
     private List<RelSALESMANCUST> relSALESMEANCUSTList;
+    @OneToMany(mappedBy = "FK_IDS")
+    private List<RelUserSalesman> relUserSalesmanList;
 
     public Salesman() {
     }
@@ -161,6 +163,15 @@ public class Salesman implements Serializable {
         this.relSALESMEANCUSTList = relSALESMEANCUSTList;
     }
 
+    @XmlTransient
+    public List<RelUserSalesman> getRelUserSalesmanList() {
+        return relUserSalesmanList;
+    }
+
+    public void setRelUserSalesmanList(List<RelUserSalesman> relUserSalesmanList) {
+        this.relUserSalesmanList = relUserSalesmanList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,7 +181,6 @@ public class Salesman implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Salesman)) {
             return false;
         }

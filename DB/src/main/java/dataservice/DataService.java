@@ -17,6 +17,7 @@ import db.controllers.FS_Controller;
 import db.controllers.Gallery_Controller;
 import db.controllers.RelCBT_Controller;
 import db.controllers.Salesman_Controller;
+import db.controllers.InfSysUser_Controller;
 import db.interfaces.ICBTController;
 import db.interfaces.ICRMController;
 import db.interfaces.ICityController;
@@ -29,6 +30,7 @@ import db.interfaces.IFSPROPController;
 import db.interfaces.IGalleryController;
 import db.interfaces.IRELCBTController;
 import db.interfaces.ISalesmanController;
+import db.interfaces.IInfSysUserController;
 
 /**
  *
@@ -61,6 +63,7 @@ public class DataService {
     private final IDocumentController documentController = new Document_Controller(DBH);
     private final IDocumentTypeController documentTypeController = new Document_Controller(DBH);
     private final ICRMController crmController = new CRM_Controller(DBH);
+    private final IInfSysUserController infSysUserController = new InfSysUser_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -108,5 +111,9 @@ public class DataService {
 
     public ICRMController getCrmController() {
         return crmController;
+    }
+
+    public IInfSysUserController getInfSysUserController() {
+        return infSysUserController;
     }
 }

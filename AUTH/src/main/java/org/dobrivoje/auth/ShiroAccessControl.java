@@ -22,22 +22,15 @@ public class ShiroAccessControl implements IAccessAuthControl {
     }
 
     @Override
-    public SecurityManager getSecurityManager() {
-        return securityManager;
-    }
-
-    /*
-     @Override
-     public Subject getSubject() {
-     return subject;
-     }
-     */
-    @Override
     public boolean login(String username, String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
         try {
             subject.login(token);
+
+            // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
+            subject.getSession().setAttribute("UR8450-XC88xoiuf-iow889s", getPrincipal());
+
             return true;
         } catch (AuthenticationException ae) {
             return false;
@@ -73,6 +66,12 @@ public class ShiroAccessControl implements IAccessAuthControl {
     public String getPrincipal() {
         String s = (String) subject.getPrincipal();
         return s == null ? "n/a" : s;
+    }
+
+    @Override
+    public String getSessionISUser() {
+        // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
+        return (String) subject.getSession().getAttribute("UR8450-XC88xoiuf-iow889s");
     }
 
 }

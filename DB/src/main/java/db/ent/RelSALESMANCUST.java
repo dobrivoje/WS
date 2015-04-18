@@ -36,16 +36,16 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelSALESMANCUST.findByIdrblc", query = "SELECT r FROM RelSALESMANCUST r WHERE r.idrblc = :idrblc"),
 
             @NamedQuery(name = "RelSALESMANCUST.findByCust",
-                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIdc = :IDC"),
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.FK_IDC = :IDC"),
 
             @NamedQuery(name = "RelSALESMANCUST.findBySalesman",
-                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.FK_IDS = :IDS"),
 
             @NamedQuery(name = "RelSALESMANCUST.CustomersBySalesman",
-                    query = "SELECT r.fkIdc FROM RelSALESMANCUST r WHERE r.fkIds = :IDS"),
+                    query = "SELECT r.FK_IDC FROM RelSALESMANCUST r WHERE r.FK_IDS = :IDS"),
 
             @NamedQuery(name = "RelSALESMANCUST.RelSalesmanCustomer",
-                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.fkIdc = :IDC AND r.fkIds = :IDS")
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.FK_IDC = :IDC AND r.FK_IDS = :IDS")
         })
 public class RelSALESMANCUST implements Serializable {
 
@@ -65,10 +65,10 @@ public class RelSALESMANCUST implements Serializable {
     private Boolean active;
     @JoinColumn(name = "FK_IDC", referencedColumnName = "IDC")
     @ManyToOne(optional = false)
-    private Customer fkIdc;
+    private Customer FK_IDC;
     @JoinColumn(name = "FK_IDS", referencedColumnName = "IDS")
     @ManyToOne(optional = false)
-    private Salesman fkIds;
+    private Salesman FK_IDS;
     @OneToMany(mappedBy = "FK_IDRSMC")
     private List<CrmProcess> CRMProcessList;
 
@@ -76,8 +76,8 @@ public class RelSALESMANCUST implements Serializable {
     }
 
     public RelSALESMANCUST(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) {
-        this.fkIdc = c;
-        this.fkIds = s;
+        this.FK_IDC = c;
+        this.FK_IDS = s;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.active = active;
@@ -115,20 +115,20 @@ public class RelSALESMANCUST implements Serializable {
         this.active = active;
     }
 
-    public Customer getFkIdc() {
-        return fkIdc;
+    public Customer getFK_IDC() {
+        return FK_IDC;
     }
 
-    public void setFkIdc(Customer fkIdc) {
-        this.fkIdc = fkIdc;
+    public void setFK_IDC(Customer FK_IDC) {
+        this.FK_IDC = FK_IDC;
     }
 
-    public Salesman getFkIds() {
-        return fkIds;
+    public Salesman getFK_IDS() {
+        return FK_IDS;
     }
 
-    public void setFkIds(Salesman fkIds) {
-        this.fkIds = fkIds;
+    public void setFK_IDS(Salesman FK_IDS) {
+        this.FK_IDS = FK_IDS;
     }
 
     public List<CrmProcess> getCRMProcessList() {

@@ -33,17 +33,26 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelFSDocument.findAll", query = "SELECT r FROM RelFSDocument r"),
             @NamedQuery(name = "RelFSDocument.findByIdfsi", query = "SELECT r FROM RelFSDocument r WHERE r.idfsd = :idfsd"),
 
-            @NamedQuery(name = "RelFSDocument.getAllFSDocuments", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS"),
+            @NamedQuery(name = "RelFSDocument.getAllFSDocuments", 
+                    query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS"),
 
             @NamedQuery(name = "RelFSDocument.getFSActiveDocuments",
                     query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :defaultDocument"),
-            
+
             @NamedQuery(name = "RelFSDocument.getHighPriorityFSImage",
                     query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS ORDER BY R.priority DESC"),
 
-            @NamedQuery(name = "RelFSDocument.getFSDefaultImage", query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :DefaultDocument"),
+            @NamedQuery(name = "RelFSDocument.getFSDefaultImage",
+                    query = "SELECT r.FK_DOCUMENT FROM RelFSDocument r WHERE r.fkIdFs = :IDFS AND r.defaultDocument = :DefaultDocument"),
 
-            @NamedQuery(name = "RelFSDocument.findByFS", query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs")
+            @NamedQuery(name = "RelFSDocument.findByFS",
+                    query = "SELECT r FROM RelFSDocument r WHERE r.fkIdFs = :fkIdfs"),
+                
+            @NamedQuery(name = "RelFSDocument.Reset",
+                    query = "UPDATE RelFSDocument r SET r.defaultDocument = FALSE, r.priority = 0 WHERE r.fkIdFs = :fkIdfs AND r.FK_DOCUMENT.docType='img'"),
+            
+            @NamedQuery(name = "RelFSDocument.SetDefaultImage",
+                    query = "UPDATE RelFSDocument r SET r.defaultDocument = TRUE, r.priority = 10 WHERE r.fkIdFs = :FK_IDFS AND r.FK_DOCUMENT = :FK_IDD")
 
         })
 public class RelFSDocument implements Serializable {
