@@ -42,7 +42,6 @@ public enum MenuDefinitions {
     FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
     FS_DATA_MANAG_NEW_FS("New Fuelstation"),
     FS_DATA_MANAG_NEW_FS_OWNER("New Fuelstation Owner"),
-    FS_DATA_MANAG_IMAGES("Fuelstation's Images"),
     FS_DATA_MANAG_DOCS("Fuelstation's Documents");
 
     private final String menuItem;
@@ -94,7 +93,6 @@ public enum MenuDefinitions {
                 FS_DATA_MANAG_SEARCH_ENGINE,
                 FS_DATA_MANAG_NEW_FS,
                 FS_DATA_MANAG_NEW_FS_OWNER,
-                FS_DATA_MANAG_IMAGES,
                 FS_DATA_MANAG_DOCS
         ));
     }

@@ -27,11 +27,11 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     private final ICRMController CRMController = DS.getCrmController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    @PropertyId("fkIds")
+    @PropertyId("FK_IDS")
     private final ComboBox salesman = new ComboBox("Salesman",
             new BeanItemContainer(Salesman.class, DS.getSalesmanController().getAll()));
 
-    @PropertyId("fkIdc")
+    @PropertyId("FK_IDC")
     private final ComboBox customer = new ComboBox("Customer",
             new BeanItemContainer(Customer.class, DS.getCustomerController().getAll()));
 

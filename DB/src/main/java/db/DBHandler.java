@@ -32,7 +32,6 @@ import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.ent.InfSysUser;
 import java.util.ArrayList;
-import javax.persistence.Query;
 
 /**
  *
@@ -73,6 +72,7 @@ public class DBHandler {
     //</editor-fold>
 
     private static final String DB_DUPLICATE = "the duplicate key value is";
+    private static final String DB_VIOLATION_UNIQUE_KEY = "violation of unique key constraint";
     private static final String DB_NULLVALUES = "cannot insert the value null into column";
 
     //<editor-fold defaultstate="collapsed" desc="Customer">
@@ -614,7 +614,7 @@ public class DBHandler {
     public void setFSDefaultImage(Fuelstation fuelstation, Document defaultFSImage) throws Exception {
         try {
             getEm().getTransaction().begin();
-            
+
             // sve slike stanice resetuj na 0.
             getEm().createNamedQuery("RelFSDocument.Reset")
                     .setParameter("fkIdfs", fuelstation)
@@ -625,7 +625,7 @@ public class DBHandler {
                     .setParameter("FK_IDFS", fuelstation)
                     .setParameter("FK_IDD", defaultFSImage)
                     .executeUpdate();
-            
+
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             rollBackTransaction("Document Failed To Be Updated as Default !");
@@ -1172,7 +1172,7 @@ public class DBHandler {
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
                 rollBackTransaction(new MyDBNullException("Salesman and Customer Must Be Selected !"));
-            } else if (ex.toString().toLowerCase().contains(DB_DUPLICATE)) {
+            } else if (ex.toString().toLowerCase().contains(DB_DUPLICATE) || ex.toString().toLowerCase().contains(DB_VIOLATION_UNIQUE_KEY)) {
                 rollBackTransaction(new MyDBViolationOfUniqueKeyException("Relation Between Salesman and Customer Already Exists !"));
             } else {
                 rollBackTransaction(ex.getMessage());

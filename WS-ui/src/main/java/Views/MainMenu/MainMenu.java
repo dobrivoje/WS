@@ -42,7 +42,6 @@ import static Menu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
 import static Menu.MenuDefinitions.FS_DATA_MANAG;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_SEARCH_ENGINE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_DOCS;
-import static Menu.MenuDefinitions.FS_DATA_MANAG_IMAGES;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
@@ -194,13 +193,11 @@ public class MainMenu extends CssLayout {
         customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
-        customersTree.setParent(FS_DATA_MANAG_IMAGES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_DOCS, FS_DATA_MANAG);
 
         customersTree.setChildrenAllowed(FS_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS_OWNER, false);
-        customersTree.setChildrenAllowed(FS_DATA_MANAG_IMAGES, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_DOCS, false);
         //</editor-fold>
 
@@ -217,14 +214,16 @@ public class MainMenu extends CssLayout {
                     case CUST_DATA_MANAG_NEW_CUST:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                             navigator.navigateTo(CustomersView.class.getSimpleName());
-                            getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(), new CustomerForm(CrudOperations.CREATE)));
+                            getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(),
+                                    new CustomerForm(CrudOperations.CREATE)));
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
-                            getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(), false, new CBTForm(new CustomerBussinesType())));
+                            getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(),
+                                    false, new CBTForm(new CustomerBussinesType())));
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
