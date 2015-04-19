@@ -32,6 +32,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
     private static final Action ACTION_FS_UPDATE = new Action("Fuelstation Data Update");
     private static final Action ACTION_FS_OWNER = new Action("New Fuelstation Owner");
+    private static final Action ACTION_FS_IMG_GALLERY = new Action("Fuelstation Image Gallery");
 
     public FSTable() {
         this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
@@ -82,7 +83,7 @@ public class FSTable extends GENTable<Fuelstation> {
         addGeneratedColumn("img", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                return createImage((Fuelstation) row, 80, 80);
+                return createFSImage((Fuelstation) row, 80, 80);
             }
         });
 
@@ -114,7 +115,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
             @Override
             public Action[] getActions(Object target, Object sender) {
-                return new Action[]{ACTION_FS_OWNER, ACTION_FS_UPDATE};
+                return new Action[]{ACTION_FS_OWNER, ACTION_FS_UPDATE, ACTION_FS_IMG_GALLERY};
             }
 
             @Override
@@ -140,6 +141,9 @@ public class FSTable extends GENTable<Fuelstation> {
                     } else {
                         Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
                     }
+                }
+                if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
+                    openFSGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
             }
         });

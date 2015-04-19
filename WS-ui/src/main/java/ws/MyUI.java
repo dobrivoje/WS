@@ -29,6 +29,8 @@ import org.dobrivoje.utils.date.formats.DateFormat;
 public class MyUI extends UI {
 
     private final IAccessAuthControl accessControl = new IntermolADAccessControl();
+    private final int un = accessControl.getLoggedUsers();
+
     public static final DataService DS = DataService.getDefault();
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
@@ -41,9 +43,15 @@ public class MyUI extends UI {
         Notification notification = new Notification("Welcome to WS App");
         notification.setDescription(
                 "<span>This application covers wholesale bussines process.</span>"
-                + "<span>This is a <b>test phase release</b></span>"
-                + "<span>Please, use your Windows username, with password.</span>"
-                + "<span>Just click the <b>Login</b> button to continue.</span>");
+                + "<span>This is a <b><u>test phase release.</u></b></span>"
+                + "<span>Please, use your corporate Windows username !</b></span>"
+                + (un > 0 ? "<span><b><u>"
+                        + (un > 1 ? un + " users are " : " One user is ")
+                        + "working with the software."
+                        + "</u></b></span>"
+                        : "<span>Currently, <b><u>no user uses the software.</u></b></span>")
+        );
+
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);

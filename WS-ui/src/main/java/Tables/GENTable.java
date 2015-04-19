@@ -136,18 +136,17 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     }
 
     //<editor-fold defaultstate="collapsed" desc="Image i Gallery">
-    protected Image createImage(final Fuelstation fuelstation, float height, float width) {
-        Document defaultImage = DS.getDocumentController().getDefaultFSImage(fuelstation);
+    protected Image createFSImage(final Fuelstation f, float height, float width) {
+        Document defaultImage = DS.getDocumentController().getDefaultFSImage(f);
 
         final Image image;
 
         if (defaultImage != null) {
             image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
+            image.setDescription("Double click to open\nan Image Gallery.");
         } else {
             image = new Image(null, new ThemeResource("img/fs/1.png"));
         }
-
-        image.setDescription("Double click to open\nan Image Gallery.");
 
         image.setHeight(height, Unit.PIXELS);
         image.setWidth(width, Unit.PIXELS);
@@ -156,7 +155,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 if (event.isDoubleClick()) {
-                    openFSGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
+                    openFSGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
             }
         });
@@ -231,7 +230,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj glavnu sliku">
-        Image defaultFSImage = createImage(f, 200, 200);
+        Image defaultFSImage = createFSImage(f, 200, 200);
         VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader, imageUploader);
 
         mainImageLayout.setSpacing(true);
@@ -268,7 +267,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return rootLayout;
     }
 
-    private void openFSGalleryWindow(String caption, final Fuelstation f) {
+    protected void openFSGalleryWindow(String caption, final Fuelstation f) {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 

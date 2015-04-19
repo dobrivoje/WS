@@ -103,6 +103,8 @@ public class MainMenu extends CssLayout {
         logoutMenu.addItem("Logout " + MyUI.get().getAccessControl().getPrincipal(), FontAwesome.SIGN_OUT, new Command() {
             @Override
             public void menuSelected(MenuItem selectedItem) {
+                MyUI.get().getAccessControl().logout();
+
                 VaadinSession.getCurrent().getSession().invalidate();
                 Page.getCurrent().reload();
             }
