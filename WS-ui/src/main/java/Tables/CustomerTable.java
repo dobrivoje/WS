@@ -84,18 +84,19 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Customer c = (Customer) row;
-
-                        RELCBT_Tree cbtTree;
-                        RELCBTForm relCBT_Form;
-
-                        try {
-                            cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                            relCBT_Form = new RELCBTForm(c);
-                            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                        } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
-                            Notification.show("Notification", "There's no bussines type for this customer !", Notification.Type.ERROR_MESSAGE);
-                        }
+                        showCBTForm((Customer) row, RolesPermissions.P_CUSTOMERS_EDIT_ALL);
+                        /*
+                         RELCBT_Tree cbtTree;
+                         RELCBTForm relCBT_Form;
+                        
+                         try {
+                         cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
+                         relCBT_Form = new RELCBTForm(c);
+                         getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
+                         } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
+                         Notification.show("Notification", "There's no bussines type for this customer !", Notification.Type.ERROR_MESSAGE);
+                         }
+                         */
                     }
                 });
 
@@ -285,25 +286,7 @@ public class CustomerTable extends GENTable<Customer> {
                 }
 
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
-                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
-                        Customer c = (Customer) source.getValue();
-
-                        Tree cbtTree;
-
-                        try {
-                            cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
-                            cbtTree = new Tree("No CB Type..");
-                        }
-
-                        RELCBTForm relCBT_Form = new RELCBTForm(c);
-
-                        getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                    } else {
-                        Notification.show("User Rights Error",
-                                "You don't have rights to add \nbussines type to this customers ! ",
-                                Notification.Type.ERROR_MESSAGE);
-                    }
+                    showCBTForm((Customer) source.getValue(), RolesPermissions.P_CUSTOMERS_EDIT_ALL);
                 }
 
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
@@ -332,6 +315,24 @@ public class CustomerTable extends GENTable<Customer> {
             }
         }
         );
+    }
+
+    public void showCBTForm(Customer customer, String permission) {
+        if (MyUI.get().getAccessControl().isPermitted(permission)) {
+            Tree cbtTree;
+
+            try {
+                cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", customer);
+            } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+                cbtTree = new Tree("No Customer Bussines Type.");
+            }
+            
+            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, new RELCBTForm(customer), cbtTree));
+        } else {
+            Notification.show("User Rights Error",
+                    "You don't have rights to add \nbussines type to this customers ! ",
+                    Notification.Type.ERROR_MESSAGE);
+        }
     }
 
 }

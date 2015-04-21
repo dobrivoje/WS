@@ -67,6 +67,12 @@
             <artifactId>AUTH</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.vaadin.addon</groupId>
+            <artifactId>confirmdialog</artifactId>
+            <version>2.1.2</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

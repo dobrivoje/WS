@@ -16,10 +16,12 @@ import db.ent.Customer;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
+import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
@@ -54,6 +56,12 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
         salesman.setRequired(true);
         customer.setRequired(true);
+
+        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        dateFrom.setValue(new Date());
+
+        active.setValue(true);
+        active.setEnabled(false);
     }
 
     public SCR_Form(final CrudOperations crudOperation) {

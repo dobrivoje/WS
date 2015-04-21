@@ -52,8 +52,17 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     @Override
     public synchronized void logout() {
-        if (subject.isAuthenticated()) {
-            decLoggedUsers();
+        // if (subject.isAuthenticated()) {
+        //     decLoggedUsers();
+        //     subject.getSession().stop();
+        //     subject.getSession().removeAttribute(UN_SESSION_KEY);
+
+        //     subject.logout();
+        //     subject = null;
+        //}
+        decLoggedUsers();
+
+        if (subject != null) {
             subject.getSession().stop();
             subject.getSession().removeAttribute(UN_SESSION_KEY);
 
