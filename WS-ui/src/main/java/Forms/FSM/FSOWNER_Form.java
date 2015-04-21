@@ -41,7 +41,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     private final DateField dateTo = new DateField("Date To");
 
     @PropertyId("active")
-    private final CheckBox active = new CheckBox("Active ?", true);
+    private final CheckBox active = new CheckBox("Active ?");
     //</editor-fold>
 
     public FSOWNER_Form() {
@@ -55,8 +55,6 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
 
         dateFrom.setConverter(Date.class);
         dateTo.setConverter(Date.class);
-
-        active.setEnabled(false);
 
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
@@ -76,6 +74,10 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
             btnCaption = BUTTON_CAPTION_NEW.toString();
+            active.setValue(true);
+            active.setEnabled(false);
+            
+            dateFrom.setValue(new Date());
 
             clickListener = new Button.ClickListener() {
                 @Override

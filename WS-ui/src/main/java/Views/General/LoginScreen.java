@@ -133,7 +133,9 @@ public class LoginScreen extends CssLayout {
         Label loginInfoText = new Label(
                 "<h1>MOL Serbia<br>SW Platform</br></h1>"
                 + "<h2>Wholesale App</h2>"
-                + "Please, use your corporate Windows account use the application.",
+                + "Please, use your existing</br>"
+                + "corporate Windows account,</br>"
+                + "to use the application.",
                 ContentMode.HTML);
         loginInformation.addComponent(loginInfoText);
         return loginInformation;
