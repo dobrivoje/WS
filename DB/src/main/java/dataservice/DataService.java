@@ -43,7 +43,7 @@ public class DataService {
     //<editor-fold defaultstate="collapsed" desc="System Defs">
     private static DataService instance;
 
-    private final DBHandler DBH = DBHandler.getDefault();
+    private static final DBHandler DBH = DBHandler.getDefault();
 
     private DataService() {
     }
