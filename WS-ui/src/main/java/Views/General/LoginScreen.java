@@ -22,6 +22,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.superb.apps.utilities.Enums.LOGS;
+import static ws.MyUI.DS;
 
 /**
  * UI content when the user is not logged in yet.
@@ -160,8 +165,27 @@ public class LoginScreen extends CssLayout {
         un += username.getValue();
 
         if (accessControl.login(un, password.getValue())) {
-            loginListener.doAfterLogin();
+
+            try {
+                DS.getLogController().addNew(
+                        new Date(),
+                        LOGS.LOGIN.toString(),
+                        accessControl.getPrincipal() + " Domain=" + domain.getValue(),
+                        DS.getInfSysUserController().getByID(accessControl.getPrincipal()));
+
+                loginListener.doAfterLogin();
+            } catch (Exception ex) {
+                Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
+            try {
+                DS.getLogController().addNew(new Date(), LOGS.LOGIN_WRONG.toString(),
+                        "Login attempt! Username=" + username.getValue()
+                        + " Domain=" + domain.getValue(), null);
+            } catch (Exception ex) {
+                Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             showNotification(new Notification("Login failed",
                     "Please check your username and password and try again.",
                     Notification.Type.ERROR_MESSAGE));

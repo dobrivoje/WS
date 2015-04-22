@@ -66,7 +66,7 @@ public class FSTable extends GENTable<Fuelstation> {
                 });
 
                 editBtn.setDescription("Update this Fuelstation with new data...");
-                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_CUSTOMERS_EDIT_ALL));
+                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL));
 
                 ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
                 ownerBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER));

@@ -24,13 +24,17 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.superb.apps.utilities.Enums.LOGS;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import ws.MyUI;
+import static ws.MyUI.DS;
 
 public class CustomersView extends VerticalLayout implements View {
 
@@ -51,6 +55,8 @@ public class CustomersView extends VerticalLayout implements View {
 
     private Button simpleViewMode;
     private Button fullViewMode;
+
+    private final String UN = MyUI.get().getAccessControl().getPrincipal();
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -106,7 +112,7 @@ public class CustomersView extends VerticalLayout implements View {
 
     //<editor-fold defaultstate="collapsed" desc="createTopBar">
     public final HorizontalLayout createTopBar() {
-        TextField filter = new TextField();
+        final TextField filter = new TextField();
         filter.setStyleName("filter-textfield");
         filter.setInputPrompt("search customer...");
         ResetButtonForTextField.extend(filter);
@@ -115,6 +121,17 @@ public class CustomersView extends VerticalLayout implements View {
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
                 customersTable.setFilter(event.getText());
+
+                try {
+                    DS.getLogController().addNew(
+                            new Date(),
+                            LOGS.DATA_SEARCH.toString(),
+                            "User : " + UN + ", Customer search: " + event.getText(),
+                            DS.getInfSysUserController().getByID(UN)
+                 );
+                } catch (Exception ex) {
+                    Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

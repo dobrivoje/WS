@@ -28,7 +28,7 @@ import org.dobrivoje.utils.date.formats.DateFormat;
 @Widgetset("ws.MyAppWidgetset")
 public class MyUI extends UI {
 
-    private final IAccessAuthControl accessControl = new IntermolADAccessControl();
+    public final IAccessAuthControl accessControl = new IntermolADAccessControl();
     private final int un = accessControl.getLoggedUsers();
 
     public static final DataService DS = DataService.getDefault();

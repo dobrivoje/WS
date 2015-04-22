@@ -20,6 +20,8 @@ public interface IInfSysUserController {
 
     InfSysUser getByID(long ID);
 
+    InfSysUser getByID(String shiroUserPrincipal);
+
     InfSysUser getInfSysUser(Salesman salesman);
 
     Salesman getSalesman(InfSysUser user);

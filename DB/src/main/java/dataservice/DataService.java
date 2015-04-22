@@ -18,6 +18,7 @@ import db.controllers.Gallery_Controller;
 import db.controllers.RelCBT_Controller;
 import db.controllers.Salesman_Controller;
 import db.controllers.InfSysUser_Controller;
+import db.controllers.LOG_Controller;
 import db.interfaces.ICBTController;
 import db.interfaces.ICRMController;
 import db.interfaces.ICityController;
@@ -31,6 +32,7 @@ import db.interfaces.IGalleryController;
 import db.interfaces.IRELCBTController;
 import db.interfaces.ISalesmanController;
 import db.interfaces.IInfSysUserController;
+import db.interfaces.ILOGController;
 
 /**
  *
@@ -41,7 +43,7 @@ public class DataService {
     //<editor-fold defaultstate="collapsed" desc="System Defs">
     private static DataService instance;
 
-    private static final DBHandler DBH = DBHandler.getDefault();
+    private final DBHandler DBH = DBHandler.getDefault();
 
     private DataService() {
     }
@@ -64,6 +66,7 @@ public class DataService {
     private final IDocumentTypeController documentTypeController = new Document_Controller(DBH);
     private final ICRMController crmController = new CRM_Controller(DBH);
     private final IInfSysUserController infSysUserController = new InfSysUser_Controller(DBH);
+    private final ILOGController iLogController = new LOG_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -116,4 +119,9 @@ public class DataService {
     public IInfSysUserController getInfSysUserController() {
         return infSysUserController;
     }
+
+    public ILOGController getLogController() {
+        return iLogController;
+    }
+
 }

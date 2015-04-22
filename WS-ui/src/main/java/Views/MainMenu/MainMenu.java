@@ -60,9 +60,15 @@ import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import com.vaadin.ui.Notification;
+import db.ent.InfSysUser;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.dobrivoje.auth.roles.RolesPermissions;
+import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
 import ws.MyUI;
+import static ws.MyUI.DS;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -103,8 +109,16 @@ public class MainMenu extends CssLayout {
         logoutMenu.addItem("Logout " + MyUI.get().getAccessControl().getPrincipal(), FontAwesome.SIGN_OUT, new Command() {
             @Override
             public void menuSelected(MenuItem selectedItem) {
-                MyUI.get().getAccessControl().logout();
+                try {
+                    String u = MyUI.get().getAccessControl().getPrincipal();
+                    InfSysUser isu = DS.getInfSysUserController().getByID(u);
 
+                    DS.getLogController().addNew(new Date(), LOGS.LOGOUT.toString(), u, isu);
+                } catch (Exception ex) {
+                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                MyUI.get().getAccessControl().logout();
                 VaadinSession.getCurrent().getSession().invalidate();
                 Page.getCurrent().reload();
             }

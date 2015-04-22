@@ -35,6 +35,11 @@ public class InfSysUser_Controller implements IInfSysUserController {
     }
 
     @Override
+    public InfSysUser getByID(String shiroUserPrincipal) {
+        return dbh.getByShiroUserPrincipal(shiroUserPrincipal);
+    }
+
+    @Override
     public InfSysUser getInfSysUser(Salesman salesman) {
         return dbh.getUser(salesman, true);
     }

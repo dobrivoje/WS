@@ -8,6 +8,7 @@ import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.Subject;
 
 public class ShiroAccessControl implements IAccessAuthControl {
@@ -16,11 +17,11 @@ public class ShiroAccessControl implements IAccessAuthControl {
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
     private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s";
     private static int loggedInUsers = 0;
-
+    
     private final Factory<SecurityManager> factory;
     private final SecurityManager securityManager;
-    private Subject subject;
-
+    private final Subject subject;
+    
     public ShiroAccessControl(String initFile) {
         factory = new IniSecurityManagerFactory(initFile);
         securityManager = factory.getInstance();
@@ -32,55 +33,30 @@ public class ShiroAccessControl implements IAccessAuthControl {
     @Override
     public synchronized boolean login(String username, String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-
+        
         if (subject.getSession().getAttribute(UN_SESSION_KEY) == null) {
             try {
                 subject.login(token);
                 subject.getSession().setAttribute(UN_SESSION_KEY, getPrincipal());
                 incLoggedUsers();
-
+                
                 return true;
-
+                
             } catch (AuthenticationException ae) {
                 return false;
             }
-
+            
         } else {
             return true;
         }
     }
-
+    
     @Override
     public synchronized void logout() {
-        /*
-         if (subject.isAuthenticated()) {
-         decLoggedUsers();
-         subject.getSession().stop();
-         subject.getSession().removeAttribute(UN_SESSION_KEY);
-        
-         subject.logout();
-         subject = null;
-         }
-         */
-        /*
-         decLoggedUsers();
-        
-         if (subject != null) {
-         subject.getSession().stop();
-         subject.getSession().removeAttribute(UN_SESSION_KEY);
-        
-         subject.logout();
-         subject = null;
-         }
-         */
         decLoggedUsers();
-
+        
         try {
-            subject.getSession().stop();
-            subject.getSession().removeAttribute(UN_SESSION_KEY);
-
             subject.logout();
-            subject = null;
         } catch (Exception e) {
         }
     }
@@ -88,9 +64,9 @@ public class ShiroAccessControl implements IAccessAuthControl {
     //<editor-fold defaultstate="collapsed" desc="Permissions/Auths...">
     @Override
     public boolean authenticated() {
-        return subject.isAuthenticated();
+        return subject != null ? subject.isAuthenticated() : false;
     }
-
+    
     @Override
     public boolean hasRole(String role) {
         boolean o = false;
@@ -100,7 +76,7 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
         return o;
     }
-
+    
     @Override
     public boolean isPermitted(String permission) {
         boolean o = false;
@@ -110,18 +86,17 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
         return o;
     }
-
+    
     @Override
     public String getPrincipal() {
-        String s = (String) subject.getPrincipal();
-        return s == null ? "n/a" : s;
+        return subject != null ? (String) subject.getPrincipal() : "n/a";
     }
-
+    
     @Override
     public Session getSubjectSession() {
-        return subject.getSession();
+        return subject != null ? subject.getSession() : new SimpleSession("");
     }
-
+    
     @Override
     public Serializable getSubjectSessionID() {
         return subject != null ? subject.getSession().getId() : "";
@@ -132,19 +107,19 @@ public class ShiroAccessControl implements IAccessAuthControl {
     @Override
     public String getInfSysUserSession() {
         // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
-        return subject == null ? "" : (String) subject.getSession().getAttribute(UN_SESSION_KEY);
+        return subject != null ? (String) subject.getSession().getAttribute(UN_SESSION_KEY) : "";
     }
-
+    
     @Override
     public synchronized int getLoggedUsers() {
         return loggedInUsers;
     }
-
+    
     @Override
     public synchronized void incLoggedUsers() {
         loggedInUsers++;
     }
-
+    
     @Override
     public synchronized void decLoggedUsers() {
         --loggedInUsers;

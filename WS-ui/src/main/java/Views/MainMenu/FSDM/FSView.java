@@ -17,8 +17,12 @@ import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import db.ent.Fuelstation;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.CrudOperations;
+import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import ws.MyUI;
 import static ws.MyUI.DS;
@@ -36,6 +40,8 @@ public class FSView extends VerticalLayout implements View {
 
     private Button newFSPropButton;
     private Button newFSOButton;
+
+    private final String UN = MyUI.get().getAccessControl().getPrincipal();
 
     public FSView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -88,7 +94,7 @@ public class FSView extends VerticalLayout implements View {
 
     //<editor-fold defaultstate="collapsed" desc="createTopBar">
     public final HorizontalLayout createTopBar() {
-        TextField filter = new TextField();
+        final TextField filter = new TextField();
         filter.setStyleName("filter-textfield");
         filter.setInputPrompt("search fuel station...");
         ResetButtonForTextField.extend(filter);
@@ -97,6 +103,16 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
                 FS_Table.setFilter(event.getText());
+
+                try {
+                    DS.getLogController().addNew(
+                            new Date(),
+                            LOGS.DATA_SEARCH.toString(),
+                            "User : " + UN + ", FS search: " + event.getText(),
+                            DS.getInfSysUserController().getByID(MyUI.get().getAccessControl().getPrincipal()));
+                } catch (Exception ex) {
+                    Logger.getLogger(FSView.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

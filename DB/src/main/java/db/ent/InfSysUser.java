@@ -31,6 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
         {
             @NamedQuery(name = "InfSysUser.findAll", query = "SELECT u FROM InfSysUser u"),
             @NamedQuery(name = "InfSysUser.findByIdun", query = "SELECT u FROM InfSysUser u WHERE u.idun = :idun"),
+            
+            @NamedQuery(name = "InfSysUser.findByShiroPrincipal", 
+                    query = "SELECT u FROM InfSysUser u WHERE u.userName = :shiroUserPrincipal"),
+            
             @NamedQuery(name = "InfSysUser.findByActive", query = "SELECT u FROM InfSysUser u WHERE u.active = :active")
         }
 )
@@ -48,6 +52,8 @@ public class InfSysUser implements Serializable {
     private Boolean active;
     @OneToMany(mappedBy = "FK_IDUN")
     private List<RelUserSalesman> RelUserSalesmanList;
+    @OneToMany(mappedBy = "FK_IDUN")
+    private List<Log> logList;
 
     public InfSysUser() {
     }
@@ -88,6 +94,15 @@ public class InfSysUser implements Serializable {
 
     public void setRelUserSalesmanList(List<RelUserSalesman> relUserSalesmanList) {
         this.RelUserSalesmanList = relUserSalesmanList;
+    }
+
+    @XmlTransient
+    public List<Log> getLogList() {
+        return logList;
+    }
+
+    public void setLogList(List<Log> logList) {
+        this.logList = logList;
     }
 
     @Override
