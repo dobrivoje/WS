@@ -163,6 +163,10 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return image;
     }
 
+    protected VerticalLayout createMainImage(final Fuelstation f) {
+        return new VerticalLayout(createFSImage(f, 200, 200));
+    }
+
     protected VerticalLayout createImageGallery(final Fuelstation f) {
         final String imgGalleryLoc = DS.getGalleryController().getDefaultImageGallery().getStoreLocation();
         final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
@@ -229,13 +233,6 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         );
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Kreiraj glavnu sliku">
-        Image defaultFSImage = createFSImage(f, 200, 200);
-        VerticalLayout mainImageLayout = new VerticalLayout(defaultFSImage, imageUploader, imageUploader);
-
-        mainImageLayout.setSpacing(true);
-        //</editor-fold>
-
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
         CssLayout FSLowerImagesCssLayout = new CssLayout() {
             @Override
@@ -261,7 +258,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         }
         //</editor-fold>
 
-        rootLayout.addComponents(mainImageLayout);
+        rootLayout.addComponents(createMainImage(f));
         rootLayout.addComponent(FSLowerImagesCssLayout);
 
         return rootLayout;
