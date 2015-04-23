@@ -137,11 +137,6 @@ public class CrmProcess implements Serializable {
 
     @Override
     public String toString() {
-        return "CrmProcess[" + idp + "] "
-                + getFK_IDCS().getStatusName()
-                + " - "
-                + getActionDate()
-                + " - "
-                + getComment();
+        return getFK_IDCS().getStatusName();
     }
 }

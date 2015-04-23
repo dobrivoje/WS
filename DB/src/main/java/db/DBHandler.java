@@ -45,25 +45,25 @@ public class DBHandler {
     private static final String PERSISTENCE_UNIT_ID = "org.superb.apps.ws_PU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_ID);
     private static final EntityManager em = emf.createEntityManager();
-    
+
     public static EntityManager getEm() throws NullPointerException, Exception, java.net.UnknownHostException, java.sql.SQLException {
         return em;
     }
-    
+
     private DBHandler() {
     }
-    
+
     public static DBHandler getDefault() {
         return instance == null ? instance = new DBHandler() : instance;
     }
-    
+
     private void rollBackTransaction(String message) throws Exception {
         if (getEm().getTransaction().isActive()) {
             getEm().getTransaction().rollback();
         }
         throw new Exception(message);
     }
-    
+
     private void rollBackTransaction(Exception e) throws Exception {
         if (getEm().getTransaction().isActive()) {
             getEm().getTransaction().rollback();
@@ -85,7 +85,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Customer getCustomerByID(Long customerID) {
         try {
             return (Customer) getEm().createNamedQuery("Customer.findByID")
@@ -95,7 +95,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Customer getCustomerByNavCode(String navCode) {
         try {
             return (Customer) getEm().createNamedQuery("Customer.findByNavCode")
@@ -105,7 +105,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Customer> getCustomerByLicence(boolean licence) {
         try {
             return getEm().createNamedQuery("Customer.findByLicence")
@@ -115,7 +115,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Customer getCustomerByMatBr(String matBr) {
         try {
             return (Customer) getEm().createNamedQuery("Customer.findByMatBr")
@@ -125,7 +125,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Customer> getCustomerByName(String partialName) {
         try {
             return getEm().createNamedQuery("Customer.PartialName")
@@ -147,18 +147,18 @@ public class DBHandler {
             rollBackTransaction("New Customer Addition Failed");
         }
     }
-    
+
     public void addNewCustomer(String name, String address, City city, String PIB) throws Exception {
         Customer newCustomer = new Customer();
-        
+
         newCustomer.setName(name);
         newCustomer.setAddress(address);
         newCustomer.setFKIDCity(city);
         newCustomer.setPib(PIB);
-        
+
         addNewCustomer(newCustomer);
     }
-    
+
     public void updateCustomer(Customer customer) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -180,7 +180,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Fuelstation getFuelstationByID(Long fuelstationID) {
         try {
             return (Fuelstation) getEm().createNamedQuery("Fuelstation.findByIdfs")
@@ -190,7 +190,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Fuelstation> getFuelstationByName(String partialName) {
         try {
             return getEm().createNamedQuery("Fuelstation.PartialName")
@@ -212,18 +212,18 @@ public class DBHandler {
             rollBackTransaction("New Fuelstation Addition Failed.\nFuelstation name must be entered.");
         }
     }
-    
+
     public void addNewFS(String name, City city, String address, String coordinates) throws Exception {
         Fuelstation newFuelstation = new Fuelstation();
-        
+
         newFuelstation.setName(name);
         newFuelstation.setAddress(address);
         newFuelstation.setFK_City(city);
         newFuelstation.setCoordinates(coordinates);
-        
+
         addNewFS(newFuelstation);
     }
-    
+
     public void updateFS(Fuelstation fuelstation) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -247,7 +247,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CustomerBussinesType> getAllCustomerBussinesTypes() {
         try {
             return (List<CustomerBussinesType>) getEm().createNamedQuery("CustomerBussinesType.findAll").getResultList();
@@ -255,7 +255,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CustomerBussinesType> getAllCustomerBussinesTypes(String activityName) {
         try {
             return getEm().createNamedQuery("CustomerBussinesType.findByActivity")
@@ -265,14 +265,14 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType bussinesType) {
         List<Customer> customers = new ArrayList<>();
-        
+
         for (RelCBType rcb : bussinesType.getRelCBTypeList()) {
             customers.add(rcb.getFkIdc());
         }
-        
+
         return customers;
     }
     //</editor-fold>
@@ -287,7 +287,7 @@ public class DBHandler {
             rollBackTransaction("New Customer Bussines Type Addition Failed");
         }
     }
-    
+
     public void updateCustomerBussinesType(CustomerBussinesType newCustomerBussinesType) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -309,7 +309,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<RelCBType> getAllCustomerBussinesTypes(Customer customer) {
         try {
             return getEm().createNamedQuery("RelCBType.findByCustomer")
@@ -319,7 +319,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public RelCBType getRelCBType(Long ID) {
         try {
             return (RelCBType) getEm().createNamedQuery("RelCBType.findByIdrcbt")
@@ -329,7 +329,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public void addNewRelCBT(RelCBType newRelCBType) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -339,7 +339,7 @@ public class DBHandler {
             rollBackTransaction("New Customer Bussines Type Relation Addition Failed");
         }
     }
-    
+
     public void addNewRelCBT(Customer IDC, CustomerBussinesType IDCBT, Date dateFrom, Date dateTo, boolean active) throws Exception {
         RelCBType newRelCBType = new RelCBType();
         newRelCBType.setFkIdc(IDC);
@@ -347,10 +347,10 @@ public class DBHandler {
         newRelCBType.setDateFrom(dateFrom);
         newRelCBType.setDateFrom(dateTo);
         newRelCBType.setActive(active);
-        
+
         addNewRelCBT(newRelCBType);
     }
-    
+
     public void updateRelCBT(RelCBType newRelCBType) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -372,7 +372,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Salesman getSalesman(Long IDS) {
         try {
             return (Salesman) getEm().createNamedQuery("Salesman.findByIds")
@@ -382,7 +382,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Salesman> getSalesmanByName(String name) {
         try {
             return getEm().createNamedQuery("Salesman.findByName")
@@ -392,7 +392,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Salesman> getSalesmanBySurname(String surname) {
         try {
             return getEm().createNamedQuery("Salesman.findBySurname")
@@ -402,7 +402,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Salesman> getSalesmanByPosition(String position) {
         try {
             return getEm().createNamedQuery("Salesman.findByPosition")
@@ -412,7 +412,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Salesman> getAllSalesmanByActivity(boolean active) {
         try {
             return getEm().createNamedQuery("Salesman.findByActive")
@@ -429,7 +429,7 @@ public class DBHandler {
         Salesman newSalesman = new Salesman(name, surname, position, active, dateFrom, dateTo, BL);
         addNewSalesman(newSalesman);
     }
-    
+
     public void addNewSalesman(Salesman newSalesman) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -439,10 +439,10 @@ public class DBHandler {
             rollBackTransaction("Salesman Update Failed.");
         }
     }
-    
+
     public void updateSalesman(Long IDS, String name, String surname, String position, boolean active, String dateFrom, String dateTo, BussinesLine BL) throws Exception {
         Salesman newSalesman = getSalesman(IDS);
-        
+
         newSalesman.setName(name);
         newSalesman.setSurname(surname);
         newSalesman.setPosition(position);
@@ -450,10 +450,10 @@ public class DBHandler {
         newSalesman.setDateFrom(dateFrom);
         newSalesman.setDateTo(dateTo);
         newSalesman.setFkIdbl(BL);
-        
+
         updateSalesman(newSalesman);
     }
-    
+
     public void updateSalesman(Salesman newSalesman) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -477,7 +477,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Gallery> getAllGalleries() {
         try {
             return getEm().createNamedQuery("Gallery.findAll")
@@ -486,7 +486,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Document getDocument(long idd) {
         try {
             return (Document) getEm().createNamedQuery("Document.findByIdd")
@@ -496,7 +496,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<DocumentType> getAllDocumentTypes() {
         try {
             return getEm().createNamedQuery("DocumentType.findAll")
@@ -505,7 +505,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public DocumentType getDocumentType(long ID) {
         try {
             return (DocumentType) getEm().createNamedQuery("DocumentType.findByIddt")
@@ -515,7 +515,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public DocumentType getDocumentType(String docType) {
         try {
             return (DocumentType) getEm().createNamedQuery("DocumentType.findByDocType")
@@ -525,7 +525,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Document> getAllFSDocuments(Fuelstation fuelstation) {
         try {
             return getEm().createNamedQuery("RelFSDocument.getAllFSDocuments")
@@ -535,7 +535,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Document> getAllDocumentsByGallery(Gallery g) {
         try {
             return getEm().createNamedQuery("Document.findByGallery")
@@ -557,16 +557,16 @@ public class DBHandler {
             rollBackTransaction("New Gallery Not Added.");
         }
     }
-    
+
     public void addNewGallery(String galleryName, String storeLocation) throws Exception {
         Gallery newGallery = new Gallery();
-        
+
         newGallery.setName(galleryName);
         newGallery.setStoreLocation(storeLocation);
-        
+
         addNewGallery(newGallery);
     }
-    
+
     public Document addNewDocument(Document newDoc) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -577,14 +577,14 @@ public class DBHandler {
             newDoc = null;
             rollBackTransaction("New Document Not Added.");
         }
-        
+
         return newDoc;
     }
-    
+
     public Document addNewDocument(Gallery gallery, String name, Serializable docData, String docLocation, Date uploadDate, String docType) throws Exception {
         return addNewDocument(new Document(gallery, name, docData, docLocation, uploadDate, docType));
     }
-    
+
     public void updateDocument(Document document) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -605,13 +605,13 @@ public class DBHandler {
                     .setParameter("IDFS", fuelstation)
                     .setParameter("DefaultDocument", defaultDocument)
                     .getResultList();
-            
+
             return docs.iterator().next();
         } catch (Exception ex) {
             return null;
         }
     }
-    
+
     public void setFSDefaultImage(Fuelstation fuelstation, Document defaultFSImage) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -626,26 +626,26 @@ public class DBHandler {
                     .setParameter("FK_IDFS", fuelstation)
                     .setParameter("FK_IDD", defaultFSImage)
                     .executeUpdate();
-            
+
             getEm().getTransaction().commit();
         } catch (Exception ex) {
             rollBackTransaction("Document Failed To Be Updated as Default !");
         }
     }
-    
+
     public Document getLastFSDocument(Fuelstation f) {
         try {
             List<Document> L = getEm().createNamedQuery("RelFSDocument.getAllFSDocuments")
                     .setParameter("IDFS", f)
                     .getResultList();
-            
+
             return L.get(L.size() - 1);
-            
+
         } catch (Exception ex) {
             return null;
         }
     }
-    
+
     public Document getHighPriorityFSImage(Fuelstation f) {
         try {
             List<Document> L = getEm().createNamedQuery("RelFSDocument.getHighPriorityFSImage")
@@ -668,7 +668,7 @@ public class DBHandler {
             rollBackTransaction("New FS Document Not Added.");
         }
     }
-    
+
     public void addNewFSDocument(Fuelstation fuelstation, Document document, Date docDate, boolean defaultDocument, int priority) throws Exception {
         RelFSDocument newFSDoc = new RelFSDocument(fuelstation, document, docDate, defaultDocument, priority);
         addNewFSDocument(newFSDoc);
@@ -691,10 +691,10 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     public void addSalesmanImage(Salesman salesman, Document image) throws Exception {
         RelSALESMANIMAGE newASALESMANIMAGE = new RelSALESMANIMAGE();
-        
+
         newASALESMANIMAGE.setFkSalesman(salesman);
         newASALESMANIMAGE.setFkDocument(image);
-        
+
         try {
             getEm().getTransaction().begin();
             em.persist(newASALESMANIMAGE);
@@ -716,7 +716,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Owner getOwner(long ID) {
         try {
             return (Owner) getEm().createNamedQuery("Owner.findByIdo")
@@ -726,7 +726,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Owner> getAllFSOwnedByCustomer(Customer customer) {
         try {
             return getEm().createNamedQuery("Owner.findByCustomer")
@@ -736,7 +736,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Owner> getAllFSOwnedByCustomer(Customer customer, boolean justActive) {
         try {
             return getEm().createNamedQuery("Owner.ByCustomerAndActive")
@@ -747,7 +747,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Owner getCurrentFSOwner(Fuelstation fuelstation) {
         try {
             return (Owner) getEm().createNamedQuery("Owner.findByFuelstation")
@@ -762,16 +762,16 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     public void addNewOwner(Customer customer, Fuelstation fuelstation, Date dateFrom, Date dateTo, boolean active) throws Exception {
         Owner newOwner = new Owner();
-        
+
         newOwner.setFKIDCustomer(customer);
         newOwner.setFkIdFs(fuelstation);
         newOwner.setDateFrom(dateFrom);
         newOwner.setDateTo(dateTo);
         newOwner.setActive(active);
-        
+
         addNewOwner(newOwner);
     }
-    
+
     public void addNewOwner(Owner newOwner) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -785,7 +785,7 @@ public class DBHandler {
             }
         }
     }
-    
+
     public void updateOwner(Owner existingOwner) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -813,7 +813,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public FsProp getFSProp(long ID) {
         try {
             return (FsProp) getEm().createNamedQuery("FsProp.findByID")
@@ -823,7 +823,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<FsProp> getAllFSProps() {
         try {
             return getEm().createNamedQuery("FsProp.findAll")
@@ -832,7 +832,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active) {
         try {
             return getEm().createNamedQuery("FsProp.FSPropByFS")
@@ -865,7 +865,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<FsProp> getAllFSProperties(Owner owner) {
         try {
             return getEm().createNamedQuery("FsProp.findByOwner")
@@ -875,7 +875,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<FsProp> getAllFSPropertiesByCustomer(Customer customer, Fuelstation fuelstation, boolean active) {
         try {
             return getEm().createNamedQuery("FsProp.FSPropByCustomer")
@@ -903,13 +903,13 @@ public class DBHandler {
             }
         }
     }
-    
+
     public void addNewFSProp(Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
             Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
-        
+
         FsProp newFsProp = new FsProp();
-        
+
         newFsProp.setFkIdo(owner);
         newFsProp.setPropertiesDate(propDate);
         newFsProp.setNoOfTanks(noOfTanks);
@@ -922,10 +922,10 @@ public class DBHandler {
         newFsProp.setLicDateTo(dateLicenceTo);
         newFsProp.setComment(comment);
         newFsProp.setActive(active);
-        
+
         addNewFSProp(newFsProp);
     }
-    
+
     public void updateExistingFSProp(FsProp existingFsProp) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -939,11 +939,11 @@ public class DBHandler {
             }
         }
     }
-    
+
     public void updateExistingFSProp(FsProp existingFsProp, Owner owner, Date propDate, int noOfTanks, boolean restaurant,
             int truckCapable, boolean carWash, String compliance, String licence,
             Date dateLicenceFrom, Date dateLicenceTo, String comment, boolean active) throws Exception {
-        
+
         existingFsProp.setFkIdo(owner);
         existingFsProp.setPropertiesDate(propDate);
         existingFsProp.setNoOfTanks(noOfTanks);
@@ -956,7 +956,7 @@ public class DBHandler {
         existingFsProp.setLicDateTo(dateLicenceTo);
         existingFsProp.setComment(comment);
         existingFsProp.setActive(active);
-        
+
         updateExistingFSProp(existingFsProp);
     }
     //</editor-fold>
@@ -972,7 +972,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public City getCity(Long ID) {
         try {
             return (City) getEm().createNamedQuery("City.findByIdc")
@@ -982,7 +982,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<City> getCityByName(String partialNameWithBeggining) {
         try {
             return getEm().createNamedQuery("City.PartialName")
@@ -992,7 +992,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<City> getCityByContainingName(String partialName) {
         try {
             return getEm().createNamedQuery("City.PartialName")
@@ -1002,7 +1002,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<City> getCityByMunicipality(String partialName) {
         try {
             return getEm().createNamedQuery("City.MunicipalityPartialName")
@@ -1012,7 +1012,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<City> getCityByDistrict(String partialName) {
         try {
             return getEm().createNamedQuery("City.DistrictPartialName")
@@ -1027,14 +1027,14 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     public void addNewCity(String name, String zip, String region) throws Exception {
         City newCity = new City();
-        
+
         newCity.setName(name);
         newCity.setZip(zip);
         newCity.setRegion(region);
-        
+
         addNewCity(newCity);
     }
-    
+
     public void addNewCity(City newCity) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1044,7 +1044,7 @@ public class DBHandler {
             rollBackTransaction("New City Addition Failed.");
         }
     }
-    
+
     public void updateExistingCity(City newCity) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1070,7 +1070,7 @@ public class DBHandler {
             throw new Exception("No relation between Salesman and Customer !");
         }
     }
-    
+
     public RelSALESMANCUST getCRM_R_Salesman_Cust(Customer customer) {
         try {
             return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.findByCust")
@@ -1080,7 +1080,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public RelSALESMANCUST getCRM_RSalesman_Cust(Salesman salesman) {
         try {
             return (RelSALESMANCUST) getEm().createNamedQuery("RelSALESMANCUST.findBySalesman")
@@ -1090,7 +1090,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Customer> getCRM_SalesmansCustomers(Salesman salesman) {
         try {
             return getEm().createNamedQuery("RelSALESMANCUST.CustomersBySalesman")
@@ -1111,18 +1111,18 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
-        
+
         if (dateFrom == null) {
             // dateFrom = dateTo - 1 godina !
             long g = dateTo.getTime() - 1000 * 60 * 60 * 24 * 365 * 1;
             g = g < 0 ? 0 : g;
-            
+
             dateFrom = new Date(dateTo.getTime() - g);
         }
-        
+
         try {
             return getEm().createNamedQuery("CrmProcess.CustomerProcessesByDate")
                     .setParameter("IDC", customer)
@@ -1133,7 +1133,17 @@ public class DBHandler {
             return null;
         }
     }
-    
+
+    public List<CrmProcess> getCRM_AllCustomerProcesses(Customer customer) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.AllCustomerProcesses")
+                    .setParameter("IDC", customer)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, Date dateFrom, Date dateTo) {
         try {
             return getEm().createNamedQuery("CrmProcess.SalesmanProcessesByDate")
@@ -1145,7 +1155,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CrmProcess> getCRMProcessesByStatus(CrmStatus crmStatus) {
         try {
             return getEm().createNamedQuery("CrmProcess.findByCRMStatus")
@@ -1164,7 +1174,7 @@ public class DBHandler {
         RelSALESMANCUST r = new RelSALESMANCUST(c, s, dateFrom, dateTo, active);
         addNew_RelSalesman_Cust(r);
     }
-    
+
     public void addNew_RelSalesman_Cust(RelSALESMANCUST newRelSALESMANCUST) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1180,7 +1190,7 @@ public class DBHandler {
             }
         }
     }
-    
+
     public void update_R_Salesman_Cust(RelSALESMANCUST R_Salesman_Cust) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1195,22 +1205,22 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
     public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
         RelSALESMANCUST r = getCRM_R_Salesman_Cust(s, c);
-        
+
         CrmProcess crmProcess = new CrmProcess(r, crmStatus, comment, actionDate);
         addNewCRM_Process(crmProcess);
     }
-    
+
     public void addNewCRM_Process(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
         CrmProcess crmProcess = new CrmProcess(RelSalesmanCustomer, crmStatus, comment, actionDate);
         addNewCRM_Process(crmProcess);
     }
-    
+
     public void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception {
         try {
             getEm().getTransaction().begin();
             em.persist(newCrmProcess);
             getEm().getTransaction().commit();
-            
+
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
                 rollBackTransaction(new MyDBNullException("New CRM Process Addition Failed.\nCheck fileds that must not be empty."));
@@ -1233,7 +1243,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public InfSysUser getByID(long ID) {
         try {
             return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByIdun")
@@ -1243,7 +1253,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public InfSysUser getByShiroUserPrincipal(String shiroUserPrincipal) {
         try {
             return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByShiroPrincipal")
@@ -1261,11 +1271,11 @@ public class DBHandler {
     public InfSysUser getUser(Salesman salesman) {
         return getUser(salesman, true);
     }
-    
+
     public Salesman getSalesman(InfSysUser user) {
         return getSalesman(user, true);
     }
-    
+
     public InfSysUser getUser(Salesman salesman, boolean active) {
         try {
             return (InfSysUser) getEm().createNamedQuery("RelUserSalesman.getInfSysUser")
@@ -1278,7 +1288,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public Salesman getSalesman(InfSysUser user, boolean active) {
         try {
             return (Salesman) getEm().createNamedQuery("RelUserSalesman.getSalesman")
@@ -1305,7 +1315,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Log> getLogByInfSysUser(InfSysUser isu) {
         try {
             return getEm().createNamedQuery("Log.findByInfSysUser")
@@ -1315,7 +1325,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<Log> getLogByInfSysUser(InfSysUser isu, Date dateFrom, Date dateTo) {
         try {
             return getEm().createNamedQuery("Log.findByInfSysUserAndDate")
@@ -1335,12 +1345,12 @@ public class DBHandler {
             getEm().getTransaction().begin();
             em.persist(log);
             getEm().getTransaction().commit();
-            
+
         } catch (Exception ex) {
             rollBackTransaction("New LOG Addition Failed.\nReason : " + ex.getMessage());
         }
     }
-    
+
     public void addNewLog(Date logDate, String actionCode, String description, InfSysUser infSysUser) throws Exception {
         addNewLog(new Log(logDate, actionCode, description, infSysUser));
     }

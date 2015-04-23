@@ -6,14 +6,13 @@
 package test;
 
 import dataservice.DataService;
+import db.ent.CrmProcess;
+import db.ent.Customer;
 import db.ent.InfSysUser;
-import db.ent.Log;
 import db.ent.Salesman;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ILOGController;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,11 +20,13 @@ import java.util.logging.Logger;
  */
 public class Test1 {
 
-    static DataService DS = DataService.getDefault();
-    static final IInfSysUserController UC = DS.getInfSysUserController();
-    static final ILOGController LC = DS.getLogController();
-
     public static void main(String[] args) {
+
+        DataService DS = DataService.getDefault();
+        final IInfSysUserController UC = DS.getInfSysUserController();
+        final ILOGController LC = DS.getLogController();
+
+        Customer c = DS.getCustomerController().getByID(592L);
 
         Salesman s = DS.getSalesmanController().getByID(1L);
         System.err.println("Salesman : " + s.toString());
@@ -36,14 +37,12 @@ public class Test1 {
         System.err.println("Salesman : " + s.toString() + ", InfSys Useer : " + UC.getInfSysUser(s).toString());
         System.err.println("InfSys User : " + u.toString() + ", IS User : " + u.toString());
 
-        try {
-            LC.addNew(new Date(), "logovanje", "Logovanje korisnika : " + u.toString(), u);
-        } catch (Exception ex) {
-            Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        int count = DS.getCrmController().getCRM_Processes(c, new Date(), new Date()).size();
 
-        for (Log L : LC.getLogByInfSysUser(u)) {
-            System.err.println(L.toString());
+        System.err.println("customer active processes : " + count);
+
+        for (CrmProcess cp : DS.getCrmController().getCRM_Processes(c, null, null)) {
+            System.err.println("*** : " + cp.toString());
         }
     }
 }

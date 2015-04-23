@@ -291,8 +291,8 @@ public class CustomerTable extends GENTable<Customer> {
 
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
-                    if (DS.getCrmController().getCRM_Processes(c, null, null) == null) {
-                        Notification.show("Warning", "No CRM process(es) \nfor this customer.", Notification.Type.ERROR_MESSAGE);
+                    if (DS.getCrmController().getCRM_Processes(c, null, null).size() < 1) {
+                        Notification.show("Warning", "No CRM processes \nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
 
@@ -326,7 +326,7 @@ public class CustomerTable extends GENTable<Customer> {
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 cbtTree = new Tree("No Customer Bussines Type.");
             }
-            
+
             getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, new RELCBTForm(customer), cbtTree));
         } else {
             Notification.show("User Rights Error",

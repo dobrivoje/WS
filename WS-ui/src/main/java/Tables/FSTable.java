@@ -32,6 +32,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
     private static final Action ACTION_FS_UPDATE = new Action("Fuelstation Data Update");
     private static final Action ACTION_FS_OWNER = new Action("New Fuelstation Owner");
+    private static final Action ACTION_FS_PROPERTY = new Action("New Fuelstation Property");
     private static final Action ACTION_FS_IMG_GALLERY = new Action("Fuelstation Image Gallery");
 
     public FSTable() {
@@ -61,7 +62,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
                         FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
-                        
+
                         getUI().addWindow(new WindowFormProp("Fuelstation Owner Form", false, fsoForm, createMainImage(f)));
                     }
                 });
@@ -116,7 +117,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
             @Override
             public Action[] getActions(Object target, Object sender) {
-                return new Action[]{ACTION_FS_OWNER, ACTION_FS_UPDATE, ACTION_FS_IMG_GALLERY};
+                return new Action[]{ACTION_FS_OWNER, ACTION_FS_UPDATE, ACTION_FS_PROPERTY, ACTION_FS_IMG_GALLERY};
             }
 
             @Override
@@ -146,6 +147,12 @@ public class FSTable extends GENTable<Fuelstation> {
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
                     openFSGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
+
+                /*
+                 if (action.equals(FSTable.ACTION_FS_PROPERTY)) {
+                 openFSGalleryWindow("Fuelstation - " + f.getName(), f);
+                 }
+                 */
             }
         });
     }

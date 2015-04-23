@@ -1,7 +1,5 @@
 package Views.MainMenu.CDM;
 
-import Forms.CDM.CustomerForm;
-import Forms.CDM.RELCBTForm;
 import Forms.SaDesneStraneForm;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
@@ -14,11 +12,11 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
+import Trees.CRM_CurrCustProcesses_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
@@ -30,9 +28,6 @@ import java.util.logging.Logger;
 import org.superb.apps.utilities.Enums.LOGS;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -47,7 +42,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private static final String[] propPanelsCaptions = new String[]{
-        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer Operations"};
+        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer's CRM process(es)"};
     private final Panel[] propPanels = new Panel[propPanelsCaptions.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
@@ -128,7 +123,7 @@ public class CustomersView extends VerticalLayout implements View {
                             LOGS.DATA_SEARCH.toString(),
                             "User : " + UN + ", Customer search: " + event.getText(),
                             DS.getInfSysUserController().getByID(UN)
-                 );
+                    );
                 } catch (Exception ex) {
                     Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -192,60 +187,17 @@ public class CustomersView extends VerticalLayout implements View {
                 propPanels[1].setContent(new Tree());
             }
 
-            propPanels[2].setContent(buildCustomerOptions(c, customersTable));
+            try {
+                propPanels[2].setContent(new CRM_CurrCustProcesses_Tree("", c));
+            } catch (CustomTreeNodesEmptyException | NullPointerException e) {
+                propPanels[2].setContent(new Tree());
+            }
 
         } else {
             for (Panel p : propPanels) {
                 p.setContent(new Label());
             }
         }
-    }
-
-    // Ovaj metod drastično ubrzava generisanje Customer tabele, zato što na klik na Customer-a
-    // u tabeli generiše definisane dugmiće, umesto da se unapred za sve kupce generišu opcije !
-    private Component buildCustomerOptions(final Customer c, final CustomerTable customersTable) {
-        VerticalLayout VL1 = new VerticalLayout();
-
-        HorizontalLayout HL1 = new HorizontalLayout();
-
-        Button editBtn = new Button("u", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                CustomerForm customerForm = new CustomerForm(c, new IRefreshVisualContainer() {
-                    @Override
-                    public void refreshVisualContainer() {
-                        customersTable.refreshVisualContainer();
-                    }
-                });
-
-                getUI().addWindow(new WindowForm2("Customer Update Form", customerForm));
-            }
-        });
-
-        Button cbtypeBtn = new Button("t", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    RELCBT_Tree cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", c);
-                    RELCBTForm relCBT_Form = new RELCBTForm(c);
-                    getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, relCBT_Form, cbtTree));
-                } catch (CustomTreeNodesEmptyException | IllegalArgumentException | NullPointerException ex) {
-                    Logger.getLogger(CustomersView.class.getName()).log(Level.WARNING, null, ex);
-                }
-            }
-        });
-
-        editBtn.setDescription("Update this customer with new data...");
-
-        cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
-
-        HL1.setSpacing(true);
-        HL1.setMargin(true);
-        HL1.addComponents(editBtn, cbtypeBtn);
-
-        VL1.addComponents(HL1);
-
-        return VL1;
     }
 
     private void createPropertyPanels() {
