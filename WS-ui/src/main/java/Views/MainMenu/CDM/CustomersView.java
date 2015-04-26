@@ -162,15 +162,6 @@ public class CustomersView extends VerticalLayout implements View {
         topLayout.setStyleName("top-bar");
         return topLayout;
     }
-
-    private VerticalLayout createProperties(Customer customer) {
-        VerticalLayout vl = new VerticalLayout();
-        vl.setMargin(true);
-        vl.setSpacing(true);
-
-        vl.addComponent(new Label(customer == null ? "no data" : customer.toString()));
-        return vl;
-    }
     //</editor-fold>
 
     private void showPropForm(Customer c) {

@@ -167,7 +167,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         return new VerticalLayout(createFSImage(f, 200, 200));
     }
 
-    protected VerticalLayout createImageGallery(final Fuelstation f) {
+    protected VerticalLayout createImageGallery(final Fuelstation f, boolean uploaderOnForm) {
         final String imgGalleryLoc = DS.getGalleryController().getDefaultImageGallery().getStoreLocation();
         final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
         final Notif notif = new Notif();
@@ -259,6 +259,11 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         //</editor-fold>
 
         rootLayout.addComponents(createMainImage(f));
+
+        if (uploaderOnForm) {
+            rootLayout.addComponents(imageUploader);
+        }
+        
         rootLayout.addComponent(FSLowerImagesCssLayout);
 
         return rootLayout;
