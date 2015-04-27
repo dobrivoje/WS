@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 @Entity
 @Table(name = "CRM_PROCESS")
@@ -34,19 +34,21 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "CrmProcess.findAll", query = "SELECT c FROM CrmProcess c"),
 
             @NamedQuery(name = "CrmProcess.findByCustomer",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDRSMC.FK_IDC = :IDC"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC"),
 
             @NamedQuery(name = "CrmProcess.CustomerProcessesByDate",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDRSMC.FK_IDC = :IDC AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
             @NamedQuery(name = "CrmProcess.SalesmanProcessesByDate",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDRSMC.FK_IDS = :IDS AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
             @NamedQuery(name = "CrmProcess.findByCRMStatus",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS = :IDCS"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS.idcs = :IDCS"),
 
             @NamedQuery(name = "CrmProcess.findByDate", query = "SELECT c FROM CrmProcess c WHERE c.actionDate = :actionDate")
-        })
+        }
+)
+
 public class CrmProcess implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,26 +58,26 @@ public class CrmProcess implements Serializable {
     @Column(name = "IDP")
     private Long idp;
     @Column(name = "ActionDate")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date actionDate;
     @Lob
     @Column(name = "Comment")
     private String comment;
+    @JoinColumn(name = "FK_IDCA", referencedColumnName = "IDCA")
+    @ManyToOne(optional = false)
+    private CrmCase FK_IDCA;
     @JoinColumn(name = "FK_IDCS", referencedColumnName = "IDCS")
     @ManyToOne(optional = false)
     private CrmStatus FK_IDCS;
-    @JoinColumn(name = "FK_IDRBLC", referencedColumnName = "IDRBLC")
-    @ManyToOne(optional = false)
-    private RelSALESMANCUST FK_IDRSMC;
 
     public CrmProcess() {
     }
 
-    public CrmProcess(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) {
-        this.FK_IDRSMC = RelSalesmanCustomer;
-        this.FK_IDCS = crmStatus;
-        this.comment = comment;
+    public CrmProcess(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) {
         this.actionDate = actionDate;
+        this.comment = comment;
+        this.FK_IDCA = crmCase;
+        this.FK_IDCS = crmStatus;
     }
 
     public Long getIdp() {
@@ -102,20 +104,20 @@ public class CrmProcess implements Serializable {
         this.comment = comment;
     }
 
+    public CrmCase getFK_IDCA() {
+        return FK_IDCA;
+    }
+
+    public void setFK_IDCA(CrmCase FK_IDCA) {
+        this.FK_IDCA = FK_IDCA;
+    }
+
     public CrmStatus getFK_IDCS() {
         return FK_IDCS;
     }
 
     public void setFK_IDCS(CrmStatus FK_IDCS) {
         this.FK_IDCS = FK_IDCS;
-    }
-
-    public RelSALESMANCUST getFK_IDRSMC() {
-        return FK_IDRSMC;
-    }
-
-    public void setFK_IDRSMC(RelSALESMANCUST FK_IDRSMC) {
-        this.FK_IDRSMC = FK_IDRSMC;
     }
 
     @Override
@@ -132,11 +134,18 @@ public class CrmProcess implements Serializable {
             return false;
         }
         CrmProcess other = (CrmProcess) object;
-        return !((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp)));
+        if ((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return getFK_IDCS().getStatusName();
+        return "CRM Process-" + getActionDate() + ", "
+                + getComment() + ", "
+                + getFK_IDCS().toString() + ", "
+                + getFK_IDCA().toString();
     }
+
 }

@@ -5,8 +5,8 @@
  */
 package Trees;
 
+import Forms.CRM.CRMCase_Form;
 import db.Exceptions.CustomTreeNodesEmptyException;
-import db.ent.CrmProcess;
 import db.ent.Customer;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
 import static ws.MyUI.DS;
@@ -15,9 +15,9 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CRM_CurrCustProcesses_Tree extends CustomDateTree<CrmProcess> {
+public class CRM_CustCRMCases_Tree extends CustomDateTree<CRMCase_Form> {
 
-    public CRM_CurrCustProcesses_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCrmController().getCRM_Processes(customer, null, null));
+    public CRM_CustCRMCases_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, DS.getCrmController().getCRM_Cases(customer, false));
     }
 }

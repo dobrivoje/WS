@@ -11,6 +11,7 @@ import Forms.CRM.SCR_Form;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
 import db.Exceptions.CustomTreeNodesEmptyException;
+import db.ent.CrmCase;
 import db.ent.Customer;
 import db.ent.Salesman;
 import java.util.List;
@@ -26,7 +27,7 @@ import static ws.MyUI.DS;
 public class SC_Tree extends CustomSCTree<Salesman> {
 
     private static final Action ACTION_NEW_CS_RELATION = new Action("New CRM Salesman Customer Relation");
-    private static final Action ACTION_NEW_CRM_PROCESS = new Action("New CRM process");
+    private static final Action ACTION_NEW_CRM_CASE = new Action("New CRM Case");
     private static final Action ACTION_CUSTOMER_DATA_UPDATE = new Action("New Customer Update");
     private static final Action ACTION_CUSTOMER_ACTIVE_NO_MORE = new Action("Customer Removal from Salesman Responsibility");
 
@@ -54,7 +55,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
             @Override
             public Action[] getActions(Object target, Object sender) {
                 return new Action[]{
-                    ACTION_NEW_CS_RELATION, ACTION_NEW_CRM_PROCESS, ACTION_CUSTOMER_DATA_UPDATE, ACTION_CUSTOMER_ACTIVE_NO_MORE};
+                    ACTION_NEW_CS_RELATION, ACTION_NEW_CRM_CASE, ACTION_CUSTOMER_DATA_UPDATE, ACTION_CUSTOMER_ACTIVE_NO_MORE};
             }
 
             @Override
@@ -73,11 +74,12 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         getUI().addWindow(new WindowForm2(ACTION_CUSTOMER_DATA_UPDATE.getCaption(), new CustomerForm((Customer) source.getValue(), null)));
                     }
 
-                    if (action.equals(ACTION_NEW_CRM_PROCESS) && (source.getValue() instanceof Customer)) {
+                    if (action.equals(ACTION_NEW_CRM_CASE) && (source.getValue() instanceof Customer)) {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
+                        CrmCase crmCase = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
 
-                        getUI().addWindow(new WindowForm(ACTION_NEW_CRM_PROCESS.getCaption(), false, new CRMProcess_Form(s, c, null)));
+                        getUI().addWindow(new WindowForm(ACTION_NEW_CRM_CASE.getCaption(), false, new CRMProcess_Form(crmCase, null)));
                     }
                 }
             }

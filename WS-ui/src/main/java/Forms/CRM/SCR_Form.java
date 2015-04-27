@@ -21,7 +21,6 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
@@ -57,7 +56,8 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         salesman.setRequired(true);
         customer.setRequired(true);
 
-        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        // ne treba, definisano u nad klasi !
+        // dateFrom.setDateFormat(APP_DATE_FORMAT);
         dateFrom.setValue(new Date());
 
         active.setValue(true);

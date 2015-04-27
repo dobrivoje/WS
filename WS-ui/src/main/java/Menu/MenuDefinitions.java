@@ -20,7 +20,7 @@ public enum MenuDefinitions {
     //
     SYS_NOTIF_BOARD("System Notifications Board"),
     CUST_DATA_MANAG("Customers Management"),
-    CUST_CRM_MANAG("Customers CRM Management"),
+    CUST_CRM_MANAG("CRM Management"),
     FS_DATA_MANAG("Fuelstations Management"),
     //
     // Submenus
@@ -34,10 +34,11 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
     //
-    CUST_CRM_MANAG_ACTIVE_PROCESSES("Active CRM Processes"),
-    CUST_CRM_MANAG_NEW_PROCESS("New CRM Process"),
-    CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
-    CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
+    CRM_MANAG_ACTIVE_CASES("Active CRM Cases"),
+    CRM_MANAG_NEW_CASE("New CRM Case"),
+    CRM_MANAG_NEW_PROCESS("New CRM Process"),
+    CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
+    CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
     //
     FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
     FS_DATA_MANAG_NEW_FS("New Fuelstation"),
@@ -80,11 +81,11 @@ public enum MenuDefinitions {
     }
 
     public static List<MenuDefinitions> get_CRM_SubItems() {
-        return new ArrayList<>(Arrays.asList(
-                CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL,
-                CUST_CRM_MANAG_NEW_PROCESS,
-                CUST_CRM_MANAG_ACTIVE_PROCESSES,
-                CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL
+        return new ArrayList<>(Arrays.asList(CRM_MANAG_NEW_SALESMAN_CUST_REL,
+                CRM_MANAG_NEW_PROCESS,
+                CRM_MANAG_NEW_CASE,
+                CRM_MANAG_ACTIVE_CASES,
+                CRM_MANAG_EXISTING_SALESMAN_CUST_REL
         ));
     }
 

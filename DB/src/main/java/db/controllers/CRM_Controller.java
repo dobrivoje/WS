@@ -6,6 +6,7 @@
 package db.controllers;
 
 import db.DBHandler;
+import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
@@ -30,7 +31,32 @@ public class CRM_Controller implements ICRMController {
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
     public List<CrmStatus> getCRM_AllStatuses() {
-        return dbh.getCRM_AllStatuses();
+        return dbh.getCRM_Statuses();
+    }
+
+    @Override
+    public CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s) {
+        return dbh.getLastActive_CRMCase(c, s);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
+        return dbh.getCRM_Cases(customer, caseFinished);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished) {
+        return dbh.getCRM_Cases(salesman, caseFinished);
+    }
+
+    @Override
+    public CrmStatus getCRM_Status(long ID) {
+        return dbh.getCRM_Status(ID);
+    }
+
+    @Override
+    public CrmCase getCRM_Case(long ID) {
+        return dbh.getCRM_Case(ID);
     }
 
     @Override
@@ -106,8 +132,8 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
-        dbh.addNewCRM_Process(s, c, crmStatus, comment, actionDate);
+    public void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
+        dbh.addNewCRM_Process(crmCase, crmStatus, comment, actionDate);
     }
 
     @Override
@@ -118,6 +144,16 @@ public class CRM_Controller implements ICRMController {
     @Override
     public void update_R_Salesman_Cust(RelSALESMANCUST R_SalesmanCustomer) throws Exception {
         dbh.update_R_Salesman_Cust(R_SalesmanCustomer);
+    }
+
+    @Override
+    public void addNewCRM_Case(CrmCase crmCase) throws Exception {
+        dbh.addNewCRM_Case(crmCase);
+    }
+
+    @Override
+    public void addNewCRM_Case(RelSALESMANCUST relSC, Date startDate, String description) throws Exception {
+        dbh.addNewCRM_Case(new CrmCase(startDate, description, relSC));
     }
     //</editor-fold>
 

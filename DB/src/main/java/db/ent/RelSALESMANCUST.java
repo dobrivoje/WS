@@ -23,17 +23,19 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 @Entity
 @Table(name = "Rel_SALESMAN_CUST")
 @XmlRootElement
 @NamedQueries(
         {
-            @NamedQuery(name = "RelSALESMANCUST.findByIdrblc", query = "SELECT r FROM RelSALESMANCUST r WHERE r.idrblc = :idrblc"),
+            @NamedQuery(name = "RelSALESMANCUST.findByIdrblc",
+                    query = "SELECT r FROM RelSALESMANCUST r WHERE r.idrblc = :idrblc"),
 
             @NamedQuery(name = "RelSALESMANCUST.findByCust",
                     query = "SELECT r FROM RelSALESMANCUST r WHERE r.FK_IDC = :IDC"),
@@ -47,6 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelSALESMANCUST.RelSalesmanCustomer",
                     query = "SELECT r FROM RelSALESMANCUST r WHERE r.FK_IDC = :IDC AND r.FK_IDS = :IDS")
         })
+
 public class RelSALESMANCUST implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,18 +72,18 @@ public class RelSALESMANCUST implements Serializable {
     @JoinColumn(name = "FK_IDS", referencedColumnName = "IDS")
     @ManyToOne(optional = false)
     private Salesman FK_IDS;
-    @OneToMany(mappedBy = "FK_IDRSMC")
-    private List<CrmProcess> CRMProcessList;
+    @OneToMany(mappedBy = "FK_IDRSC")
+    private List<CrmCase> crmCaseList;
 
     public RelSALESMANCUST() {
     }
 
     public RelSALESMANCUST(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) {
-        this.FK_IDC = c;
-        this.FK_IDS = s;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.active = active;
+        this.FK_IDC = c;
+        this.FK_IDS = s;
     }
 
     public Long getIdrblc() {
@@ -131,12 +134,13 @@ public class RelSALESMANCUST implements Serializable {
         this.FK_IDS = FK_IDS;
     }
 
-    public List<CrmProcess> getCRMProcessList() {
-        return CRMProcessList;
+    @XmlTransient
+    public List<CrmCase> getCrmCaseList() {
+        return crmCaseList;
     }
 
-    public void setCRMProcessList(List<CrmProcess> CRMProcessList) {
-        this.CRMProcessList = CRMProcessList;
+    public void setCrmCaseList(List<CrmCase> crmCaseList) {
+        this.crmCaseList = crmCaseList;
     }
 
     @Override
@@ -153,12 +157,15 @@ public class RelSALESMANCUST implements Serializable {
             return false;
         }
         RelSALESMANCUST other = (RelSALESMANCUST) object;
-        return !((this.idrblc == null && other.idrblc != null) || (this.idrblc != null && !this.idrblc.equals(other.idrblc)));
+        if ((this.idrblc == null && other.idrblc != null) || (this.idrblc != null && !this.idrblc.equals(other.idrblc))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "db.ent.RelSALESMANCUST[ idrblc=" + idrblc + " ]";
+        return getFK_IDC().getName() + " - " + getFK_IDS().toString();
     }
 
 }

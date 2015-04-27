@@ -8,7 +8,7 @@ package Tables;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Forms.CRM.CRMProcess_Form;
-import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_PROCESS;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -23,7 +23,10 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.City;
+import db.ent.CrmCase;
 import db.ent.Customer;
+import db.ent.InfSysUser;
+import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -301,8 +304,15 @@ public class CustomerTable extends GENTable<Customer> {
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Customer c = (Customer) source.getValue();
 
-                            getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_PROCESS.toString(),
-                                    false, new CRMProcess_Form(null, null, null)));
+                            String infsysuser = MyUI.get().accessControl.getPrincipal();
+                            InfSysUser iu = DS.getInfSysUserController().getByID(infsysuser);
+
+                            Salesman s = DS.getInfSysUserController().getSalesman(iu);
+
+                            CrmCase cs = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
+
+                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_PROCESS.toString(),
+                                    false, new CRMProcess_Form(cs, source)));
                         } else {
                             Notification.show("User Rights Error",
                                     "You don't have rights\nto add new CRM process ! ",

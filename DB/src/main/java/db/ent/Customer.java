@@ -30,14 +30,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "CUSTOMER")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
-    @NamedQuery(name = "Customer.findByID", query = "SELECT c FROM Customer c WHERE c.idc = :idc"),
-    @NamedQuery(name = "Customer.findByNavCode", query = "SELECT c FROM Customer c WHERE c.navCode = :navCode"),
-    @NamedQuery(name = "Customer.findByLicence", query = "SELECT c FROM Customer c WHERE c.licence = :licence"),
-    @NamedQuery(name = "Customer.PartialName", query = "SELECT c FROM Customer c WHERE c.name LIKE :name"),
-    @NamedQuery(name = "Customer.findByMatBr", query = "SELECT c FROM Customer c WHERE c.matBr = :matBr"),
-    @NamedQuery(name = "Customer.findByPib", query = "SELECT c FROM Customer c WHERE c.pib = :pib")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
+            @NamedQuery(name = "Customer.findByID", query = "SELECT c FROM Customer c WHERE c.idc = :idc"),
+            @NamedQuery(name = "Customer.findByNavCode", query = "SELECT c FROM Customer c WHERE c.navCode = :navCode"),
+            @NamedQuery(name = "Customer.findByLicence", query = "SELECT c FROM Customer c WHERE c.licence = :licence"),
+            @NamedQuery(name = "Customer.PartialName", query = "SELECT c FROM Customer c WHERE c.name LIKE :name"),
+            @NamedQuery(name = "Customer.findByMatBr", query = "SELECT c FROM Customer c WHERE c.matBr = :matBr"),
+            @NamedQuery(name = "Customer.findByPib", query = "SELECT c FROM Customer c WHERE c.pib = :pib")
+        }
+)
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,8 +60,6 @@ public class Customer implements Serializable {
     private String matBr;
     @Column(name = "NavCode")
     private String navCode;
-    @Column(name = "Licence")
-    private boolean licence;
     @Column(name = "Zone")
     private String zone;
     @Column(name = "Comment")
@@ -82,6 +83,8 @@ public class Customer implements Serializable {
     @JoinColumn(name = "FK_IDCity", referencedColumnName = "IDC")
     @ManyToOne
     private City fKIDCity;
+    @Column(name = "Licence")
+    private Boolean licence;
     @OneToMany(mappedBy = "FK_IDC")
     private List<RelSALESMANCUST> relSALESMEANCUSTList;
 
@@ -150,20 +153,20 @@ public class Customer implements Serializable {
         this.navCode = navCode;
     }
 
-    public boolean getLicence() {
-        return licence;
-    }
-
-    public void setLicence(boolean licence) {
-        this.licence = licence;
-    }
-
     public String getZone() {
         return zone;
     }
 
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    public Boolean getLicence() {
+        return licence;
+    }
+
+    public void setLicence(Boolean licence) {
+        this.licence = licence;
     }
 
     public String getComment() {

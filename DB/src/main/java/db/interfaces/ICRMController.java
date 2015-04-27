@@ -5,6 +5,7 @@
  */
 package db.interfaces;
 
+import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
@@ -22,11 +23,21 @@ public interface ICRMController {
     //<editor-fold defaultstate="collapsed" desc="data to read">
     List<CrmStatus> getCRM_AllStatuses();
 
+    CrmStatus getCRM_Status(long ID);
+
+    List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished);
+
+    List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished);
+
+    CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s);
+
     List<Customer> getCRM_Customers(Salesman salesman);
 
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
     List<CrmProcess> getCRM_Processes(Salesman salesman, Date dateFrom, Date dateTo);
+
+    CrmCase getCRM_Case(long ID);
 
     List<CrmProcess> getCRM_OverdueProcesses(Salesman salesman);
 
@@ -48,7 +59,11 @@ public interface ICRMController {
 
     void update_R_Salesman_Cust(RelSALESMANCUST R_SalesmanCustomer) throws Exception;
 
-    void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
+    void addNewCRM_Case(CrmCase crmCase) throws Exception;
+
+    void addNewCRM_Case(RelSALESMANCUST relSC, Date startDate, String description) throws Exception;
+
+    void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
 
     void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception;
     //</editor-fold>

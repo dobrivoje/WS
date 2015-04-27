@@ -12,7 +12,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
-import Trees.CRM_CurrCustProcesses_Tree;
+import Trees.CRM_CustCRMCases_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
@@ -42,7 +42,7 @@ public class CustomersView extends VerticalLayout implements View {
     private final VerticalLayout propVL = new VerticalLayout();
 
     private static final String[] propPanelsCaptions = new String[]{
-        "Bussines Type(s)", "FS(s) Owned by this customer", "Customer's CRM process(es)"};
+        "Bussines Type(s)", "FS's Owned by this customer", "Customer's CRM cases"};
     private final Panel[] propPanels = new Panel[propPanelsCaptions.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
@@ -179,7 +179,7 @@ public class CustomersView extends VerticalLayout implements View {
             }
 
             try {
-                propPanels[2].setContent(new CRM_CurrCustProcesses_Tree("", c));
+                propPanels[2].setContent(new CRM_CustCRMCases_Tree("", c));
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());
             }

@@ -18,11 +18,11 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
-import db.ent.RelSALESMANCUST;
-import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
 import java.util.Date;
@@ -36,18 +36,19 @@ import static ws.MyUI.DS;
  */
 public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
-    private final ICRMController icrmc = DS.getCrmController();
-    private final ISalesmanController isc = DS.getSalesmanController();
+    private final ICRMController CRM_Controller = DS.getCrmController();
+    private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final ComboBox salesman = new ComboBox("Salesman",
-            new BeanItemContainer(Salesman.class, isc.getAll()));
+    private final TextField salesman = new TextField("Salesman");
 
-    private final ComboBox customer = new ComboBox("Customer");
+    @PropertyId("FK_IDCA")
+    private final ComboBox crmCase = new ComboBox("CRM Case",
+            new BeanItemContainer(CrmCase.class));
 
     @PropertyId("FK_IDCS")
     private final ComboBox status = new ComboBox("Status",
-            new BeanItemContainer(CrmStatus.class, icrmc.getCRM_AllStatuses()));
+            new BeanItemContainer(CrmStatus.class, CRM_Controller.getCRM_AllStatuses()));
 
     @PropertyId("actionDate")
     private final DateField actionDate = new DateField("Date");
@@ -63,42 +64,31 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         setFormFieldsWidths(250, Unit.PIXELS);
 
         salesman.setWidth(250, Unit.PIXELS);
-        customer.setWidth(250, Unit.PIXELS);
+        crmCase.setWidth(250, Unit.PIXELS);
 
-        salesman.setNullSelectionAllowed(false);
-        customer.setNullSelectionAllowed(false);
+        salesman.setEnabled(false);
+        crmCase.setNullSelectionAllowed(false);
         status.setNullSelectionAllowed(false);
 
-        salesman.setRequired(true);
-        customer.setRequired(true);
+        crmCase.setRequired(true);
         status.setRequired(true);
 
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                customer.setContainerDataSource(new BeanItemContainer(
-                        Customer.class,
-                        icrmc.getCRM_Customers((Salesman) salesman.getValue())));
+                crmCase.setContainerDataSource(new BeanItemContainer(
+                        CrmCase.class,
+                        CRM_Controller.getCRM_Cases(new Customer(), true)));
             }
         });
 
         salesman.focus();
     }
 
-    public CRMProcess_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer) {
+    public CRMProcess_Form(CrmCase cc, final IRefreshVisualContainer visualContainer) {
         this();
 
-        RelSALESMANCUST r = null;
-
-        try {
-            r = icrmc.getCRM_R_SalesmanCustomer(s, c);
-        } catch (Exception ex) {
-        }
-
-        salesman.setValue(s);
-        customer.setValue(c);
-
-        CrmProcess crmProcess = new CrmProcess(r, null, null, new Date());
+        CrmProcess crmProcess = new CrmProcess(cc, null, null, new Date());
 
         fieldGroup.setItemDataSource(new BeanItem(crmProcess));
         beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
@@ -112,7 +102,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                 try {
                     fieldGroup.commit();
 
-                    icrmc.addNewCRM_Process(beanItem.getBean());
+                    CRM_Controller.addNewCRM_Process(beanItem.getBean());
 
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
@@ -131,7 +121,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
             }
         };
 
-        addComponents(salesman, customer);
+        addComponents(salesman);
         addBeansToForm();
 
     }
@@ -140,16 +130,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     protected final void bindFieldsToBean(CrmProcess crmProcess) {
         crmProcess.setActionDate(actionDate.getValue());
         crmProcess.setComment(comment.getValue());
+        crmProcess.setFK_IDCA((CrmCase) crmCase.getValue());
         crmProcess.setFK_IDCS((CrmStatus) status.getValue());
-
-        try {
-            crmProcess.setFK_IDRSMC(
-                    icrmc.getCRM_R_SalesmanCustomer(
-                            (Salesman) salesman.getValue(),
-                            (Customer) customer.getValue()
-                    ));
-        } catch (Exception ex) {
-            Notification.show("Error", "Relation between Salesman and Customer\ndoes not exist !", Notification.Type.ERROR_MESSAGE);
-        }
     }
 }

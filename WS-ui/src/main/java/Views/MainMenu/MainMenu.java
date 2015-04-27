@@ -28,6 +28,7 @@ import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import Forms.CDM.CBTForm;
 import Forms.CDM.CustomerForm;
+import Forms.CRM.CRMCase_Form;
 import Forms.CRM.CRMProcess_Form;
 import Forms.CRM.SCR_Form;
 import Menu.Menu;
@@ -50,10 +51,11 @@ import db.ent.CustomerBussinesType;
 import Views.MainMenu.CDM.CustomersView;
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
-import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_PROCESS;
-import static Menu.MenuDefinitions.CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL;
-import static Menu.MenuDefinitions.CUST_CRM_MANAG_ACTIVE_PROCESSES;
-import static Menu.MenuDefinitions.CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_SALESMAN_CUST_REL;
+import static Menu.MenuDefinitions.CRM_MANAG_ACTIVE_CASES;
+import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
@@ -196,15 +198,17 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
 
-        customersTree.setParent(CUST_CRM_MANAG_ACTIVE_PROCESSES, CUST_CRM_MANAG);
-        customersTree.setParent(CUST_CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
-        customersTree.setParent(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
-        customersTree.setParent(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_MANAG_ACTIVE_CASES, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_MANAG_NEW_CASE, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
 
-        customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
-        customersTree.setChildrenAllowed(CUST_CRM_MANAG_NEW_PROCESS, false);
-        customersTree.setChildrenAllowed(CUST_CRM_MANAG_ACTIVE_PROCESSES, false);
-        customersTree.setChildrenAllowed(CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
+        customersTree.setChildrenAllowed(CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
+        customersTree.setChildrenAllowed(CRM_MANAG_NEW_CASE, false);
+        customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
+        customersTree.setChildrenAllowed(CRM_MANAG_ACTIVE_CASES, false);
+        customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
 
         customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
@@ -247,23 +251,31 @@ public class MainMenu extends CssLayout {
                     case CUST_CRM_MANAG:
                         navigator.navigateTo(CRMView.class.getSimpleName());
                         break;
-                    case CUST_CRM_MANAG_NEW_PROCESS:
+                    case CRM_MANAG_NEW_PROCESS:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_PROCESS.toString(),
-                                    false, new CRMProcess_Form(null, null, null)));
+                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_PROCESS.toString(),
+                                    false, new CRMProcess_Form(null, null)));
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    case CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL:
+                    case CRM_MANAG_NEW_CASE:
+                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_CASE.toString(),
+                                    false, new CRMCase_Form(null, null, null)));
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                            getUI().addWindow(new WindowForm(CUST_CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
+                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                     false, new SCR_Form(CrudOperations.CREATE)));
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    case CUST_CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
+                    case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                             navigator.navigateTo(CRMSCView.class.getSimpleName());
                         } else {

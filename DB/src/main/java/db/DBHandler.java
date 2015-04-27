@@ -15,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import db.ent.BussinesLine;
 import db.ent.City;
+import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
@@ -1058,7 +1059,6 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="CRM">
-    //<editor-fold defaultstate="collapsed" desc="READ">
     //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">
     public RelSALESMANCUST getCRM_R_Salesman_Cust(Salesman s, Customer c) throws Exception {
         try {
@@ -1103,15 +1103,6 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
-    public List<CrmStatus> getCRM_AllStatuses() {
-        try {
-            return getEm().createNamedQuery("CrmStatus.findAll")
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
 
@@ -1145,6 +1136,15 @@ public class DBHandler {
     }
 
     public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, Date dateFrom, Date dateTo) {
+        dateTo = dateTo == null ? new Date() : dateTo;
+
+        if (dateFrom == null) {
+            // dateFrom = dateTo - 1 godina !
+            long g = dateTo.getTime() - 1000 * 60 * 60 * 24 * 365 * 1;
+            g = g < 0 ? 0 : g;
+
+            dateFrom = new Date(dateTo.getTime() - g);
+        }
         try {
             return getEm().createNamedQuery("CrmProcess.SalesmanProcessesByDate")
                     .setParameter("IDS", salesman)
@@ -1165,10 +1165,112 @@ public class DBHandler {
             return null;
         }
     }
-    //</editor-fold>
+
+    public void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
+
+        CrmProcess crmProcess = new CrmProcess(crmCase, crmStatus, comment, actionDate);
+        addNewCRM_Process(crmProcess);
+    }
+
+    public void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newCrmProcess);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("New CRM Process Addition Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
+        }
+    }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    //<editor-fold defaultstate="collapsed" desc="CRM STATUS">
+    public List<CrmStatus> getCRM_Statuses() {
+        try {
+            return getEm().createNamedQuery("CrmStatus.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public CrmStatus getCRM_Status(long ID) {
+        try {
+            return (CrmStatus) getEm().createNamedQuery("CrmStatus.findByIdcs")
+                    .setParameter("idcs", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CRM CASE">
+    public CrmCase getCRM_Case(long ID) {
+        try {
+            return (CrmCase) getEm().createNamedQuery("CrmCase.findByIdca")
+                    .setParameter("idca", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public CrmCase getLastActive_CRMCase(Customer c, Salesman s) {
+        try {
+            return (CrmCase) getEm().createNamedQuery("CrmCase.findLastActiveCRM_Case")
+                    .setParameter("IDC", c)
+                    .setParameter("IDS", s)
+                    .setMaxResults(1)
+                    .getResultList()
+                    .get(0);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public void addNewCRM_Case(CrmCase newCrmCase) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newCrmCase);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("New CRM Case Addition Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
+        }
+    }
+
+    public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.findByCustomer")
+                    .setParameter("IDC", customer)
+                    .setParameter("Finished", caseFinished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.findBySalesman")
+                    .setParameter("IDS", salesman)
+                    .setParameter("Finished", caseFinished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>    
+
     //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">
     public void addNew_RelSalesman_Cust(Customer c, Salesman s, Date dateFrom, Date dateTo, boolean active) throws Exception {
         RelSALESMANCUST r = new RelSALESMANCUST(c, s, dateFrom, dateTo, active);
@@ -1200,36 +1302,6 @@ public class DBHandler {
             rollBackTransaction("Relation Salesman-Customer Update Failed. " + ex.getMessage());
         }
     }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
-    public void addNewCRM_Process(Salesman s, Customer c, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
-        RelSALESMANCUST r = getCRM_R_Salesman_Cust(s, c);
-
-        CrmProcess crmProcess = new CrmProcess(r, crmStatus, comment, actionDate);
-        addNewCRM_Process(crmProcess);
-    }
-
-    public void addNewCRM_Process(RelSALESMANCUST RelSalesmanCustomer, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
-        CrmProcess crmProcess = new CrmProcess(RelSalesmanCustomer, crmStatus, comment, actionDate);
-        addNewCRM_Process(crmProcess);
-    }
-
-    public void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception {
-        try {
-            getEm().getTransaction().begin();
-            em.persist(newCrmProcess);
-            getEm().getTransaction().commit();
-
-        } catch (Exception ex) {
-            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("New CRM Process Addition Failed.\nCheck fileds that must not be empty."));
-            } else {
-                rollBackTransaction(ex.getMessage());
-            }
-        }
-    }
-    //</editor-fold>
     //</editor-fold>
     //</editor-fold>
 
@@ -1266,7 +1338,7 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="REL USER-SALESMAN">
+    //<editor-fold defaultstate="collapsed" desc="REL INFSYSUSER SALESMAN">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public InfSysUser getUser(Salesman salesman) {
         return getUser(salesman, true);
