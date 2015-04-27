@@ -152,8 +152,7 @@ public class CrmCase implements Serializable {
 
     @Override
     public String toString() {
-        return "Case-"
-                + getDescription() + ", "
+        return (description == null ? "CRM Case" : getDescription()) + ", "
                 + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate()) + " - "
                 + (isFinished() ? " Finished." : "Active");
     }

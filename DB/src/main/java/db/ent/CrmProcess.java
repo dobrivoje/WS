@@ -37,10 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC"),
 
             @NamedQuery(name = "CrmProcess.CustomerProcessesByDate",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC AND c.FK_IDCA.finished = :finished AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
             @NamedQuery(name = "CrmProcess.SalesmanProcessesByDate",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDCA.finished = :finished AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
             @NamedQuery(name = "CrmProcess.findByCRMStatus",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS.idcs = :IDCS"),

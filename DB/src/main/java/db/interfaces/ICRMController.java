@@ -35,7 +35,7 @@ public interface ICRMController {
 
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
-    List<CrmProcess> getCRM_Processes(Salesman salesman, Date dateFrom, Date dateTo);
+    List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished, Date dateFrom, Date dateTo);
 
     CrmCase getCRM_Case(long ID);
 

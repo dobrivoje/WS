@@ -119,9 +119,9 @@ public class testKlasa {
         System.err.println("Session Username: " + intermolAD.getInfSysUserSession());
         System.err.println("getLoggedUsers: " + intermolAD.getLoggedUsers());
         System.err.println("getSession: " + intermolAD.getSubjectSessionID());
-        
+
         intermolAD.logout();
-        
+
         System.err.println("Session Username: " + intermolAD.getInfSysUserSession());
         System.err.println("getLoggedUsers: " + intermolAD.getLoggedUsers());
         System.err.println("getSession: " + intermolAD.getSubjectSessionID());

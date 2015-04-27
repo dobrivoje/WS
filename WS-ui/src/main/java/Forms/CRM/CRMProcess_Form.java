@@ -18,13 +18,14 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
+import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
+import java.util.Collection;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -40,7 +41,10 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final TextField salesman = new TextField("Salesman");
+    private final ComboBox salesman = new ComboBox("Salesman",
+            new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
+
+    private final ComboBox customer = new ComboBox("Customer");
 
     @PropertyId("FK_IDCA")
     private final ComboBox crmCase = new ComboBox("CRM Case",
@@ -76,9 +80,17 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
+                customer.setContainerDataSource(new BeanItemContainer(
+                        Customer.class,
+                        CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
+            }
+        });
+        
+        customer.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
                 crmCase.setContainerDataSource(new BeanItemContainer(
-                        CrmCase.class,
-                        CRM_Controller.getCRM_Cases(new Customer(), true)));
+                        CrmCase.class, (Collection) new CrmCase()));
             }
         });
 
@@ -121,7 +133,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
             }
         };
 
-        addComponents(salesman);
+        addComponents(salesman, customer);
         addBeansToForm();
 
     }

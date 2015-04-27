@@ -17,11 +17,11 @@ public class ShiroAccessControl implements IAccessAuthControl {
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
     private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s";
     private static int loggedInUsers = 0;
-    
+
     private final Factory<SecurityManager> factory;
     private final SecurityManager securityManager;
     private final Subject subject;
-    
+
     public ShiroAccessControl(String initFile) {
         factory = new IniSecurityManagerFactory(initFile);
         securityManager = factory.getInstance();
@@ -33,28 +33,29 @@ public class ShiroAccessControl implements IAccessAuthControl {
     @Override
     public synchronized boolean login(String username, String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        
+
         if (subject.getSession().getAttribute(UN_SESSION_KEY) == null) {
             try {
                 subject.login(token);
+
                 subject.getSession().setAttribute(UN_SESSION_KEY, getPrincipal());
                 incLoggedUsers();
-                
+
                 return true;
-                
+
             } catch (AuthenticationException ae) {
                 return false;
             }
-            
+
         } else {
             return true;
         }
     }
-    
+
     @Override
     public synchronized void logout() {
         decLoggedUsers();
-        
+
         try {
             subject.logout();
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class ShiroAccessControl implements IAccessAuthControl {
     public boolean authenticated() {
         return subject != null ? subject.isAuthenticated() : false;
     }
-    
+
     @Override
     public boolean hasRole(String role) {
         boolean o = false;
@@ -76,7 +77,7 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
         return o;
     }
-    
+
     @Override
     public boolean isPermitted(String permission) {
         boolean o = false;
@@ -86,17 +87,17 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
         return o;
     }
-    
+
     @Override
     public String getPrincipal() {
         return subject != null ? (String) subject.getPrincipal() : "n/a";
     }
-    
+
     @Override
     public Session getSubjectSession() {
         return subject != null ? subject.getSession() : new SimpleSession("");
     }
-    
+
     @Override
     public Serializable getSubjectSessionID() {
         return subject != null ? subject.getSession().getId() : "";
@@ -109,17 +110,17 @@ public class ShiroAccessControl implements IAccessAuthControl {
         // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
         return subject != null ? (String) subject.getSession().getAttribute(UN_SESSION_KEY) : "";
     }
-    
+
     @Override
     public synchronized int getLoggedUsers() {
         return loggedInUsers;
     }
-    
+
     @Override
     public synchronized void incLoggedUsers() {
         loggedInUsers++;
     }
-    
+
     @Override
     public synchronized void decLoggedUsers() {
         --loggedInUsers;

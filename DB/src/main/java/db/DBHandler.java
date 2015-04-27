@@ -1135,7 +1135,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, Date dateFrom, Date dateTo) {
+    public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, boolean finished, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
 
         if (dateFrom == null) {
@@ -1148,6 +1148,7 @@ public class DBHandler {
         try {
             return getEm().createNamedQuery("CrmProcess.SalesmanProcessesByDate")
                     .setParameter("IDS", salesman)
+                    .setParameter("finished", finished)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("dateTo", dateTo)
                     .getResultList();
