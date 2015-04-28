@@ -1135,6 +1135,17 @@ public class DBHandler {
         }
     }
 
+    public List<CrmProcess> getCRM_SalesmanProcesses(Salesman salesman, boolean finished) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.SalesmanProcesses")
+                    .setParameter("IDS", salesman)
+                    .setParameter("finished", finished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
     public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, boolean finished, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
 
@@ -1229,6 +1240,18 @@ public class DBHandler {
                     .setMaxResults(1)
                     .getResultList()
                     .get(0);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmCase> getCRMCase(Customer c, Salesman s, boolean finished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.SalesmanCustomers")
+                    .setParameter("IDC", c)
+                    .setParameter("IDS", s)
+                    .setParameter("Finished", finished)
+                    .getResultList();
         } catch (Exception ex) {
             return null;
         }

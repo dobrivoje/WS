@@ -12,7 +12,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
-import Trees.CRM_CustCRMCases_Tree;
+import Trees.Customer_CRMCases_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;
@@ -179,7 +179,7 @@ public class CustomersView extends VerticalLayout implements View {
             }
 
             try {
-                propPanels[2].setContent(new CRM_CustCRMCases_Tree("", c));
+                propPanels[2].setContent(new Customer_CRMCases_Tree("", c));
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());
             }

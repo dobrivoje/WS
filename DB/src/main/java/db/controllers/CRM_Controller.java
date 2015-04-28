@@ -40,6 +40,11 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
+    public List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished) {
+        return dbh.getCRMCase(c, s, caseFinished);
+    }
+
+    @Override
     public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
         return dbh.getCRM_Cases(customer, caseFinished);
     }
@@ -72,6 +77,11 @@ public class CRM_Controller implements ICRMController {
     @Override
     public List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished, Date dateFrom, Date dateTo) {
         return dbh.getCRM_SalesmanProcessesByDate(salesman, finished, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished) {
+        return dbh.getCRM_SalesmanProcesses(salesman, finished);
     }
 
     @Override

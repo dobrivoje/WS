@@ -25,7 +25,6 @@ import db.ent.Customer;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
-import java.util.Collection;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -43,8 +42,6 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final ComboBox salesman = new ComboBox("Salesman",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
-
-    private final ComboBox customer = new ComboBox("Customer");
 
     @PropertyId("FK_IDCA")
     private final ComboBox crmCase = new ComboBox("CRM Case",
@@ -68,29 +65,25 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         setFormFieldsWidths(250, Unit.PIXELS);
 
         salesman.setWidth(250, Unit.PIXELS);
-        crmCase.setWidth(250, Unit.PIXELS);
 
-        salesman.setEnabled(false);
-        crmCase.setNullSelectionAllowed(false);
-        status.setNullSelectionAllowed(false);
-
+        salesman.setRequired(true);
         crmCase.setRequired(true);
         status.setRequired(true);
+
+        salesman.setNullSelectionAllowed(false);
+        crmCase.setNullSelectionAllowed(false);
+        status.setNullSelectionAllowed(false);
 
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                customer.setContainerDataSource(new BeanItemContainer(
-                        Customer.class,
-                        CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
-            }
-        });
-        
-        customer.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                crmCase.setContainerDataSource(new BeanItemContainer(
-                        CrmCase.class, (Collection) new CrmCase()));
+                try {
+                    crmCase.setContainerDataSource(new BeanItemContainer(
+                            CrmCase.class,
+                            CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
+                } catch (Exception e) {
+                    Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -133,7 +126,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
             }
         };
 
-        addComponents(salesman, customer);
+        addComponents(salesman);
         addBeansToForm();
 
     }

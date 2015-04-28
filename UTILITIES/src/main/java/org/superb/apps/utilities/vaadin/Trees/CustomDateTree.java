@@ -7,7 +7,6 @@ package org.superb.apps.utilities.vaadin.Trees;
 
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +47,6 @@ public class CustomDateTree<T> extends CustomTree<T> {
         df = (dateFrom == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateFrom));
         dt = (dateTo == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateTo));
 
-        setSubTreeItems(t, new ArrayList<>(
-                Arrays.asList(df.equals("") ? MSG[0] : MSG[1] + df, dt.equals("") ? MSG[2] : MSG[3] + dt)));
+        setSubTreeItems(t, Arrays.asList(df.equals("") ? MSG[0] : MSG[1] + df, dt.equals("") ? MSG[2] : MSG[3] + dt));
     }
 }

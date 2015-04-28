@@ -29,6 +29,8 @@ public interface ICRMController {
 
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished);
 
+    List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished);
+
     CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s);
 
     List<Customer> getCRM_Customers(Salesman salesman);
@@ -36,6 +38,8 @@ public interface ICRMController {
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
     List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished, Date dateFrom, Date dateTo);
+    
+    List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished);
 
     CrmCase getCRM_Case(long ID);
 

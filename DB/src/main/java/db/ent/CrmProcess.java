@@ -39,8 +39,11 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "CrmProcess.CustomerProcessesByDate",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDC = :IDC AND c.FK_IDCA.finished = :finished AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
 
+            @NamedQuery(name = "CrmProcess.SalesmanProcesses",
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDCA.finished = :finished ORDER BY c.idp ASC"),
+
             @NamedQuery(name = "CrmProcess.SalesmanProcessesByDate",
-                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDCA.finished = :finished AND c.actionDate BETWEEN :dateFrom AND :dateTo"),
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDCA.finished = :finished AND c.actionDate BETWEEN :dateFrom AND :dateTo ORDER BY c.idp ASC"),
 
             @NamedQuery(name = "CrmProcess.findByCRMStatus",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS.idcs = :IDCS"),
@@ -142,7 +145,7 @@ public class CrmProcess implements Serializable {
 
     @Override
     public String toString() {
-        return "CRM Process-" + getActionDate() + ", "
+        return "Process-"
                 + getComment() + ", "
                 + getFK_IDCS().toString() + ", "
                 + getFK_IDCA().toString();

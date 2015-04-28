@@ -57,11 +57,13 @@ import static Menu.MenuDefinitions.CRM_MANAG_ACTIVE_CASES;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
+import Trees.Salesman_CRMProcessesTree;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import com.vaadin.ui.Notification;
+import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.InfSysUser;
 import java.util.Date;
 import java.util.logging.Level;
@@ -69,6 +71,7 @@ import java.util.logging.Logger;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -253,8 +256,15 @@ public class MainMenu extends CssLayout {
                         break;
                     case CRM_MANAG_NEW_PROCESS:
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_PROCESS.toString(),
-                                    false, new CRMProcess_Form(null, null)));
+                            try {
+                                getUI().addWindow(
+                                        new WindowFormProp(
+                                                CRM_MANAG_NEW_PROCESS.toString(),
+                                                false,
+                                                new CRMProcess_Form(null, null),
+                                                new Salesman_CRMProcessesTree("", DS.getSalesmanController().getByID(1L))));
+                            } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
+                            }
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
                         }

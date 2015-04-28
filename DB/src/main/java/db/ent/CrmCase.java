@@ -47,6 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
             @NamedQuery(name = "CrmCase.findBySalesman",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.finished = :Finished ORDER BY c.idca DESC"),
+            
+            @NamedQuery(name = "CrmCase.SalesmanCustomers",
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDRSC.FK_IDC =:IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
 
             @NamedQuery(name = "CrmCase.findByStartDate", query = "SELECT c FROM CrmCase c WHERE c.startDate = :startDate"),
             @NamedQuery(name = "CrmCase.findByDescription", query = "SELECT c FROM CrmCase c WHERE c.description = :description")
