@@ -17,7 +17,7 @@ import static ws.MyUI.DS;
  */
 public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
 
-    public Customer_CRMCases_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Customer_CRMCases_Tree(String caption, final Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCrmController().getCRM_Cases(customer, false));
         createSubItems();
     }

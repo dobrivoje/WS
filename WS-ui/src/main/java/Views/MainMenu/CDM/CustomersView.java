@@ -1,6 +1,8 @@
 package Views.MainMenu.CDM;
 
+import Forms.CRM.CRMProcess_Form;
 import Forms.SaDesneStraneForm;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,19 +17,25 @@ import Tables.CustomerTable;
 import Trees.Customer_CRMCases_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
+import Trees.Salesman_CRMProcessesTree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
+import db.ent.CrmProcess;
 import db.ent.Customer;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -179,7 +187,34 @@ public class CustomersView extends VerticalLayout implements View {
             }
 
             try {
-                propPanels[2].setContent(new Customer_CRMCases_Tree("", c));
+                Customer_CRMCases_Tree cc = new Customer_CRMCases_Tree("", c);
+
+                cc.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+                    @Override
+                    public void itemClick(ItemClickEvent event) {
+                        if (event.isDoubleClick()) {
+                            CrmProcess crmProcess = (CrmProcess) event.getItemId();
+
+                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                                try {
+                                    getUI().addWindow(
+                                            new WindowFormProp(
+                                                    CRM_MANAG_NEW_PROCESS.toString(),
+                                                    false,
+                                                    new CRMProcess_Form(crmProcess, null),
+                                                    new Salesman_CRMProcessesTree("", DS.getSalesmanController().getByID(1L))));
+                                } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
+                                }
+                            } else {
+                                Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                }
+                );
+
+                propPanels[2].setContent(cc);
+
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());
             }

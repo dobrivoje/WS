@@ -64,6 +64,7 @@ import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import com.vaadin.ui.Notification;
 import db.Exceptions.CustomTreeNodesEmptyException;
+import db.ent.CrmCase;
 import db.ent.InfSysUser;
 import java.util.Date;
 import java.util.logging.Level;
@@ -261,7 +262,7 @@ public class MainMenu extends CssLayout {
                                         new WindowFormProp(
                                                 CRM_MANAG_NEW_PROCESS.toString(),
                                                 false,
-                                                new CRMProcess_Form(null, null),
+                                                new CRMProcess_Form(new CrmCase(), null),
                                                 new Salesman_CRMProcessesTree("", DS.getSalesmanController().getByID(1L))));
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             }

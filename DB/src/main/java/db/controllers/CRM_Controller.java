@@ -167,4 +167,9 @@ public class CRM_Controller implements ICRMController {
     }
     //</editor-fold>
 
+    @Override
+    public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
+        dbh.updateCRM_Process(crmProcess);
+    }
+
 }

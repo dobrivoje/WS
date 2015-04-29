@@ -1178,6 +1178,21 @@ public class DBHandler {
         }
     }
 
+    public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.merge(crmProcess);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("CRM Process Update Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
+        }
+    }
+    
     public void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
 
         CrmProcess crmProcess = new CrmProcess(crmCase, crmStatus, comment, actionDate);

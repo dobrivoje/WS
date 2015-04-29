@@ -38,7 +38,7 @@ public interface ICRMController {
     List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo);
 
     List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished, Date dateFrom, Date dateTo);
-    
+
     List<CrmProcess> getCRM_Processes(Salesman salesman, boolean finished);
 
     CrmCase getCRM_Case(long ID);
@@ -68,6 +68,8 @@ public interface ICRMController {
     void addNewCRM_Case(RelSALESMANCUST relSC, Date startDate, String description) throws Exception;
 
     void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception;
+
+    void updateCRM_Process(CrmProcess crmProcess) throws Exception;
 
     void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception;
     //</editor-fold>

@@ -6,6 +6,7 @@
 package db.ent;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -132,23 +133,18 @@ public class CrmProcess implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof CrmProcess)) {
             return false;
         }
         CrmProcess other = (CrmProcess) object;
-        if ((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp))) {
-            return false;
-        }
-        return true;
+        return !((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp)));
     }
 
     @Override
     public String toString() {
-        return "Process-"
-                + getComment() + ", "
-                + getFK_IDCS().toString() + ", "
-                + getFK_IDCA().toString();
+        return getFK_IDCS().toString() + ", "
+                + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate())
+                + (getComment().trim().isEmpty() ? "" : ", " + getComment());
     }
 
 }

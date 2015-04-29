@@ -21,7 +21,6 @@ import com.vaadin.ui.TextArea;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
-import db.ent.Customer;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
@@ -118,6 +117,48 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
 
+                } catch (FieldGroup.CommitException ex) {
+                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        addComponents(salesman);
+        addBeansToForm();
+
+    }
+
+    public CRMProcess_Form(CrmProcess cp, final IRefreshVisualContainer visualContainer) {
+        this();
+
+        fieldGroup.setItemDataSource(new BeanItem(cp));
+        beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
+
+        salesman.setValue(cp.getFK_IDCA().getFK_IDRSC().getFK_IDS());
+        crmCase.setValue(cp.getFK_IDCA());
+        salesman.setEnabled(false);
+        crmCase.setEnabled(false);
+
+        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                bindFieldsToBean(beanItem.getBean());
+
+                try {
+                    fieldGroup.commit();
+
+                    CRM_Controller.updateCRM_Process(beanItem.getBean());
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+
+                    Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
+
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
                 } catch (FieldGroup.CommitException ex) {
                     Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
