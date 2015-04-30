@@ -172,7 +172,7 @@ public class CustomersView extends VerticalLayout implements View {
     }
     //</editor-fold>
 
-    private void showPropForm(Customer c) {
+    private void showPropForm(final Customer c) {
         if (c != null) {
             try {
                 propPanels[0].setContent(new RELCBT_Tree("", c));
@@ -202,7 +202,9 @@ public class CustomersView extends VerticalLayout implements View {
                                                     CRM_MANAG_NEW_PROCESS.toString(),
                                                     false,
                                                     new CRMProcess_Form(crmProcess, null),
-                                                    new Salesman_CRMProcessesTree("", DS.getSalesmanController().getByID(1L))));
+                                                    new Panel("Active Processes",
+                                                            new Salesman_CRMProcessesTree("", crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS()))
+                                            ));
                                 } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                                 }
                             } else {

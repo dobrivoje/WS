@@ -63,13 +63,15 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         salesman.setWidth(250, Unit.PIXELS);
         customer.setWidth(250, Unit.PIXELS);
-
+        description.setRows(4);
+        
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
 
         salesman.setRequired(true);
         customer.setRequired(true);
         finished.setValue(false);
+        finished.setEnabled(false);
         
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override

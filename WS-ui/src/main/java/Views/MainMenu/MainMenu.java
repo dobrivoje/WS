@@ -57,6 +57,7 @@ import static Menu.MenuDefinitions.CRM_MANAG_ACTIVE_CASES;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
+import Trees.Customer_CRMCases_Tree;
 import Trees.Salesman_CRMProcessesTree;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
@@ -263,7 +264,7 @@ public class MainMenu extends CssLayout {
                                                 CRM_MANAG_NEW_PROCESS.toString(),
                                                 false,
                                                 new CRMProcess_Form(new CrmCase(), null),
-                                                new Salesman_CRMProcessesTree("", DS.getSalesmanController().getByID(1L))));
+                                                new Customer_CRMCases_Tree("", null)));
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             }
                         } else {

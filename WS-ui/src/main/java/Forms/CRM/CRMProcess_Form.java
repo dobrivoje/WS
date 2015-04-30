@@ -65,6 +65,8 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
         salesman.setWidth(250, Unit.PIXELS);
 
+        comment.setRows(4);
+        
         salesman.setRequired(true);
         crmCase.setRequired(true);
         status.setRequired(true);
