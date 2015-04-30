@@ -57,14 +57,11 @@ import static Menu.MenuDefinitions.CRM_MANAG_ACTIVE_CASES;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
-import Trees.Customer_CRMCases_Tree;
-import Trees.Salesman_CRMProcessesTree;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import com.vaadin.ui.Notification;
-import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.InfSysUser;
 import java.util.Date;
@@ -263,9 +260,8 @@ public class MainMenu extends CssLayout {
                                         new WindowFormProp(
                                                 CRM_MANAG_NEW_PROCESS.toString(),
                                                 false,
-                                                new CRMProcess_Form(new CrmCase(), null),
-                                                new Customer_CRMCases_Tree("", null)));
-                            } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
+                                                new CRMProcess_Form(new CrmCase(), null)));
+                            } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);

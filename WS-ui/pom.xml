@@ -65,12 +65,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>UTILITIES</artifactId>
+            <artifactId>AUTH</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>AUTH</artifactId>
+            <artifactId>UTILITIES</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

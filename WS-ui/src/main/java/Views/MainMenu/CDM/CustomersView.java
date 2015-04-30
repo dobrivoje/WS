@@ -14,10 +14,10 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
+import Trees.CRM_SingleCase_Tree;
 import Trees.Customer_CRMCases_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
-import Trees.Salesman_CRMProcessesTree;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
@@ -26,8 +26,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
+import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Customer;
+import db.ent.Salesman;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -193,18 +195,27 @@ public class CustomersView extends VerticalLayout implements View {
                     @Override
                     public void itemClick(ItemClickEvent event) {
                         if (event.isDoubleClick()) {
+                            VerticalLayout VL_CRMCases = new VerticalLayout();
+
                             CrmProcess crmProcess = (CrmProcess) event.getItemId();
 
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
+                                    Salesman s = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
+
+                                    for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(s, false)) {
+                                        CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("", activeCRMCase);
+                                        VL_CRMCases.addComponent(csct);
+                                    }
+
                                     getUI().addWindow(
                                             new WindowFormProp(
                                                     CRM_MANAG_NEW_PROCESS.toString(),
                                                     false,
                                                     new CRMProcess_Form(crmProcess, null),
-                                                    new Panel("Active Processes",
-                                                            new Salesman_CRMProcessesTree("", crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS()))
-                                            ));
+                                                    new Panel("Active CRM Cases", VL_CRMCases)
+                                            )
+                                    );
                                 } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                                 }
                             } else {
