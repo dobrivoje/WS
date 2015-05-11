@@ -5,12 +5,12 @@
  */
 package Tables;
 
+import Layouts.InlineCSSLayout;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -234,12 +234,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
-        CssLayout FSLowerImagesCssLayout = new CssLayout() {
-            @Override
-            protected String getCss(Component c) {
-                return "display: inline-block;";
-            }
-        };
+        CssLayout FSLowerImagesCssLayout = new InlineCSSLayout();
 
         for (final DocImg di : getAllFSImages(f)) {
             di.getImage().setHeight(40, Unit.PIXELS);

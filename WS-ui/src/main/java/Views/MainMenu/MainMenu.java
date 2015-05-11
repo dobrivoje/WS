@@ -53,7 +53,6 @@ import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_SALESMAN_CUST_REL;
-import static Menu.MenuDefinitions.CRM_MANAG_ACTIVE_CASES;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
@@ -201,7 +200,6 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
 
-        customersTree.setParent(CRM_MANAG_ACTIVE_CASES, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_CASE, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
@@ -210,7 +208,6 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_CASE, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
-        customersTree.setChildrenAllowed(CRM_MANAG_ACTIVE_CASES, false);
         customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
 
         customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);

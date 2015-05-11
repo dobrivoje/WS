@@ -33,7 +33,6 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
-    CRM_MANAG_ACTIVE_CASES("Active CRM Cases"),
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Process"),
     CRM_MANAG_EXISTING_PROCESS("Existing CRM Process Action"),
@@ -85,7 +84,6 @@ public enum MenuDefinitions {
                 CRM_MANAG_NEW_SALESMAN_CUST_REL,
                 CRM_MANAG_NEW_PROCESS,
                 CRM_MANAG_NEW_CASE,
-                CRM_MANAG_ACTIVE_CASES,
                 CRM_MANAG_EXISTING_SALESMAN_CUST_REL
         );
     }

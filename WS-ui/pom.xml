@@ -53,11 +53,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>DB</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.vaadin.addon</groupId>
             <artifactId>confirmdialog</artifactId>
             <version>2.1.2</version>
@@ -71,6 +66,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>UTILITIES</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>DB</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

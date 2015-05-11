@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
         {
             @NamedQuery(name = "CrmCase.findAll", query = "SELECT c FROM CrmCase c"),
 
+            @NamedQuery(name = "CrmCase.AllActiveCases", query = "SELECT c FROM CrmCase c WHERE c.finished = :Finished"),
+
             @NamedQuery(name = "CrmCase.findByIdca", query = "SELECT c FROM CrmCase c WHERE c.idca = :idca"),
 
             @NamedQuery(name = "CrmCase.findLastActiveCRM_Case",

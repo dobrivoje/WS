@@ -1271,6 +1271,16 @@ public class DBHandler {
             return null;
         }
     }
+    
+    public List<CrmCase> getCRM_AllActiveCases(boolean caseFinished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.AllActiveCases")
+                    .setParameter("Finished", caseFinished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     public List<CrmCase> getCRMCase(Customer c, Salesman s, boolean finished) {
         try {

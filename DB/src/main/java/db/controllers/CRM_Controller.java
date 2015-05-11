@@ -35,6 +35,11 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
+    public List<CrmCase> getCRM_AllActiveCases(boolean caseFinished) {
+        return dbh.getCRM_AllActiveCases(caseFinished);
+    }
+
+    @Override
     public CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s) {
         return dbh.getLastActive_CRMCase(c, s);
     }
