@@ -7,8 +7,7 @@ package Tables;
 
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
-import Forms.CRM.CRMProcess_Form;
-import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
+import Forms.CRM.CRMCase_Form;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -125,8 +124,9 @@ public class CustomerTable extends GENTable<Customer> {
                 Property property = source.getItem(row).getItemProperty(column);
                 Statuses s = Statuses.UNKNOWN;
 
-                if (property != null) {
+                try {
                     s = (boolean) property.getValue() ? Statuses.OK : Statuses.NO_LICENCE;
+                } catch (Exception e) {
                 }
 
                 return new StatusLabel(s, s.toString());
@@ -294,7 +294,7 @@ public class CustomerTable extends GENTable<Customer> {
 
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
-                    if (DS.getCrmController().getCRM_Processes(c, null, null).size() < 1) {
+                    if (DS.getCrmController().getCRM_Processes(c, false, null, null).size() < 1) {
                         Notification.show("Warning", "No CRM processes \nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
@@ -311,8 +311,10 @@ public class CustomerTable extends GENTable<Customer> {
 
                             CrmCase cs = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
 
-                            getUI().addWindow(new WindowForm(CRM_MANAG_NEW_PROCESS.toString(),
-                                    false, new CRMProcess_Form(cs, source)));
+                            getUI().addWindow(new WindowForm(
+                                    Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS.toString(),
+                                    false,
+                                    new CRMCase_Form(cs, source)));
                         } else {
                             Notification.show("User Rights Error",
                                     "You don't have rights\nto add new CRM process ! ",
@@ -332,12 +334,15 @@ public class CustomerTable extends GENTable<Customer> {
             Tree cbtTree;
 
             try {
-                cbtTree = new RELCBT_Tree("BUSSINES TYPE(S)", customer);
+                cbtTree = new RELCBT_Tree("BUSSINES TYPES", customer);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 cbtTree = new Tree("No Customer Bussines Type.");
             }
 
-            getUI().addWindow(new WindowFormProp("Customer Bussines Type Form", false, new RELCBTForm(customer), cbtTree));
+            getUI().addWindow(new WindowFormProp(
+                    "Customer Bussines Type Form", 
+                    false, 
+                    new RELCBTForm(customer), cbtTree));
         } else {
             Notification.show("User Rights Error",
                     "You don't have rights to add \nbussines type to this customers ! ",

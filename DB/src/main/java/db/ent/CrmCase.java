@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
             @NamedQuery(name = "CrmCase.findBySalesman",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.finished = :Finished ORDER BY c.idca DESC"),
-            
+
             @NamedQuery(name = "CrmCase.SalesmanCustomers",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDRSC.FK_IDC =:IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
 
@@ -67,6 +67,9 @@ public class CrmCase implements Serializable {
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
+    @Column(name = "EndDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
     @Column(name = "Description")
     private String description;
     @Column(name = "Finished")
@@ -101,6 +104,14 @@ public class CrmCase implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getDescription() {
@@ -156,8 +167,8 @@ public class CrmCase implements Serializable {
     @Override
     public String toString() {
         return (description == null ? "CRM Case" : getDescription()) + ", "
-                + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate()) + " - "
-                + (isFinished() ? " Finished." : "Active");
+                + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate())
+                + (isFinished() ? " - Finished." : "");
     }
 
 }

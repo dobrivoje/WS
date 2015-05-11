@@ -79,7 +79,7 @@ public class CustomTree<T> extends Tree {
     }
 
     /**
-     * Kreiraj podčvorove iz liste za čvor T.
+     * Kreiraj podčvorove iz liste za čvor "t" tipa T.
      *
      * @param item Čvor
      * @param childItems Lista podčvorova

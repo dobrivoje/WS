@@ -6,17 +6,21 @@
 package Trees;
 
 import Forms.CDM.CustomerForm;
-import Forms.CRM.CRMProcess_Form;
+import Forms.CRM.CRMCase_Form;
 import Forms.CRM.SCR_Form;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.Customer;
 import db.ent.Salesman;
+import java.util.ArrayList;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomSCTree;
 import static ws.MyUI.DS;
 
@@ -74,12 +78,50 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         getUI().addWindow(new WindowForm2(ACTION_CUSTOMER_DATA_UPDATE.getCaption(), new CustomerForm((Customer) source.getValue(), null)));
                     }
 
-                    if (action.equals(ACTION_NEW_CRM_CASE) && (source.getValue() instanceof Customer)) {
+                    if (action.equals(ACTION_NEW_CRM_CASE) && (target instanceof Customer)) {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
-                        CrmCase crmCase = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
+                        List<CrmCase> openCustomerCases = DS.getCrmController().getCRM_Cases(c, false);
 
-                        getUI().addWindow(new WindowForm(ACTION_NEW_CRM_CASE.getCaption(), false, new CRMProcess_Form(crmCase, null)));
+                        if (openCustomerCases.isEmpty()) {
+                            getUI().addWindow(new WindowForm(
+                                    ACTION_NEW_CRM_CASE.getCaption(),
+                                    false,
+                                    new CRMCase_Form(s, c, null)));
+                        } else {
+                            VerticalLayout VL_CRMCases = new VerticalLayout();
+                            VL_CRMCases.setMargin(true);
+
+                            List<CRM_SingleCase_Tree> csTrees = new ArrayList<>();
+
+                            try {
+                                for (CrmCase activeCRMCase : openCustomerCases) {
+                                    CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree(
+                                            "Case by " + activeCRMCase.getFK_IDRSC().getFK_IDS().toString(),
+                                            activeCRMCase);
+
+                                    csTrees.add(csct);
+
+                                    VL_CRMCases.addComponent(csct);
+                                }
+
+                                getUI().addWindow(
+                                        new WindowFormProp(
+                                                "Last Open Salesman CRM Case",
+                                                false,
+                                                new CRMCase_Form(DS.getCrmController().getCRM_LastActive_CRMCase(c, s), null),
+                                                new Panel(VL_CRMCases.getComponentCount() > 0
+                                                                ? "All Open Customer CRM Cases" : "No Active Customer CRM Case",
+                                                        VL_CRMCases)
+                                        )
+                                );
+
+                                for (CRM_SingleCase_Tree ct : csTrees) {
+                                    ct.refreshVisualContainer();
+                                }
+                            } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException e) {
+                            }
+                        }
                     }
                 }
             }

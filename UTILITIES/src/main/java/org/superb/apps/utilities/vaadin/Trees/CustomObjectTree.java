@@ -23,13 +23,14 @@ public class CustomObjectTree<T> extends CustomTree<T> {
 
     /**
      * <p>
-     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
-     * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
+     * Kreiraj stablo sa podčvorovima za čvor "t" tipa T</p>
      *
      * @param t Čvor
-     * @param subList Lista za čvor t
+     * @param subList Lista podčvorova čvora "t"
      */
     protected void createSubItems(T t, List subList) {
         super.setSubTreeItems(t, subList);
     }
+    
+    
 }

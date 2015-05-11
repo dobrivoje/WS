@@ -70,8 +70,13 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public List<CrmProcess> getCRM_Processes(Customer customer, Date dateFrom, Date dateTo) {
-        return dbh.getCRM_CustomerProcessesByDate(customer, dateFrom, dateTo);
+    public List<CrmProcess> getCRM_Processes(CrmCase crmCase, boolean finished) {
+        return dbh.getCRMProcesses(crmCase, finished);
+    }
+
+    @Override
+    public List<CrmProcess> getCRM_Processes(Customer customer, boolean finished, Date dateFrom, Date dateTo) {
+        return dbh.getCRM_CustomerProcessesByDate(customer, finished, dateFrom, dateTo);
     }
 
     @Override
@@ -152,6 +157,11 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
+    public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
+        dbh.updateCRM_Process(crmProcess);
+    }
+
+    @Override
     public void update_R_Salesman_Cust(RelSALESMANCUST R_SalesmanCustomer) throws Exception {
         dbh.update_R_Salesman_Cust(R_SalesmanCustomer);
     }
@@ -165,11 +175,11 @@ public class CRM_Controller implements ICRMController {
     public void addNewCRM_Case(RelSALESMANCUST relSC, Date startDate, String description) throws Exception {
         dbh.addNewCRM_Case(new CrmCase(startDate, description, relSC));
     }
-    //</editor-fold>
 
     @Override
-    public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
-        dbh.updateCRM_Process(crmProcess);
+    public void updateCRM_Case(CrmCase crmCase) throws Exception {
+        dbh.updateCRM_Case(crmCase);
     }
+    //</editor-fold>
 
 }

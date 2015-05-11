@@ -60,7 +60,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(beanItem.getBean());
+                    setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
@@ -71,7 +71,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                         n.show(getUI().getPage());
 
                     } catch (FieldGroup.CommitException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -92,7 +92,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                bindFieldsToBean(beanItem.getBean());
+                setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -108,7 +108,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
                     n.show(getUI().getPage());
 
                 } catch (FieldGroup.CommitException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
@@ -119,10 +119,15 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     }
 
     @Override
-    protected void bindFieldsToBean(Fuelstation FSBean) {
+    protected void setBeanFromFields(Fuelstation FSBean) {
         FSBean.setName(name.getValue());
         FSBean.setAddress(address.getValue());
         FSBean.setFK_City((City) city.getValue());
         FSBean.setCoordinates(coordinates.getValue());
+    }
+
+    @Override
+    protected void setFieldsFromBean(Fuelstation t) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

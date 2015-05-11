@@ -48,6 +48,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "CrmProcess.findByCRMStatus",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS.idcs = :IDCS"),
+            
+            @NamedQuery(name = "CrmProcess.findByCRMCase",
+                    query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA = :FK_IDCA AND c.FK_IDCA.finished = :finished"),
 
             @NamedQuery(name = "CrmProcess.findByDate", query = "SELECT c FROM CrmProcess c WHERE c.actionDate = :actionDate")
         }

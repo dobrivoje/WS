@@ -111,7 +111,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(beanItem.getBean());
+                    setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
@@ -141,7 +141,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Customer customerToUpdate = beanItem.getBean();
-                bindFieldsToBean(customerToUpdate);
+                setBeanFromFields(customerToUpdate);
 
                 try {
                     fieldGroup.commit();
@@ -166,7 +166,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
     }
 
     @Override
-    protected void bindFieldsToBean(Customer customerBean) {
+    protected void setBeanFromFields(Customer customerBean) {
         customerBean.setName(name.getValue());
         customerBean.setAddress(address.getValue());
         customerBean.setFKIDCity((City) city.getValue());
@@ -182,5 +182,24 @@ public class CustomerForm extends CRUDForm2<Customer> {
         customerBean.setEmail1(email1.getValue());
         customerBean.setEmail2(email2.getValue());
         customerBean.setComment(comment.getValue());
+    }
+
+    @Override
+    protected void setFieldsFromBean(Customer c) {
+        name.setValue(c.getName());
+        address.setValue(c.getAddress());
+        city.setValue(c.getFKIDCity());
+        pib.setValue(c.getPib());
+        matBr.setValue(c.getMatBr());
+        navCode.setValue(c.getNavCode());
+        licence.setValue(c.getLicence());
+        zone.setValue(c.getZone());
+        tel1.setValue(c.getTel1());
+        tel2.setValue(c.getTel2());
+        fax.setValue(c.getFax());
+        mob.setValue(c.getMob());
+        email1.setValue(c.getEmail1());
+        email2.setValue(c.getEmail2());
+        comment.setValue(c.getComment());
     }
 }

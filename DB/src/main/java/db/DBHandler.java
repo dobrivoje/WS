@@ -1103,7 +1103,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="CRM PROCESS">
-    public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, Date dateFrom, Date dateTo) {
+    public List<CrmProcess> getCRM_CustomerProcessesByDate(Customer customer, boolean finished, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
 
         if (dateFrom == null) {
@@ -1117,6 +1117,7 @@ public class DBHandler {
         try {
             return getEm().createNamedQuery("CrmProcess.CustomerProcessesByDate")
                     .setParameter("IDC", customer)
+                    .setParameter("finished", finished)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("dateTo", dateTo)
                     .getResultList();
@@ -1145,7 +1146,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CrmProcess> getCRM_SalesmanProcessesByDate(Salesman salesman, boolean finished, Date dateFrom, Date dateTo) {
         dateTo = dateTo == null ? new Date() : dateTo;
 
@@ -1178,6 +1179,17 @@ public class DBHandler {
         }
     }
 
+    public List<CrmProcess> getCRMProcesses(CrmCase crmCase, boolean finished) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.findByCRMCase")
+                    .setParameter("FK_IDCA", crmCase)
+                    .setParameter("finished", finished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1192,7 +1204,7 @@ public class DBHandler {
             }
         }
     }
-    
+
     public void addNewCRM_Process(CrmCase crmCase, CrmStatus crmStatus, String comment, Date actionDate) throws Exception {
 
         CrmProcess crmProcess = new CrmProcess(crmCase, crmStatus, comment, actionDate);
@@ -1281,6 +1293,21 @@ public class DBHandler {
         } catch (Exception ex) {
             if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
                 rollBackTransaction(new MyDBNullException("New CRM Case Addition Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
+        }
+    }
+
+    public void updateCRM_Case(CrmCase existingCrmCase) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.merge(existingCrmCase);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Existing CRM Case Update Failed.\nCheck fileds that must not be empty."));
             } else {
                 rollBackTransaction(ex.getMessage());
             }

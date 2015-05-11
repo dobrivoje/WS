@@ -8,6 +8,7 @@ package Trees;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.Customer;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import static ws.MyUI.DS;
 
@@ -15,18 +16,23 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
+public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> implements IRefreshVisualContainer {
 
     public Customer_CRMCases_Tree(String caption, final Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCrmController().getCRM_Cases(customer, false));
         createSubItems();
     }
 
-    public final void createSubItems() {
-        for (CrmCase c : elements) {
-            if (!c.isFinished()) {
-                createSubItems(c, c.getCrmProcessList());
+    private void createSubItems() {
+        for (CrmCase crmCase : elements) {
+            if (!crmCase.isFinished()) {
+                createSubItems(crmCase, DS.getCrmController().getCRM_Processes(crmCase, false));
             }
         }
+    }
+
+    @Override
+    public final void refreshVisualContainer() {
+        createSubItems();
     }
 }

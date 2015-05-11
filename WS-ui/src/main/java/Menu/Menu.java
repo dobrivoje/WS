@@ -39,7 +39,7 @@ public class Menu {
         createTreeMenu();
     }
 
-    public static Menu getDefault() {
+    public static synchronized Menu getDefault() {
         return instance == null ? instance = new Menu() : instance;
     }
 

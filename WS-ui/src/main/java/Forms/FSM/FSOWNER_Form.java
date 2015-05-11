@@ -74,15 +74,14 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
             btnCaption = BUTTON_CAPTION_NEW.toString();
-            active.setValue(true);
+
+            setFieldsFromBean(new Owner(null, null, new Date(), null, true));
             active.setEnabled(false);
-            
-            dateFrom.setValue(new Date());
 
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(beanItem.getBean());
+                    setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
@@ -95,7 +94,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                     } catch (MyDBNullException ex) {
                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -118,7 +117,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                bindFieldsToBean(beanItem.getBean());
+                setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -151,7 +150,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
                 } catch (MyDBNullException ex) {
                     Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 }
             }
         };
@@ -160,11 +159,20 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     }
 
     @Override
-    protected void bindFieldsToBean(Owner ownerBean) {
+    protected void setBeanFromFields(Owner ownerBean) {
         ownerBean.setFKIDCustomer((Customer) customer.getValue());
         ownerBean.setFkIdFs((Fuelstation) fs.getValue());
         ownerBean.setDateFrom(dateFrom.getValue());
         ownerBean.setDateTo(dateTo.getValue());
         ownerBean.setActive(active.getValue());
+    }
+
+    @Override
+    protected final void setFieldsFromBean(Owner o) {
+        customer.setValue(o.getFKIDCustomer());
+        fs.setValue(o.getFkIdFs());
+        dateFrom.setValue(o.getDateFrom());
+        dateTo.setValue(o.getDateTo());
+        active.setValue(o.getActive());
     }
 }

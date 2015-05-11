@@ -76,7 +76,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(beanItem.getBean());
+                    setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
@@ -88,7 +88,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         n.show(getUI().getPage());
 
                     } catch (CommitException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -113,7 +113,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     RelSALESMANCUST R_SalesmanCustomer_ToUpdate = beanItem.getBean();
-                    bindFieldsToBean(R_SalesmanCustomer_ToUpdate);
+                    setBeanFromFields(R_SalesmanCustomer_ToUpdate);
 
                     try {
                         fieldGroup.commit();
@@ -130,7 +130,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                         n.show(getUI().getPage());
 
                     } catch (FieldGroup.CommitException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -144,11 +144,20 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     }
 
     @Override
-    protected void bindFieldsToBean(RelSALESMANCUST R_SalesmanCustomer) {
+    protected void setBeanFromFields(RelSALESMANCUST R_SalesmanCustomer) {
         R_SalesmanCustomer.setFK_IDC((Customer) customer.getValue());
         R_SalesmanCustomer.setFK_IDS((Salesman) salesman.getValue());
         R_SalesmanCustomer.setDateFrom(dateFrom.getValue());
         R_SalesmanCustomer.setDateTo(dateTo.getValue());
         R_SalesmanCustomer.setActive(active.getValue());
+    }
+
+    @Override
+    protected void setFieldsFromBean(RelSALESMANCUST r) {
+        customer.setValue(r.getFK_IDC());
+        salesman.setValue(r.getFK_IDS());
+        dateFrom.setValue(r.getDateFrom());
+        dateTo.setValue(r.getDateTo());
+        active.setValue(r.getActive());
     }
 }

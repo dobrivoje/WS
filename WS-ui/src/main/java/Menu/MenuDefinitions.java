@@ -5,7 +5,6 @@
  */
 package Menu;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,11 +31,12 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_NEW_CUST("New Customer"),
     CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
-    CUST_DATA_MANAG_CUST_DOCS("Customer's Documents"),
+    CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
     CRM_MANAG_ACTIVE_CASES("Active CRM Cases"),
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Process"),
+    CRM_MANAG_EXISTING_PROCESS("Existing CRM Process Action"),
     CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
     CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
     //
@@ -57,44 +57,45 @@ public enum MenuDefinitions {
     }
 
     public static List<MenuDefinitions> get_MainMenuItems() {
-        return new ArrayList<>(Arrays.asList(
+        return Arrays.asList(
                 SYS_NOTIF_BOARD,
                 CUST_DATA_MANAG,
                 CUST_CRM_MANAG,
                 FS_DATA_MANAG
-        ));
+        );
     }
 
     public static List<MenuDefinitions> get_SYS_NOTIF_BOARD_SubItems() {
-        return new ArrayList<>(Arrays.asList(
+        return Arrays.asList(
                 SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST,
                 SYS_NOTIF_BOARD_LICENCES_OVERDUE
-        ));
+        );
     }
 
     public static List<MenuDefinitions> get_CUSTOMER_SubItems() {
-        return new ArrayList<>(Arrays.asList(
+        return Arrays.asList(
                 CUST_DATA_MANAG_SEARCH_ENGINE,
                 CUST_DATA_MANAG_NEW_CUST,
                 CUST_DATA_MANAG_CUST_DOCS
-        ));
+        );
     }
 
     public static List<MenuDefinitions> get_CRM_SubItems() {
-        return new ArrayList<>(Arrays.asList(CRM_MANAG_NEW_SALESMAN_CUST_REL,
+        return Arrays.asList(
+                CRM_MANAG_NEW_SALESMAN_CUST_REL,
                 CRM_MANAG_NEW_PROCESS,
                 CRM_MANAG_NEW_CASE,
                 CRM_MANAG_ACTIVE_CASES,
                 CRM_MANAG_EXISTING_SALESMAN_CUST_REL
-        ));
+        );
     }
 
     public static List<MenuDefinitions> get_FS_SubItems() {
-        return new ArrayList<>(Arrays.asList(
+        return Arrays.asList(
                 FS_DATA_MANAG_SEARCH_ENGINE,
                 FS_DATA_MANAG_NEW_FS,
                 FS_DATA_MANAG_NEW_FS_OWNER,
                 FS_DATA_MANAG_DOCS
-        ));
+        );
     }
 }

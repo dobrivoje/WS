@@ -4,7 +4,6 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
@@ -41,26 +40,24 @@ public abstract class CRUDForm2<T> extends FormLayout {
         this.fieldGroup = fieldGroup;
     }
 
-    protected abstract void bindFieldsToBean(T t);
+    protected abstract void setBeanFromFields(T t);
+
+    protected abstract void setFieldsFromBean(T t);
 
     protected final void setFormFieldsWidths(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {
-            if (c instanceof TextField) {
-                ((TextField) c).setWidth(width, unit);
-                ((TextField) c).setNullRepresentation("");
 
-            }
-            if (c instanceof ComboBox) {
-                ((ComboBox) c).setWidth(width, unit);
+            c.setWidth(width, unit);
+
+            if (c instanceof TextField) {
+                ((TextField) c).setNullRepresentation("");
             }
             if (c instanceof DateField) {
-                ((DateField) c).setWidth(width, unit);
                 ((DateField) c).setConverter(Date.class);
                 ((DateField) c).setDateFormat(APP_DATE_FORMAT);
 
             }
             if (c instanceof TextArea) {
-                ((TextArea) c).setWidth(width, unit);
                 ((TextArea) c).setNullRepresentation("");
             }
         }

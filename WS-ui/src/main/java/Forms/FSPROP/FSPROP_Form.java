@@ -1,10 +1,12 @@
 package Forms.FSPROP;
 
 import Forms.CRUDForm2;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -123,7 +125,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    bindFieldsToBean(beanItem.getBean());
+                    setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();
@@ -140,7 +142,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
                         n.show(getUI().getPage());
 
                     } catch (FieldGroup.CommitException ex) {
-                        Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -156,7 +158,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
     }
 
     @Override
-    protected void bindFieldsToBean(FsProp fsPropertyBean) {
+    protected void setBeanFromFields(FsProp fsPropertyBean) {
         fsPropertyBean.setFkIdo(currentOwner);
         fsPropertyBean.setPropertiesDate(propertiesDate.getValue());
 
@@ -191,5 +193,38 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         fsPropertyBean.setLicDateTo(licDateTo.getValue());
 
         fsPropertyBean.setActive(true);
+    }
+
+    @Override
+    protected void setFieldsFromBean(FsProp fsp) {
+        currentOwner = fsp.getFkIdo();
+
+        propertiesDate.setValue(fsp.getPropertiesDate());
+
+        try {
+            noOfTanks.setValue(Integer.toString(fsp.getNoOfTanks()));
+        } catch (Exception ex) {
+        }
+
+        try {
+            truckCapable.setValue(Integer.toString(fsp.getTruckCapable()));
+        } catch (Exception ex) {
+        }
+
+        try {
+            restaurant.setValue(fsp.getRestaurant());
+        } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
+        }
+
+        try {
+            carWash.setValue(fsp.getCarWash());
+        } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
+        }
+
+        compliance.setValue(fsp.getCompliance());
+        comment.setValue(fsp.getComment());
+        licence.setValue(fsp.getLicence());
+        licDateFrom.setValue(fsp.getLicDateFrom());
+        licDateTo.setValue(fsp.getLicDateTo());
     }
 }
