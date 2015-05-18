@@ -138,6 +138,17 @@ public class CRM_Controller implements ICRMController {
 
         return r;
     }
+
+    /**
+     * Lista svih kupaca sa otvorenim slučajevima.
+     *
+     * @param caseFinished
+     * @return
+     */
+    @Override
+    public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished) {
+        return dbh.getCRM_CustomerActiveCases(caseFinished);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">

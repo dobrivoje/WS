@@ -25,6 +25,8 @@ public interface ICRMController {
 
     CrmStatus getCRM_Status(long ID);
 
+    List<Customer> getCRM_CustomerActiveCases(boolean caseFinished);
+    
     List<CrmCase> getCRM_AllActiveCases(boolean caseFinished);
 
     List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished);

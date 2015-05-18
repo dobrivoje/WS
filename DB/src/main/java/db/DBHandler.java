@@ -1345,6 +1345,16 @@ public class DBHandler {
             return null;
         }
     }
+
+    public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.CustomerActiveCases")
+                    .setParameter("Finished", caseFinished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     //</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="RELATION SALESMAN CUSTOMER">

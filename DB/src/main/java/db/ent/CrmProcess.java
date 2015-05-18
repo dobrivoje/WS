@@ -48,7 +48,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "CrmProcess.findByCRMStatus",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCS.idcs = :IDCS"),
-            
+
             @NamedQuery(name = "CrmProcess.findByCRMCase",
                     query = "SELECT c FROM CrmProcess c WHERE c.FK_IDCA = :FK_IDCA AND c.FK_IDCA.finished = :finished"),
 
@@ -145,9 +145,9 @@ public class CrmProcess implements Serializable {
 
     @Override
     public String toString() {
-        return getFK_IDCS().toString() + ", "
-                + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate())
-                + (getComment().trim().isEmpty() ? "" : ", " + getComment());
+        return (getFK_IDCS() != null ? getFK_IDCS().toString() : "")
+                + (getActionDate() != null ? ", " + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate()) : "")
+                + (getComment() != null ? getComment().trim().isEmpty() ? "" : ", " + getComment() : "");
     }
 
 }

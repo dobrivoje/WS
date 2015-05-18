@@ -23,9 +23,13 @@ public class CustomTree<T> extends Tree {
      */
     protected List<T> elements;
 
-    public CustomTree(String caption) {
+    private void init(String caption) {
         setCaption(caption);
         elements = new ArrayList();
+    }
+    
+    public CustomTree(String caption) {
+        init(caption);
     }
 
     /**
@@ -36,8 +40,6 @@ public class CustomTree<T> extends Tree {
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
     public CustomTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
-        this(caption);
-
         if (treeItems == null) {
             throw new NullPointerException();
         }
@@ -45,7 +47,8 @@ public class CustomTree<T> extends Tree {
         if (treeItems.isEmpty()) {
             throw new CustomTreeNodesEmptyException();
         }
-        
+
+        init(caption);
         addItems(treeItems);
         elements.clear();
         elements.addAll(treeItems.subList(0, treeItems.size()));
@@ -63,13 +66,13 @@ public class CustomTree<T> extends Tree {
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
     public CustomTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException, NullPointerException {
-        this(caption);
-
         if (container == null) {
             throw new NullPointerException();
         }
 
         if (container.size() > 0) {
+            init(caption);
+
             setContainerDataSource(container);
             elements.clear();
             elements.addAll(container.getItemIds());

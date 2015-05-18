@@ -1,7 +1,8 @@
 package Views.MainMenu.CRM;
 
 import Layouts.InlineCSSLayout;
-import Trees.CRM_SingleCase_Tree;
+import Trees.Customer_CRMCases_Tree;
+import Trees.Salesman_CRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -10,32 +11,24 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import db.Exceptions.CustomTreeNodesEmptyException;
-import db.ent.CrmCase;
+import db.ent.Customer;
 import db.ent.Salesman;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.dobrivoje.auth.roles.RolesPermissions;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 public class CRMView extends DashboardView {
 
     public static final String VIEW_NAME = "CRMView";
+    private final boolean formAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
 
     public CRMView() {
         super("Customer Relationship Management");
         buildContentWithComponents(
-                overduePanel(), activeCasesBySalesmanPanel(), activeCasesByCustomerPanel(), notesPanel());
+                activeCasesBySalesmanPanel(), activeCasesByCustomerPanel(), overduePanel(), notesPanel());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
-    private Component overduePanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("Overdue Processes");
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
-    }
-
     private Component activeCasesBySalesmanPanel() {
         VerticalLayout rootPanel = new VerticalLayout();
 
@@ -46,10 +39,10 @@ public class CRMView extends DashboardView {
         rootPanel.addComponent(ICL);
 
         try {
-            for (CrmCase cc : DS.getCrmController().getCRM_AllActiveCases(false)) {
-                CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("", cc);
+            for (Salesman S : DS.getSalesmanController().getAll()) {
+                Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, formAllowed);
 
-                Panel p = new Panel(cc.getFK_IDRSC().getFK_IDS().toString(), csct);
+                Panel p = new Panel(S.toString(), csct);
                 p.setWidth(275, Unit.PIXELS);
 
                 HorizontalLayout hl = new HorizontalLayout(p);
@@ -58,9 +51,9 @@ public class CRMView extends DashboardView {
 
                 ICL.addComponent(hl);
             }
+
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
-
         Component contentWrapper = createContentWrapper(rootPanel);
         return contentWrapper;
     }
@@ -74,21 +67,11 @@ public class CRMView extends DashboardView {
 
         rootPanel.addComponent(ICL);
 
-        Map<Salesman, List<CrmCase>> SC = new HashMap<>();
-
         try {
-            for (CrmCase ccase : DS.getCrmController().getCRM_AllActiveCases(false)) {
-                if (SC.containsKey(ccase.getFK_IDRSC().getFK_IDS())) {
-                    Salesman S = ccase.getFK_IDRSC().getFK_IDS();
-                    List<CrmCase> salesmanCasesList = SC.remove(S);
+            for (Customer C : DS.getCrmController().getCRM_CustomerActiveCases(false)) {
+                Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", C, formAllowed);
 
-                    salesmanCasesList.add(ccase);
-                    SC.put(S, salesmanCasesList);
-                }
-
-                CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("", ccase);
-
-                Panel p = new Panel(ccase.getFK_IDRSC().getFK_IDS().toString(), csct);
+                Panel p = new Panel(C.toString(), ccct);
                 p.setWidth(275, Unit.PIXELS);
 
                 HorizontalLayout hl = new HorizontalLayout(p);
@@ -101,6 +84,14 @@ public class CRMView extends DashboardView {
         }
 
         Component contentWrapper = createContentWrapper(rootPanel);
+        return contentWrapper;
+    }
+
+    private Component overduePanel() {
+        VerticalLayout VL = new VerticalLayout();
+        VL.setCaption("Overdue Processes");
+        Component contentWrapper = createContentWrapper(VL);
+
         return contentWrapper;
     }
 

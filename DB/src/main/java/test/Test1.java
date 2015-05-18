@@ -32,11 +32,13 @@ public class Test1 {
         for (CrmCase cc : DS.getCrmController().getCRM_Cases(s, false)) {
             System.err.println("S : " + s.toString() + ", Case : " + cc.toString());
         }
-        
+
         for (CrmProcess cp : DS.getCrmController().getCRM_Processes(s, false)) {
             System.err.println(cp.toString());
         }
-        
-        
+
+        for (Customer cc : DS.getCrmController().getCRM_CustomerActiveCases(false)) {
+            System.err.println(cc.toString());
+        }
     }
 }
