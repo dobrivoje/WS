@@ -145,9 +145,15 @@ public class CrmProcess implements Serializable {
 
     @Override
     public String toString() {
-        return (getFK_IDCS() != null ? getFK_IDCS().toString() : "")
-                + (getActionDate() != null ? ", " + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate()) : "")
-                + (getComment() != null ? getComment().trim().isEmpty() ? "" : ", " + getComment() : "");
+        /*
+         return (getFK_IDCS() != null ? getFK_IDCS().toString() : "")
+         + (getActionDate() != null ? ", " + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate()) : "")
+         + (getComment() != null ? getComment().trim().isEmpty() ? "" : ", " + getComment() : "");
+         */
+
+        return getFK_IDCS().getStatusName()
+                + ", "
+                + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate());
     }
 
 }

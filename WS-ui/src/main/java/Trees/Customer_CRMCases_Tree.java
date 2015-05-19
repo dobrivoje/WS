@@ -20,7 +20,6 @@ import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import static ws.MyUI.DS;
 
@@ -28,7 +27,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> implements IRefreshVisualContainer {
+public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
 
     private final Customer customer;
     private final boolean formAllowed;
@@ -61,6 +60,7 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                 final Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", customer, formAllowed);
 
                 VerticalLayout VL_CRMCases = new VerticalLayout();
+                VL_CRMCases.setMargin(true);
 
                 if (event.isDoubleClick()) {
                     if (formAllowed) {

@@ -171,9 +171,13 @@ public class CrmCase implements Serializable {
 
     @Override
     public String toString() {
-        return (description == null ? "CRM Case" : getDescription()) + ", "
-                + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate())
-                + (isFinished() ? " - Finished." : "");
+        /*
+         return (description == null ? "CRM Case" : getDescription()) + ", "
+         + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate())
+         + (isFinished() ? " - Finished." : "");
+         */
+        return getFK_IDRSC().getFK_IDC().getName() + ", "
+                + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate());
     }
 
 }

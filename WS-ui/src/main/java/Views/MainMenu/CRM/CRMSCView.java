@@ -12,7 +12,6 @@ import static ws.MyUI.DS;
 
 public class CRMSCView extends DashboardView {
 
-    public static final String VIEW_NAME = "CRM_SCView";
     private final Panel propPanel;
 
     public CRMSCView() {

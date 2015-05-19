@@ -7,6 +7,7 @@ package org.superb.apps.utilities.vaadin.Trees;
 
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.List;
+import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public class CustomObjectTree<T> extends CustomTree<T> {
+public class CustomObjectTree<T> extends CustomTree<T> implements IRefreshVisualContainer {
 
     public CustomObjectTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
@@ -31,6 +32,10 @@ public class CustomObjectTree<T> extends CustomTree<T> {
     protected void createSubItems(T t, List subList) {
         super.setSubTreeItems(t, subList);
     }
-    
-    
+
+    @Override
+    public void refreshVisualContainer() {
+        throw new UnsupportedOperationException("Implement in the subclass !");
+    }
+
 }

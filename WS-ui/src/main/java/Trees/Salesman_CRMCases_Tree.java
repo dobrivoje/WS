@@ -58,6 +58,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                 final Salesman_CRMCases_Tree cc = new Salesman_CRMCases_Tree("", salesman, formAllowed);
 
                 VerticalLayout VL_CRMCases = new VerticalLayout();
+                VL_CRMCases.setMargin(true);
 
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
@@ -67,8 +68,9 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                             List<CRM_SingleCase_Tree> csTrees = new ArrayList<>();
 
                             try {
+                                Salesman s = crmCase.getFK_IDRSC().getFK_IDS();
                                 for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(salesman, false)) {
-                                    CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("", activeCRMCase);
+                                    CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     csTrees.add(csct);
 
                                     VL_CRMCases.addComponent(csct);
@@ -98,10 +100,11 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                             CrmProcess crmProcess = (CrmProcess) event.getItemId();
 
                             try {
+                                Salesman s = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
                                 List<CRM_SingleCase_Tree> crmTrees = new ArrayList<>();
 
                                 for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(salesman, false)) {
-                                    CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("", activeCRMCase);
+                                    CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     crmTrees.add(csct);
 
                                     VL_CRMCases.addComponent(csct);
