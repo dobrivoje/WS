@@ -54,6 +54,17 @@ public class CustomerTable extends GENTable<Customer> {
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
+        
+        // inicijalizuj handler,...
+        addActionHandler(new Action.Handler() {
+            @Override
+            public Action[] getActions(Object target, Object sender) {
+                return new Action[]{};
+            }
+            @Override
+            public void handleAction(Action action, Object sender, Object target) {
+            }
+        });
     }
 
     public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {
@@ -255,7 +266,7 @@ public class CustomerTable extends GENTable<Customer> {
     }
 
     @Override
-    public void addActionHandler(Action.Handler actionHandler) {
+    public final void addActionHandler(Action.Handler actionHandler) {
         super.addActionHandler(new Action.Handler() {
 
             @Override
@@ -340,8 +351,8 @@ public class CustomerTable extends GENTable<Customer> {
             }
 
             getUI().addWindow(new WindowFormProp(
-                    "Customer Bussines Type Form", 
-                    false, 
+                    "Customer Bussines Type Form",
+                    false,
                     new RELCBTForm(customer), cbtTree));
         } else {
             Notification.show("User Rights Error",

@@ -92,11 +92,6 @@ public class CustomersView extends VerticalLayout implements View {
             showPropForm(c);
         });
 
-        // ubaciti getActionManager() kao parametar samo da bi se pokrenuo handler !
-        // vrednost getActionManager() se ovde uopšte ne koristi !!!
-        customersTable.addActionHandler(getActionManager());
-
-        //</editor-fold>
         addComponent(VL);
     }
     //<editor-fold defaultstate="collapsed" desc="Customer Table - Double click - Customer Form">

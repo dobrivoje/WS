@@ -20,15 +20,20 @@ public class CRM_SingleCase_Tree extends CustomObjectTree<CrmCase> implements IR
 
     public CRM_SingleCase_Tree(String caption, CrmCase crmCase) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, Arrays.asList(crmCase));
-        refreshVisualContainer();
+        init();
     }
 
-    @Override
-    public final void refreshVisualContainer() {
+    private void init() {
         CrmCase cc = elements.get(0);
-        
+
         if (!cc.isFinished()) {
             createSubItems(cc, DS.getCrmController().getCRM_Processes(cc, false));
         }
     }
+
+    @Override
+    public void refreshVisualContainer() {
+        init();
+    }
+
 }

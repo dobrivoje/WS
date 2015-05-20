@@ -29,30 +29,11 @@ import static ws.MyUI.DS;
  */
 public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements IRefreshVisualContainer {
 
-    private final Salesman salesman;
-    private final boolean formAllowed;
-
     public Salesman_CRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCrmController().getCRM_Cases(salesman, false));
+        init();
 
-        this.salesman = salesman;
-        this.formAllowed = formAllowed;
-
-        addItemClickListener((ItemClickEvent event) -> {
-        });
-
-        refreshVisualContainer();
-    }
-
-    @Override
-    public final void refreshVisualContainer() {
-        for (CrmCase c : elements) {
-            createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
-        }
-    }
-
-    @Override
-    public final void addItemClickListener(ItemClickEvent.ItemClickListener listener) {
+        //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
             try {
                 final Salesman_CRMCases_Tree cc = new Salesman_CRMCases_Tree("", salesman, formAllowed);
@@ -137,6 +118,17 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
             }
         });
+        //</editor-fold>
     }
 
+    private void init() {
+        for (CrmCase c : elements) {
+            createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
+        }
+    }
+
+    @Override
+    public void refreshVisualContainer() {
+        init();
+    }
 }

@@ -29,32 +29,10 @@ import static ws.MyUI.DS;
  */
 public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
 
-    private final Customer customer;
-    private final boolean formAllowed;
-
     public Customer_CRMCases_Tree(String caption, final Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCrmController().getCRM_Cases(customer, false));
 
-        this.customer = customer;
-        this.formAllowed = formAllowed;
-
-        addItemClickListener((ItemClickEvent event) -> {
-        });
-
-        refreshVisualContainer();
-    }
-
-    @Override
-    public final void refreshVisualContainer() {
-        for (CrmCase c : elements) {
-            if (!c.isFinished()) {
-                createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
-            }
-        }
-    }
-
-    @Override
-    public final void addItemClickListener(ItemClickEvent.ItemClickListener listener) {
+        //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
             try {
                 final Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", customer, formAllowed);
@@ -95,7 +73,7 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             }
                         }
-                    //</editor-fold>
+                        //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
@@ -139,5 +117,21 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
             }
         });
+        //</editor-fold>
+
+        init();
+    }
+
+    private void init() {
+        for (CrmCase c : elements) {
+            if (!c.isFinished()) {
+                createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
+            }
+        }
+    }
+
+    @Override
+    public void refreshVisualContainer() {
+        init();
     }
 }
