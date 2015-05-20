@@ -1,7 +1,7 @@
 package Views.MainMenu.CRM;
 
 import Layouts.InlineCSSLayout;
-import Trees.Customer_CRMCases_Tree;
+import Trees.Customer_CRMCases_Tree2;
 import Trees.Salesman_CRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
@@ -69,7 +69,7 @@ public class CRMView extends DashboardView {
 
         try {
             for (Customer C : DS.getCrmController().getCRM_CustomerActiveCases(false)) {
-                Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", C, formAllowed);
+                Customer_CRMCases_Tree2 ccct = new Customer_CRMCases_Tree2("", C, formAllowed);
 
                 Panel p = new Panel(C.toString(), ccct);
                 p.setWidth(275, Unit.PIXELS);
