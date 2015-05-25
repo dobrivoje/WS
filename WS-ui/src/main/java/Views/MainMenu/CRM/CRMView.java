@@ -19,7 +19,6 @@ import static ws.MyUI.DS;
 
 public class CRMView extends DashboardView {
 
-    public static final String VIEW_NAME = "CRMView";
     private final boolean formAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
 
     public CRMView() {

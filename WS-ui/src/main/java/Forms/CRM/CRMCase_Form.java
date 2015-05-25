@@ -56,8 +56,8 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     
     @PropertyId("endDate")
     private final DateField endDate = new DateField("Case End Date");
-
     //</editor-fold>
+
     public CRMCase_Form() {
         super(new BeanFieldGroup(CrmCase.class));
         
@@ -94,6 +94,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         });
         
         salesman.focus();
+        finished.setEnabled(false);
     }
     
     public CRMCase_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer) {

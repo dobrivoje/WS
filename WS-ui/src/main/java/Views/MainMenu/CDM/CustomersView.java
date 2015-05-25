@@ -34,8 +34,6 @@ import static ws.MyUI.DS;
 
 public class CustomersView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "Customers View";
-
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
 

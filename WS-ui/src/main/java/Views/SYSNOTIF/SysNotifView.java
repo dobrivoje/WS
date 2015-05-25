@@ -8,8 +8,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class SysNotifView extends DashboardView {
 
-    public static final String VIEW_NAME = "SysNotifView";
-
     public SysNotifView() {
         super("System Notification Board");
         buildContentWithComponents(

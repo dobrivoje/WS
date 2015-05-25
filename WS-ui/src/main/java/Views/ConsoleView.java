@@ -29,8 +29,6 @@ import static ws.MyUI.DS;
 
 public class ConsoleView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "Console";
-
     private final HorizontalSplitPanel HSP = new HorizontalSplitPanel();
     private final VerticalLayout HL_VL_LEFT = new VerticalLayout();
     private final FormLayout HR_VL_RIGHT = new FormLayout();

@@ -10,8 +10,6 @@ import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
 
 public class AccordionView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "Console";
-
     private final AccordionMenu menu = new AccordionMenu();
 
     private final HorizontalLayout HL = new HorizontalLayout();

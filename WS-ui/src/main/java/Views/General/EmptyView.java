@@ -5,7 +5,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.VerticalLayout;
 
 public class EmptyView extends VerticalLayout implements View {
-    public static final String VIEW_NAME = "";
     
     public EmptyView() {
         setSizeFull();

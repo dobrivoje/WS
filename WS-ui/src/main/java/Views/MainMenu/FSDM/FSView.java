@@ -29,8 +29,6 @@ import static ws.MyUI.DS;
 
 public class FSView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "FS Search Engine View";
-
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
     private final VerticalLayout propVL = new VerticalLayout();
