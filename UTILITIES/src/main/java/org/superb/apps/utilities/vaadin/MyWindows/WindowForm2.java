@@ -33,7 +33,7 @@ public class WindowForm2 extends Window {
     protected VerticalLayout content = new VerticalLayout();
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktor">
-    public WindowForm2(String caption, Layout formLayout) {
+    public WindowForm2(String caption, Layout formLayout, String imageLocation) {
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -44,7 +44,7 @@ public class WindowForm2 extends Window {
         setWidth(60, Unit.PERCENTAGE);
 
         content.setSizeFull();
-        content.setMargin(new MarginInfo(true, false, false, false));
+        content.setMargin(new MarginInfo(true, false, true, false));
         setContent(content);
 
         detailsWrapper.setSizeFull();
@@ -54,17 +54,31 @@ public class WindowForm2 extends Window {
         content.addComponent(detailsWrapper);
         content.setExpandRatio(detailsWrapper, 1f);
 
-        detailsWrapper.addComponent(buildFormTab(caption, formLayout));
+        detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation));
 
         content.addComponent(buildFooter());
     }
-    //</editor-fold>
 
+    /**
+     * Kreiraj formu sa slikom korisnika
+     *
+     * @param caption
+     * @param formLayout
+     */
+    public WindowForm2(String caption, Layout formLayout) {
+        this(caption, formLayout, "img/profile-pic-300px.jpg");
+    }
+
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
-    private Component buildFormTab(String caption, Layout formLayout) {
+    protected final Component buildFormTab(String caption, Layout formLayout) {
+        return buildFormTab(caption, formLayout, "img/profile-pic-300px.jpg");
+    }
+
+    protected final Component buildFormTab(String caption, Layout formLayout, String imageLocation) {
         formLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         formLayout.setSizeUndefined();
-        
+
         HorizontalLayout centralLayout = new HorizontalLayout();
         centralLayout.setCaption(caption);
         centralLayout.setIcon(FontAwesome.USER);
@@ -75,7 +89,7 @@ public class WindowForm2 extends Window {
         VerticalLayout picLayout = new VerticalLayout();
         picLayout.setSizeUndefined();
         picLayout.setSpacing(true);
-        Image profilePic = new Image(null, new ThemeResource("img/profile-pic-300px.jpg"));
+        Image profilePic = new Image(null, new ThemeResource(imageLocation));
         profilePic.setWidth(100, Sizeable.Unit.PIXELS);
         picLayout.addComponent(profilePic);
 
@@ -94,6 +108,8 @@ public class WindowForm2 extends Window {
         footer.setWidth(100, Unit.PERCENTAGE);
 
         Button closeBtn = new Button("Close");
+        closeBtn.setWidth(150, Unit.PIXELS);
+
         closeBtn.addStyleName(ValoTheme.BUTTON_DANGER);
         closeBtn.addClickListener(new Button.ClickListener() {
             @Override

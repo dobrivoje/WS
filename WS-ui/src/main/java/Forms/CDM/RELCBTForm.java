@@ -18,7 +18,7 @@ import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
 import db.interfaces.IRELCBTController;
 import java.util.Date;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
@@ -83,7 +83,7 @@ public class RELCBTForm extends FormLayout {
         customer.setEnabled(false);
         customer.setValue(existingCustomer.getName());
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

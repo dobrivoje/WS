@@ -6,8 +6,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.Reindeer;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 public abstract class CRUDForm<T> extends FormLayout {
@@ -30,7 +29,7 @@ public abstract class CRUDForm<T> extends FormLayout {
 
         // PAZI : OBAVEZNO INICIJALOIZOVATI U IZVEDENOJ KLASI !!!
         // fieldGroup.bindMemberFields(this);
-        formButtonCaption = BUTTON_CAPTION_NEW.toString();
+        formButtonCaption = BUTTON_CAPTION_SAVE.toString();
 
         clickListener = new Button.ClickListener() {
             @Override
@@ -61,7 +60,7 @@ public abstract class CRUDForm<T> extends FormLayout {
         fieldGroup.setItemDataSource(new BeanItem(bean));
         beanItem = (BeanItem<T>) fieldGroup.getItemDataSource();
 
-        formButtonCaption = BUTTON_CAPTION_UPDATE.toString();
+        formButtonCaption = BUTTON_CAPTION_SAVE.toString();
 
         clickListener = new Button.ClickListener() {
             @Override

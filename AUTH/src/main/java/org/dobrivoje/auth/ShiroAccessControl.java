@@ -1,6 +1,8 @@
 package org.dobrivoje.auth;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -15,8 +17,9 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     //<editor-fold defaultstate="collapsed" desc="Infrastructure">
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
-    private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s";
+    private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s-HG786hjgghH11H50HH8911-mNNmn558wuuuw768x8c7";
     private static int loggedInUsers = 0;
+    private static final Set<Serializable> usersSessions = new HashSet<>();
 
     private final Factory<SecurityManager> factory;
     private final SecurityManager securityManager;
@@ -65,7 +68,11 @@ public class ShiroAccessControl implements IAccessAuthControl {
     //<editor-fold defaultstate="collapsed" desc="Permissions/Auths...">
     @Override
     public boolean authenticated() {
-        return subject != null ? subject.isAuthenticated() : false;
+        try {
+            return subject.isAuthenticated();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -90,17 +97,29 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     @Override
     public String getPrincipal() {
-        return subject != null ? (String) subject.getPrincipal() : "n/a";
+        try {
+            return (String) subject.getPrincipal();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
     public Session getSubjectSession() {
-        return subject != null ? subject.getSession() : new SimpleSession("");
+        try {
+            return subject.getSession();
+        } catch (Exception e) {
+            return new SimpleSession("");
+        }
     }
 
     @Override
     public Serializable getSubjectSessionID() {
-        return subject != null ? subject.getSession().getId() : "";
+        try {
+            return subject.getSession().getId();
+        } catch (Exception e) {
+            return "";
+        }
     }
     //</editor-fold>
 
@@ -108,7 +127,11 @@ public class ShiroAccessControl implements IAccessAuthControl {
     @Override
     public String getInfSysUserSession() {
         // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
-        return subject != null ? (String) subject.getSession().getAttribute(UN_SESSION_KEY) : "";
+        try {
+            return (String) subject.getSession().getAttribute(UN_SESSION_KEY);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
@@ -118,12 +141,22 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     @Override
     public synchronized void incLoggedUsers() {
-        loggedInUsers++;
+        if (!usersSessions.contains(getSubjectSessionID())) {
+            usersSessions.add(getSubjectSessionID());
+            loggedInUsers++;
+        }
     }
 
     @Override
     public synchronized void decLoggedUsers() {
-        --loggedInUsers;
+        if (usersSessions.contains(getSubjectSessionID())) {
+            usersSessions.remove(getSubjectSessionID());
+        }
+
+        if (--loggedInUsers < 0) {
+            loggedInUsers = 0;
+        }
+
     }
     //</editor-fold>
 }

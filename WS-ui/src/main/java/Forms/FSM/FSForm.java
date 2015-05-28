@@ -13,8 +13,7 @@ import com.vaadin.ui.TextField;
 import db.ent.City;
 import db.ent.Fuelstation;
 import org.superb.apps.utilities.Enums.CrudOperations;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -55,7 +54,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_NEW.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override
@@ -88,7 +87,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         fieldGroup.setItemDataSource(new BeanItem(fuelstation));
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

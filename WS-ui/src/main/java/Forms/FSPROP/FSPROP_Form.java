@@ -18,7 +18,7 @@ import db.ent.FsProp;
 import db.ent.Fuelstation;
 import db.ent.Owner;
 import java.util.Date;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import static ws.MyUI.DS;
 
 public class FSPROP_Form extends CRUDForm2<FsProp> {
@@ -120,7 +120,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         }
 
         if (crudButtonOnForm) {
-            btnCaption = BUTTON_CAPTION_NEW.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override

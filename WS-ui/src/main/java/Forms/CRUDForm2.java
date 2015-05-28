@@ -40,6 +40,18 @@ public abstract class CRUDForm2<T> extends FormLayout {
         this.fieldGroup = fieldGroup;
     }
 
+    /**
+     *
+     * @param lockAll - zaključavanje svih polja u formi ?
+     */
+    protected void lockFormFileds(boolean lockAll) {
+        if (lockAll) {
+            fieldGroup.getFields().stream().forEach((c) -> {
+                c.setEnabled(false);
+            });
+        }
+    }
+
     protected abstract void setBeanFromFields(T t);
 
     protected abstract void setFieldsFromBean(T t);
@@ -59,6 +71,7 @@ public abstract class CRUDForm2<T> extends FormLayout {
             }
             if (c instanceof TextArea) {
                 ((TextArea) c).setNullRepresentation("");
+                ((TextArea) c).setRows(4);
             }
         }
     }

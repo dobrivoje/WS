@@ -18,8 +18,7 @@ import db.interfaces.ICustomerController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.superb.apps.utilities.Enums.CrudOperations;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -106,7 +105,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_NEW.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override
@@ -136,7 +135,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
         fieldGroup.setItemDataSource(new BeanItem(customer));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

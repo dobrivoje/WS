@@ -115,6 +115,7 @@ public class testKlasa {
         );
 
         System.err.println("\nĐŠPĆČČLDJHNMLČĐŠ");
+        System.err.println("\n  шш ЖЋЧ");
 
         System.err.println("Session Username: " + intermolAD.getInfSysUserSession());
         System.err.println("getLoggedUsers: " + intermolAD.getLoggedUsers());
@@ -122,8 +123,31 @@ public class testKlasa {
 
         intermolAD.logout();
 
-        System.err.println("Session Username: " + intermolAD.getInfSysUserSession());
-        System.err.println("getLoggedUsers: " + intermolAD.getLoggedUsers());
-        System.err.println("getSession: " + intermolAD.getSubjectSessionID());
+        IAccessAuthControl intermolAD1 = new IntermolADAccessControl();
+
+        try {
+            intermolAD1.login("ws", "");
+
+            System.err.println(intermolAD1.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
+        } catch (UnknownAccountException e) {
+            System.err.println("Nepoznati nalog !");
+        } catch (IncorrectCredentialsException e) {
+            System.err.println("IncorrectCredentials !");
+        } catch (ExcessiveAttemptsException e) {
+            System.err.println("ExcessiveAttempts !");
+        }
+
+        System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
+        System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());
+        System.err.println("getSession: " + intermolAD1.getSubjectSessionID());
+        System.err.println("intermolAD1.getAttributeKeys: " + intermolAD1.getSubjectSession().getAttributeKeys().toString());
+        System.err.println("intermolAD1.getId: " + intermolAD1.getSubjectSession().getId());
+
+        intermolAD1.logout();
+
+        System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
+        System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());
+        System.err.println("getSession: " + intermolAD1.getSubjectSessionID());
+        System.err.println("auth: " + intermolAD1.authenticated());
     }
 }

@@ -16,7 +16,8 @@ public enum CrudOperations {
     UPDATE("Update"),
     DELETE("Delete"),
     //
-    BUTTON_CAPTION_UPDATE("Save"),
+    BUTTON_CAPTION_SAVE("Save"),
+    BUTTON_CAPTION_UPDATE("Update"),
     BUTTON_CAPTION_NEW("Insert New Data"),
     BUTTON_CAPTION_CANCEL("Cancel");
 

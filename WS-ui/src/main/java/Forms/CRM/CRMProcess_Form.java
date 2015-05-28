@@ -60,16 +60,18 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     public CRMProcess_Form() {
         super(new BeanFieldGroup(CrmProcess.class));
 
+        // poništi margine iz super klase, da bi se polja lepše prikazala na formi !
+        setMargin(false);
+
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
         salesman.setWidth(250, Unit.PIXELS);
 
-        comment.setRows(4);
-
         salesman.setRequired(true);
         crmCase.setRequired(true);
         status.setRequired(true);
+        actionDate.setRequired(true);
 
         salesman.setNullSelectionAllowed(false);
         crmCase.setNullSelectionAllowed(false);
@@ -98,45 +100,42 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
         try {
             if (newCRMProcess) {
-                btnCaption = CrudOperations.BUTTON_CAPTION_NEW.toString();
+                btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
             } else {
-                btnCaption = CrudOperations.BUTTON_CAPTION_UPDATE.toString();
+                btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
             }
         } catch (Exception e) {
-            btnCaption = CrudOperations.BUTTON_CAPTION_NEW.toString();
+            btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
         }
 
         fieldGroup.setItemDataSource(new BeanItem(crmProcess));
         beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
 
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+        clickListener = (Button.ClickEvent event) -> {
+            setBeanFromFields(beanItem.getBean());
 
-                try {
-                    fieldGroup.commit();
+            try {
+                fieldGroup.commit();
 
-                    if (newCRMProcess) {
-                        CRM_Controller.addNewCRM_Process(beanItem.getBean());
-                    } else {
-                        CRM_Controller.updateCRM_Process(beanItem.getBean());
-                    }
-
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
-
-                    Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
-
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-
-                } catch (FieldGroup.CommitException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                if (newCRMProcess) {
+                    CRM_Controller.addNewCRM_Process(beanItem.getBean());
+                } else {
+                    CRM_Controller.updateCRM_Process(beanItem.getBean());
                 }
+
+                if (visualContainer != null) {
+                    visualContainer.refreshVisualContainer();
+                }
+
+                Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
+
+                n.setDelayMsec(500);
+                n.show(getUI().getPage());
+
+            } catch (FieldGroup.CommitException ex) {
+                Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         };
 
@@ -149,7 +148,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
         setFieldsFromBean(crmProcess);
 
-        btnCaption = CrudOperations.BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
 
         fieldGroup.setItemDataSource(new BeanItem(crmProcess));
         beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
@@ -183,11 +182,11 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
         addComponents(salesman);
         addBeansToForm();
-        lockFormFileds();
+        lockFormFileds(false);
     }
 
     @Override
-    protected void setBeanFromFields(CrmProcess crmProcess) {
+    protected final void setBeanFromFields(CrmProcess crmProcess) {
         crmProcess.setActionDate(actionDate.getValue());
         crmProcess.setComment(comment.getValue());
         crmProcess.setFK_IDCA((CrmCase) crmCase.getValue());
@@ -200,10 +199,15 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         crmCase.setValue(cp.getFK_IDCA());
     }
 
-    private void lockFormFileds() {
-        salesman.setEnabled(false);
-        crmCase.setEnabled(false);
-        status.setEnabled(false);
-        actionDate.setEnabled(false);
+    @Override
+    protected final void lockFormFileds(boolean lockAll) {
+        if (lockAll) {
+            super.lockFormFileds(lockAll);
+        } else {
+            salesman.setEnabled(false);
+            crmCase.setEnabled(false);
+            status.setEnabled(false);
+            actionDate.setEnabled(false);
+        }
     }
 }

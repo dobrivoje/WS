@@ -18,8 +18,7 @@ import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -71,7 +70,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_NEW.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
 
             clickListener = new Button.ClickListener() {
                 @Override
@@ -108,7 +107,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
             fieldGroup.setItemDataSource(new BeanItem(r));
             beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
 
-            btnCaption = BUTTON_CAPTION_UPDATE.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {

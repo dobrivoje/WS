@@ -16,8 +16,7 @@ import db.ent.Fuelstation;
 import db.ent.Owner;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_NEW;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
@@ -73,7 +72,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
 
         if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_NEW.toString();
+            btnCaption = BUTTON_CAPTION_SAVE.toString();
 
             setFieldsFromBean(new Owner(null, null, new Date(), null, true));
             active.setEnabled(false);
@@ -112,7 +111,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fieldGroup.setItemDataSource(new BeanItem(newOwner));
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
 
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
         clickListener = new Button.ClickListener() {
             @Override

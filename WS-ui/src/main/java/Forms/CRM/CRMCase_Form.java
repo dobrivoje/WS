@@ -26,7 +26,7 @@ import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
 import java.util.Date;
-import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_UPDATE;
+import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
@@ -61,7 +61,9 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     public CRMCase_Form() {
         super(new BeanFieldGroup(CrmCase.class));
         
+        // poništi margine iz super klase, da bi se polja lepše prikazala na formi !
         setMargin(false);
+        setSizeUndefined();
         
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
@@ -115,7 +117,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         fieldGroup.setItemDataSource(new BeanItem(crmCase));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
         
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -157,7 +159,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
         
-        btnCaption = BUTTON_CAPTION_UPDATE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

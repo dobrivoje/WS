@@ -70,7 +70,6 @@ import org.apache.shiro.session.UnknownSessionException;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -260,8 +259,8 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                getUI().addWindow(new WindowForm(CRM_MANAG_NEW_CASE.toString(),
-                                        false, new CRMCase_Form(null, null, null)));
+                                getUI().addWindow(new WindowForm2(CRM_MANAG_NEW_CASE.toString(),
+                                        new CRMCase_Form(null, null, null), "img/crm-case.jpg"));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -269,11 +268,9 @@ public class MainMenu extends CssLayout {
                         case CRM_MANAG_NEW_PROCESS:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
-                                    getUI().addWindow(
-                                            new WindowFormProp(
-                                                    CRM_MANAG_NEW_PROCESS.toString(),
-                                                    false,
-                                                    new CRMProcess_Form(null, true, null)));
+                                    getUI().addWindow(new WindowForm2(CRM_MANAG_NEW_PROCESS.toString(),
+                                            new CRMProcess_Form(null, true, null),
+                                            "img/crm-process.jpg"));
 
                                 } catch (NullPointerException | IllegalArgumentException ex) {
                                 }
@@ -319,6 +316,7 @@ public class MainMenu extends CssLayout {
                 } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
                     Notification.show("Session Expiration", "Your current session has expired.\nPlease logout, and login again.",
                             Notification.Type.ERROR_MESSAGE);
+                    MyUI.get().getAccessControl().decLoggedUsers();
                 }
             }
         });
