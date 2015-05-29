@@ -19,7 +19,7 @@ import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomSCTree;
 import static ws.MyUI.DS;
@@ -75,7 +75,15 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                     }
 
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {
-                        getUI().addWindow(new WindowForm2(ACTION_CUSTOMER_DATA_UPDATE.getCaption(), new CustomerForm((Customer) source.getValue(), null)));
+
+                        CustomerForm customerForm = new CustomerForm((Customer) source.getValue(), null);
+
+                        getUI().addWindow(new WindowForm3(
+                                ACTION_CUSTOMER_DATA_UPDATE.getCaption(),
+                                customerForm,
+                                null,
+                                customerForm.getClickListener())
+                        );
                     }
 
                     if (action.equals(ACTION_NEW_CRM_CASE) && (target instanceof Customer)) {
@@ -87,7 +95,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                             getUI().addWindow(new WindowForm(
                                     ACTION_NEW_CRM_CASE.getCaption(),
                                     false,
-                                    new CRMCase_Form(s, c, null)));
+                                    new CRMCase_Form(s, c, null, true)));
                         } else {
                             VerticalLayout VL_CRMCases = new VerticalLayout();
                             VL_CRMCases.setMargin(true);

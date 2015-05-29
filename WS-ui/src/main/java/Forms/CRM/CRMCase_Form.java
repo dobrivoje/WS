@@ -35,49 +35,49 @@ import static ws.MyUI.DS;
  * @author root
  */
 public class CRMCase_Form extends CRUDForm2<CrmCase> {
-    
+
     private final ICRMController CRM_Controller = DS.getCrmController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final ComboBox salesman = new ComboBox("Salesman",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
-    
+
     private final ComboBox customer = new ComboBox("Customer");
-    
+
     @PropertyId("startDate")
     private final DateField startDate = new DateField("Case Start Date");
-    
+
     @PropertyId("description")
     private final TextArea description = new TextArea("Description");
-    
+
     @PropertyId("finished")
     private final CheckBox finished = new CheckBox("Case finished ?");
-    
+
     @PropertyId("endDate")
     private final DateField endDate = new DateField("Case End Date");
     //</editor-fold>
 
     public CRMCase_Form() {
         super(new BeanFieldGroup(CrmCase.class));
-        
-        // poništi margine iz super klase, da bi se polja lepše prikazala na formi !
+
+        // poništi margine iz super klase, da bi se polja lepĹˇe prikazala na formi !
         setMargin(false);
         setSizeUndefined();
-        
+
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
-        
+
         salesman.setWidth(250, Unit.PIXELS);
         customer.setWidth(250, Unit.PIXELS);
         description.setRows(3);
-        
+
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
-        
+
         salesman.setRequired(true);
         customer.setRequired(true);
-        
+
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -86,7 +86,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
                         CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
             }
         });
-        
+
         finished.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -94,49 +94,51 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
                 endDate.setValue(finished.getValue() ? new Date() : null);
             }
         });
-        
+
         salesman.focus();
         finished.setEnabled(false);
     }
-    
-    public CRMCase_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer) {
+
+    public CRMCase_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
-        
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
+
         RelSALESMANCUST relSC = null;
-        
+
         try {
             relSC = CRM_Controller.getCRM_R_SalesmanCustomer(s, c);
         } catch (Exception ex) {
         }
-        
+
         this.salesman.setValue(s);
         this.customer.setValue(c);
-        
+
         CrmCase crmCase = new CrmCase(new Date(), null, relSC);
-        
+
         fieldGroup.setItemDataSource(new BeanItem(crmCase));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
-        
+
         btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setBeanFromFields(beanItem.getBean());
-                
+
                 try {
                     fieldGroup.commit();
-                    
+
                     CRM_Controller.addNewCRM_Case(beanItem.getBean());
-                    
+
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
                     }
-                    
+
                     Notification n = new Notification("New CRM Case Added.", Notification.Type.TRAY_NOTIFICATION);
-                    
+
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
-                    
+
                 } catch (FieldGroup.CommitException ce) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
@@ -144,41 +146,40 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
                 }
             }
         };
-        
+
         addComponents(salesman, customer);
         addBeansToForm();
-        
     }
-    
+
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {
         this();
-        
+
         CrmCase cc = crmCase == null ? new CrmCase(new Date(), "", new RelSALESMANCUST()) : crmCase;
         setFieldsFromBean(cc);
-        
+
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
-        
+
         btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setBeanFromFields(beanItem.getBean());
-                
+
                 try {
                     fieldGroup.commit();
-                    
+
                     CRM_Controller.updateCRM_Case(beanItem.getBean());
-                    
+
                     if (visualContainer != null) {
                         visualContainer.refreshVisualContainer();
                     }
-                    
+
                     Notification n = new Notification("Existing CRM Case Updated.", Notification.Type.TRAY_NOTIFICATION);
-                    
+
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
-                    
+
                 } catch (FieldGroup.CommitException ce) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
@@ -186,20 +187,20 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
                 }
             }
         };
-        
+
         addComponents(salesman, customer);
         addBeansToForm();
-        
+
         lockFormFields(crmCase != null);
     }
-    
+
     @Override
     protected final void setBeanFromFields(CrmCase crmCase) {
         crmCase.setStartDate(startDate.getValue());
         crmCase.setEndDate(endDate.getValue());
         crmCase.setDescription(description.getValue());
         crmCase.setFinished(finished.getValue());
-        
+
         try {
             crmCase.setFK_IDRSC(
                     CRM_Controller.getCRM_R_SalesmanCustomer(
@@ -210,7 +211,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
             Notification.show("Error", "Relation between Salesman and Customer\ndoes not exist !", Notification.Type.ERROR_MESSAGE);
         }
     }
-    
+
     @Override
     protected final void setFieldsFromBean(CrmCase cc) {
         startDate.setValue(cc.getStartDate());
@@ -220,7 +221,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         salesman.setValue(cc.getFK_IDRSC().getFK_IDS());
         customer.setValue(cc.getFK_IDRSC().getFK_IDC());
     }
-    
+
     private void lockFormFields(boolean lock) {
         if (lock) {
             salesman.setEnabled(false);

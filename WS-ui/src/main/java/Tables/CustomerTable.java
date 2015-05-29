@@ -35,7 +35,7 @@ import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import ws.MyUI;
@@ -54,13 +54,14 @@ public class CustomerTable extends GENTable<Customer> {
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
-        
+
         // inicijalizuj handler,...
         addActionHandler(new Action.Handler() {
             @Override
             public Action[] getActions(Object target, Object sender) {
                 return new Action[]{};
             }
+
             @Override
             public void handleAction(Action action, Object sender, Object target) {
             }
@@ -91,7 +92,12 @@ public class CustomerTable extends GENTable<Customer> {
                             }
                         });
 
-                        getUI().addWindow(new WindowForm2("Customer Update Form", cf));
+                        getUI().addWindow(new WindowForm3(
+                                "Customer Update Form",
+                                cf,
+                                null,
+                                cf.getClickListener())
+                        );
                     }
                 });
                 final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
@@ -293,7 +299,11 @@ public class CustomerTable extends GENTable<Customer> {
                     });
 
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
-                        getUI().addWindow(new WindowForm2("Customer Update Form", cf));
+                        getUI().addWindow(new WindowForm3(
+                                "Customer Update Form",
+                                cf, null, cf.getClickListener())
+                        );
+
                     } else {
                         Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
                     }

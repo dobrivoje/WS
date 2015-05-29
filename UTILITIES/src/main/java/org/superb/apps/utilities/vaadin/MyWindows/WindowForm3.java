@@ -27,13 +27,13 @@ import static org.superb.apps.utilities.vaadin.MyWindows.ProfilePreferencesWindo
  *
  * @author root
  */
-public class WindowForm2 extends Window {
+public class WindowForm3 extends Window {
 
     protected TabSheet detailsWrapper = new TabSheet();
     protected VerticalLayout content = new VerticalLayout();
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktor">
-    public WindowForm2(String caption, Layout formLayout, String imageLocation) {
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener) {
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -56,7 +56,7 @@ public class WindowForm2 extends Window {
 
         detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation));
 
-        content.addComponent(buildFooter());
+        content.addComponent(buildFooter(externalButtonClickListener));
     }
 
     /**
@@ -65,11 +65,11 @@ public class WindowForm2 extends Window {
      * @param caption
      * @param formLayout
      */
-    public WindowForm2(String caption, Layout formLayout) {
-        this(caption, formLayout, "img/profile-pic-300px.jpg");
+    public WindowForm3(String caption, Layout formLayout) {
+        this(caption, formLayout, "img/profile-pic-300px.jpg", null);
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
     protected final Component buildFormTab(String caption, Layout formLayout) {
         return buildFormTab(caption, formLayout, "img/profile-pic-300px.jpg");
@@ -89,6 +89,11 @@ public class WindowForm2 extends Window {
         VerticalLayout picLayout = new VerticalLayout();
         picLayout.setSizeUndefined();
         picLayout.setSpacing(true);
+
+        if (imageLocation == null) {
+            imageLocation = "img/profile-pic-300px.jpg";
+        }
+
         Image profilePic = new Image(null, new ThemeResource(imageLocation));
         profilePic.setWidth(100, Sizeable.Unit.PIXELS);
         picLayout.addComponent(profilePic);
@@ -102,25 +107,35 @@ public class WindowForm2 extends Window {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Footer">
-    private Component buildFooter() {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100, Unit.PERCENTAGE);
+    private Component buildFooter(Button.ClickListener externalButtonClickListener) {
+        HorizontalLayout footerLayout = new HorizontalLayout();
+
+        footerLayout.setSpacing(true);
+        footerLayout.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+        footerLayout.setWidth(100, Unit.PERCENTAGE);
 
         Button closeBtn = new Button("Close");
         closeBtn.setWidth(150, Unit.PIXELS);
-
         closeBtn.addStyleName(ValoTheme.BUTTON_DANGER);
         closeBtn.addClickListener((Button.ClickEvent event) -> {
             close();
         });
-
         closeBtn.focus();
-        
-        footer.addComponent(closeBtn);
-        footer.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
-        
-        return footer;
+
+        Button saveBtn = new Button("Save");
+        saveBtn.setWidth(150, Unit.PIXELS);
+
+        if (externalButtonClickListener != null) {
+            saveBtn.addClickListener(externalButtonClickListener);
+        }
+
+        footerLayout.addComponent(saveBtn);
+        footerLayout.addComponent(closeBtn);
+
+        footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
+        footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+
+        return footerLayout;
     }
     //</editor-fold>
 

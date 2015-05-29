@@ -69,7 +69,7 @@ import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.UnknownSessionException;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm2;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -240,8 +240,14 @@ public class MainMenu extends CssLayout {
                         case CUST_DATA_MANAG_NEW_CUST:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                                 navigator.navigateTo(CustomersView.class.getSimpleName());
-                                getUI().addWindow(new WindowForm2(CUST_DATA_MANAG_NEW_CUST.toString(),
-                                        new CustomerForm(CrudOperations.CREATE)));
+
+                                CustomerForm customerForm = new CustomerForm(CrudOperations.CREATE, false);
+
+                                getUI().addWindow(new WindowForm3(
+                                        CUST_DATA_MANAG_NEW_CUST.toString(),
+                                        customerForm,
+                                        null,
+                                        customerForm.getClickListener()));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -259,8 +265,14 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                getUI().addWindow(new WindowForm2(CRM_MANAG_NEW_CASE.toString(),
-                                        new CRMCase_Form(null, null, null), "img/crm-case.jpg"));
+                                CRMCase_Form crmCaseForm = new CRMCase_Form(null, null, null, false);
+
+                                getUI().addWindow(new WindowForm3(
+                                        CRM_MANAG_NEW_CASE.toString(),
+                                        crmCaseForm,
+                                        "img/crm-case.jpg",
+                                        crmCaseForm.getClickListener()
+                                ));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -268,9 +280,14 @@ public class MainMenu extends CssLayout {
                         case CRM_MANAG_NEW_PROCESS:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
-                                    getUI().addWindow(new WindowForm2(CRM_MANAG_NEW_PROCESS.toString(),
-                                            new CRMProcess_Form(null, true, null),
-                                            "img/crm-process.jpg"));
+                                    CRMProcess_Form crmProcessForm = new CRMProcess_Form(null, true, null, false);
+                                    
+                                    getUI().addWindow(new WindowForm3(
+                                            CRM_MANAG_NEW_PROCESS.toString(),
+                                            crmProcessForm,
+                                            "img/crm-process.jpg",
+                                            crmProcessForm.getClickListener())
+                                    );
 
                                 } catch (NullPointerException | IllegalArgumentException ex) {
                                 }

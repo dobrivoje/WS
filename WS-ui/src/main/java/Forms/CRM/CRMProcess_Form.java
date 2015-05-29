@@ -93,8 +93,10 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         salesman.focus();
     }
 
-    public CRMProcess_Form(CrmCase crmCase, final boolean newCRMProcess, final IRefreshVisualContainer visualContainer) {
+    public CRMProcess_Form(CrmCase crmCase, final boolean newCRMProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         CrmProcess crmProcess = new CrmProcess(new CrmCase(), null, null, new Date());
 

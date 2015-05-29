@@ -98,8 +98,10 @@ public class CustomerForm extends CRUDForm2<Customer> {
         name.focus();
     }
 
-    public CustomerForm(final CrudOperations crudOperation) {
+    public CustomerForm(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         fieldGroup.setItemDataSource(new BeanItem(new Customer()));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();

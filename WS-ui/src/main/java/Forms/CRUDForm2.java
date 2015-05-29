@@ -20,12 +20,14 @@ public abstract class CRUDForm2<T> extends FormLayout {
     protected Button crudButton;
     protected Button.ClickListener clickListener;
     protected String btnCaption;
+    protected boolean defaultCRUDButtonOnForm;
 
     protected CRUDForm2() {
         setSizeFull();
         setMargin(true);
         setSpacing(true);
 
+        defaultCRUDButtonOnForm = true;
         crudButton = new Button();
         crudButton.setWidth(150, Unit.PIXELS);
     }
@@ -38,6 +40,10 @@ public abstract class CRUDForm2<T> extends FormLayout {
     public CRUDForm2(FieldGroup fieldGroup) {
         this();
         this.fieldGroup = fieldGroup;
+    }
+
+    public Button.ClickListener getClickListener() {
+        return clickListener;
     }
 
     /**
@@ -84,7 +90,9 @@ public abstract class CRUDForm2<T> extends FormLayout {
         crudButton.setCaption(btnCaption);
         crudButton.addClickListener(clickListener);
 
-        addComponents(crudButton);
+        if (defaultCRUDButtonOnForm) {
+            addComponents(crudButton);
+        }
     }
 
     /*
