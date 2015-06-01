@@ -14,6 +14,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.Action;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -100,6 +101,10 @@ public class CustomerTable extends GENTable<Customer> {
                         );
                     }
                 });
+
+                editBtn.setIcon(new ThemeResource("img/buttons/users_folder32x32.png"));
+                editBtn.setStyleName("dugmici");
+
                 final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
@@ -291,17 +296,19 @@ public class CustomerTable extends GENTable<Customer> {
 
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
                     Customer c = (Customer) (source.getValue());
-                    CustomerForm cf = new CustomerForm(c, new IRefreshVisualContainer() {
-                        @Override
-                        public void refreshVisualContainer() {
-                            source.markAsDirtyRecursive();
-                        }
-                    });
+                    CustomerForm cf = new CustomerForm(
+                            c,
+                            () -> {
+                                source.markAsDirtyRecursive();
+                            },
+                            false);
 
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
                         getUI().addWindow(new WindowForm3(
                                 "Customer Update Form",
-                                cf, null, cf.getClickListener())
+                                cf,
+                                null,
+                                cf.getClickListener())
                         );
 
                     } else {

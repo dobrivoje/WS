@@ -281,7 +281,7 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
                                     CRMProcess_Form crmProcessForm = new CRMProcess_Form(null, true, null, false);
-                                    
+
                                     getUI().addWindow(new WindowForm3(
                                             CRM_MANAG_NEW_PROCESS.toString(),
                                             crmProcessForm,
@@ -297,8 +297,10 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                getUI().addWindow(new WindowForm(CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
-                                        false, new SCR_Form(CrudOperations.CREATE)));
+                                getUI().addWindow(new WindowForm(
+                                        CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
+                                        false,
+                                        new SCR_Form(CrudOperations.CREATE)));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                             }

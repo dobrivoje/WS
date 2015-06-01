@@ -20,9 +20,15 @@ import com.vaadin.ui.themes.ValoTheme;
 public class WindowForm extends Window {
 
     protected final Button closeButton;
+    protected final Button crudButton;
     protected final VerticalLayout VL = new VerticalLayout();
+    private Button.ClickListener crudButtonClickListener;
 
     public WindowForm(String caption, boolean bigForm, Layout formLayout) {
+        this(caption, bigForm, formLayout, null);
+    }
+    
+    public WindowForm(String caption, boolean bigForm, Layout formLayout, Button.ClickListener externalButtonClickListener) {
         setStyleName(Reindeer.LAYOUT_BLACK);
 
         setCaption(caption);
@@ -48,7 +54,12 @@ public class WindowForm extends Window {
         });
         closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
         closeButton.setWidth(150, Unit.PIXELS);
+        
+        crudButton = new Button(null, crudButtonClickListener);
+        crudButton.setWidth(150, Unit.PIXELS);
 
+        
+        
         VL.addComponent(formLayout);
         VL.addComponent(closeButton);
         VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
@@ -57,4 +68,5 @@ public class WindowForm extends Window {
         center();
         setContent(VL);
     }
+    
 }

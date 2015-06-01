@@ -8,7 +8,6 @@ package org.superb.apps.utilities.vaadin.MyWindows;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.Sizeable;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -87,7 +86,7 @@ public class WindowForm3 extends Window {
         centralLayout.addStyleName("profile-form");
 
         VerticalLayout picLayout = new VerticalLayout();
-        picLayout.setSizeUndefined();
+        picLayout.setSizeFull();
         picLayout.setSpacing(true);
 
         if (imageLocation == null) {
@@ -95,7 +94,7 @@ public class WindowForm3 extends Window {
         }
 
         Image profilePic = new Image(null, new ThemeResource(imageLocation));
-        profilePic.setWidth(100, Sizeable.Unit.PIXELS);
+        profilePic.setWidth(140, Unit.PIXELS);
         picLayout.addComponent(profilePic);
 
         centralLayout.addComponent(picLayout);
@@ -111,6 +110,7 @@ public class WindowForm3 extends Window {
         HorizontalLayout footerLayout = new HorizontalLayout();
 
         footerLayout.setSpacing(true);
+        footerLayout.setMargin(true);
         footerLayout.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footerLayout.setWidth(100, Unit.PERCENTAGE);
 
@@ -131,6 +131,8 @@ public class WindowForm3 extends Window {
 
         footerLayout.addComponent(saveBtn);
         footerLayout.addComponent(closeBtn);
+
+        footerLayout.setExpandRatio(saveBtn, 1.0f);
 
         footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
         footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);

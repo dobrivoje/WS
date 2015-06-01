@@ -12424,6 +12424,10 @@ div.v-layout.v-horizontal.v-widget {
     width: 100% !important;
 }
 
+.mytheme .v-ui[width-range~="0-800px"] .login-screen .login-form .v-filterselect {
+    width: 100% !important;
+}
+
 .mytheme .v-ui[width-range~="0-800px"] .login-screen .login-form .v-formlayout-captioncell, .mytheme .v-ui[width-range~="0-800px"] .login-screen .login-form .v-formlayout-contentcell, .mytheme .v-ui[width-range~="0-800px"] .login-screen .login-form .v-formlayout-errorcell {
     display: block;
     text-align: center;

@@ -132,7 +132,13 @@ public class CustomerForm extends CRUDForm2<Customer> {
     }
 
     public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer) {
+        this(customer, visualContainer, true);
+    }
+
+    public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         fieldGroup.setItemDataSource(new BeanItem(customer));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
