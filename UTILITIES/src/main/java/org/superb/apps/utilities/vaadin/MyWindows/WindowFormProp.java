@@ -9,6 +9,7 @@ import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
@@ -22,14 +23,15 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class WindowFormProp extends Window {
 
-    protected final Button closeButton;
     protected final VerticalLayout VL = new VerticalLayout();
+
+    protected Button.ClickListener externalButtonClickListener;
 
     private final HorizontalSplitPanel HSP = new HorizontalSplitPanel();
     private final VerticalLayout leftVL = new VerticalLayout();
     private final VerticalLayout rightVL = new VerticalLayout();
 
-    public WindowFormProp(String caption, boolean bigForm, Layout layout, Component... components) {
+    public WindowFormProp(String caption, boolean bigForm /*, Button.ClickListener externalButtonClickListener */, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
@@ -39,18 +41,25 @@ public class WindowFormProp extends Window {
         } else {
             VL.setSizeFull();
         }
-        
+
         VL.setMargin(true);
         VL.setSpacing(true);
 
-        closeButton = new Button("Close Window", new Button.ClickListener() {
+        // this.externalButtonClickListener = externalButtonClickListener;
+        Button closeBtn = new Button("Close Window", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 close();
             }
         });
-        closeButton.setStyleName(ValoTheme.BUTTON_DANGER);
-        closeButton.setWidth(150, Unit.PIXELS);
+        closeBtn.setStyleName(ValoTheme.BUTTON_DANGER);
+        closeBtn.setWidth(150, Unit.PIXELS);
+
+        Button saveBtn = new Button("Save");
+        saveBtn.setWidth(150, Unit.PIXELS);
+        if (externalButtonClickListener != null) {
+            saveBtn.addClickListener(externalButtonClickListener);
+        }
 
         HSP.setSizeFull();
         HSP.setSplitPosition(60, Unit.PERCENTAGE);
@@ -70,8 +79,18 @@ public class WindowFormProp extends Window {
         }
 
         VL.addComponent(HSP);
-        VL.addComponent(closeButton);
-        VL.setComponentAlignment(closeButton, Alignment.BOTTOM_RIGHT);
+
+        HorizontalLayout footerLayout = new HorizontalLayout(saveBtn, closeBtn);
+        footerLayout.setMargin(true);
+        footerLayout.setSpacing(true);
+        footerLayout.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+        footerLayout.setWidth(100, Unit.PERCENTAGE);
+        footerLayout.setExpandRatio(saveBtn, 1.0f);
+        
+        VL.addComponent(footerLayout);
+        footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
+        footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+
         VL.setExpandRatio(HSP, 1);
 
         setWindowSize();

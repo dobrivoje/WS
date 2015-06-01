@@ -71,7 +71,13 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
 
-                        getUI().addWindow(new WindowForm(ACTION_NEW_CS_RELATION.getCaption(), false, new SCR_Form(s, c, null)));
+                        SCR_Form scf = new SCR_Form(s, c, null, false);
+
+                        getUI().addWindow(new WindowForm(
+                                ACTION_NEW_CS_RELATION.getCaption(),
+                                false,
+                                scf,
+                                scf.getClickListener()));
                     }
 
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {

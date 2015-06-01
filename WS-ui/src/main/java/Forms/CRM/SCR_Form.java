@@ -63,8 +63,10 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         active.setEnabled(false);
     }
 
-    public SCR_Form(final CrudOperations crudOperation) {
+    public SCR_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         fieldGroup.setItemDataSource(new BeanItem(new RelSALESMANCUST()));
         beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
@@ -98,9 +100,11 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         }
     }
 
-    public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer) {
+    public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
+        
         try {
             RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, c);
 

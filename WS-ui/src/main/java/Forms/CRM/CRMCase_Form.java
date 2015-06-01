@@ -152,7 +152,13 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     }
 
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {
+        this(crmCase, true, visualContainer);
+    }
+
+    public CRMCase_Form(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         CrmCase cc = crmCase == null ? new CrmCase(new Date(), "", new RelSALESMANCUST()) : crmCase;
         setFieldsFromBean(cc);

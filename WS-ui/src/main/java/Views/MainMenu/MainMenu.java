@@ -297,10 +297,13 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                                SCR_Form scf = new SCR_Form(CrudOperations.CREATE, false);
+
                                 getUI().addWindow(new WindowForm(
                                         CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                         false,
-                                        new SCR_Form(CrudOperations.CREATE)));
+                                        scf,
+                                        scf.getClickListener()));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                             }

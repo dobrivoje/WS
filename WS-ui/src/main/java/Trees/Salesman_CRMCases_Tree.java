@@ -29,6 +29,14 @@ import static ws.MyUI.DS;
  */
 public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements IRefreshVisualContainer {
 
+    /**
+     *
+     * @param caption
+     * @param salesman
+     * @param formAllowed - Da li krisnik ima prava da otvara formu 
+     * @throws CustomTreeNodesEmptyException
+     * @throws NullPointerException
+     */
     public Salesman_CRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCrmController().getCRM_Cases(salesman, false));
         init();
@@ -57,11 +65,13 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                     VL_CRMCases.addComponent(csct);
                                 }
 
+                                CRMCase_Form ccf = new CRMCase_Form(crmCase, true, null);
+                                
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 "Existing CRM Case",
                                                 false,
-                                                new CRMCase_Form(crmCase, null),
+                                                ccf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0
                                                                 ? "Open CRM Cases" : "No Active Salesman CRM Case",
                                                         VL_CRMCases)

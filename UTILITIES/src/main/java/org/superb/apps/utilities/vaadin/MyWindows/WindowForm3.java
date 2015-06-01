@@ -54,7 +54,6 @@ public class WindowForm3 extends Window {
         content.setExpandRatio(detailsWrapper, 1f);
 
         detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation));
-
         content.addComponent(buildFooter(externalButtonClickListener));
     }
 
