@@ -72,6 +72,8 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     public FSOWNER_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
 
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
+
         fieldGroup.setItemDataSource(new BeanItem(new Owner()));
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
 
