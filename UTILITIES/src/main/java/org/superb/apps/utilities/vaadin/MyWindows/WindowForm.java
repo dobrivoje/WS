@@ -14,7 +14,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
@@ -26,15 +25,13 @@ public class WindowForm extends Window {
     protected final VerticalLayout content = new VerticalLayout();
 
     public WindowForm(String caption, boolean bigForm, Layout formLayout) {
-        this(caption, bigForm, formLayout, (Button.ClickEvent event) -> {
-        });
+        this(caption, bigForm, formLayout, null);
     }
 
     public WindowForm(String caption, boolean bigForm, Layout formLayout, Button.ClickListener externalButtonClickListener) {
-        setStyleName(Reindeer.LAYOUT_BLACK);
-
         setCaption(caption);
         setModal(true);
+
         setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
@@ -46,11 +43,12 @@ public class WindowForm extends Window {
         }
 
         content.setMargin(new MarginInfo(true, false, true, false));
-        
-        setContent(content);
+
         content.addComponent(formLayout);
         content.addComponent(buildFooter(externalButtonClickListener));
         content.setExpandRatio(formLayout, 1f);
+
+        setContent(content);
     }
 
     private Component buildFooter(ClickListener externalButtonClickListener) {
@@ -75,7 +73,6 @@ public class WindowForm extends Window {
         if (externalButtonClickListener != null) {
             saveBtn.addClickListener(externalButtonClickListener);
         }
-
         footerLayout.addComponent(saveBtn);
         footerLayout.addComponent(closeBtn);
 
@@ -86,5 +83,4 @@ public class WindowForm extends Window {
 
         return footerLayout;
     }
-
 }

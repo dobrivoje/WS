@@ -133,8 +133,8 @@ public class WindowForm3 extends Window {
 
         footerLayout.setExpandRatio(saveBtn, 1.0f);
 
-        footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
-        footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+        footerLayout.setComponentAlignment(saveBtn, Alignment.MIDDLE_RIGHT);
+        footerLayout.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
 
         return footerLayout;
     }

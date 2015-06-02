@@ -77,7 +77,7 @@ public abstract class CRUDForm2<T> extends FormLayout {
             }
             if (c instanceof TextArea) {
                 ((TextArea) c).setNullRepresentation("");
-                ((TextArea) c).setRows(4);
+                ((TextArea) c).setRows(3);
             }
         }
     }

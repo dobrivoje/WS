@@ -65,7 +65,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(crmCase, true, null);
+                                CRMCase_Form ccf = new CRMCase_Form(crmCase, false, null);
 
                                 getUI().addWindow(
                                         new WindowFormProp(
@@ -102,7 +102,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, cc);
+                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, cc, false);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 CRM_MANAG_EXISTING_PROCESS.toString(),

@@ -61,10 +61,6 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     public CRMCase_Form() {
         super(new BeanFieldGroup(CrmCase.class));
 
-        // poništi margine iz super klase, da bi se polja lepĹˇe prikazala na formi !
-        setMargin(false);
-        setSizeUndefined();
-
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 

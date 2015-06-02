@@ -48,7 +48,13 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     }
 
     public FSForm(final CrudOperations crudOperation) {
+        this(crudOperation, false);
+    }
+
+    public FSForm(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         fieldGroup.setItemDataSource(new BeanItem(new Fuelstation()));
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
@@ -82,7 +88,13 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     }
 
     public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
+        this(fuelstation, visualContainer, true);
+    }
+
+    public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         fieldGroup.setItemDataSource(new BeanItem(fuelstation));
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();

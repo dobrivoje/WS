@@ -51,13 +51,14 @@ public class FSTable extends GENTable<Fuelstation> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
-                        FSForm customerForm = new FSForm(f, null);
+
+                        FSForm cf = new FSForm(f, null, false);
 
                         getUI().addWindow(new WindowFormProp(
                                 "Fuelstation Update Form",
                                 false,
-                                null,
-                                customerForm,
+                                cf.getClickListener(),
+                                cf,
                                 createImageGallery(f, true))
                         );
                     }
@@ -68,7 +69,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
 
-                        FSOWNER_Form fof = new FSOWNER_Form(f, null);
+                        FSOWNER_Form fof = new FSOWNER_Form(f, null, false);
 
                         getUI().addWindow(new WindowFormProp(
                                 "Fuelstation Owner Form",
@@ -143,7 +144,14 @@ public class FSTable extends GENTable<Fuelstation> {
                     caption = "Fuelstation Owner Form";
 
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
-                        getUI().addWindow(new WindowForm(caption, false, new FSOWNER_Form(f, null)));
+                        FSOWNER_Form fof = new FSOWNER_Form(f, null, false);
+
+                        getUI().addWindow(new WindowForm(
+                                caption,
+                                false,
+                                fof,
+                                fof.getClickListener())
+                        );
                     } else {
                         Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
                     }
@@ -152,7 +160,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     caption = "Fuelstation Update Form";
 
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL)) {
-                        FSForm ff = new FSForm(f, null);
+                        FSForm ff = new FSForm(f, null, false);
 
                         getUI().addWindow(new WindowFormProp(
                                 caption,

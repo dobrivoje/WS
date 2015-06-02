@@ -66,6 +66,10 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     }
 
     public FSOWNER_Form(final CrudOperations crudOperation) {
+        this(crudOperation, false);
+    }
+
+    public FSOWNER_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
 
         fieldGroup.setItemDataSource(new BeanItem(new Owner()));
@@ -103,7 +107,13 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     }
 
     public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
+        this(fuelstation, visualContainer, true);
+    }
+
+    public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         final Owner currentOwner = DS.getFSOController().getCurrentFSOwner(fuelstation);
         final Owner newOwner = new Owner(null, fuelstation, new Date(), null, true);

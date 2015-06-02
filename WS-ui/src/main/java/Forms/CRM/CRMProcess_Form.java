@@ -146,7 +146,13 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     }
 
     public CRMProcess_Form(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer) {
+        this(crmProcess, visualContainer, true);
+    }
+
+    public CRMProcess_Form(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         setFieldsFromBean(crmProcess);
 

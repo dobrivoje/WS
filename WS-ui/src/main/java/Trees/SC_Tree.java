@@ -82,7 +82,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
 
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {
 
-                        CustomerForm cf = new CustomerForm((Customer) source.getValue(), null);
+                        CustomerForm cf = new CustomerForm((Customer) source.getValue(), null, false);
 
                         getUI().addWindow(new WindowForm3(
                                 ACTION_CUSTOMER_DATA_UPDATE.getCaption(),
@@ -98,10 +98,14 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         List<CrmCase> openCustomerCases = DS.getCrmController().getCRM_Cases(c, false);
 
                         if (openCustomerCases.isEmpty()) {
+                            CRMCase_Form ccf = new CRMCase_Form(s, c, null, false);
+
                             getUI().addWindow(new WindowForm(
                                     ACTION_NEW_CRM_CASE.getCaption(),
                                     false,
-                                    new CRMCase_Form(s, c, null, true)));
+                                    ccf,
+                                    ccf.getClickListener())
+                            );
                         } else {
                             VerticalLayout VL_CRMCases = new VerticalLayout();
                             VL_CRMCases.setMargin(true);
@@ -119,7 +123,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(DS.getCrmController().getCRM_LastActive_CRMCase(c, s), null);
+                                CRMCase_Form ccf = new CRMCase_Form(DS.getCrmController().getCRM_LastActive_CRMCase(c, s), false, null);
 
                                 getUI().addWindow(
                                         new WindowFormProp(

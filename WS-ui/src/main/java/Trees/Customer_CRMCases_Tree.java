@@ -56,7 +56,7 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(crmCase, null);
+                                CRMCase_Form ccf = new CRMCase_Form(crmCase, false, null);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 "Existing CRM Case",
@@ -92,7 +92,7 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, ccct);
+                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, ccct, false);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 CRM_MANAG_EXISTING_PROCESS.toString(),

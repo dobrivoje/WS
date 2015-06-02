@@ -318,14 +318,22 @@ public class MainMenu extends CssLayout {
                         case FS_DATA_MANAG_NEW_FS:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                                 navigator.navigateTo(FSView.class.getSimpleName());
-                                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS.toString(), false, new FSForm(CrudOperations.CREATE)));
+                                getUI().addWindow(new WindowForm(
+                                        FS_DATA_MANAG_NEW_FS.toString(),
+                                        false,
+                                        new FSForm(CrudOperations.CREATE))
+                                );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
                         case FS_DATA_MANAG_NEW_FS_OWNER:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
-                                getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
+                                getUI().addWindow(new WindowForm(
+                                        FS_DATA_MANAG_NEW_FS_OWNER.toString(),
+                                        false,
+                                        new FSOWNER_Form(CrudOperations.CREATE))
+                                );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
                             }

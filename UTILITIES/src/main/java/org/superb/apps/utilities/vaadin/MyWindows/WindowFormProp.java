@@ -23,7 +23,7 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class WindowFormProp extends Window {
 
-    protected final VerticalLayout VL = new VerticalLayout();
+    protected final VerticalLayout content = new VerticalLayout();
 
     protected Button.ClickListener externalButtonClickListener;
 
@@ -37,13 +37,13 @@ public class WindowFormProp extends Window {
         setModal(true);
 
         if (bigForm) {
-            VL.setSizeUndefined();
+            content.setSizeUndefined();
         } else {
-            VL.setSizeFull();
+            content.setSizeFull();
         }
 
-        VL.setMargin(true);
-        VL.setSpacing(true);
+        content.setMargin(true);
+        content.setSpacing(true);
 
         this.externalButtonClickListener = externalButtonClickListener;
         Button closeBtn = new Button("Close Window", new Button.ClickListener() {
@@ -78,7 +78,7 @@ public class WindowFormProp extends Window {
             rightVL.setComponentAlignment(c, Alignment.TOP_CENTER);
         }
 
-        VL.addComponent(HSP);
+        content.addComponent(HSP);
 
         HorizontalLayout footerLayout = new HorizontalLayout(saveBtn, closeBtn);
         footerLayout.setMargin(true);
@@ -87,15 +87,15 @@ public class WindowFormProp extends Window {
         footerLayout.setWidth(100, Unit.PERCENTAGE);
         footerLayout.setExpandRatio(saveBtn, 1.0f);
         
-        VL.addComponent(footerLayout);
-        footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
-        footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+        content.addComponent(footerLayout);
+        footerLayout.setComponentAlignment(saveBtn, Alignment.MIDDLE_RIGHT);
+        footerLayout.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
 
-        VL.setExpandRatio(HSP, 1);
+        content.setExpandRatio(HSP, 1);
 
         setWindowSize();
         center();
-        setContent(VL);
+        setContent(content);
     }
 
     private void setWindowSize() {
