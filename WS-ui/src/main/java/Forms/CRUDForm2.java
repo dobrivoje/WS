@@ -87,10 +87,10 @@ public abstract class CRUDForm2<T> extends FormLayout {
             addComponent(c);
         }
 
-        crudButton.setCaption(btnCaption);
-        crudButton.addClickListener(clickListener);
-
         if (defaultCRUDButtonOnForm) {
+            crudButton.setCaption(btnCaption);
+            crudButton.addClickListener(clickListener);
+            
             addComponents(crudButton);
         }
     }

@@ -367,10 +367,16 @@ public class CustomerTable extends GENTable<Customer> {
                 cbtTree = new Tree("No Customer Bussines Type.");
             }
 
-            getUI().addWindow(new WindowFormProp(
-                    "Customer Bussines Type Form",
-                    false,
-                    new RELCBTForm(customer), cbtTree));
+            RELCBTForm rcf = new RELCBTForm(customer, false);
+
+            getUI().addWindow(
+                    new WindowFormProp(
+                            "Customer Bussines Type Form",
+                            false,
+                            rcf.getClickListener(),
+                            rcf,
+                            cbtTree
+                    ));
         } else {
             Notification.show("User Rights Error",
                     "You don't have rights to add \nbussines type to this customers ! ",

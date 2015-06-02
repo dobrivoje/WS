@@ -36,37 +36,39 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
         super.addItemClickListener((ItemClickEvent event) -> {
             try {
                 final Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", customer, formAllowed);
-                
+
                 VerticalLayout VL_CRMCases = new VerticalLayout();
                 VL_CRMCases.setMargin(true);
-                
+
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             CrmCase crmCase = (CrmCase) event.getItemId();
                             List<CRM_SingleCase_Tree> csTrees = new ArrayList<>();
-                            
+
                             try {
                                 Salesman s = crmCase.getFK_IDRSC().getFK_IDS();
                                 for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(s, false)) {
                                     CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     csTrees.add(csct);
-                                    
+
                                     VL_CRMCases.addComponent(csct);
                                 }
-                                
+
+                                CRMCase_Form ccf = new CRMCase_Form(crmCase, null);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 "Existing CRM Case",
                                                 false,
-                                                new CRMCase_Form(crmCase, null),
+                                                ccf.getClickListener(),
+                                                ccf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0
-                                                        ? "Open CRM Cases" : "No Active Salesman CRM Case",
+                                                                ? "Open CRM Cases" : "No Active Salesman CRM Case",
                                                         VL_CRMCases)
                                         )
                                 );
-                                
+
                                 for (CRM_SingleCase_Tree ct : csTrees) {
                                     ct.refreshVisualContainer();
                                 }
@@ -78,43 +80,45 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             CrmProcess crmProcess = (CrmProcess) event.getItemId();
-                            
+
                             try {
                                 Salesman s = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
                                 List<CRM_SingleCase_Tree> crmTrees = new ArrayList<>();
-                                
+
                                 for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(s, false)) {
                                     CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     crmTrees.add(csct);
-                                    
+
                                     VL_CRMCases.addComponent(csct);
                                 }
-                                
+
+                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, ccct);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 CRM_MANAG_EXISTING_PROCESS.toString(),
                                                 false,
-                                                new CRMProcess_Form(crmProcess, ccct),
+                                                cpf.getClickListener(),
+                                                cpf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0
-                                                        ? "Open CRM Cases" : "No Active Salesman CRM Case",
+                                                                ? "Open CRM Cases" : "No Active Salesman CRM Case",
                                                         VL_CRMCases)
                                         )
                                 );
-                                
+
                                 for (CRM_SingleCase_Tree ct : crmTrees) {
                                     ct.refreshVisualContainer();
                                 }
-                                
+
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             }
                         }
                         //</editor-fold>
                     } else {
-                        Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !", 
+                        Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
                                 Notification.Type.ERROR_MESSAGE);
                     }
                 }
-                
+
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
             }
         });

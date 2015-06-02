@@ -6,6 +6,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
@@ -32,6 +33,7 @@ public class RELCBTForm extends FormLayout {
             CustomerBussinesType.class, DS.getCBTController().getAll());
 
     private Button crudButton;
+    private boolean crudButtonOnForm;
     private Button.ClickListener clickListener;
     private String btnCaption;
 
@@ -59,11 +61,12 @@ public class RELCBTForm extends FormLayout {
 
         fieldGroup.bindMemberFields(this);
 
+        this.crudButtonOnForm = true;
         dateFrom.setDateFormat(APP_DATE_FORMAT);
-        dateFrom.setValue(new  Date());
-        
+        dateFrom.setValue(new Date());
+
         dateTo.setDateFormat(APP_DATE_FORMAT);
-        
+
         active.setValue(true);
         active.setEnabled(false);
 
@@ -108,11 +111,6 @@ public class RELCBTForm extends FormLayout {
                 }
             }
         };
-
-        crudButton = new Button(btnCaption, clickListener);
-        crudButton.setWidth(150, Unit.PIXELS);
-
-        addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
     }
 
     public RELCBTForm(final Customer c) {
@@ -120,6 +118,31 @@ public class RELCBTForm extends FormLayout {
                 RelCBType.class,
                 DS.getCustomerController().getAllCustomerBussinesTypes(c)
         ));
+
+        if (this.crudButtonOnForm) {
+            crudButton = new Button(btnCaption, clickListener);
+            crudButton.setWidth(150, Unit.PIXELS);
+            addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
+        }
+
+        addComponents(customer, cBType, dateFrom, dateTo, active);
+    }
+
+    public RELCBTForm(final Customer c, boolean crudButtonOnForm) {
+        this(c, new BeanItemContainer<>(
+                RelCBType.class,
+                DS.getCustomerController().getAllCustomerBussinesTypes(c)
+        ));
+
+        this.crudButtonOnForm = crudButtonOnForm;
+
+        if (this.crudButtonOnForm) {
+            crudButton = new Button(btnCaption, clickListener);
+            crudButton.setWidth(150, Unit.PIXELS);
+            addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
+        }
+
+        addComponents(customer, cBType, dateFrom, dateTo, active);
     }
 
     private void bindFieldsToBean(RelCBType existingRelCBT, Customer existingCustomer) {
@@ -128,5 +151,9 @@ public class RELCBTForm extends FormLayout {
         existingRelCBT.setDateFrom(dateFrom.getValue());
         existingRelCBT.setDateTo(dateTo.getValue());
         existingRelCBT.setActive(active.getValue());
+    }
+
+    public ClickListener getClickListener() {
+        return clickListener;
     }
 }

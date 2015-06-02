@@ -31,7 +31,7 @@ public class WindowFormProp extends Window {
     private final VerticalLayout leftVL = new VerticalLayout();
     private final VerticalLayout rightVL = new VerticalLayout();
 
-    public WindowFormProp(String caption, boolean bigForm /*, Button.ClickListener externalButtonClickListener */, Layout layout, Component... components) {
+    public WindowFormProp(String caption, boolean bigForm, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
@@ -45,7 +45,7 @@ public class WindowFormProp extends Window {
         VL.setMargin(true);
         VL.setSpacing(true);
 
-        // this.externalButtonClickListener = externalButtonClickListener;
+        this.externalButtonClickListener = externalButtonClickListener;
         Button closeBtn = new Button("Close Window", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

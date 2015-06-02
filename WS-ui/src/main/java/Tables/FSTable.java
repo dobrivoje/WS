@@ -53,7 +53,13 @@ public class FSTable extends GENTable<Fuelstation> {
                         Fuelstation f = (Fuelstation) row;
                         FSForm customerForm = new FSForm(f, null);
 
-                        getUI().addWindow(new WindowFormProp("Fuelstation Update Form", false, customerForm, createImageGallery(f, true)));
+                        getUI().addWindow(new WindowFormProp(
+                                "Fuelstation Update Form",
+                                false,
+                                null,
+                                customerForm,
+                                createImageGallery(f, true))
+                        );
                     }
                 });
 
@@ -61,9 +67,16 @@ public class FSTable extends GENTable<Fuelstation> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
-                        FSOWNER_Form fsoForm = new FSOWNER_Form(f, null);
 
-                        getUI().addWindow(new WindowFormProp("Fuelstation Owner Form", false, fsoForm, createMainImage(f)));
+                        FSOWNER_Form fof = new FSOWNER_Form(f, null);
+
+                        getUI().addWindow(new WindowFormProp(
+                                "Fuelstation Owner Form",
+                                false,
+                                fof.getClickListener(),
+                                fof,
+                                createMainImage(f)
+                        ));
                     }
                 });
 
@@ -139,9 +152,18 @@ public class FSTable extends GENTable<Fuelstation> {
                     caption = "Fuelstation Update Form";
 
                     if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL)) {
-                        getUI().addWindow(new WindowFormProp(caption, false, new FSForm(f, null), createImageGallery(f, false)));
+                        FSForm ff = new FSForm(f, null);
+
+                        getUI().addWindow(new WindowFormProp(
+                                caption,
+                                false,
+                                ff.getClickListener(),
+                                ff,
+                                createImageGallery(f, false))
+                        );
                     } else {
-                        Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
+                        Notification.show("User Rights Error", "You don't have rights\nto change customer owner !",
+                                Notification.Type.ERROR_MESSAGE);
                     }
                 }
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {

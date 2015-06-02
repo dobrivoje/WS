@@ -33,7 +33,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
      *
      * @param caption
      * @param salesman
-     * @param formAllowed - Da li krisnik ima prava da otvara formu 
+     * @param formAllowed - Da li krisnik ima prava da otvara formu
      * @throws CustomTreeNodesEmptyException
      * @throws NullPointerException
      */
@@ -66,11 +66,12 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                 }
 
                                 CRMCase_Form ccf = new CRMCase_Form(crmCase, true, null);
-                                
+
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 "Existing CRM Case",
                                                 false,
+                                                ccf.getClickListener(),
                                                 ccf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0
                                                                 ? "Open CRM Cases" : "No Active Salesman CRM Case",
@@ -101,11 +102,13 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                     VL_CRMCases.addComponent(csct);
                                 }
 
+                                CRMProcess_Form cpf = new CRMProcess_Form(crmProcess, cc);
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 CRM_MANAG_EXISTING_PROCESS.toString(),
                                                 false,
-                                                new CRMProcess_Form(crmProcess, cc),
+                                                cpf.getClickListener(),
+                                                cpf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0
                                                                 ? "Open CRM Cases" : "No Active Salesman CRM Case",
                                                         VL_CRMCases)
