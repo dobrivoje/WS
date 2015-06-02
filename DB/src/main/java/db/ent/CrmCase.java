@@ -69,6 +69,7 @@ public class CrmCase implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDCA")
     private Long idca;
+    @Basic(optional = false)
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;

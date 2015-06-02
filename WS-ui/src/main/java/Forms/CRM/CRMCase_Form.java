@@ -70,6 +70,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
+        startDate.setRequired(true);
 
         salesman.setRequired(true);
         customer.setRequired(true);
