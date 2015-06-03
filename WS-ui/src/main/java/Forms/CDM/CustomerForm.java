@@ -2,6 +2,7 @@ package Forms.CDM;
 
 import Forms.CRUDForm2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -82,14 +83,16 @@ public class CustomerForm extends CRUDForm2<Customer> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        licence.addItem(Boolean.FALSE);
-        licence.setItemCaption(Boolean.FALSE, "No licence");
-        licence.addItem(Boolean.TRUE);
-        licence.setItemCaption(Boolean.TRUE, "Yes, licensed");
-        licence.addStyleName("horizontal");
+        name.setRequired(true);
+        address.setRequired(true);
+        city.setRequired(true);
+        zone.setRequired(true);
 
-        comment.setRows(5);
-        comment.setNullRepresentation("");
+        licence.addItem(false);
+        licence.setItemCaption(false, "No licence");
+        licence.addItem(true);
+        licence.setItemCaption(true, "Yes, licensed");
+        licence.addStyleName("horizontal");
 
         // postavi validatore
         email1.addValidator(new EmailValidator("Must be an email address !"));
@@ -121,8 +124,10 @@ public class CustomerForm extends CRUDForm2<Customer> {
                         Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
                         n.setDelayMsec(500);
                         n.show(getUI().getPage());
+                    } catch (FieldGroup.CommitException ce) {
+                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
             };
@@ -163,8 +168,10 @@ public class CustomerForm extends CRUDForm2<Customer> {
 
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
+                } catch (FieldGroup.CommitException ce) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };
@@ -180,7 +187,11 @@ public class CustomerForm extends CRUDForm2<Customer> {
         customerBean.setPib(pib.getValue());
         customerBean.setMatBr(matBr.getValue());
         customerBean.setNavCode(navCode.getValue());
-        customerBean.setLicence((boolean) licence.getValue());
+
+        if (licence.getValue() != null) {
+            customerBean.setLicence((boolean) licence.getValue());
+        }
+
         customerBean.setZone((String) zone.getValue());
         customerBean.setTel1(tel1.getValue());
         customerBean.setTel2(tel2.getValue());

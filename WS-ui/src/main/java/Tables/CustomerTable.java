@@ -14,7 +14,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.Action;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -38,7 +37,6 @@ import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -86,12 +84,10 @@ public class CustomerTable extends GENTable<Customer> {
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
 
-                        CustomerForm cf = new CustomerForm(c, new IRefreshVisualContainer() {
-                            @Override
-                            public void refreshVisualContainer() {
-                                source.markAsDirtyRecursive();
-                            }
-                        });
+                        CustomerForm cf = new CustomerForm(c, () -> {
+                            source.markAsDirtyRecursive();
+                        },
+                                false);
 
                         getUI().addWindow(new WindowForm3(
                                 "Customer Update Form",
@@ -101,9 +97,6 @@ public class CustomerTable extends GENTable<Customer> {
                         );
                     }
                 });
-
-                editBtn.setIcon(new ThemeResource("img/buttons/users_folder32x32.png"));
-                editBtn.setStyleName("dugmici");
 
                 final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
                     @Override

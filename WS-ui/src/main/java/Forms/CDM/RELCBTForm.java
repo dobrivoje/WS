@@ -1,8 +1,8 @@
 package Forms.CDM;
 
+import Forms.CRUDForm2;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
@@ -10,36 +10,26 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import db.ent.RelCBType;
 import db.interfaces.IRELCBTController;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
-import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
-public class RELCBTForm extends FormLayout {
+public class RELCBTForm extends CRUDForm2<RelCBType> {
 
     private static final IRELCBTController RELCBTController = DS.getRELCBTController();
-
-    private final FieldGroup fieldGroup = new BeanFieldGroup(RelCBType.class);
 
     private final BeanItemContainer<CustomerBussinesType> bicbt = new BeanItemContainer(
             CustomerBussinesType.class, DS.getCBTController().getAll());
 
-    private Button crudButton;
-    private boolean crudButtonOnForm;
-    private Button.ClickListener clickListener;
-    private String btnCaption;
-
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    //@PropertyId("fkIdc")
-    private final TextField customer = new TextField("Bussines Type");
+    
+    private final TextField customer = new TextField("Customer");
 
     @PropertyId("fkIdcbt")
     private final ComboBox cBType = new ComboBox("Bussines Type", bicbt);
@@ -55,28 +45,21 @@ public class RELCBTForm extends FormLayout {
     //</editor-fold>
 
     public RELCBTForm() {
-        setSizeFull();
-        setMargin(true);
-        setStyleName(Reindeer.LAYOUT_BLACK);
+        super(new BeanFieldGroup(RelCBType.class));
 
         fieldGroup.bindMemberFields(this);
-
-        this.crudButtonOnForm = true;
-        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        setFormFieldsWidths(250, Unit.PIXELS);
+        
+        customer.setWidth(250, Unit.PIXELS);
         dateFrom.setValue(new Date());
-
-        dateTo.setDateFormat(APP_DATE_FORMAT);
+        
+        customer.setRequired(true);
+        cBType.setRequired(true);
+        dateFrom.setRequired(true);
 
         active.setValue(true);
         active.setEnabled(false);
-
-        customer.setWidth(230, Unit.PIXELS);
-        cBType.setWidth(230, Unit.PIXELS);
-        dateFrom.setWidth(230, Unit.PIXELS);
-        dateTo.setWidth(230, Unit.PIXELS);
-
-        cBType.setNullSelectionAllowed(false);
-
+        
         cBType.focus();
     }
 
@@ -90,15 +73,15 @@ public class RELCBTForm extends FormLayout {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                RelCBType newRelCBType = new RelCBType();
-                bindFieldsToBean(newRelCBType, existingCustomer);
+                RelCBType new_RelCBT = new RelCBType();
+                setBeanFromFields(new_RelCBT, existingCustomer);
 
                 Notification n = new Notification("Customer Bussines Type Updated.", Notification.Type.TRAY_NOTIFICATION);
                 n.setDelayMsec(500);
 
                 try {
-                    RELCBTController.addNew(newRelCBType);
-                    container.addItem(newRelCBType);
+                    RELCBTController.addNew(new_RelCBT);
+                    container.addItem(new_RelCBT);
 
                     n.show(getUI().getPage());
                 } catch (NullPointerException npe) {
@@ -116,10 +99,10 @@ public class RELCBTForm extends FormLayout {
     public RELCBTForm(final Customer c) {
         this(c, new BeanItemContainer<>(
                 RelCBType.class,
-                DS.getCustomerController().getAllCustomerBussinesTypes(c)
-        ));
+                DS.getCustomerController().getAllCustomerBussinesTypes(c))
+        );
 
-        if (this.crudButtonOnForm) {
+        if (this.defaultCRUDButtonOnForm) {
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
             addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
@@ -128,15 +111,13 @@ public class RELCBTForm extends FormLayout {
         addComponents(customer, cBType, dateFrom, dateTo, active);
     }
 
-    public RELCBTForm(final Customer c, boolean crudButtonOnForm) {
+    public RELCBTForm(final Customer c, boolean defaultCRUDButtonOnForm) {
         this(c, new BeanItemContainer<>(
                 RelCBType.class,
                 DS.getCustomerController().getAllCustomerBussinesTypes(c)
         ));
 
-        this.crudButtonOnForm = crudButtonOnForm;
-
-        if (this.crudButtonOnForm) {
+        if (this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm) {
             crudButton = new Button(btnCaption, clickListener);
             crudButton.setWidth(150, Unit.PIXELS);
             addComponents(customer, cBType, dateFrom, dateTo, active, crudButton);
@@ -145,15 +126,29 @@ public class RELCBTForm extends FormLayout {
         addComponents(customer, cBType, dateFrom, dateTo, active);
     }
 
-    private void bindFieldsToBean(RelCBType existingRelCBT, Customer existingCustomer) {
-        existingRelCBT.setFkIdc(existingCustomer);
-        existingRelCBT.setFkIdcbt((CustomerBussinesType) cBType.getValue());
-        existingRelCBT.setDateFrom(dateFrom.getValue());
-        existingRelCBT.setDateTo(dateTo.getValue());
-        existingRelCBT.setActive(active.getValue());
-    }
-
+    @Override
     public ClickListener getClickListener() {
         return clickListener;
+    }
+
+    @Override
+    protected void setBeanFromFields(RelCBType relCBT) {
+        relCBT.setFkIdcbt((CustomerBussinesType) cBType.getValue());
+        relCBT.setDateFrom(dateFrom.getValue());
+        relCBT.setDateTo(dateTo.getValue());
+        relCBT.setActive(active.getValue());
+    }
+
+    @Override
+    protected void setFieldsFromBean(RelCBType rcbt) {
+        customer.setValue(rcbt.getFkIdc().getName());
+        cBType.setValue(rcbt.getFkIdcbt());
+        dateFrom.setValue(rcbt.getDateFrom());
+        active.setValue(rcbt.getActive());
+    }
+
+    private void setBeanFromFields(RelCBType rcbt, Customer c) {
+        setBeanFromFields(rcbt);
+        rcbt.setFkIdc(c);
     }
 }

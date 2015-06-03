@@ -50,17 +50,6 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
-        salesman.focus();
-
-        salesman.setRequired(true);
-        customer.setRequired(true);
-
-        // ne treba, definisano u nad klasi !
-        // dateFrom.setDateFormat(APP_DATE_FORMAT);
-        dateFrom.setValue(new Date());
-
-        active.setValue(true);
-        active.setEnabled(false);
     }
 
     public SCR_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
@@ -97,14 +86,33 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
             };
 
             addBeansToForm();
+
+            initFields();
         }
+    }
+
+    private void initFields() {
+        setRequiredFields();
+
+        dateFrom.setValue(new Date());
+
+        dateTo.setEnabled(false);
+
+        active.setValue(true);
+        active.setEnabled(false);
+    }
+
+    private void setRequiredFields() {
+        salesman.setRequired(true);
+        customer.setRequired(true);
+        dateFrom.setRequired(true);
     }
 
     public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
-        
+
         try {
             RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, c);
 
@@ -141,6 +149,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
             };
 
             addBeansToForm();
+            setRequiredFields();
         } catch (Exception ex) {
             Notification.show("Error", "Description: " + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
         }

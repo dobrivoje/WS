@@ -146,6 +146,9 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         addComponents(salesman, customer);
         addBeansToForm();
+        
+        finished.setEnabled(false);
+        endDate.setEnabled(false);
     }
 
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {

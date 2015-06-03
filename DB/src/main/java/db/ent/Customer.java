@@ -52,6 +52,7 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
+    @Basic(optional = false)
     @Column(name = "Address")
     private String address;
     @Column(name = "PIB")
