@@ -8,6 +8,7 @@ package db.ent;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "BussinesLine.findByIdbl", query = "SELECT b FROM BussinesLine b WHERE b.idbl = :idbl"),
     @NamedQuery(name = "BussinesLine.findByName", query = "SELECT b FROM BussinesLine b WHERE b.name = :name")})
 public class BussinesLine implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +44,8 @@ public class BussinesLine implements Serializable {
     private String name;
     @OneToMany(mappedBy = "fkIdbl")
     private List<Salesman> salesmanList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdbl")
+    private List<RelBLP> relBLPList;
 
     public BussinesLine() {
     }
@@ -89,15 +93,20 @@ public class BussinesLine implements Serializable {
             return false;
         }
         BussinesLine other = (BussinesLine) object;
-        if ((this.idbl == null && other.idbl != null) || (this.idbl != null && !this.idbl.equals(other.idbl))) {
-            return false;
-        }
-        return true;
+        return !((this.idbl == null && other.idbl != null) || (this.idbl != null && !this.idbl.equals(other.idbl)));
+    }
+
+    @XmlTransient
+    public List<RelBLP> getRelBLPList() {
+        return relBLPList;
+    }
+
+    public void setRelBLPList(List<RelBLP> relBLPList) {
+        this.relBLPList = relBLPList;
     }
 
     @Override
     public String toString() {
         return "db.BussinesLine[ idbl=" + idbl + " ]";
     }
-    
 }

@@ -33,6 +33,8 @@ import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.ent.InfSysUser;
 import db.ent.Log;
+import db.ent.Product;
+import db.ent.RelSALE;
 import java.util.ArrayList;
 
 /**
@@ -1271,7 +1273,7 @@ public class DBHandler {
             return null;
         }
     }
-    
+
     public List<CrmCase> getCRM_AllActiveCases(boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.AllActiveCases")
@@ -1288,6 +1290,17 @@ public class DBHandler {
                     .setParameter("IDC", c)
                     .setParameter("IDS", s)
                     .setParameter("Finished", finished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmCase> getCRM_CompletedCases(Salesman s, boolean caseAggreed) {
+        try {
+            return getEm().createNamedQuery("CrmCase.SalesmanCompletedCases")
+                    .setParameter("Salesman", s)
+                    .setParameter("CaseAggreed", caseAggreed)
                     .getResultList();
         } catch (Exception ex) {
             return null;
@@ -1388,6 +1401,27 @@ public class DBHandler {
             rollBackTransaction("Relation Salesman-Customer Update Failed. " + ex.getMessage());
         }
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SALE">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public void fff() {
+
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addNewSale(RelSALE sale) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(sale);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            rollBackTransaction("New Sale Addition Has Failed.\nReason : " + ex.getMessage());
+        }
+    }
+    //</editor-fold>
     //</editor-fold>
     //</editor-fold>
 
@@ -1512,6 +1546,42 @@ public class DBHandler {
     public void addNewLog(Date logDate, String actionCode, String description, InfSysUser infSysUser) throws Exception {
         addNewLog(new Log(logDate, actionCode, description, infSysUser));
     }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="PRODUCT">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public List<Product> getAllProducts() {
+        try {
+            return getEm().createNamedQuery("Product.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Product getProductByID(long ID) {
+        try {
+            return (Product) getEm().createNamedQuery("Product.findByIdp")
+                    .setParameter("idp", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Product> getProductsByBussinesLine(BussinesLine bussinesLine) {
+        try {
+            return getEm().createNamedQuery("RelBLP.BL_Products")
+                    .setParameter("ID_BL", bussinesLine)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
     //</editor-fold>
     //</editor-fold>
 }

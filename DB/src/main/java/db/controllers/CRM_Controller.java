@@ -10,6 +10,7 @@ import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
+import db.ent.RelSALE;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
@@ -149,6 +150,11 @@ public class CRM_Controller implements ICRMController {
     public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished) {
         return dbh.getCRM_CustomerActiveCases(caseFinished);
     }
+
+    @Override
+    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean caseAggreed) {
+        return dbh.getCRM_CompletedCases(salesman, caseAggreed);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
@@ -195,6 +201,11 @@ public class CRM_Controller implements ICRMController {
     @Override
     public void updateCRM_Case(CrmCase crmCase) throws Exception {
         dbh.updateCRM_Case(crmCase);
+    }
+
+    @Override
+    public void addNewSale(RelSALE sale) throws Exception {
+        dbh.addNewSale(sale);
     }
     //</editor-fold>
 

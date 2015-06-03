@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +57,9 @@ import javax.xml.bind.annotation.XmlTransient;
             @NamedQuery(name = "CrmCase.CustomerActiveCases",
                     query = "SELECT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :Finished GROUP BY C.FK_IDRSC.FK_IDC"),
 
+            @NamedQuery(name = "CrmCase.SalesmanCompletedCases",
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :Salesman AND c.finished = :CaseAggreed"),
+
             @NamedQuery(name = "CrmCase.findByStartDate", query = "SELECT c FROM CrmCase c WHERE c.startDate = :startDate"),
             @NamedQuery(name = "CrmCase.findByDescription", query = "SELECT c FROM CrmCase c WHERE c.description = :description")
         }
@@ -79,12 +83,14 @@ public class CrmCase implements Serializable {
     @Column(name = "Description")
     private String description;
     @Column(name = "Finished")
-    private boolean finished;
+    private Boolean finished;
     @JoinColumn(name = "FK_IDRBLC", referencedColumnName = "IDRBLC")
     @ManyToOne
     private RelSALESMANCUST FK_IDRSC;
     @OneToMany(mappedBy = "FK_IDCA")
     private List<CrmProcess> crmProcessList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdca")
+    private List<RelSALE> relSALEList;
 
     public CrmCase() {
     }
@@ -128,14 +134,6 @@ public class CrmCase implements Serializable {
         this.description = description;
     }
 
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
     public RelSALESMANCUST getFK_IDRSC() {
         return FK_IDRSC;
     }
@@ -168,6 +166,23 @@ public class CrmCase implements Serializable {
         }
         CrmCase other = (CrmCase) object;
         return !((this.idca == null && other.idca != null) || (this.idca != null && !this.idca.equals(other.idca)));
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
+
+    @XmlTransient
+    public List<RelSALE> getRelSALEList() {
+        return relSALEList;
+    }
+
+    public void setRelSALEList(List<RelSALE> relSALEList) {
+        this.relSALEList = relSALEList;
     }
 
     @Override

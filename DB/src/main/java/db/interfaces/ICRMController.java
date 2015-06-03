@@ -9,6 +9,7 @@ import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
 import db.ent.Customer;
+import db.ent.RelSALE;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import java.util.Date;
@@ -26,7 +27,7 @@ public interface ICRMController {
     CrmStatus getCRM_Status(long ID);
 
     List<Customer> getCRM_CustomerActiveCases(boolean caseFinished);
-    
+
     List<CrmCase> getCRM_AllActiveCases(boolean caseFinished);
 
     List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished);
@@ -60,6 +61,17 @@ public interface ICRMController {
     List<CrmProcess> getCRM_Processes(CrmStatus crmStatus);
 
     RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception;
+
+    /**
+     * Svi CRM slučajevi za prodavca koji su završeni, i gde je ugovor o prodaji
+     * sklopljen !
+     *
+     * @param salesman
+     * @param caseAggreed - true: Ugovor zaključen, false: CRM aktivan -
+     * pregovori u toku.
+     * @return
+     */
+    List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean caseAggreed);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">
@@ -80,5 +92,7 @@ public interface ICRMController {
     void updateCRM_Process(CrmProcess crmProcess) throws Exception;
 
     void addNewCRM_Process(CrmProcess newCrmProcess) throws Exception;
+
+    void addNewSale(RelSALE sale) throws Exception;
     //</editor-fold>
 }

@@ -26,7 +26,7 @@ public class CRM_SingleCase_Tree extends CustomObjectTree<CrmCase> implements IR
     private void init() {
         CrmCase cc = elements.get(0);
 
-        if (!cc.isFinished()) {
+        if (!cc.getFinished()) {
             createSubItems(cc, DS.getCrmController().getCRM_Processes(cc, false));
         }
     }

@@ -19,6 +19,7 @@ import db.controllers.RelCBT_Controller;
 import db.controllers.Salesman_Controller;
 import db.controllers.InfSysUser_Controller;
 import db.controllers.LOG_Controller;
+import db.controllers.Product_Controller;
 import db.interfaces.ICBTController;
 import db.interfaces.ICRMController;
 import db.interfaces.ICityController;
@@ -33,6 +34,7 @@ import db.interfaces.IRELCBTController;
 import db.interfaces.ISalesmanController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ILOGController;
+import db.interfaces.IPRODUCTController;
 
 /**
  *
@@ -67,6 +69,7 @@ public class DataService {
     private final ICRMController crmController = new CRM_Controller(DBH);
     private final IInfSysUserController infSysUserController = new InfSysUser_Controller(DBH);
     private final ILOGController iLogController = new LOG_Controller(DBH);
+    private final IPRODUCTController iPRODUCTController = new Product_Controller(DBH);
 
     public ICBTController getCBTController() {
         return cBTController;
@@ -122,6 +125,10 @@ public class DataService {
 
     public ILOGController getLogController() {
         return iLogController;
+    }
+
+    public IPRODUCTController getiPRODUCTController() {
+        return iPRODUCTController;
     }
 
 }

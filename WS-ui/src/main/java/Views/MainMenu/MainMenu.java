@@ -30,6 +30,7 @@ import Forms.CDM.CBTForm;
 import Forms.CDM.CustomerForm;
 import Forms.CRM.CRMCase_Form;
 import Forms.CRM.CRMProcess_Form;
+import Forms.CRM.CRMSell_Form;
 import Forms.CRM.SCR_Form;
 import Menu.Menu;
 import Menu.MenuDefinitions;
@@ -56,6 +57,8 @@ import static Menu.MenuDefinitions.CRM_MANAG_NEW_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
+import static Menu.MenuDefinitions.SALE;
+import static Menu.MenuDefinitions.SALE_NEW;
 import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
@@ -176,22 +179,30 @@ public class MainMenu extends CssLayout {
 
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD, true);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG, true);
+        customersTree.setChildrenAllowed(SALE, true);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG, true);
         customersTree.setChildrenAllowed(FS_DATA_MANAG, true);
 
         // definicije gl. stavki čije su podstavke otvorene !
         customersTree.expandItemsRecursively(CUST_DATA_MANAG);
         customersTree.expandItemsRecursively(CUST_CRM_MANAG);
+        customersTree.expandItemsRecursively(SALE);
         customersTree.expandItemsRecursively(FS_DATA_MANAG);
 
+        // SYS_NOTIF_BOARD
         customersTree.setParent(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, SYS_NOTIF_BOARD);
         customersTree.setParent(SYS_NOTIF_BOARD_LICENCES_OVERDUE, SYS_NOTIF_BOARD);
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, false);
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD_LICENCES_OVERDUE, false);
 
+        // CUST_DATA_MANAG
         customersTree.setParent(CUST_DATA_MANAG_SEARCH_ENGINE, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_NEW_CUST, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_CUST_DOCS, CUST_DATA_MANAG);
+
+        // SALE
+        customersTree.setParent(SALE_NEW, SALE);
+        customersTree.setChildrenAllowed(SALE_NEW, false);
 
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CUST, false);
@@ -254,12 +265,30 @@ public class MainMenu extends CssLayout {
                             break;
                         case CUST_DATA_MANAG_NEW_CBT:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
-                                getUI().addWindow(new WindowForm(CUST_DATA_MANAG_CBT_LIST.toString(),
-                                        false, new CBTForm(new CustomerBussinesType())));
+                                getUI().addWindow(new WindowForm(
+                                        CUST_DATA_MANAG_CBT_LIST.toString(),
+                                        false,
+                                        new CBTForm(new CustomerBussinesType()))
+                                );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
+
+                        case SALE:
+                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                                CRMSell_Form cs = new CRMSell_Form(CrudOperations.CREATE, false);
+                                getUI().addWindow(new WindowForm(
+                                        CUST_DATA_MANAG_CBT_LIST.toString(),
+                                        false,
+                                        cs,
+                                        cs.getClickListener())
+                                );
+                            } else {
+                                Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
+                            }
+                            break;
+
                         case CUST_CRM_MANAG:
                             navigator.navigateTo(CRMView.class.getSimpleName());
                             break;
@@ -323,7 +352,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm(
                                         FS_DATA_MANAG_NEW_FS.toString(),
                                         false,
-                                        ff, 
+                                        ff,
                                         ff.getClickListener())
                                 );
                             } else {

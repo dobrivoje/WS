@@ -20,6 +20,7 @@ public enum MenuDefinitions {
     SYS_NOTIF_BOARD("System Notifications Board"),
     CUST_DATA_MANAG("Customers Management"),
     CUST_CRM_MANAG("CRM Management"),
+    SALE("SALE"),
     FS_DATA_MANAG("Fuelstations Management"),
     //
     // Submenus
@@ -32,6 +33,8 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
+    //
+    SALE_NEW("NEW SALE CASE"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Process"),
@@ -60,6 +63,7 @@ public enum MenuDefinitions {
                 SYS_NOTIF_BOARD,
                 CUST_DATA_MANAG,
                 CUST_CRM_MANAG,
+                SALE,
                 FS_DATA_MANAG
         );
     }

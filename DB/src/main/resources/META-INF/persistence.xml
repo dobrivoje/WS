@@ -25,6 +25,8 @@
     <class>db.ent.InfSysUser</class>
     <class>db.ent.Log</class>
     <class>db.ent.CrmCase</class>
+    <class>db.ent.RelBLP</class>
+    <class>db.ent.RelSALE</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://IMLBELGNAV02T.intermol.sys.corp:1433/WS"/>
       <property name="javax.persistence.jdbc.user" value="ws_sql_account"/>

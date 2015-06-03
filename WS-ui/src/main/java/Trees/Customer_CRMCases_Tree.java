@@ -129,7 +129,7 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
 
     private void init() {
         for (CrmCase c : elements) {
-            if (!c.isFinished()) {
+            if (!c.getFinished()) {
                 createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
             }
         }

@@ -146,7 +146,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         addComponents(salesman, customer);
         addBeansToForm();
-        
+
         finished.setEnabled(false);
         endDate.setEnabled(false);
     }
@@ -223,7 +223,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         startDate.setValue(cc.getStartDate());
         endDate.setValue(cc.getEndDate());
         description.setValue(cc.getDescription());
-        finished.setValue(cc.isFinished());
+        finished.setValue(cc.getFinished());
         salesman.setValue(cc.getFK_IDRSC().getFK_IDS());
         customer.setValue(cc.getFK_IDRSC().getFK_IDC());
     }

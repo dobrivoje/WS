@@ -8,6 +8,7 @@ package db.ent;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,16 +33,24 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByIdp", query = "SELECT p FROM Product p WHERE p.idp = :idp"),
     @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name")})
 public class Product implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "IDP")
     private Long idp;
+    @Basic(optional = false)
     @Column(name = "Name")
     private String name;
+    @Column(name = "INFSYS_ID")
+    private String infsysId;
     @OneToMany(mappedBy = "fkIdp")
     private List<RelFSPROPPRODUCT> relFSPROPPRODUCT;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdp")
+    private List<RelBLP> relBLPList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdp")
+    private List<RelSALE> relSALEList;
 
     public Product() {
     }
@@ -73,6 +83,32 @@ public class Product implements Serializable {
         this.relFSPROPPRODUCT = relFSPROPPRODUCT;
     }
 
+    public String getInfsysId() {
+        return infsysId;
+    }
+
+    public void setInfsysId(String infsysId) {
+        this.infsysId = infsysId;
+    }
+
+    @XmlTransient
+    public List<RelBLP> getRelBLPList() {
+        return relBLPList;
+    }
+
+    public void setRelBLPList(List<RelBLP> relBLPList) {
+        this.relBLPList = relBLPList;
+    }
+
+    @XmlTransient
+    public List<RelSALE> getRelSALEList() {
+        return relSALEList;
+    }
+
+    public void setRelSALEList(List<RelSALE> relSALEList) {
+        this.relSALEList = relSALEList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -87,15 +123,12 @@ public class Product implements Serializable {
             return false;
         }
         Product other = (Product) object;
-        if ((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp))) {
-            return false;
-        }
-        return true;
+        return !((this.idp == null && other.idp != null) || (this.idp != null && !this.idp.equals(other.idp)));
     }
 
     @Override
     public String toString() {
-        return "db.Product[ idp=" + idp + " ]";
+        return name;
     }
-    
+
 }
