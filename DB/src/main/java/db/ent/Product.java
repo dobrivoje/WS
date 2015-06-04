@@ -45,11 +45,11 @@ public class Product implements Serializable {
     private String name;
     @Column(name = "INFSYS_ID")
     private String infsysId;
-    @OneToMany(mappedBy = "fkIdp")
+    @OneToMany(mappedBy = "FK_IDP")
     private List<RelFSPROPPRODUCT> relFSPROPPRODUCT;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdp")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDP")
     private List<RelBLP> relBLPList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdp")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDP")
     private List<RelSALE> relSALEList;
 
     public Product() {

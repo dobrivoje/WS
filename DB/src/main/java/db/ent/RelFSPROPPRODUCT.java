@@ -41,10 +41,10 @@ public class RelFSPROPPRODUCT implements Serializable {
     private Integer potential;
     @JoinColumn(name = "FK_IDFSP", referencedColumnName = "IDFSP")
     @ManyToOne
-    private FsProp fkIdfsp;
+    private FsProp FK_FSP;
     @JoinColumn(name = "FK_IDP", referencedColumnName = "IDP")
     @ManyToOne
-    private Product fkIdp;
+    private Product FK_IDP;
 
     public RelFSPROPPRODUCT() {
     }
@@ -69,20 +69,20 @@ public class RelFSPROPPRODUCT implements Serializable {
         this.potential = potential;
     }
 
-    public FsProp getFkIdfsp() {
-        return fkIdfsp;
+    public FsProp getFK_FSP() {
+        return FK_FSP;
     }
 
-    public void setFkIdfsp(FsProp fkIdfsp) {
-        this.fkIdfsp = fkIdfsp;
+    public void setFK_FSP(FsProp FK_FSP) {
+        this.FK_FSP = FK_FSP;
     }
 
-    public Product getFkIdp() {
-        return fkIdp;
+    public Product getFK_IDP() {
+        return FK_IDP;
     }
 
-    public void setFkIdp(Product fkIdp) {
-        this.fkIdp = fkIdp;
+    public void setFK_IDP(Product FK_IDP) {
+        this.FK_IDP = FK_IDP;
     }
 
     @Override

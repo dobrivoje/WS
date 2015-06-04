@@ -186,4 +186,9 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         dateTo.setValue(o.getDateTo());
         active.setValue(o.getActive());
     }
+
+    @Override
+    protected final void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

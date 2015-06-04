@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelBLP.findAll", query = "SELECT r FROM RelBLP r"),
             
             @NamedQuery(name = "RelBLP.BL_Products", 
-                    query = "SELECT r FROM RelBLP r WHERE r.idblp = :ID_BL"),
+                    query = "SELECT r.FK_IDP FROM RelBLP r WHERE r.FK_IDBL = :ID_BL"),
             
-            @NamedQuery(name = "RelBLP.findByFkIdp", query = "SELECT r FROM RelBLP r WHERE r.fkIdp = :fkIdp"),
-            @NamedQuery(name = "RelBLP.findByFkIdbl", query = "SELECT r FROM RelBLP r WHERE r.fkIdbl = :fkIdbl")
+            @NamedQuery(name = "RelBLP.findByFkIdp", query = "SELECT r FROM RelBLP r WHERE r.FK_IDBL = :fkIdp"),
+            @NamedQuery(name = "RelBLP.findByFkIdbl", query = "SELECT r FROM RelBLP r WHERE r.FK_IDBL = :fkIdbl")
         }
 )
 public class RelBLP implements Serializable {
@@ -46,10 +46,10 @@ public class RelBLP implements Serializable {
     private Long idblp;
     @JoinColumn(name = "FK_IDBL", referencedColumnName = "IDBL")
     @ManyToOne(optional = false)
-    private BussinesLine fkIdbl;
+    private BussinesLine FK_IDBL;
     @JoinColumn(name = "FK_IDP", referencedColumnName = "IDP")
     @ManyToOne(optional = false)
-    private Product fkIdp;
+    private Product FK_IDP;
 
     public RelBLP() {
     }
@@ -66,20 +66,20 @@ public class RelBLP implements Serializable {
         this.idblp = idblp;
     }
 
-    public BussinesLine getFkIdbl() {
-        return fkIdbl;
+    public BussinesLine getFK_IDBL() {
+        return FK_IDBL;
     }
 
-    public void setFkIdbl(BussinesLine fkIdbl) {
-        this.fkIdbl = fkIdbl;
+    public void setFK_IDBL(BussinesLine FK_IDBL) {
+        this.FK_IDBL = FK_IDBL;
     }
 
-    public Product getFkIdp() {
-        return fkIdp;
+    public Product getFK_IDP() {
+        return FK_IDP;
     }
 
-    public void setFkIdp(Product fkIdp) {
-        this.fkIdp = fkIdp;
+    public void setFK_IDP(Product FK_IDP) {
+        this.FK_IDP = FK_IDP;
     }
 
     @Override

@@ -6,10 +6,9 @@
 package test;
 
 import dataservice.DataService;
-import db.ent.CrmCase;
-import db.ent.CrmProcess;
-import db.ent.Customer;
+import db.ent.BussinesLine;
 import db.ent.InfSysUser;
+import db.ent.Product;
 import db.ent.Salesman;
 
 /**
@@ -22,23 +21,14 @@ public class Test1 {
 
         DataService DS = DataService.getDefault();
 
-        InfSysUser isu = DS.getInfSysUserController().getByID("INTERMOL\\ADekic");
-        Customer c = DS.getCustomerController().getByID(900L);
-        Salesman s = DS.getSalesmanController().getByID(1L);
-
-        System.err.println("Salesman : " + s.toString());
-        System.err.println("salesman from infsysuser : " + DS.getInfSysUserController().getSalesman(isu));
-
-        for (CrmCase cc : DS.getCrmController().getCRM_Cases(s, false)) {
-            System.err.println("S : " + s.toString() + ", Case : " + cc.toString());
-        }
-
-        for (CrmProcess cp : DS.getCrmController().getCRM_Processes(s, false)) {
-            System.err.println(cp.toString());
-        }
-
-        for (Customer cc : DS.getCrmController().getCRM_CustomerActiveCases(false)) {
-            System.err.println(cc.toString());
+        InfSysUser isu = DS.getInfSysUserController().getByID("INTERMOL\\RDragutinovic");
+        Salesman s = DS.getInfSysUserController().getSalesman(isu);
+        BussinesLine bl = s.getFkIdbl();
+        
+        System.err.println("salesman from infsysuser : " + s);
+        
+        for (Product p : DS.getiPRODUCTController().getProductsForBussinesLine(bl)) {
+            System.err.println(p);
         }
     }
 }

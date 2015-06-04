@@ -94,7 +94,7 @@ public class FsProp implements Serializable {
     @JoinColumn(name = "FK_IDO", referencedColumnName = "IDO")
     @ManyToOne(optional = false)
     private Owner fkIdo;
-    @OneToMany(mappedBy = "fkIdfsp")
+    @OneToMany(mappedBy = "FK_FSP")
     private List<RelFSPROPPRODUCT> relFSPROPPRODUCTList;
 
     public FsProp() {

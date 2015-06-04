@@ -77,18 +77,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         crmCase.setNullSelectionAllowed(false);
         status.setNullSelectionAllowed(false);
 
-        salesman.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                try {
-                    crmCase.setContainerDataSource(new BeanItemContainer(
-                            CrmCase.class,
-                            CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
-                } catch (Exception e) {
-                    Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        });
+        updateDynamicFields();
 
         salesman.focus();
     }
@@ -217,5 +206,21 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
             status.setEnabled(false);
             actionDate.setEnabled(false);
         }
+    }
+
+    @Override
+    protected final void updateDynamicFields() {
+        salesman.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                try {
+                    crmCase.setContainerDataSource(new BeanItemContainer(
+                            CrmCase.class,
+                            CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
+                } catch (Exception e) {
+                    Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 }

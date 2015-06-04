@@ -89,7 +89,7 @@ public class CrmCase implements Serializable {
     private RelSALESMANCUST FK_IDRSC;
     @OneToMany(mappedBy = "FK_IDCA")
     private List<CrmProcess> crmProcessList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdca")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDCA")
     private List<RelSALE> relSALEList;
 
     public CrmCase() {

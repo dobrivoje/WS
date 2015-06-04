@@ -44,7 +44,7 @@ public class BussinesLine implements Serializable {
     private String name;
     @OneToMany(mappedBy = "fkIdbl")
     private List<Salesman> salesmanList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkIdbl")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDBL")
     private List<RelBLP> relBLPList;
 
     public BussinesLine() {

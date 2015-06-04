@@ -62,23 +62,21 @@ public class RelSALE implements Serializable {
     private String paymentMethod;
     @JoinColumn(name = "FK_IDCA", referencedColumnName = "IDCA")
     @ManyToOne(optional = false)
-    private CrmCase fkIdca;
+    private CrmCase FK_IDCA;
     @JoinColumn(name = "FK_IDP", referencedColumnName = "IDP")
     @ManyToOne(optional = false)
-    private Product fkIdp;
+    private Product FK_IDP;
 
     public RelSALE() {
+        this(new Date(), 0, "", null, null);
     }
 
-    public RelSALE(Long idrs) {
-        this.idrs = idrs;
-    }
-
-    public RelSALE(Long idrs, Date sellDate, double ammount, String paymentMethod) {
-        this.idrs = idrs;
+    public RelSALE(Date sellDate, double ammount, String paymentMethod, CrmCase crmCase, Product product) {
         this.sellDate = sellDate;
-        this.ammount = ammount;
+        this.ammount = ammount > 0 ? ammount : 0;
         this.paymentMethod = paymentMethod;
+        this.FK_IDCA = crmCase;
+        this.FK_IDP = product;
     }
 
     public Long getIdrs() {
@@ -113,20 +111,20 @@ public class RelSALE implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public CrmCase getFkIdca() {
-        return fkIdca;
+    public CrmCase getFK_IDCA() {
+        return FK_IDCA;
     }
 
-    public void setFkIdca(CrmCase fkIdca) {
-        this.fkIdca = fkIdca;
+    public void setFK_IDCA(CrmCase FK_IDCA) {
+        this.FK_IDCA = FK_IDCA;
     }
 
-    public Product getFkIdp() {
-        return fkIdp;
+    public Product getFK_IDP() {
+        return FK_IDP;
     }
 
-    public void setFkIdp(Product fkIdp) {
-        this.fkIdp = fkIdp;
+    public void setFK_IDP(Product FK_IDP) {
+        this.FK_IDP = FK_IDP;
     }
 
     @Override

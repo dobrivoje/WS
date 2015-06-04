@@ -7,6 +7,7 @@ package db.interfaces;
 
 import db.ent.BussinesLine;
 import db.ent.Product;
+import db.ent.Salesman;
 import java.util.List;
 
 /**
@@ -20,5 +21,7 @@ public interface IPRODUCTController {
     List<Product> getAll();
     
     List<Product> getProductsForBussinesLine(BussinesLine bussinesLine);
+    
+    List<Product> getProductsForBussinesLine(Salesman salesman);
 
 }

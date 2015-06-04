@@ -19,11 +19,11 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import db.ent.CrmCase;
-import db.ent.Customer;
 import db.ent.Product;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
+import db.interfaces.IPRODUCTController;
 import db.interfaces.ISalesmanController;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
@@ -36,6 +36,7 @@ import static ws.MyUI.DS;
 public class CRMSell_Form extends CRUDForm2<RelSALE> {
 
     private final ICRMController CRM_Controller = DS.getCrmController();
+    private final IPRODUCTController PRODUCT_Controller = DS.getiPRODUCTController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
@@ -43,16 +44,16 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
 
     @PropertyId("FK_IDCA")
-    private final ComboBox crmCase = new ComboBox("CRM Case", new BeanItemContainer(CrmCase.class));
+    private final ComboBox crmCase = new ComboBox("Concluded CRM Case", new BeanItemContainer(CrmCase.class));
 
     @PropertyId("sellDate")
     private final DateField sellDate = new DateField("Sell Date");
 
-    @PropertyId("product")
+    @PropertyId("FK_IDP")
     private final ComboBox product = new ComboBox("Product", DS.getiPRODUCTController().getAll());
 
     @PropertyId("ammount")
-    private final TextField ammount = new TextField("Product Ammount");
+    private final TextField amount = new TextField("Product Amount");
 
     @PropertyId("paymentMethod")
     private final TextField paymentMethod = new TextField("Payment Method");
@@ -61,42 +62,31 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
     public CRMSell_Form() {
         super(new BeanFieldGroup(RelSALE.class));
 
-        // poništi margine iz super klase, da bi se polja lepše prikazala na formi !
-        setMargin(false);
-
         fieldGroup.bindMemberFields(this);
+        updateDynamicFields();
+
         setFormFieldsWidths(250, Unit.PIXELS);
 
         salesman.setWidth(250, Unit.PIXELS);
+
+        salesman.setNullSelectionAllowed(false);
+        crmCase.setNullSelectionAllowed(false);
+        product.setNullSelectionAllowed(false);
 
         salesman.setRequired(true);
         crmCase.setRequired(true);
         sellDate.setRequired(true);
         product.setRequired(true);
-        ammount.setRequired(true);
+        amount.setRequired(true);
         paymentMethod.setRequired(true);
-
-        salesman.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                try {
-                    crmCase.setContainerDataSource(
-                            new BeanItemContainer(
-                                    CrmCase.class,
-                                    CRM_Controller.getCRM_CompletedCases((Salesman) salesman.getValue(), true)
-                            )
-                    );
-                } catch (Exception e) {
-                    Notification.show("Notification", "There is no concluded CRM cases.", Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        });
 
         salesman.focus();
     }
 
     public CRMSell_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
         this();
+
+        updateDynamicFields();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
@@ -113,6 +103,11 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
 
                     try {
                         fieldGroup.commit();
+
+                        if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
+                            throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
+                        }
+
                         CRM_Controller.addNewSale(beanItem.getBean());
 
                         Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
@@ -126,6 +121,7 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
                 }
             };
 
+            addComponents(salesman);
             addBeansToForm();
         }
     }
@@ -138,12 +134,12 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
         }
 
         try {
-            sale.setAmmount(Double.parseDouble(ammount.getValue()));
+            sale.setAmmount(Double.parseDouble(amount.getValue()));
         } catch (Exception e) {
         }
 
         try {
-            sale.setFkIdp((Product) product.getValue());
+            sale.setFK_IDP((Product) product.getValue());
         } catch (Exception e) {
         }
 
@@ -162,16 +158,44 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
     @Override
     protected final void setFieldsFromBean(RelSALE sale) {
         sellDate.setValue(sale.getSellDate());
-        ammount.setValue(String.valueOf(sale.getAmmount()));
-        product.setValue(sale.getFkIdp().getName());
+        amount.setValue(String.valueOf(sale.getAmmount()));
+        product.setValue(sale.getFK_IDP().getName());
         paymentMethod.setValue(sale.getPaymentMethod());
-        crmCase.setValue(sale.getFkIdca());
-        salesman.setValue(sale.getFkIdca().getFK_IDRSC().getFK_IDS());
+        crmCase.setValue(sale.getFK_IDCA());
+        salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
     }
 
     @Override
     protected final void lockFormFileds(boolean lockAll) {
         super.lockFormFileds(lockAll);
         salesman.setEnabled(false);
+    }
+
+    @Override
+    protected final void updateDynamicFields() {
+        //<editor-fold defaultstate="collapsed" desc="salesman listener init">
+        salesman.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                try {
+                    Salesman s = (Salesman) salesman.getValue();
+
+                    crmCase.setContainerDataSource(
+                            new BeanItemContainer(
+                                    CrmCase.class,
+                                    CRM_Controller.getCRM_CompletedCases(s, true)
+                            )
+                    );
+
+                    product.setContainerDataSource(
+                            new BeanItemContainer(Product.class,
+                                    PRODUCT_Controller.getProductsForBussinesLine(s))
+                    );
+                } catch (Exception e) {
+                    Notification.show("Notification", "There is no concluded CRM cases.", Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        });
+        //</editor-fold>
     }
 }

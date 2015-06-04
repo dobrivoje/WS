@@ -279,7 +279,7 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 CRMSell_Form cs = new CRMSell_Form(CrudOperations.CREATE, false);
                                 getUI().addWindow(new WindowForm(
-                                        CUST_DATA_MANAG_CBT_LIST.toString(),
+                                        SALE_NEW.toString(),
                                         false,
                                         cs,
                                         cs.getClickListener())

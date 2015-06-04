@@ -227,4 +227,9 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         licDateFrom.setValue(fsp.getLicDateFrom());
         licDateTo.setValue(fsp.getLicDateTo());
     }
+
+    @Override
+    protected final void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -220,4 +220,9 @@ public class CustomerForm extends CRUDForm2<Customer> {
         email2.setValue(c.getEmail2());
         comment.setValue(c.getComment());
     }
+
+    @Override
+    protected void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

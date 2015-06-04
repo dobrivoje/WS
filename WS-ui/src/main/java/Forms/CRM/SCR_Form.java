@@ -95,9 +95,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         setRequiredFields();
 
         dateFrom.setValue(new Date());
-
         dateTo.setEnabled(false);
-
         active.setValue(true);
         active.setEnabled(false);
     }
@@ -171,5 +169,10 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         dateFrom.setValue(r.getDateFrom());
         dateTo.setValue(r.getDateTo());
         active.setValue(r.getActive());
+    }
+
+    @Override
+    protected void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

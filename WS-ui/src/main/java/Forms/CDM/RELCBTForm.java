@@ -151,4 +151,9 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
         setBeanFromFields(rcbt);
         rcbt.setFkIdc(c);
     }
+
+    @Override
+    protected void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

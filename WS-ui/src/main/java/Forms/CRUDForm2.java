@@ -90,29 +90,10 @@ public abstract class CRUDForm2<T> extends FormLayout {
         if (defaultCRUDButtonOnForm) {
             crudButton.setCaption(btnCaption);
             crudButton.addClickListener(clickListener);
-            
+
             addComponents(crudButton);
         }
     }
 
-    /*
-     protected void setComboBoxCaption(ComboBox comboBox, T t) {
-     T2 t2;
-    
-     try {
-     o = DS.getFSOController().getCurrentFSOwner(f);
-    
-     comboBox.removeAllItems();
-     comboBox.setItemCaption(o, o.getFKIDCustomer().getName() + "->" + o.getFkIdFs().getName());
-     comboBox.addItem(o);
-    
-     } catch (Exception ex) {
-     Notification.show(
-     "Error",
-     "This FS must have exaclty one active owner !\n"
-     + "Error description: " + e.toString(),
-     Notification.Type.ERROR_MESSAGE);
-     }
-     }
-     */
+    protected abstract void updateDynamicFields();
 }

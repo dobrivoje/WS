@@ -141,4 +141,9 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     protected void setFieldsFromBean(Fuelstation t) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    protected final void updateDynamicFields() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

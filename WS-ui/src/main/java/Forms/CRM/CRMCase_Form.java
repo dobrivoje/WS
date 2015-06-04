@@ -75,22 +75,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         salesman.setRequired(true);
         customer.setRequired(true);
 
-        salesman.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                customer.setContainerDataSource(new BeanItemContainer(
-                        Customer.class,
-                        CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
-            }
-        });
-
-        finished.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                endDate.setEnabled(finished.getValue());
-                endDate.setValue(finished.getValue() ? new Date() : null);
-            }
-        });
+        updateDynamicFields();
 
         salesman.focus();
         finished.setEnabled(false);
@@ -235,5 +220,25 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
             startDate.setEnabled(false);
             endDate.setEnabled(false);
         }
+    }
+
+    @Override
+    protected final void updateDynamicFields() {
+        salesman.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                customer.setContainerDataSource(new BeanItemContainer(
+                        Customer.class,
+                        CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
+            }
+        });
+
+        finished.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                endDate.setEnabled(finished.getValue());
+                endDate.setValue(finished.getValue() ? new Date() : null);
+            }
+        });
     }
 }

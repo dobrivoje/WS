@@ -8,6 +8,7 @@ package db.controllers;
 import db.DBHandler;
 import db.ent.BussinesLine;
 import db.ent.Product;
+import db.ent.Salesman;
 import db.interfaces.IPRODUCTController;
 import java.util.List;
 
@@ -38,4 +39,8 @@ public class Product_Controller implements IPRODUCTController {
         return dbh.getProductsByBussinesLine(bussinesLine);
     }
 
+    @Override
+    public List<Product> getProductsForBussinesLine(Salesman salesman) {
+        return getProductsForBussinesLine(salesman.getFkIdbl());
+    }
 }
