@@ -15,7 +15,6 @@ import db.ent.Customer;
 import db.ent.Fuelstation;
 import db.ent.Owner;
 import java.util.Date;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.APP_DATE_FORMAT;
@@ -49,27 +48,12 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        dateFrom.setDateFormat(APP_DATE_FORMAT);
-        dateTo.setDateFormat(APP_DATE_FORMAT);
-
-        dateFrom.setConverter(Date.class);
-        dateTo.setConverter(Date.class);
-
-        customer.setNullSelectionAllowed(false);
-        fs.setNullSelectionAllowed(false);
-
-        customer.setRequired(true);
-        fs.setRequired(true);
-        dateFrom.setRequired(true);
+        initFields();
 
         customer.focus();
     }
 
-    public FSOWNER_Form(final CrudOperations crudOperation) {
-        this(crudOperation, false);
-    }
-
-    public FSOWNER_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
+    public FSOWNER_Form(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -77,35 +61,33 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fieldGroup.setItemDataSource(new BeanItem(new Owner()));
         beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
 
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_SAVE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-            setFieldsFromBean(new Owner(null, null, new Date(), null, true));
-            active.setEnabled(false);
+        setFieldsFromBean(new Owner(null, null, new Date(), null, true));
+        active.setEnabled(false);
 
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
 
-                    try {
-                        fieldGroup.commit();
-                        DS.getFSOController().addNew(beanItem.getBean());
+                try {
+                    fieldGroup.commit();
+                    DS.getFSOController().addNew(beanItem.getBean());
 
-                        Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
+                    Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
 
-                    } catch (MyDBNullException ex) {
-                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                    }
+                } catch (MyDBNullException ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 }
-            };
+            }
+        };
 
-            addBeansToForm();
-        }
+        addBeansToForm();
     }
 
     public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
@@ -190,5 +172,26 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     @Override
     protected final void updateDynamicFields() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void initFields() {
+        dateFrom.setDateFormat(APP_DATE_FORMAT);
+        dateTo.setDateFormat(APP_DATE_FORMAT);
+
+        dateFrom.setConverter(Date.class);
+        dateTo.setConverter(Date.class);
+
+        customer.setNullSelectionAllowed(false);
+        fs.setNullSelectionAllowed(false);
+
+        setRequiredFields();
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        customer.setRequired(true);
+        fs.setRequired(true);
+        dateFrom.setRequired(true);
     }
 }

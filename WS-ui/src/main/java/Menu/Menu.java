@@ -55,6 +55,7 @@ public class Menu {
         allMenuItems.addAll(MenuDefinitions.get_SYS_NOTIF_BOARD_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_CUSTOMER_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_CRM_SubItems());
+        allMenuItems.addAll(MenuDefinitions.get_SALE_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_FS_SubItems());
         //</editor-fold>
     }

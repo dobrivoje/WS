@@ -17,7 +17,6 @@ import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import java.util.Date;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -52,7 +51,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         setFormFieldsWidths(250, Unit.PIXELS);
     }
 
-    public SCR_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
+    public SCR_Form(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -60,50 +59,33 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         fieldGroup.setItemDataSource(new BeanItem(new RelSALESMANCUST()));
         beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();
 
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_SAVE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
 
-                    try {
-                        fieldGroup.commit();
+                try {
+                    fieldGroup.commit();
 
-                        CRMController.addNew_R_Salesman_Cust(beanItem.getBean());
+                    CRMController.addNew_R_Salesman_Cust(beanItem.getBean());
 
-                        Notification n = new Notification("New relation between Customer Salesman added.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
+                    Notification n = new Notification("New relation between Customer Salesman added.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
 
-                    } catch (CommitException ex) {
-                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                    }
+                } catch (CommitException ex) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
-            };
+            }
+        };
 
-            addBeansToForm();
+        addBeansToForm();
 
-            initFields();
-        }
-    }
-
-    private void initFields() {
-        setRequiredFields();
-
-        dateFrom.setValue(new Date());
-        dateTo.setEnabled(false);
-        active.setValue(true);
-        active.setEnabled(false);
-    }
-
-    private void setRequiredFields() {
-        salesman.setRequired(true);
-        customer.setRequired(true);
-        dateFrom.setRequired(true);
+        initFields();
     }
 
     public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
@@ -174,5 +156,22 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     @Override
     protected void updateDynamicFields() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected final void initFields() {
+        dateFrom.setValue(new Date());
+        dateTo.setEnabled(false);
+        active.setValue(true);
+        active.setEnabled(false);
+
+        setRequiredFields();
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        salesman.setRequired(true);
+        customer.setRequired(true);
+        dateFrom.setRequired(true);
     }
 }

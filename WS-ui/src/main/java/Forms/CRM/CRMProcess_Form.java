@@ -66,17 +66,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        salesman.setWidth(250, Unit.PIXELS);
-
-        salesman.setRequired(true);
-        crmCase.setRequired(true);
-        status.setRequired(true);
-        actionDate.setRequired(true);
-
-        salesman.setNullSelectionAllowed(false);
-        crmCase.setNullSelectionAllowed(false);
-        status.setNullSelectionAllowed(false);
-
+        initFields();
         updateDynamicFields();
 
         salesman.focus();
@@ -222,5 +212,24 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                 }
             }
         });
+    }
+
+    @Override
+    protected final void initFields() {
+        salesman.setWidth(250, Unit.PIXELS);
+
+        setRequiredFields();
+
+        salesman.setNullSelectionAllowed(false);
+        crmCase.setNullSelectionAllowed(false);
+        status.setNullSelectionAllowed(false);
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        salesman.setRequired(true);
+        crmCase.setRequired(true);
+        status.setRequired(true);
+        actionDate.setRequired(true);
     }
 }

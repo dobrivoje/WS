@@ -70,22 +70,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(200, Unit.PIXELS);
 
-        currentCustomerTxtField.setWidth(200, Unit.PIXELS);
-        currentCustomerTxtField.setEnabled(false);
-
-        restaurant.setValue(false);
-        carWash.setValue(false);
-        comment.setRows(5);
-
-        // postavi validatore
-        noOfTanks.setConverter(Integer.class);
-        noOfTanks.setConversionError("Must be natural number !");
-        truckCapable.setConverter(Integer.class);
-        truckCapable.setConversionError("Must be natural number !");
-
-        // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
-        // mogu napraviti problem sa prikazom u formi !
-        active.setEnabled(false);
+        initFields();
     }
 
     public FSPROP_Form(Fuelstation fuelstation, boolean formFieldsLocked, boolean crudButtonOnForm) {
@@ -231,5 +216,30 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
     @Override
     protected final void updateDynamicFields() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void initFields() {
+        currentCustomerTxtField.setWidth(200, Unit.PIXELS);
+        currentCustomerTxtField.setEnabled(false);
+
+        restaurant.setValue(false);
+        carWash.setValue(false);
+        comment.setRows(5);
+
+        // postavi validatore
+        noOfTanks.setConverter(Integer.class);
+        noOfTanks.setConversionError("Must be natural number !");
+        truckCapable.setConverter(Integer.class);
+        truckCapable.setConversionError("Must be natural number !");
+
+        // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
+        // mogu napraviti problem sa prikazom u formi !
+        active.setEnabled(false);
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

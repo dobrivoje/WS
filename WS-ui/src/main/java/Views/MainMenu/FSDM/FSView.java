@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dobrivoje.auth.roles.RolesPermissions;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import ws.MyUI;
@@ -141,7 +140,11 @@ public class FSView extends VerticalLayout implements View {
                     fsoForm = new FSOWNER_Form(f, null);
                     getUI().addWindow(new WindowForm("New Fuelstation Owner", false, fsoForm));
                 } else {
-                    getUI().addWindow(new WindowForm(FS_DATA_MANAG_NEW_FS_OWNER.toString(), false, new FSOWNER_Form(CrudOperations.CREATE)));
+                    getUI().addWindow(new WindowForm(
+                            FS_DATA_MANAG_NEW_FS_OWNER.toString(),
+                            false,
+                            new FSOWNER_Form(false))
+                    );
                 }
             }
         });

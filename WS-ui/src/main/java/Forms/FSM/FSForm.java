@@ -12,7 +12,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import db.ent.City;
 import db.ent.Fuelstation;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -43,15 +42,10 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         setFormFieldsWidths(250, Unit.PIXELS);
         name.focus();
 
-        name.setRequired(true);
-        city.setRequired(true);
+        setRequiredFields();
     }
 
-    public FSForm(final CrudOperations crudOperation) {
-        this(crudOperation, false);
-    }
-
-    public FSForm(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
+    public FSForm(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -59,32 +53,30 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         fieldGroup.setItemDataSource(new BeanItem(new Fuelstation()));
         beanItem = (BeanItem<Fuelstation>) fieldGroup.getItemDataSource();
 
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_SAVE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
 
-                    try {
-                        fieldGroup.commit();
-                        DS.getFSController().addNew(beanItem.getBean());
+                try {
+                    fieldGroup.commit();
+                    DS.getFSController().addNew(beanItem.getBean());
 
-                        Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
+                    Notification n = new Notification("New Fuelstation Added.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
 
-                    } catch (FieldGroup.CommitException ex) {
-                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                    }
+                } catch (FieldGroup.CommitException ex) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
-            };
+            }
+        };
 
-            addBeansToForm();
-        }
+        addBeansToForm();
     }
 
     public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
@@ -145,5 +137,16 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     @Override
     protected final void updateDynamicFields() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void initFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        name.setRequired(true);
+        city.setRequired(true);
     }
 }

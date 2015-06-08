@@ -25,7 +25,6 @@ import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.IPRODUCTController;
 import db.interfaces.ISalesmanController;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import static ws.MyUI.DS;
 
@@ -67,23 +66,12 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
 
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        salesman.setWidth(250, Unit.PIXELS);
-
-        salesman.setNullSelectionAllowed(false);
-        crmCase.setNullSelectionAllowed(false);
-        product.setNullSelectionAllowed(false);
-
-        salesman.setRequired(true);
-        crmCase.setRequired(true);
-        sellDate.setRequired(true);
-        product.setRequired(true);
-        amount.setRequired(true);
-        paymentMethod.setRequired(true);
+        initFields();
 
         salesman.focus();
     }
 
-    public CRMSell_Form(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
+    public CRMSell_Form(boolean defaultCRUDButtonOnForm) {
         this();
 
         updateDynamicFields();
@@ -93,37 +81,35 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
         fieldGroup.setItemDataSource(new BeanItem(new RelSALE()));
         beanItem = (BeanItem<RelSALE>) fieldGroup.getItemDataSource();
 
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_SAVE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
 
-                    try {
-                        fieldGroup.commit();
+                try {
+                    fieldGroup.commit();
 
-                        if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
-                            throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
-                        }
-
-                        CRM_Controller.addNewSale(beanItem.getBean());
-
-                        Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
-                    } catch (FieldGroup.CommitException ce) {
-                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                    if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
+                        throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
                     }
-                }
-            };
 
-            addComponents(salesman);
-            addBeansToForm();
-        }
+                    CRM_Controller.addNewSale(beanItem.getBean());
+
+                    Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
+                } catch (FieldGroup.CommitException ce) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        addComponents(salesman);
+        addBeansToForm();
     }
 
     @Override
@@ -197,5 +183,26 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
             }
         });
         //</editor-fold>
+    }
+
+    @Override
+    protected final void initFields() {
+        salesman.setWidth(250, Unit.PIXELS);
+
+        salesman.setNullSelectionAllowed(false);
+        crmCase.setNullSelectionAllowed(false);
+        product.setNullSelectionAllowed(false);
+
+        setRequiredFields();
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        salesman.setRequired(true);
+        crmCase.setRequired(true);
+        sellDate.setRequired(true);
+        product.setRequired(true);
+        amount.setRequired(true);
+        paymentMethod.setRequired(true);
     }
 }

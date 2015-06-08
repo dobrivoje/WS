@@ -27,7 +27,7 @@ public abstract class CRUDForm2<T> extends FormLayout {
         setMargin(true);
         setSpacing(true);
 
-        defaultCRUDButtonOnForm = true;
+        defaultCRUDButtonOnForm = false;
         crudButton = new Button();
         crudButton.setWidth(150, Unit.PIXELS);
     }
@@ -94,6 +94,10 @@ public abstract class CRUDForm2<T> extends FormLayout {
             addComponents(crudButton);
         }
     }
+
+    protected abstract void initFields();
+
+    protected abstract void setRequiredFields();
 
     protected abstract void updateDynamicFields();
 }

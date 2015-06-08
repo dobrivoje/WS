@@ -24,10 +24,9 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.themes.ValoTheme;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import Forms.CDM.CBTForm;
 import Forms.CDM.CustomerForm;
+import Forms.CDM.RELCBTForm;
 import Forms.CRM.CRMCase_Form;
 import Forms.CRM.CRMProcess_Form;
 import Forms.CRM.CRMSell_Form;
@@ -48,7 +47,6 @@ import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD_LICENCES_OVERDUE;
-import db.ent.CustomerBussinesType;
 import Views.MainMenu.CDM.CustomersView;
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
@@ -198,6 +196,7 @@ public class MainMenu extends CssLayout {
         // CUST_DATA_MANAG
         customersTree.setParent(CUST_DATA_MANAG_SEARCH_ENGINE, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_NEW_CUST, CUST_DATA_MANAG);
+        customersTree.setParent(CUST_DATA_MANAG_NEW_CBT, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_CUST_DOCS, CUST_DATA_MANAG);
 
         // SALE
@@ -252,37 +251,41 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                                 navigator.navigateTo(CustomersView.class.getSimpleName());
 
-                                CustomerForm customerForm = new CustomerForm(CrudOperations.CREATE, false);
+                                CustomerForm cf = new CustomerForm(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         CUST_DATA_MANAG_NEW_CUST.toString(),
-                                        customerForm,
+                                        cf,
                                         null,
-                                        customerForm.getClickListener()));
+                                        cf.getClickListener()));
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
                         case CUST_DATA_MANAG_NEW_CBT:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
+
+                                RELCBTForm rcbtf = new RELCBTForm(false);
+
                                 getUI().addWindow(new WindowForm(
-                                        CUST_DATA_MANAG_CBT_LIST.toString(),
+                                        CUST_DATA_MANAG_NEW_CBT.toString(),
                                         false,
-                                        new CBTForm(new CustomerBussinesType()))
+                                        rcbtf, rcbtf.getClickListener())
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
 
-                        case SALE:
+                        case SALE_NEW:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                CRMSell_Form cs = new CRMSell_Form(CrudOperations.CREATE, false);
-                                getUI().addWindow(new WindowForm(
+                                CRMSell_Form csf = new CRMSell_Form(false);
+
+                                getUI().addWindow(new WindowForm3(
                                         SALE_NEW.toString(),
-                                        false,
-                                        cs,
-                                        cs.getClickListener())
+                                        csf,
+                                        "img/CRM_Sale.jpg",
+                                        csf.getClickListener())
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -326,7 +329,7 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                SCR_Form scf = new SCR_Form(CrudOperations.CREATE, false);
+                                SCR_Form scf = new SCR_Form(false);
 
                                 getUI().addWindow(new WindowForm(
                                         CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
@@ -348,7 +351,8 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                                 navigator.navigateTo(FSView.class.getSimpleName());
 
-                                FSForm ff = new FSForm(CrudOperations.CREATE);
+                                FSForm ff = new FSForm(false);
+
                                 getUI().addWindow(new WindowForm(
                                         FS_DATA_MANAG_NEW_FS.toString(),
                                         false,
@@ -361,7 +365,8 @@ public class MainMenu extends CssLayout {
                             break;
                         case FS_DATA_MANAG_NEW_FS_OWNER:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
-                                FSOWNER_Form fof = new FSOWNER_Form(CrudOperations.CREATE, false);
+
+                                FSOWNER_Form fof = new FSOWNER_Form(false);
 
                                 getUI().addWindow(new WindowForm(
                                         FS_DATA_MANAG_NEW_FS_OWNER.toString(),

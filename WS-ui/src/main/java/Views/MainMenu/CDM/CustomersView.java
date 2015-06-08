@@ -52,7 +52,7 @@ public class CustomersView extends VerticalLayout implements View {
     private Button fullViewMode;
 
     private final String UN = MyUI.get().getAccessControl().getPrincipal();
-    private final boolean formAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
+    private final boolean formEditAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -151,19 +151,20 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                propPanels[0].setContent(new RELCBT_Tree("", c));
+                RELCBT_Tree rcbtt =  new RELCBT_Tree("", c, formEditAllowed);
+                propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
             }
 
             try {
-                propPanels[1].setContent(new FSOwner_Tree("", c, true));
+                propPanels[1].setContent(new FSOwner_Tree("", c, true, formEditAllowed));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[1].setContent(new Tree());
             }
 
             try {
-                final Customer_CRMCases_Tree cc = new Customer_CRMCases_Tree("", c, formAllowed);
+                final Customer_CRMCases_Tree cc = new Customer_CRMCases_Tree("", c, formEditAllowed);
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

@@ -64,17 +64,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        salesman.setWidth(250, Unit.PIXELS);
-        customer.setWidth(250, Unit.PIXELS);
-        description.setRows(3);
-
-        salesman.setNullSelectionAllowed(false);
-        customer.setNullSelectionAllowed(false);
-        startDate.setRequired(true);
-
-        salesman.setRequired(true);
-        customer.setRequired(true);
-
+        initFields();
         updateDynamicFields();
 
         salesman.focus();
@@ -137,13 +127,16 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     }
 
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {
-        this(crmCase, true, visualContainer);
+        this(crmCase, false, visualContainer);
     }
 
     public CRMCase_Form(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
+        
+        // poništi marginu, već je jednom aktivirana !
+        setMargin(false);
 
         CrmCase cc = crmCase == null ? new CrmCase(new Date(), "", new RelSALESMANCUST()) : crmCase;
         setFieldsFromBean(cc);
@@ -240,5 +233,24 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
                 endDate.setValue(finished.getValue() ? new Date() : null);
             }
         });
+    }
+
+    @Override
+    protected final void initFields() {
+        salesman.setWidth(250, Unit.PIXELS);
+        customer.setWidth(250, Unit.PIXELS);
+        description.setRows(3);
+
+        salesman.setNullSelectionAllowed(false);
+        customer.setNullSelectionAllowed(false);
+        
+        setRequiredFields();
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        salesman.setRequired(true);
+        customer.setRequired(true);
+        startDate.setRequired(true);
     }
 }

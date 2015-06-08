@@ -30,11 +30,11 @@ public enum MenuDefinitions {
     //
     CUST_DATA_MANAG_SEARCH_ENGINE("Customer Search Engine"),
     CUST_DATA_MANAG_NEW_CUST("New Customer"),
-    CUST_DATA_MANAG_NEW_CBT("New Customer Bussines Type"),
+    CUST_DATA_MANAG_NEW_CBT("New CBT"),
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
-    SALE_NEW("NEW SALE CASE"),
+    SALE_NEW("New Sale Case"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Process"),
@@ -79,7 +79,14 @@ public enum MenuDefinitions {
         return Arrays.asList(
                 CUST_DATA_MANAG_SEARCH_ENGINE,
                 CUST_DATA_MANAG_NEW_CUST,
+                CUST_DATA_MANAG_NEW_CBT,
                 CUST_DATA_MANAG_CUST_DOCS
+        );
+    }
+
+    public static List<MenuDefinitions> get_SALE_SubItems() {
+        return Arrays.asList(
+                SALE_NEW
         );
     }
 

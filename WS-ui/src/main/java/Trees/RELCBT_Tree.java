@@ -17,12 +17,12 @@ import static ws.MyUI.DS;
  */
 public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
-    public RELCBT_Tree(String caption, Customer customer) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer));
+    public RELCBT_Tree(String caption, Customer customer, boolean formEditAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer), formEditAllowed);
         createSubItems();
     }
 
-    public final void createSubItems() {
+    private final void createSubItems() {
         for (RelCBType r : elements) {
             createSubItems(r, r.getDateFrom(), r.getDateTo());
         }

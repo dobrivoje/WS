@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
+import com.vaadin.event.ItemClickEvent;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import org.dobrivoje.utils.date.formats.DateFormat;
  *
  * @param <T>
  */
-public class CustomDateTree<T> extends CustomTree<T> {
+public class CustomDateTree<T> extends CustomObjectTree<T> {
 
     private static final String DATEFORMAT = DateFormat.DATE_FORMAT_SRB.toString();
     private static final String[] MSG = new String[]{
@@ -27,8 +28,18 @@ public class CustomDateTree<T> extends CustomTree<T> {
         "no end date !", "To: "
     };
 
-    public CustomDateTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
+    public CustomDateTree(String caption, List treeItems, boolean formEditAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
+
+        super.addItemClickListener((ItemClickEvent event) -> {
+            if (formEditAllowed) {
+                if (event.isDoubleClick()) {
+                    if (event.getItemId() instanceof List) {
+                        
+                    }
+                }
+            }
+        });
     }
 
     /**

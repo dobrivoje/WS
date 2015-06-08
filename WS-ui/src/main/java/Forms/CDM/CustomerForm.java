@@ -18,7 +18,6 @@ import db.ent.Customer;
 import db.interfaces.ICustomerController;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.superb.apps.utilities.Enums.CrudOperations;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
@@ -83,25 +82,12 @@ public class CustomerForm extends CRUDForm2<Customer> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        name.setRequired(true);
-        address.setRequired(true);
-        city.setRequired(true);
-        zone.setRequired(true);
-
-        licence.addItem(false);
-        licence.setItemCaption(false, "No licence");
-        licence.addItem(true);
-        licence.setItemCaption(true, "Yes, licensed");
-        licence.addStyleName("horizontal");
-
-        // postavi validatore
-        email1.addValidator(new EmailValidator("Must be an email address !"));
-        email2.addValidator(new EmailValidator("Must be an email address !"));
+        initFields();
 
         name.focus();
     }
 
-    public CustomerForm(final CrudOperations crudOperation, boolean defaultCRUDButtonOnForm) {
+    public CustomerForm(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -109,31 +95,29 @@ public class CustomerForm extends CRUDForm2<Customer> {
         fieldGroup.setItemDataSource(new BeanItem(new Customer()));
         beanItem = (BeanItem<Customer>) fieldGroup.getItemDataSource();
 
-        if (crudOperation.equals(CrudOperations.CREATE)) {
-            btnCaption = BUTTON_CAPTION_SAVE.toString();
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-            clickListener = new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
 
-                    try {
-                        fieldGroup.commit();
-                        customerController.addNew(beanItem.getBean());
+                try {
+                    fieldGroup.commit();
+                    customerController.addNew(beanItem.getBean());
 
-                        Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
-                        n.setDelayMsec(500);
-                        n.show(getUI().getPage());
-                    } catch (FieldGroup.CommitException ce) {
-                        Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                    }
+                    Notification n = new Notification("Customer Added.", Notification.Type.TRAY_NOTIFICATION);
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
+                } catch (FieldGroup.CommitException ce) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
-            };
+            }
+        };
 
-            addBeansToForm();
-        }
+        addBeansToForm();
     }
 
     public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer) {
@@ -224,5 +208,28 @@ public class CustomerForm extends CRUDForm2<Customer> {
     @Override
     protected void updateDynamicFields() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected final void initFields() {
+        setRequiredFields();
+        
+        licence.addItem(false);
+        licence.setItemCaption(false, "No licence");
+        licence.addItem(true);
+        licence.setItemCaption(true, "Yes, licensed");
+        licence.addStyleName("horizontal");
+
+        // postavi validatore
+        email1.addValidator(new EmailValidator("Must be an email address !"));
+        email2.addValidator(new EmailValidator("Must be an email address !"));
+    }
+
+    @Override
+    protected void setRequiredFields() {
+        name.setRequired(true);
+        address.setRequired(true);
+        city.setRequired(true);
+        zone.setRequired(true);
     }
 }
