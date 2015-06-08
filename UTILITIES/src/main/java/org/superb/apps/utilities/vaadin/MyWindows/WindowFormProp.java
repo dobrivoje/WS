@@ -66,8 +66,9 @@ public class WindowFormProp extends Window {
         leftVL.addComponent(layout);
         rightVL.addComponents(components);
         leftVL.setSizeFull();
-        leftVL.setMargin(true);
-        leftVL.setSpacing(true);
+        // pošto je na levom panelu forma, ne treba space, da ne bi uzimao dva puta prostor...
+        // leftVL.setMargin(true);
+        // leftVL.setSpacing(true);
         rightVL.setSizeFull();
         rightVL.setMargin(true);
         rightVL.setSpacing(true);

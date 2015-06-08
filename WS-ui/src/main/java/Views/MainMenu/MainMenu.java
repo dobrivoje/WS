@@ -183,7 +183,7 @@ public class MainMenu extends CssLayout {
 
         // definicije gl. stavki čije su podstavke otvorene !
         customersTree.expandItemsRecursively(CUST_DATA_MANAG);
-        customersTree.expandItemsRecursively(CUST_CRM_MANAG);
+        // customersTree.expandItemsRecursively(CUST_CRM_MANAG);
         customersTree.expandItemsRecursively(SALE);
         customersTree.expandItemsRecursively(FS_DATA_MANAG);
 

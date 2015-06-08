@@ -91,6 +91,7 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
         addComponent(customer);
         addBeansToForm();
 
+        initFields();
     }
 
     public RELCBTForm(final Customer existingCustomer, final Container container) {
@@ -192,7 +193,11 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
     protected final void initFields() {
         customer.setWidth(250, Unit.PIXELS);
         dateFrom.setValue(new Date());
-
+        dateTo.setEnabled(false);
+        
+        active.setVisible(true);
+        active.setEnabled(false);
+        
         setRequiredFields();
 
         active.setValue(true);
