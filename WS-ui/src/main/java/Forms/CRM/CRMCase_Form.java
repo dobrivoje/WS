@@ -134,9 +134,6 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
-        
-        // poništi marginu, već je jednom aktivirana !
-        setMargin(false);
 
         CrmCase cc = crmCase == null ? new CrmCase(new Date(), "", new RelSALESMANCUST()) : crmCase;
         setFieldsFromBean(cc);
@@ -175,7 +172,8 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         addComponents(salesman, customer);
         addBeansToForm();
 
-        lockFormFields(crmCase != null);
+        // lockFormFields(crmCase != null);
+        initFields();
     }
 
     @Override
@@ -244,6 +242,13 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
         
+        finished.setValue(true);
+        finished.setEnabled(false);
+        
+        endDate.setValue(null);
+        endDate.setEnabled(false);
+        
+
         setRequiredFields();
     }
 

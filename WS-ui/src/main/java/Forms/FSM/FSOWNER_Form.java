@@ -17,7 +17,6 @@ import db.ent.Owner;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.APP_DATE_FORMAT;
 import static ws.MyUI.DS;
 
 public class FSOWNER_Form extends CRUDForm2<Owner> {
@@ -149,6 +148,8 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         };
 
         addBeansToForm();
+        
+        initFields();
     }
 
     @Override
@@ -175,15 +176,12 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     }
 
     @Override
-    protected void initFields() {
-        dateFrom.setDateFormat(APP_DATE_FORMAT);
-        dateTo.setDateFormat(APP_DATE_FORMAT);
-
-        dateFrom.setConverter(Date.class);
-        dateTo.setConverter(Date.class);
-
+    protected final void initFields() {
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
+        
+        dateTo.setEnabled(false);
+        active.setEnabled(false);
 
         setRequiredFields();
     }

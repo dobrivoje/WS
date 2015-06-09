@@ -49,7 +49,7 @@ public class CustomerTable extends GENTable<Customer> {
     private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
     private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
     private static final Action ACTION_CRM_ACTIVE_PROCESSES = new Action("Active Customer CRM Processes");
-    private static final Action ACTION_CRM_NEW_PROCESS = new Action("New Customer CRM Processes");
+    private static final Action ACTION_CRM_NEW_CASE = new Action("New Customer CRM Case");
 
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
@@ -268,7 +268,7 @@ public class CustomerTable extends GENTable<Customer> {
                     ACTION_CUSTOMER_UPDATE,
                     ACTION_CUSTOMER_BUSSINES_TYPE,
                     ACTION_CRM_ACTIVE_PROCESSES,
-                    ACTION_CRM_NEW_PROCESS
+                    ACTION_CRM_NEW_CASE
                 };
             }
 
@@ -310,7 +310,7 @@ public class CustomerTable extends GENTable<Customer> {
                     }
                 }
 
-                if (action.equals(ACTION_CRM_NEW_PROCESS)) {
+                if (action.equals(ACTION_CRM_NEW_CASE)) {
                     try {
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Customer c = (Customer) source.getValue();
@@ -323,12 +323,12 @@ public class CustomerTable extends GENTable<Customer> {
                             CrmCase cs = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
 
                             getUI().addWindow(new WindowForm(
-                                    Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS.toString(),
+                                    Menu.MenuDefinitions.CRM_MANAG_NEW_CASE.toString(),
                                     false,
                                     new CRMCase_Form(cs, source)));
                         } else {
                             Notification.show("User Rights Error",
-                                    "You don't have rights\nto add new CRM process ! ",
+                                    "You don't have rights\nto add new CRM case ! ",
                                     Notification.Type.ERROR_MESSAGE);
                         }
                     } catch (NullPointerException | IllegalArgumentException e) {

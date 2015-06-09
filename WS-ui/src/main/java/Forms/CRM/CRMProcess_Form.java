@@ -60,9 +60,6 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
     public CRMProcess_Form() {
         super(new BeanFieldGroup(CrmProcess.class));
 
-        // poništi margine iz super klase, da bi se polja lepše prikazala na formi !
-        setMargin(false);
-
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
