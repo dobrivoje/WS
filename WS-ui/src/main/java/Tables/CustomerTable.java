@@ -14,6 +14,8 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.Action;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -79,7 +81,7 @@ public class CustomerTable extends GENTable<Customer> {
             public Object generateCell(final Table source, final Object row, Object column) {
                 HorizontalLayout custOptionsHL = new HorizontalLayout();
 
-                final Button editBtn = new Button("u", new Button.ClickListener() {
+                final Button editBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         Customer c = (Customer) row;
@@ -98,17 +100,19 @@ public class CustomerTable extends GENTable<Customer> {
                     }
                 });
 
-                final Button cbtypeBtn = new Button("t", new Button.ClickListener() {
+                final Button cbtypeBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        showCBTForm((Customer) row, 
+                        showCBTForm((Customer) row,
                                 MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                     }
                 });
 
+                editBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
                 editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 editBtn.setDescription("Update this customer with new data...");
 
+                cbtypeBtn.setIcon(FontAwesome.THUMBS_O_UP);
                 cbtypeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
@@ -206,7 +210,7 @@ public class CustomerTable extends GENTable<Customer> {
         setColumnWidth("zone", 90);
         setColumnWidth("myCity", 220);
         setColumnWidth("licence", 120);
-        setColumnWidth("options", 90);
+        setColumnWidth("options", 110);
 
         setTablePerspective(SIMPLE);
         //</editor-fold>
@@ -299,7 +303,7 @@ public class CustomerTable extends GENTable<Customer> {
                 }
 
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
-                    showCBTForm((Customer) source.getValue(), 
+                    showCBTForm((Customer) source.getValue(),
                             MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
 
@@ -325,7 +329,7 @@ public class CustomerTable extends GENTable<Customer> {
                             getUI().addWindow(new WindowForm(
                                     Menu.MenuDefinitions.CRM_MANAG_NEW_CASE.toString(),
                                     false,
-                                    new CRMCase_Form(cs, source)));
+                                    new CRMCase_Form(cs, source, true)));
                         } else {
                             Notification.show("User Rights Error",
                                     "You don't have rights\nto add new CRM case ! ",

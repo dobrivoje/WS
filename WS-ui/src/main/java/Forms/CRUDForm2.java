@@ -58,8 +58,18 @@ public abstract class CRUDForm2<T> extends FormLayout {
         }
     }
 
+    /**
+     * Postavi vrednost bean-a "t" sakupljanjem vrednosti iz polja na formi.
+     *
+     * @param t
+     */
     protected abstract void setBeanFromFields(T t);
 
+    /**
+     * Postavi vrednosti polja na formi, čije se vrednosti u bean-u "t"
+     *
+     * @param t
+     */
     protected abstract void setFieldsFromBean(T t);
 
     protected final void setFormFieldsWidths(float width, Sizeable.Unit unit) {
@@ -95,9 +105,20 @@ public abstract class CRUDForm2<T> extends FormLayout {
         }
     }
 
+    /**
+     * Inicijalizacija svojstava polja na formi i/ili njihovih vrednosti.
+     */
     protected abstract void initFields();
 
+    /**
+     * Naznačiti koja polja su obavezna, čime će se na formi označiti
+     * zvezdicama.
+     */
     protected abstract void setRequiredFields();
 
+    /**
+     * Koristiti npr. za combobox komponente čiji se sadržaj dinamički menja
+     * kako bi se uvek dobio što ažurniji sadržaj.
+     */
     protected abstract void updateDynamicFields();
 }

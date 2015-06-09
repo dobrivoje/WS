@@ -68,7 +68,6 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         updateDynamicFields();
 
         salesman.focus();
-        finished.setEnabled(false);
     }
 
     public CRMCase_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
@@ -121,13 +120,17 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         addComponents(salesman, customer);
         addBeansToForm();
-
-        finished.setEnabled(false);
-        endDate.setEnabled(false);
     }
 
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {
         this(crmCase, false, visualContainer);
+    }
+
+    public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase) {
+        this(crmCase, false, visualContainer);
+
+        finished.setEnabled(!newCase);
+        endDate.setEnabled(!newCase);
     }
 
     public CRMCase_Form(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
@@ -171,9 +174,6 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         addComponents(salesman, customer);
         addBeansToForm();
-
-        // lockFormFields(crmCase != null);
-        initFields();
     }
 
     @Override
@@ -204,15 +204,6 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         customer.setValue(cc.getFK_IDRSC().getFK_IDC());
     }
 
-    private void lockFormFields(boolean lock) {
-        if (lock) {
-            salesman.setEnabled(false);
-            customer.setEnabled(false);
-            startDate.setEnabled(false);
-            endDate.setEnabled(false);
-        }
-    }
-
     @Override
     protected final void updateDynamicFields() {
         salesman.addValueChangeListener(new Property.ValueChangeListener() {
@@ -241,13 +232,12 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         salesman.setNullSelectionAllowed(false);
         customer.setNullSelectionAllowed(false);
-        
-        finished.setValue(true);
+
+        finished.setValue(false);
         finished.setEnabled(false);
-        
+
         endDate.setValue(null);
         endDate.setEnabled(false);
-        
 
         setRequiredFields();
     }
