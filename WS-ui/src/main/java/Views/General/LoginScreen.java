@@ -167,11 +167,11 @@ public class LoginScreen extends CssLayout {
         if (accessControl.login(un, password.getValue())) {
 
             try {
-                DS.getLogController().addNew(
+                DS.getLOGController().addNew(
                         new Date(),
                         LOGS.LOGIN.toString(),
                         accessControl.getPrincipal() + " Domain=" + domain.getValue(),
-                        DS.getInfSysUserController().getByID(accessControl.getPrincipal()));
+                        DS.getINFSYSUSERController().getByID(accessControl.getPrincipal()));
 
                 loginListener.doAfterLogin();
             } catch (Exception ex) {
@@ -179,7 +179,7 @@ public class LoginScreen extends CssLayout {
             }
         } else {
             try {
-                DS.getLogController().addNew(new Date(), LOGS.LOGIN_WRONG.toString(),
+                DS.getLOGController().addNew(new Date(), LOGS.LOGIN_WRONG.toString(),
                         "Login attempt! Username=" + username.getValue()
                         + " Domain=" + domain.getValue(), null);
             } catch (Exception ex) {

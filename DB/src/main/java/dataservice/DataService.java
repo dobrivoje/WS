@@ -115,19 +115,19 @@ public class DataService {
         return documentTypeController;
     }
 
-    public ICRMController getCrmController() {
+    public ICRMController getCRMController() {
         return crmController;
     }
 
-    public IInfSysUserController getInfSysUserController() {
+    public IInfSysUserController getINFSYSUSERController() {
         return infSysUserController;
     }
 
-    public ILOGController getLogController() {
+    public ILOGController getLOGController() {
         return iLogController;
     }
 
-    public IPRODUCTController getiPRODUCTController() {
+    public IPRODUCTController getProductController() {
         return iPRODUCTController;
     }
 

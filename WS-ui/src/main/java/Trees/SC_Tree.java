@@ -49,7 +49,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
 
     private void createSubItems() {
         for (Salesman s : elements) {
-            createSubItems(s, DS.getCrmController().getCRM_Customers(s));
+            createSubItems(s, DS.getCRMController().getCRM_Customers(s));
         }
     }
 
@@ -95,7 +95,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                     if (action.equals(ACTION_NEW_CRM_CASE) && (target instanceof Customer)) {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
-                        List<CrmCase> openCustomerCases = DS.getCrmController().getCRM_Cases(c, false);
+                        List<CrmCase> openCustomerCases = DS.getCRMController().getCRM_Cases(c, false);
 
                         if (openCustomerCases.isEmpty()) {
                             CRMCase_Form ccf = new CRMCase_Form(s, c, null, false);
@@ -123,7 +123,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(DS.getCrmController().getCRM_LastActive_CRMCase(c, s), false, null);
+                                CRMCase_Form ccf = new CRMCase_Form(DS.getCRMController().getCRM_LastActive_CRMCase(c, s), false, null);
 
                                 getUI().addWindow(
                                         new WindowFormProp(

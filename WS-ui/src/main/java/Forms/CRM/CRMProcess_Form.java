@@ -35,7 +35,7 @@ import static ws.MyUI.DS;
  */
 public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
-    private final ICRMController CRM_Controller = DS.getCrmController();
+    private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">

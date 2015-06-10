@@ -38,7 +38,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
      * @throws NullPointerException
      */
     public Salesman_CRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCrmController().getCRM_Cases(salesman, false));
+        super(caption, DS.getCRMController().getCRM_Cases(salesman, false));
         init();
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
@@ -58,7 +58,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
 
                             try {
                                 Salesman s = crmCase.getFK_IDRSC().getFK_IDS();
-                                for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(salesman, false)) {
+                                for (CrmCase activeCRMCase : DS.getCRMController().getCRM_Cases(salesman, false)) {
                                     CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     csTrees.add(csct);
 
@@ -95,7 +95,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                 Salesman s = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
                                 List<CRM_SingleCase_Tree> crmTrees = new ArrayList<>();
 
-                                for (CrmCase activeCRMCase : DS.getCrmController().getCRM_Cases(salesman, false)) {
+                                for (CrmCase activeCRMCase : DS.getCRMController().getCRM_Cases(salesman, false)) {
                                     CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + s.toString(), activeCRMCase);
                                     crmTrees.add(csct);
 
@@ -136,7 +136,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
 
     private void init() {
         for (CrmCase c : elements) {
-            createSubItems(c, DS.getCrmController().getCRM_Processes(c, false));
+            createSubItems(c, DS.getCRMController().getCRM_Processes(c, false));
         }
     }
 

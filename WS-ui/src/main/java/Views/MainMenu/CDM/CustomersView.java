@@ -109,11 +109,11 @@ public class CustomersView extends VerticalLayout implements View {
             customersTable.setFilter(event.getText());
             
             try {
-                DS.getLogController().addNew(
+                DS.getLOGController().addNew(
                         new Date(),
                         LOGS.DATA_SEARCH.toString(),
                         "User : " + UN + ", Customer search: " + event.getText(),
-                        DS.getInfSysUserController().getByID(UN)
+                        DS.getINFSYSUSERController().getByID(UN)
                 );
             } catch (Exception ex) {
                 Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);

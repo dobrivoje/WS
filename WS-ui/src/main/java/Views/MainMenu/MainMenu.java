@@ -115,9 +115,9 @@ public class MainMenu extends CssLayout {
             public void menuSelected(MenuItem selectedItem) {
                 try {
                     String u = MyUI.get().getAccessControl().getPrincipal();
-                    InfSysUser isu = DS.getInfSysUserController().getByID(u);
+                    InfSysUser isu = DS.getINFSYSUSERController().getByID(u);
 
-                    DS.getLogController().addNew(new Date(), LOGS.LOGOUT.toString(), u, isu);
+                    DS.getLOGController().addNew(new Date(), LOGS.LOGOUT.toString(), u, isu);
                 } catch (Exception ex) {
                     Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }

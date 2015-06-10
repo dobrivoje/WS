@@ -67,7 +67,7 @@ public class CRMView extends DashboardView {
         rootPanel.addComponent(ICL);
 
         try {
-            for (Customer C : DS.getCrmController().getCRM_CustomerActiveCases(false)) {
+            for (Customer C : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
                 Customer_CRMCases_Tree2 ccct = new Customer_CRMCases_Tree2("", C, formAllowed);
 
                 Panel p = new Panel(C.toString(), ccct);
