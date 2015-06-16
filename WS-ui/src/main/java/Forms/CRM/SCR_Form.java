@@ -23,7 +23,7 @@ import static ws.MyUI.DS;
 
 public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
 
-    private final ICRMController CRMController = DS.getCrmController();
+    private final ICRMController CRMController = DS.getCRMController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("FK_IDS")
@@ -94,7 +94,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
         try {
-            RelSALESMANCUST r = DS.getCrmController().getCRM_R_SalesmanCustomer(s, c);
+            RelSALESMANCUST r = DS.getCRMController().getCRM_R_SalesmanCustomer(s, c);
 
             fieldGroup.setItemDataSource(new BeanItem(r));
             beanItem = (BeanItem<RelSALESMANCUST>) fieldGroup.getItemDataSource();

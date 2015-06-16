@@ -18,6 +18,6 @@ import static ws.MyUI.DS;
 public class Salesman_CRMProcessesTree extends CustomObjectTree<CrmProcess> {
 
     public Salesman_CRMProcessesTree(String caption, Salesman s) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCrmController().getCRM_Processes(s, false));
+        super(caption, DS.getCRMController().getCRM_Processes(s, false));
     }
 }

@@ -35,8 +35,8 @@ import static ws.MyUI.DS;
  */
 public class CRMSell_Form extends CRUDForm2<RelSALE> {
     
-    private final ICRMController CRM_Controller = DS.getCrmController();
-    private final IPRODUCTController PRODUCT_Controller = DS.getiPRODUCTController();
+    private final ICRMController CRM_Controller = DS.getCRMController();
+    private final IPRODUCTController PRODUCT_Controller = DS.getProductController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
@@ -50,7 +50,7 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
     private final DateField sellDate = new DateField("Sell Date");
     
     @PropertyId("FK_IDP")
-    private final ComboBox product = new ComboBox("Product", DS.getiPRODUCTController().getAll());
+    private final ComboBox product = new ComboBox("Product", DS.getProductController().getAll());
     
     @PropertyId("ammount")
     private final TextField amount = new TextField("Product Amount");

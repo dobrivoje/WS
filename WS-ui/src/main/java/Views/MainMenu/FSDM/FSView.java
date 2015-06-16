@@ -102,11 +102,11 @@ public class FSView extends VerticalLayout implements View {
                 FS_Table.setFilter(event.getText());
 
                 try {
-                    DS.getLogController().addNew(
+                    DS.getLOGController().addNew(
                             new Date(),
                             LOGS.DATA_SEARCH.toString(),
                             "User : " + UN + ", FS search: " + event.getText(),
-                            DS.getInfSysUserController().getByID(MyUI.get().getAccessControl().getPrincipal()));
+                            DS.getINFSYSUSERController().getByID(MyUI.get().getAccessControl().getPrincipal()));
                 } catch (Exception ex) {
                     Logger.getLogger(FSView.class.getName()).log(Level.SEVERE, null, ex);
                 }

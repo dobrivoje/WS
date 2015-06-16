@@ -309,7 +309,7 @@ public class CustomerTable extends GENTable<Customer> {
 
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
-                    if (DS.getCrmController().getCRM_Processes(c, false, null, null).size() < 1) {
+                    if (DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
                         Notification.show("Warning", "No CRM processes \nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
@@ -320,11 +320,11 @@ public class CustomerTable extends GENTable<Customer> {
                             Customer c = (Customer) source.getValue();
 
                             String infsysuser = MyUI.get().accessControl.getPrincipal();
-                            InfSysUser iu = DS.getInfSysUserController().getByID(infsysuser);
+                            InfSysUser iu = DS.getINFSYSUSERController().getByID(infsysuser);
 
-                            Salesman s = DS.getInfSysUserController().getSalesman(iu);
+                            Salesman s = DS.getINFSYSUSERController().getSalesman(iu);
 
-                            CrmCase cs = DS.getCrmController().getCRM_LastActive_CRMCase(c, s);
+                            CrmCase cs = DS.getCRMController().getCRM_LastActive_CRMCase(c, s);
 
                             getUI().addWindow(new WindowForm(
                                     Menu.MenuDefinitions.CRM_MANAG_NEW_CASE.toString(),

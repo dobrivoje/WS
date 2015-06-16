@@ -21,13 +21,13 @@ public class Test1 {
 
         DataService DS = DataService.getDefault();
 
-        InfSysUser isu = DS.getInfSysUserController().getByID("INTERMOL\\RDragutinovic");
-        Salesman s = DS.getInfSysUserController().getSalesman(isu);
+        InfSysUser isu = DS.getINFSYSUSERController().getByID("INTERMOL\\RDragutinovic");
+        Salesman s = DS.getINFSYSUSERController().getSalesman(isu);
         BussinesLine bl = s.getFkIdbl();
         
         System.err.println("salesman from infsysuser : " + s);
         
-        for (Product p : DS.getiPRODUCTController().getProductsForBussinesLine(bl)) {
+        for (Product p : DS.getProductController().getProductsForBussinesLine(bl)) {
             System.err.println(p);
         }
     }
