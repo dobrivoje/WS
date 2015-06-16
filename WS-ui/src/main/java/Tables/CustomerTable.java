@@ -8,6 +8,7 @@ package Tables;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Forms.CRM.CRMCase_Form;
+import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import Trees.RELCBT_Tree;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -36,9 +37,7 @@ import org.superb.apps.utilities.Enums.Statuses;
 import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -293,8 +292,9 @@ public class CustomerTable extends GENTable<Customer> {
                         getUI().addWindow(new WindowForm3(
                                 "Customer Update Form",
                                 cf,
-                                null,
-                                cf.getClickListener())
+                                "img/crm-user-3.png",
+                                cf.getClickListener(),
+                                250, 205)
                         );
 
                     } else {
@@ -303,7 +303,8 @@ public class CustomerTable extends GENTable<Customer> {
                 }
 
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
-                    showCBTForm((Customer) source.getValue(),
+                    showCBTForm(
+                            (Customer) source.getValue(),
                             MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
 
@@ -323,13 +324,18 @@ public class CustomerTable extends GENTable<Customer> {
                             InfSysUser iu = DS.getINFSYSUSERController().getByID(infsysuser);
 
                             Salesman s = DS.getINFSYSUSERController().getSalesman(iu);
-
                             CrmCase cs = DS.getCRMController().getCRM_LastActive_CRMCase(c, s);
 
-                            getUI().addWindow(new WindowForm(
-                                    Menu.MenuDefinitions.CRM_MANAG_NEW_CASE.toString(),
-                                    false,
-                                    new CRMCase_Form(cs, source, true)));
+                            CRMCase_Form ccf = new CRMCase_Form(cs, source, true);
+
+                            getUI().addWindow(new WindowForm3(
+                                    CRM_MANAG_NEW_CASE.toString(),
+                                    ccf,
+                                    "img/crm-case-new.png",
+                                    ccf.getClickListener(),
+                                    false)
+                            );
+
                         } else {
                             Notification.show("User Rights Error",
                                     "You don't have rights\nto add new CRM case ! ",
@@ -356,14 +362,13 @@ public class CustomerTable extends GENTable<Customer> {
 
             RELCBTForm rcf = new RELCBTForm(customer, false);
 
-            getUI().addWindow(
-                    new WindowFormProp(
-                            "Customer Bussines Type Form",
-                            false,
-                            rcf.getClickListener(),
-                            rcf,
-                            cbtTree
-                    ));
+            getUI().addWindow(new WindowForm3(
+                    "New Customer Business Type",
+                    rcf,
+                    "img/cbt.png",
+                    rcf.getClickListener(),
+                    220, 202)
+            );
         } else {
             Notification.show("User Rights Error",
                     "You don't have rights to add \nbussines type to this customers ! ",

@@ -256,8 +256,10 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         CUST_DATA_MANAG_NEW_CUST.toString(),
                                         cf,
-                                        null,
-                                        cf.getClickListener()));
+                                        "img/crm-user-3.png",
+                                        cf.getClickListener(),
+                                        250, 205)
+                                );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -267,10 +269,12 @@ public class MainMenu extends CssLayout {
 
                                 RELCBTForm rcbtf = new RELCBTForm(false);
 
-                                getUI().addWindow(new WindowForm(
-                                        CUST_DATA_MANAG_NEW_CBT.toString(),
-                                        false,
-                                        rcbtf, rcbtf.getClickListener())
+                                getUI().addWindow(new WindowForm3(
+                                        "New Customer Business Type",
+                                        rcbtf,
+                                        "img/cbt.png",
+                                        rcbtf.getClickListener(),
+                                        220, 202)
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -297,14 +301,15 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                CRMCase_Form crmCaseForm = new CRMCase_Form(null, null, true);
+                                CRMCase_Form ccf = new CRMCase_Form(null, null, true);
 
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_CASE.toString(),
-                                        crmCaseForm,
-                                        "img/crm-case.jpg",
-                                        crmCaseForm.getClickListener()
-                                ));
+                                        ccf,
+                                        "img/crm-case-new.png",
+                                        ccf.getClickListener(),
+                                        300, 253)
+                                );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -312,13 +317,14 @@ public class MainMenu extends CssLayout {
                         case CRM_MANAG_NEW_PROCESS:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
-                                    CRMProcess_Form crmProcessForm = new CRMProcess_Form(null, true, null, false);
+                                    CRMProcess_Form cpf = new CRMProcess_Form(null, true, null, false);
 
                                     getUI().addWindow(new WindowForm3(
                                             CRM_MANAG_NEW_PROCESS.toString(),
-                                            crmProcessForm,
-                                            "img/crm-process.jpg",
-                                            crmProcessForm.getClickListener())
+                                            cpf,
+                                            "img/crm-process3.png",
+                                            cpf.getClickListener(),
+                                            false)
                                     );
 
                                 } catch (NullPointerException | IllegalArgumentException ex) {
@@ -331,11 +337,14 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                                 SCR_Form scf = new SCR_Form(false);
 
-                                getUI().addWindow(new WindowForm(
+                                getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
-                                        false,
                                         scf,
-                                        scf.getClickListener()));
+                                        "img/new-sc-rel2.jpg",
+                                        scf.getClickListener(),
+                                        230, 256)
+                                );
+
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                             }

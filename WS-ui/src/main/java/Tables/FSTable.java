@@ -48,7 +48,7 @@ public class FSTable extends GENTable<Fuelstation> {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
                 HorizontalLayout optLayout = new HorizontalLayout();
-
+                
                 final Button editBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
@@ -83,7 +83,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     }
                 });
 
-                editBtn.setIcon(FontAwesome.THUMBS_O_UP);
+                editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
                 editBtn.setDescription("Update this Fuelstation with new data...");
                 editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL));
 
@@ -110,7 +110,7 @@ public class FSTable extends GENTable<Fuelstation> {
         setVisibleColumns("name", "options", "img", "FK_City", "address");
         setColumnHeaders("FUEL STATION", "OPTIONS", "FS IMAGE", "CITY", "ADDRESS");
 
-        setColumnWidth("options", 120);
+        setColumnWidth("options", 124);
         setColumnWidth("img", 90);
     }
 

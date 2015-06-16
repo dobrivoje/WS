@@ -33,6 +33,22 @@ public class WindowForm3 extends Window {
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktor">
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener) {
+        this(caption, formLayout, imageLocation, externalButtonClickListener, false);
+    }
+
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
+        if (imageDefaultSize) {
+            init(caption, formLayout, imageLocation, externalButtonClickListener, 150, -1);
+        } else {
+            init(caption, formLayout, imageLocation, externalButtonClickListener, -1, -1);
+        }
+    }
+
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
+        init(caption, formLayout, imageLocation, externalButtonClickListener, imgWidth, imgHeight);
+    }
+
+    private void init(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -53,27 +69,13 @@ public class WindowForm3 extends Window {
         content.addComponent(detailsWrapper);
         content.setExpandRatio(detailsWrapper, 1f);
 
-        detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation));
+        detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation, imgWidth, imgHeight));
         content.addComponent(buildFooter(externalButtonClickListener));
-    }
-
-    /**
-     * Kreiraj formu sa slikom korisnika
-     *
-     * @param caption
-     * @param formLayout
-     */
-    public WindowForm3(String caption, Layout formLayout) {
-        this(caption, formLayout, "img/profile-pic-300px.jpg", null);
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
-    protected final Component buildFormTab(String caption, Layout formLayout) {
-        return buildFormTab(caption, formLayout, "img/profile-pic-300px.jpg");
-    }
-
-    protected final Component buildFormTab(String caption, Layout formLayout, String imageLocation) {
+    protected final Component buildFormTab(String caption, Layout formLayout, String imageLocation, int imageWidth, int imageHeight) {
         formLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         formLayout.setSizeUndefined();
 
@@ -93,7 +95,20 @@ public class WindowForm3 extends Window {
         }
 
         Image profilePic = new Image(null, new ThemeResource(imageLocation));
-        profilePic.setWidth(140, Unit.PIXELS);
+
+        if (imageWidth < 0 && imageHeight < 0) {
+            profilePic.setWidth(85, Unit.PERCENTAGE);
+            profilePic.setHeight(85, Unit.PERCENTAGE);
+        } else {
+            if (imageWidth > 0) {
+                profilePic.setWidth(imageWidth, Unit.PIXELS);
+            }
+
+            if (imageHeight > 0) {
+                profilePic.setHeight(imageHeight, Unit.PIXELS);
+            }
+        }
+
         picLayout.addComponent(profilePic);
 
         centralLayout.addComponent(picLayout);
