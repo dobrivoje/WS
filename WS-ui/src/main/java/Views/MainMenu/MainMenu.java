@@ -297,7 +297,7 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                CRMCase_Form crmCaseForm = new CRMCase_Form(null, null, null, false);
+                                CRMCase_Form crmCaseForm = new CRMCase_Form(null, null, true);
 
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_CASE.toString(),

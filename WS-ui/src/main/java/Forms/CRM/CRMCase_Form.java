@@ -70,64 +70,12 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         salesman.focus();
     }
 
-    public CRMCase_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
-        this();
-
-        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
-
-        RelSALESMANCUST relSC = null;
-
-        try {
-            relSC = CRM_Controller.getCRM_R_SalesmanCustomer(s, c);
-        } catch (Exception ex) {
-        }
-
-        this.salesman.setValue(s);
-        this.customer.setValue(c);
-
-        CrmCase crmCase = new CrmCase(new Date(), null, relSC);
-
-        fieldGroup.setItemDataSource(new BeanItem(crmCase));
-        beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
-
-        btnCaption = BUTTON_CAPTION_SAVE.toString();
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
-
-                try {
-                    fieldGroup.commit();
-
-                    CRM_Controller.addNewCRM_Case(beanItem.getBean());
-
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
-
-                    Notification n = new Notification("New CRM Case Added.", Notification.Type.TRAY_NOTIFICATION);
-
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-
-                } catch (FieldGroup.CommitException ce) {
-                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                }
-            }
-        };
-
-        addComponents(salesman, customer);
-        addBeansToForm();
-    }
-
-    public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer) {
-        this(crmCase, false, visualContainer);
-    }
-
     public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase) {
         this(crmCase, false, visualContainer);
+
+        salesman.setEnabled(newCase);
+        customer.setEnabled(newCase);
+        startDate.setEnabled(newCase);
 
         finished.setEnabled(!newCase);
         endDate.setEnabled(!newCase);

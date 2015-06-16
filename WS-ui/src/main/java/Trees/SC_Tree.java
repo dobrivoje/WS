@@ -98,7 +98,7 @@ public class SC_Tree extends CustomSCTree<Salesman> {
                         List<CrmCase> openCustomerCases = DS.getCrmController().getCRM_Cases(c, false);
 
                         if (openCustomerCases.isEmpty()) {
-                            CRMCase_Form ccf = new CRMCase_Form(s, c, null, false);
+                            CRMCase_Form ccf = new CRMCase_Form(null, null, true);
 
                             getUI().addWindow(new WindowForm(
                                     ACTION_NEW_CRM_CASE.getCaption(),

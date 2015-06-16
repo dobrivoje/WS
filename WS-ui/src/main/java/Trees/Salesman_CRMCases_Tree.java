@@ -65,7 +65,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(crmCase, false, null);
+                                CRMCase_Form ccf = new CRMCase_Form(crmCase, null, false);
 
                                 getUI().addWindow(
                                         new WindowFormProp(
