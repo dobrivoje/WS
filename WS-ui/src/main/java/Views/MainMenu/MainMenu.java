@@ -256,7 +256,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         CUST_DATA_MANAG_NEW_CUST.toString(),
                                         cf,
-                                        "img/crm-user-3.png",
+                                        "img/crm/crm-user-3.png",
                                         cf.getClickListener(),
                                         250, 205)
                                 );
@@ -272,7 +272,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         "New Customer Business Type",
                                         rcbtf,
-                                        "img/cbt.png",
+                                        "img/crm/cbt.png",
                                         rcbtf.getClickListener(),
                                         220, 202)
                                 );
@@ -288,7 +288,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         SALE_NEW.toString(),
                                         csf,
-                                        "img/CRM_Sale.jpg",
+                                        "img/crm/crm-new-sale.png",
                                         csf.getClickListener())
                                 );
                             } else {
@@ -306,7 +306,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_CASE.toString(),
                                         ccf,
-                                        "img/crm-case-new.png",
+                                        "img/crm/crm-case-new.png",
                                         ccf.getClickListener(),
                                         300, 253)
                                 );
@@ -322,7 +322,7 @@ public class MainMenu extends CssLayout {
                                     getUI().addWindow(new WindowForm3(
                                             CRM_MANAG_NEW_PROCESS.toString(),
                                             cpf,
-                                            "img/crm-process3.png",
+                                            "img/crm/crm-process3.png",
                                             cpf.getClickListener(),
                                             false)
                                     );
@@ -340,7 +340,7 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                         scf,
-                                        "img/new-sc-rel2.jpg",
+                                        "img/crm/new-sc-rel2.jpg",
                                         scf.getClickListener(),
                                         230, 256)
                                 );

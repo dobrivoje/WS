@@ -78,7 +78,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         startDate.setEnabled(newCase);
 
         finished.setEnabled(!newCase);
-        endDate.setEnabled(!newCase);
+        endDate.setEnabled(false);
     }
 
     public CRMCase_Form(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {

@@ -292,7 +292,7 @@ public class CustomerTable extends GENTable<Customer> {
                         getUI().addWindow(new WindowForm3(
                                 "Customer Update Form",
                                 cf,
-                                "img/crm-user-3.png",
+                                "img/crm/crm-user-3.png",
                                 cf.getClickListener(),
                                 250, 205)
                         );
@@ -331,7 +331,7 @@ public class CustomerTable extends GENTable<Customer> {
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
                                     ccf,
-                                    "img/crm-case-new.png",
+                                    "img/crm/crm-case-new.png",
                                     ccf.getClickListener(),
                                     false)
                             );
@@ -365,7 +365,7 @@ public class CustomerTable extends GENTable<Customer> {
             getUI().addWindow(new WindowForm3(
                     "New Customer Business Type",
                     rcf,
-                    "img/cbt.png",
+                    "img/crm/cbt.png",
                     rcf.getClickListener(),
                     220, 202)
             );
