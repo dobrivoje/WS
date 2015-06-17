@@ -134,11 +134,13 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Fuelstation f = (Fuelstation) FS_Table.getValue();
-                FSOWNER_Form fsoForm;
 
                 if (f != null) {
-                    fsoForm = new FSOWNER_Form(f, null);
-                    getUI().addWindow(new WindowForm("New Fuelstation Owner", false, fsoForm));
+                    getUI().addWindow(new WindowForm(
+                            "New Fuelstation Owner",
+                            false,
+                            new FSOWNER_Form(f, null)
+                    ));
                 } else {
                     getUI().addWindow(new WindowForm(
                             FS_DATA_MANAG_NEW_FS_OWNER.toString(),

@@ -7,6 +7,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.data.util.converter.StringToIntegerConverter;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -219,7 +220,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
     }
 
     @Override
-    protected void initFields() {
+    protected final void initFields() {
         currentCustomerTxtField.setWidth(200, Unit.PIXELS);
         currentCustomerTxtField.setEnabled(false);
 
@@ -228,9 +229,9 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         comment.setRows(5);
 
         // postavi validatore
-        noOfTanks.setConverter(Integer.class);
+        noOfTanks.setConverter(new StringToIntegerConverter());
         noOfTanks.setConversionError("Must be natural number !");
-        truckCapable.setConverter(Integer.class);
+        truckCapable.setConverter(new StringToIntegerConverter());
         truckCapable.setConversionError("Must be natural number !");
 
         // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
