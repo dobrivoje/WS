@@ -57,6 +57,6 @@ public class CustomSCTree<T> extends CustomTree<T> {
      * @param list Lista podčvorova za čvor t
      */
     protected void createSubItems(T t, List list) {
-        setSubTreeItems(t, list);
+        setNodeItems(t, list);
     }
 }

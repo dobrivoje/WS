@@ -19,12 +19,17 @@ public class FSOwner_Tree extends CustomDateTree<Owner> {
 
     public FSOwner_Tree(String caption, Customer customer, boolean justActive, boolean formEditAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCustomerController().getAllFSOwnedByCustomer(customer, justActive), formEditAllowed);
-        createSubItems();
     }
 
-    private void createSubItems() {
-        for (Owner o : elements) {
-            createSubItems(o, o.getDateFrom(), o.getDateTo());
-        }
+    /**
+     * <p>
+     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
+     * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
+     *
+     * @param owner Čvor
+     */
+    @Override
+    protected void scanAllNodes(Owner owner) {
+        scanAllNodesForDates(owner, owner.getDateFrom(), owner.getDateTo());
     }
 }

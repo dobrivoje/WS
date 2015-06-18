@@ -87,7 +87,7 @@ public class CustomTree<T> extends Tree {
      * @param item Čvor
      * @param childItems Lista podčvorova
      */
-    public void setSubTreeItems(Object item, List childItems) {
+    protected void setNodeItems(Object item, List childItems) {
         for (Object childItem : childItems) {
             if (this.containsId(item)) {
                 addItem(childItem);

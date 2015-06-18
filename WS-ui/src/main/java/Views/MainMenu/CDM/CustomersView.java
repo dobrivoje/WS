@@ -12,7 +12,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.CustomerTable;
-import Trees.Customer_CRMCases_Tree;
+import Trees.CRM.Customer_CRMCases_Tree;
 import Trees.FSOwner_Tree;
 import Trees.RELCBT_Tree;
 import Views.ResetButtonForTextField;

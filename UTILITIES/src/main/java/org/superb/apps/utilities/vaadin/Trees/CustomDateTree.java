@@ -20,10 +20,10 @@ import org.dobrivoje.utils.date.formats.DateFormat;
  *
  * @param <T>
  */
-public class CustomDateTree<T> extends CustomObjectTree<T> {
+public abstract class CustomDateTree<T> extends CustomObjectTree<T> {
 
-    private static final String DATEFORMAT = DateFormat.DATE_FORMAT_SRB.toString();
-    private static final String[] MSG = new String[]{
+    protected static final String DATEFORMAT = DateFormat.DATE_FORMAT_SRB.toString();
+    protected static final String[] MSG = new String[]{
         "no start date !", "From: ",
         "no end date !", "To: "
     };
@@ -31,33 +31,27 @@ public class CustomDateTree<T> extends CustomObjectTree<T> {
     public CustomDateTree(String caption, List treeItems, boolean formEditAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
 
+        //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
             if (formEditAllowed) {
                 if (event.isDoubleClick()) {
                     if (event.getItemId() instanceof List) {
-                        
+
                     }
                 }
             }
         });
+        //</editor-fold>
     }
 
-    /**
-     * <p>
-     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
-     * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
-     *
-     * @param t Čvor
-     * @param dateFrom 1. Podčvor - Datum Od
-     * @param dateTo 2. Podčvor - Datum Do
-     */
-    protected void createSubItems(T t, Date dateFrom, Date dateTo) {
+    protected void scanAllNodesForDates(T t, Date dateFrom, Date dateTo) {
         String df;
         String dt;
 
         df = (dateFrom == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateFrom));
         dt = (dateTo == null ? "" : new SimpleDateFormat(DATEFORMAT).format(dateTo));
 
-        setSubTreeItems(t, Arrays.asList(df.equals("") ? MSG[0] : MSG[1] + df, dt.equals("") ? MSG[2] : MSG[3] + dt));
+        setNodeItems(t, Arrays.asList(df.equals("") ? MSG[0] : MSG[1] + df, dt.equals("") ? MSG[2] : MSG[3] + dt));
     }
+    
 }

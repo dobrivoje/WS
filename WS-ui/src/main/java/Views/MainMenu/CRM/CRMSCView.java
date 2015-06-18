@@ -1,6 +1,6 @@
 package Views.MainMenu.CRM;
 
-import Trees.SC_Tree;
+import Trees.CRM.SC_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Trees;
+package Trees.CRM;
 
 import Forms.CRM.CRMCase_Form;
 import Forms.CRM.CRMProcess_Form;
@@ -19,7 +19,6 @@ import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import static ws.MyUI.DS;
 
@@ -27,7 +26,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements IRefreshVisualContainer {
+public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> {
 
     /**
      *
@@ -39,7 +38,6 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
      */
     public Salesman_CRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCRMController().getCRM_Cases(salesman, false));
-        init();
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
@@ -134,14 +132,8 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> implements
         //</editor-fold>
     }
 
-    private void init() {
-        for (CrmCase c : elements) {
-            createSubItems(c, DS.getCRMController().getCRM_Processes(c, false));
-        }
-    }
-
     @Override
-    public void refreshVisualContainer() {
-        init();
+    protected void scanAllNodes(CrmCase cc) {
+        createNodeItems(cc, DS.getCRMController().getCRM_Processes(cc, false));
     }
 }

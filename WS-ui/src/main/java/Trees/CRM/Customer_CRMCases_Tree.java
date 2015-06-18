@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Trees;
+package Trees.CRM;
 
 import Forms.CRM.CRMCase_Form;
 import Forms.CRM.CRMProcess_Form;
@@ -123,20 +123,12 @@ public class Customer_CRMCases_Tree extends CustomObjectTree<CrmCase> {
             }
         });
         //</editor-fold>
-
-        init();
-    }
-
-    private void init() {
-        for (CrmCase c : elements) {
-            if (!c.getFinished()) {
-                createSubItems(c, DS.getCRMController().getCRM_Processes(c, false));
-            }
-        }
     }
 
     @Override
-    public void refreshVisualContainer() {
-        init();
+    protected void scanAllNodes(CrmCase c) {
+        if (!c.getFinished()) {
+            createNodeItems(c, DS.getCRMController().getCRM_Processes(c, false));
+        }
     }
 }

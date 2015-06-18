@@ -1,8 +1,8 @@
 package Views.MainMenu.CRM;
 
 import Layouts.InlineCSSLayout;
-import Trees.Customer_CRMCases_Tree2;
-import Trees.Salesman_CRMCases_Tree;
+import Trees.CRM.Customer_CRMCases_Tree2;
+import Trees.CRM.Salesman_CRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
