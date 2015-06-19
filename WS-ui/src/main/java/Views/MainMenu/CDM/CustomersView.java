@@ -86,6 +86,7 @@ public class CustomersView extends VerticalLayout implements View {
         //</editor-fold>
 
         customersTable.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            customersTable.setTableSelected(true);
             Customer c = (Customer) customersTable.getValue();
             showPropForm(c);
         });

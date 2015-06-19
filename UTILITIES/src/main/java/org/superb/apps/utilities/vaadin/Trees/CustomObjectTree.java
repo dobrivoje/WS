@@ -25,11 +25,19 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
 
     private void init() {
         for (T e : elements) {
-            scanAllNodes(e);
+            iterateAllNodes(e);
         }
     }
 
-    protected abstract void scanAllNodes(T e);
+    /**
+     * <p>
+     * iterateAllNodes metod, se koristi u init metodu </p>
+     * kako bi se ispitao svaki čvor "t"
+     *
+     *
+     * @param t
+     */
+    protected abstract void iterateAllNodes(T t);
 
     /**
      * <p>

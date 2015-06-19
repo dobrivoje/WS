@@ -22,7 +22,7 @@ public class CRM_SingleCase_Tree extends CustomObjectTree<CrmCase> {
     }
 
     @Override
-    protected void scanAllNodes(CrmCase c) {
+    protected void iterateAllNodes(CrmCase c) {
         if (!c.getFinished()) {
             createNodeItems(c, DS.getCRMController().getCRM_Processes(c, false));
         }

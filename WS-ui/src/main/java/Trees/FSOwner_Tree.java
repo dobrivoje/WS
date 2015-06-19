@@ -29,7 +29,7 @@ public class FSOwner_Tree extends CustomDateTree<Owner> {
      * @param owner Čvor
      */
     @Override
-    protected void scanAllNodes(Owner owner) {
-        scanAllNodesForDates(owner, owner.getDateFrom(), owner.getDateTo());
+    protected void iterateAllNodes(Owner owner) {
+        iterateAllNodesForDates(owner, owner.getDateFrom(), owner.getDateTo());
     }
 }

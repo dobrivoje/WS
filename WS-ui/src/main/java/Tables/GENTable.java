@@ -47,6 +47,17 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     protected final BeanItemContainer<T> beanContainer;
     protected List list;
 
+    /**
+     * <p>
+     * Polje koje se odnosi na ispravnu inicijalizaciju kontekstnog menija.</p>
+     * Rešavanje problema kada se ne izabere red u tabeli, a startuje se
+     * kontekstni meni, koji izaziva razne greške i izuzetke.
+     * <p>
+     * Ispravno je jedino podići kontekstni meni kada se označi red u izabranoj
+     * tabeli.</p>
+     */
+    protected boolean tableSelected;
+
     //<editor-fold defaultstate="collapsed" desc="Notif">
     class Notif {
 
@@ -89,6 +100,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
     //</editor-fold>
 
     public GENTable(BeanItemContainer<T> beanContainer, List list) {
+        this.tableSelected = false;
         this.beanContainer = beanContainer;
         this.list = list;
 
@@ -135,30 +147,40 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="getter/setter tableSelected">
+    public boolean isTableSelected() {
+        return tableSelected;
+    }
+
+    public void setTableSelected(boolean tableSelected) {
+        this.tableSelected = tableSelected;
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Image i Gallery">
     protected Image createFSImage(final Fuelstation f, float height, float width) {
         Document defaultImage = DS.getDocumentController().getDefaultFSImage(f);
 
-        final Image image;
+        Image image;
 
-        if (defaultImage != null) {
+        try {
             image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
             image.setDescription("Double click to open\nan Image Gallery.");
-        } else {
+
+            image.addClickListener(new MouseEvents.ClickListener() {
+                @Override
+                public void click(MouseEvents.ClickEvent event) {
+                    if (event.isDoubleClick()) {
+                        openFSGalleryWindow("Fuelstation - " + f.getName(), f);
+                    }
+                }
+            });
+        } catch (Exception e) {
             image = new Image(null, new ThemeResource("img/fs/1.png"));
         }
 
         image.setHeight(height, Unit.PIXELS);
         image.setWidth(width, Unit.PIXELS);
-
-        image.addClickListener(new MouseEvents.ClickListener() {
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                if (event.isDoubleClick()) {
-                    openFSGalleryWindow("Fuelstation - " + f.getName(), f);
-                }
-            }
-        });
 
         return image;
     }
@@ -258,7 +280,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
         if (uploaderOnForm) {
             rootLayout.addComponents(imageUploader);
         }
-        
+
         rootLayout.addComponent(FSLowerImagesCssLayout);
 
         return rootLayout;

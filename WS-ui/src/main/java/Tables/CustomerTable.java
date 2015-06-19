@@ -52,11 +52,12 @@ public class CustomerTable extends GENTable<Customer> {
     private static final Action ACTION_CRM_ACTIVE_PROCESSES = new Action("Active Customer CRM Processes");
     private static final Action ACTION_CRM_NEW_CASE = new Action("New Customer CRM Case");
 
+    private Action.Handler actionHandler;
+
     public CustomerTable() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
 
-        // inicijalizuj handler,...
-        addActionHandler(new Action.Handler() {
+        actionHandler = new Action.Handler() {
             @Override
             public Action[] getActions(Object target, Object sender) {
                 return new Action[]{};
@@ -65,7 +66,9 @@ public class CustomerTable extends GENTable<Customer> {
             @Override
             public void handleAction(Action action, Object sender, Object target) {
             }
-        });
+        };
+
+        addActionHandler(actionHandler);
     }
 
     public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {
@@ -263,7 +266,7 @@ public class CustomerTable extends GENTable<Customer> {
 
     @Override
     public final void addActionHandler(Action.Handler actionHandler) {
-        super.addActionHandler(new Action.Handler() {
+        super.addActionHandler(actionHandler = new Action.Handler() {
 
             @Override
             public Action[] getActions(Object target, Object sender) {
@@ -279,6 +282,7 @@ public class CustomerTable extends GENTable<Customer> {
             public void handleAction(Action action, Object sender, Object target) {
                 final CustomerTable source = (CustomerTable) sender;
 
+                //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
                     Customer c = (Customer) (source.getValue());
                     CustomerForm cf = new CustomerForm(
@@ -301,20 +305,26 @@ public class CustomerTable extends GENTable<Customer> {
                         Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
+                //</editor-fold>
 
+                //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_BUSSINES_TYPE">
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
                     showCBTForm(
                             (Customer) source.getValue(),
                             MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
+                //</editor-fold>
 
+                //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_ACTIVE_PROCESSES">
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
                     if (DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
                         Notification.show("Warning", "No CRM processes \nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
+                //</editor-fold>
 
+                //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_NEW_CASE">
                 if (action.equals(ACTION_CRM_NEW_CASE)) {
                     try {
                         if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
@@ -345,9 +355,9 @@ public class CustomerTable extends GENTable<Customer> {
                         Notification.show("Warning", e.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
                 }
+                //</editor-fold>
             }
-        }
-        );
+        });
     }
 
     public void showCBTForm(Customer customer, boolean formEditAllowed) {

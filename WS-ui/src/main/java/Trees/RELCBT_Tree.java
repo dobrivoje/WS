@@ -23,13 +23,13 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
     /**
      * <p>
-     * Kreiraj stablo sa čvorovima koji se dobijaju iz liste.</p>
+     * Kreiraj stablo sa listom čvorova</p>
      * Postoje tačno dva podčvora svakog čvora, i predastavljaju datume od - do.
      *
      * @param rcbt Čvor
      */
     @Override
-    protected void scanAllNodes(RelCBType rcbt) {
-        scanAllNodesForDates(rcbt, rcbt.getDateFrom(), rcbt.getDateTo());
+    protected void iterateAllNodes(RelCBType rcbt) {
+        iterateAllNodesForDates(rcbt, rcbt.getDateFrom(), rcbt.getDateTo());
     }
 }

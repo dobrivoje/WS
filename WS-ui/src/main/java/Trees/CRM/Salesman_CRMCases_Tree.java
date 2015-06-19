@@ -133,7 +133,7 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> {
     }
 
     @Override
-    protected void scanAllNodes(CrmCase cc) {
+    protected void iterateAllNodes(CrmCase cc) {
         createNodeItems(cc, DS.getCRMController().getCRM_Processes(cc, false));
     }
 }

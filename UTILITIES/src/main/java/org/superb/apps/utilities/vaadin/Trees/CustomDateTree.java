@@ -36,7 +36,7 @@ public abstract class CustomDateTree<T> extends CustomObjectTree<T> {
             if (formEditAllowed) {
                 if (event.isDoubleClick()) {
                     if (event.getItemId() instanceof List) {
-
+                        
                     }
                 }
             }
@@ -44,7 +44,7 @@ public abstract class CustomDateTree<T> extends CustomObjectTree<T> {
         //</editor-fold>
     }
 
-    protected void scanAllNodesForDates(T t, Date dateFrom, Date dateTo) {
+    protected void iterateAllNodesForDates(T t, Date dateFrom, Date dateTo) {
         String df;
         String dt;
 

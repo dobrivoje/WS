@@ -12,7 +12,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.Action;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -48,7 +47,7 @@ public class FSTable extends GENTable<Fuelstation> {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
                 HorizontalLayout optLayout = new HorizontalLayout();
-                
+
                 final Button editBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
@@ -147,7 +146,11 @@ public class FSTable extends GENTable<Fuelstation> {
                 CRUDForm2 cf = null;
 
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
-                    openFSGalleryWindow("Fuelstation - " + f.getName(), f);
+                    try {
+                        openFSGalleryWindow("Fuelstation - " + f.getName(), f);
+                    } catch (Exception e) {
+                        Notification.show("Gallery Info Message", "Fuelstation Has No Images Yet.", Notification.Type.ERROR_MESSAGE);
+                    }
                 }
 
                 if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
