@@ -139,7 +139,7 @@ public class FSView extends VerticalLayout implements View {
                     getUI().addWindow(new WindowForm(
                             "New Fuelstation Owner",
                             false,
-                            new FSOWNER_Form(f, null)
+                            new FSOWNER_Form(f, null, false)
                     ));
                 } else {
                     getUI().addWindow(new WindowForm(
