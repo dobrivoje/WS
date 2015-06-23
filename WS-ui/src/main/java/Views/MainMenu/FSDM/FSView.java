@@ -2,6 +2,8 @@ package Views.MainMenu.FSDM;
 
 import Forms.FSM.FSOWNER_Form;
 import Forms.FSPROP.FSPROP_Form;
+import ImageGallery.CustomerFuelStationsGallery;
+import ImageGallery.IImageGallery;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
@@ -16,13 +18,14 @@ import Tables.FSTable;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.UI;
 import db.ent.Fuelstation;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -134,20 +137,26 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Fuelstation f = (Fuelstation) FS_Table.getValue();
+                IImageGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
+
+                FSOWNER_Form fof;
+                String msg;
 
                 if (f != null) {
-                    getUI().addWindow(new WindowForm(
-                            "New Fuelstation Owner",
-                            false,
-                            new FSOWNER_Form(f, null, false)
-                    ));
+                    fof = new FSOWNER_Form(f, null, false);
+                    msg = "New Fuelstation Owner";
                 } else {
-                    getUI().addWindow(new WindowForm(
-                            FS_DATA_MANAG_NEW_FS_OWNER.toString(),
-                            false,
-                            new FSOWNER_Form(false))
-                    );
+                    fof = new FSOWNER_Form(false);
+                    msg = FS_DATA_MANAG_NEW_FS_OWNER.toString();
                 }
+
+                getUI().addWindow(new WindowFormProp(
+                        msg,
+                        false,
+                        fof.getClickListener(),
+                        fof,
+                        IG.createMainImage(f)
+                ));
             }
         });
 

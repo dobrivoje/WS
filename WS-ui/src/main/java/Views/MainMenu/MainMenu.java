@@ -24,7 +24,6 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.themes.ValoTheme;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import Forms.CDM.CustomerForm;
 import Forms.CDM.RELCBTForm;
 import Forms.CRM.CRMCase_Form;
@@ -360,14 +359,16 @@ public class MainMenu extends CssLayout {
                             if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                                 navigator.navigateTo(FSView.class.getSimpleName());
 
-                                FSForm ff = new FSForm(false);
+                                FSForm fof = new FSForm(false);
 
-                                getUI().addWindow(new WindowForm(
+                                getUI().addWindow(new WindowForm3(
                                         FS_DATA_MANAG_NEW_FS.toString(),
-                                        false,
-                                        ff,
-                                        ff.getClickListener())
+                                        fof,
+                                        "img/crm/cbt.png",
+                                        fof.getClickListener(),
+                                        220, 202)
                                 );
+
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
                             }
@@ -377,11 +378,12 @@ public class MainMenu extends CssLayout {
 
                                 FSOWNER_Form fof = new FSOWNER_Form(false);
 
-                                getUI().addWindow(new WindowForm(
+                                getUI().addWindow(new WindowForm3(
                                         FS_DATA_MANAG_NEW_FS_OWNER.toString(),
-                                        false,
                                         fof,
-                                        fof.getClickListener())
+                                        "img/crm/cbt.png",
+                                        fof.getClickListener(),
+                                        220, 202)
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);

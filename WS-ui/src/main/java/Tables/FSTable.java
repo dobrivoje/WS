@@ -5,6 +5,8 @@
  */
 package Tables;
 
+import ImageGallery.IImageGallery;
+import ImageGallery.CustomerFuelStationsGallery;
 import Forms.CRUDForm2;
 import Forms.FSM.FSForm;
 import Forms.FSM.FSOWNER_Form;
@@ -18,6 +20,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 import db.ent.Fuelstation;
 import java.util.List;
 import org.dobrivoje.auth.roles.RolesPermissions;
@@ -36,8 +39,12 @@ public class FSTable extends GENTable<Fuelstation> {
     private static final Action ACTION_FS_PROPERTY = new Action("New Fuelstation Property");
     private static final Action ACTION_FS_IMG_GALLERY = new Action("Fuelstation Image Gallery");
 
+    private IImageGallery IG;
+
     public FSTable() {
         this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
+
+        IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), FSTable.this::refreshVisualContainer);
     }
 
     public FSTable(BeanItemContainer<Fuelstation> BIC_FS, List list) {
@@ -60,7 +67,7 @@ public class FSTable extends GENTable<Fuelstation> {
                                 false,
                                 cf.getClickListener(),
                                 cf,
-                                createImageGallery(f, true))
+                                IG.createImageGallery(f, true))
                         );
                     }
                 });
@@ -77,7 +84,7 @@ public class FSTable extends GENTable<Fuelstation> {
                                 false,
                                 fof.getClickListener(),
                                 fof,
-                                createMainImage(f)
+                                IG.createMainImage(f)
                         ));
                     }
                 });
@@ -102,7 +109,7 @@ public class FSTable extends GENTable<Fuelstation> {
         addGeneratedColumn("img", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                return createFSImage((Fuelstation) row, 80, 80);
+                return IG.createObjectImage((Fuelstation) row, 80, 80);
             }
         });
 
@@ -147,7 +154,7 @@ public class FSTable extends GENTable<Fuelstation> {
 
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
                     try {
-                        openFSGalleryWindow("Fuelstation - " + f.getName(), f);
+                        IG.openObjectGalleryWindow("Fuelstation - " + f.getName(), f);
                     } catch (Exception e) {
                         Notification.show("Gallery Info Message", "Fuelstation Has No Images Yet.", Notification.Type.ERROR_MESSAGE);
                     }
@@ -170,7 +177,7 @@ public class FSTable extends GENTable<Fuelstation> {
                                 false,
                                 cf.getClickListener(),
                                 cf,
-                                createImageGallery(f, false))
+                                IG.createImageGallery(f, false))
                         );
                     }
 

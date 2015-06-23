@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tables;
+package ImageGallery;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.Resource;

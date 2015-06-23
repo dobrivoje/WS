@@ -47,8 +47,6 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        initFields();
-
         customer.focus();
     }
 
@@ -63,7 +61,6 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         btnCaption = BUTTON_CAPTION_SAVE.toString();
 
         setFieldsFromBean(new Owner(null, null, new Date(), null, true));
-        active.setEnabled(false);
 
         clickListener = new Button.ClickListener() {
             @Override
@@ -87,6 +84,8 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         };
 
         addBeansToForm();
+
+        initFields();
     }
 
     public FSOWNER_Form(final Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
@@ -148,7 +147,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         };
 
         addBeansToForm();
-        
+
         initFields();
     }
 
@@ -179,7 +178,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     protected final void initFields() {
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
-        
+
         dateTo.setEnabled(false);
         active.setEnabled(false);
 
