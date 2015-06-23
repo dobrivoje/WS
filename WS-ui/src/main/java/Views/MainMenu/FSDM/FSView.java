@@ -3,7 +3,7 @@ package Views.MainMenu.FSDM;
 import Forms.FSM.FSOWNER_Form;
 import Forms.FSPROP.FSPROP_Form;
 import ImageGallery.CustomerFuelStationsGallery;
-import ImageGallery.IImageGallery;
+import ImageGallery.IDocumentGallery;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.navigator.View;
@@ -137,7 +137,7 @@ public class FSView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Fuelstation f = (Fuelstation) FS_Table.getValue();
-                IImageGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
+                IDocumentGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
 
                 FSOWNER_Form fof;
                 String msg;
@@ -155,7 +155,7 @@ public class FSView extends VerticalLayout implements View {
                         false,
                         fof.getClickListener(),
                         fof,
-                        IG.createMainImage(f)
+                        IG.createMainDocument(IG.createDocument(f, 240, 240))
                 ));
             }
         });
