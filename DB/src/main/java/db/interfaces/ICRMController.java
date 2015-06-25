@@ -26,6 +26,10 @@ public interface ICRMController {
 
     CrmStatus getCRM_Status(long ID);
 
+    List<CrmStatus> getCRM_Status(String type);
+
+    List<CrmStatus> getCRM_CaseStatuses(CrmCase crmCase);
+
     List<Customer> getCRM_CustomerActiveCases(boolean caseFinished);
 
     List<CrmCase> getCRM_AllActiveCases(boolean caseFinished);
@@ -61,6 +65,10 @@ public interface ICRMController {
     List<CrmProcess> getCRM_Processes(CrmStatus crmStatus);
 
     RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception;
+
+    List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase);
+
+    List<CrmStatus> getCRM_Statuses(String... type);
 
     /**
      * Svi CRM slučajevi za prodavca koji su završeni, i gde je ugovor o prodaji

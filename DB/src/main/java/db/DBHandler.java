@@ -36,6 +36,8 @@ import db.ent.Log;
 import db.ent.Product;
 import db.ent.RelSALE;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -1069,7 +1071,7 @@ public class DBHandler {
                     .setParameter("IDS", s)
                     .getSingleResult();
         } catch (Exception ex) {
-            throw new Exception("No relation between Salesman and Customer !");
+            throw new Exception("No Relation Between Salesman and Customer !");
         }
     }
 
@@ -1230,7 +1232,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="CRM STATUS">
-    public List<CrmStatus> getCRM_Statuses() {
+    public List<CrmStatus> getCRM_AllStatuses() {
         try {
             return getEm().createNamedQuery("CrmStatus.findAll")
                     .getResultList();
@@ -1247,6 +1249,59 @@ public class DBHandler {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public List<CrmStatus> getCRM_Status(String type) {
+        try {
+            return getEm().createNamedQuery("CrmStatus.findByType")
+                    .setParameter("type", type)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmStatus> getCRM_Statuses(String... type) {
+        List<CrmStatus> L = new ArrayList<>();
+
+        for (String t : type) {
+            L.addAll(getCRM_Status(t));
+        }
+
+        return L;
+    }
+
+    public List<CrmStatus> getCRM_CaseStatuses(CrmCase crmCase) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.CRMCaseStatuses")
+                    .setParameter("CRMCASE", crmCase)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase) {
+        Set<CrmStatus> s = new HashSet<>(getCRM_CaseStatuses(crmCase));
+
+        Set<CrmStatus> START_ = new HashSet<>(getCRM_Statuses("start"));
+        Set<CrmStatus> END_ = new HashSet<>(getCRM_Statuses("end"));
+        Set<CrmStatus> CURRENT_ = new HashSet<>(getCRM_Statuses("current"));
+
+        List<CrmStatus> L;
+
+        if (s.contains(getCRM_Status(3)) || s.contains(getCRM_Status(4))) {
+            L = null;
+        } else if (s.containsAll(CURRENT_) && s.containsAll(START_)) {
+            CURRENT_.addAll(END_);
+            L = new ArrayList<>(CURRENT_);
+        } else if (s.containsAll(START_)) {
+            L = new ArrayList<>(CURRENT_);
+        } else {
+            L = new ArrayList<>(START_);
+        }
+
+        return L;
     }
     //</editor-fold>
 
@@ -1307,36 +1362,6 @@ public class DBHandler {
         }
     }
 
-    public void addNewCRM_Case(CrmCase newCrmCase) throws Exception {
-        try {
-            getEm().getTransaction().begin();
-            em.persist(newCrmCase);
-            getEm().getTransaction().commit();
-
-        } catch (Exception ex) {
-            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("New CRM Case Addition Failed.\nCheck fileds that must not be empty."));
-            } else {
-                rollBackTransaction(ex.getMessage());
-            }
-        }
-    }
-
-    public void updateCRM_Case(CrmCase existingCrmCase) throws Exception {
-        try {
-            getEm().getTransaction().begin();
-            em.merge(existingCrmCase);
-            getEm().getTransaction().commit();
-
-        } catch (Exception ex) {
-            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
-                rollBackTransaction(new MyDBNullException("Existing CRM Case Update Failed.\nCheck fileds that must not be empty."));
-            } else {
-                rollBackTransaction(ex.getMessage());
-            }
-        }
-    }
-
     public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.findByCustomer")
@@ -1366,6 +1391,36 @@ public class DBHandler {
                     .getResultList();
         } catch (Exception ex) {
             return null;
+        }
+    }
+
+    public void addNewCRM_Case(CrmCase newCrmCase) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(newCrmCase);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("New CRM Case Addition Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
+        }
+    }
+
+    public void updateCRM_Case(CrmCase existingCrmCase) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.merge(existingCrmCase);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (ex.toString().toLowerCase().contains(DB_NULLVALUES)) {
+                rollBackTransaction(new MyDBNullException("Existing CRM Case Update Failed.\nCheck fileds that must not be empty."));
+            } else {
+                rollBackTransaction(ex.getMessage());
+            }
         }
     }
     //</editor-fold>    

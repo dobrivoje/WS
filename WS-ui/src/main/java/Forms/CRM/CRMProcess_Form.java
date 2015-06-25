@@ -48,7 +48,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
 
     @PropertyId("FK_IDCS")
     private final ComboBox status = new ComboBox("Status",
-            new BeanItemContainer(CrmStatus.class, CRM_Controller.getCRM_AllStatuses()));
+            new BeanItemContainer(CrmStatus.class));
 
     @PropertyId("actionDate")
     private final DateField actionDate = new DateField("Date");
@@ -206,6 +206,20 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> {
                             CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
                 } catch (Exception e) {
                     Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        crmCase.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                try {
+                    status.setContainerDataSource(
+                            new BeanItemContainer(
+                                    CrmStatus.class,
+                                    CRM_Controller.getCRM_AvailableStatuses((CrmCase) crmCase.getValue())));
+                } catch (Exception e) {
+                    Notification.show("Notification", "There is no active CRM status for this case.", Notification.Type.ERROR_MESSAGE);
                 }
             }
         });

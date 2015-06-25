@@ -32,7 +32,7 @@ public class CRM_Controller implements ICRMController {
     //<editor-fold defaultstate="collapsed" desc="Read data">
     @Override
     public List<CrmStatus> getCRM_AllStatuses() {
-        return dbh.getCRM_Statuses();
+        return dbh.getCRM_AllStatuses();
     }
 
     @Override
@@ -131,13 +131,7 @@ public class CRM_Controller implements ICRMController {
 
     @Override
     public RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception {
-        RelSALESMANCUST r = dbh.getCRM_R_Salesman_Cust(s, c);
-
-        if (r == null) {
-            throw new Exception("Salesman not in relation with this customer !");
-        }
-
-        return r;
+        return dbh.getCRM_R_Salesman_Cust(s, c);
     }
 
     /**
@@ -154,6 +148,26 @@ public class CRM_Controller implements ICRMController {
     @Override
     public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean caseAggreed) {
         return dbh.getCRM_CompletedCases(salesman, caseAggreed);
+    }
+
+    @Override
+    public List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase) {
+        return dbh.getCRM_AvailableStatuses(crmCase);
+    }
+
+    @Override
+    public List<CrmStatus> getCRM_Statuses(String... type) {
+        return dbh.getCRM_Statuses(type);
+    }
+
+    @Override
+    public List<CrmStatus> getCRM_Status(String type) {
+        return dbh.getCRM_Status(type);
+    }
+
+    @Override
+    public List<CrmStatus> getCRM_CaseStatuses(CrmCase crmCase) {
+        return dbh.getCRM_CaseStatuses(crmCase);
     }
     //</editor-fold>
 

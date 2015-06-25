@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
             @NamedQuery(name = "CrmStatus.findAll", query = "SELECT c FROM CrmStatus c"),
             @NamedQuery(name = "CrmStatus.findByIdcs", query = "SELECT c FROM CrmStatus c WHERE c.idcs = :idcs"),
             @NamedQuery(name = "CrmStatus.findByStatusName", query = "SELECT c FROM CrmStatus c WHERE c.statusName = :statusName"),
+            @NamedQuery(name = "CrmStatus.findByType", query = "SELECT c FROM CrmStatus c WHERE c.type = :type"),
             @NamedQuery(name = "CrmStatus.findByOverdueDays", query = "SELECT c FROM CrmStatus c WHERE c.daysForOverdue = :DFO")
         }
 )
@@ -47,6 +48,8 @@ public class CrmStatus implements Serializable {
     private String statusName;
     @Column(name = "DaysForOverdue")
     private Integer daysForOverdue;
+    @Column(name = "Type")
+    private String type;
     @OneToMany(mappedBy = "FK_IDCS")
     private List<CrmProcess> crmProcessList;
 
@@ -65,6 +68,11 @@ public class CrmStatus implements Serializable {
     public CrmStatus(String statusName, Integer daysForOverdue) {
         this.statusName = statusName;
         this.daysForOverdue = daysForOverdue;
+    }
+
+    public CrmStatus(String statusName, Integer daysForOverdue, String type) {
+        this(statusName, daysForOverdue);
+        this.type = type;
     }
 
     public Long getIdcs() {
@@ -89,6 +97,14 @@ public class CrmStatus implements Serializable {
 
     public void setDaysForOverdue(Integer daysForOverdue) {
         this.daysForOverdue = daysForOverdue;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @XmlTransient
