@@ -23,22 +23,27 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
         init();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="init">
     private void init() {
         for (T e : elements) {
-            iterateAllNodes(e);
+            createSubNodes(e);
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="createSubNodes">
     /**
      * <p>
-     * iterateAllNodes metod, se koristi u init metodu </p>
+ createSubNodes metod, se koristi u init metodu </p>
      * kako bi se ispitao svaki čvor "t"
      *
      *
      * @param t
      */
-    protected abstract void iterateAllNodes(T t);
+    protected abstract void createSubNodes(T t);
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="createNodeItems">
     /**
      * <p>
      * Kreiraj stablo sa podčvorovima za čvor "t" tipa T</p>
@@ -49,10 +54,13 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     protected void createNodeItems(T t, List subList) {
         super.setNodeItems(t, subList);
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="refreshVisualContainer">
     @Override
     public void refreshVisualContainer() {
         init();
     }
+    //</editor-fold>
 
 }

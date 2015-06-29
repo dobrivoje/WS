@@ -44,10 +44,12 @@ public class CrmStatus implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDCS")
     private Long idcs;
+    @Basic(optional = false)
     @Column(name = "StatusName")
     private String statusName;
     @Column(name = "DaysForOverdue")
     private Integer daysForOverdue;
+    @Basic(optional = false)
     @Column(name = "Type")
     private String type;
     @OneToMany(mappedBy = "FK_IDCS")

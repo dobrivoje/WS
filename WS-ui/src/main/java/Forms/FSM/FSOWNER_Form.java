@@ -46,6 +46,7 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
+        initFields();
 
         customer.focus();
     }
@@ -151,6 +152,51 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         initFields();
     }
 
+    public FSOWNER_Form(final Owner owner, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+        this();
+
+        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
+
+        setFieldsFromBean(owner);
+
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
+
+        fieldGroup.setItemDataSource(new BeanItem(owner));
+        beanItem = (BeanItem<Owner>) fieldGroup.getItemDataSource();
+
+        clickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                setBeanFromFields(beanItem.getBean());
+
+                try {
+                    fieldGroup.commit();
+
+                    owner.setActive(dateTo.getValue() == null);
+                    DS.getFSOController().updateExisting(owner);
+
+                    if (visualContainer != null) {
+                        visualContainer.refreshVisualContainer();
+                    }
+
+                    Notification n = new Notification("FS Owner Date Updated.", Notification.Type.TRAY_NOTIFICATION);
+
+                    n.setDelayMsec(500);
+                    n.show(getUI().getPage());
+
+                } catch (MyDBNullException ex) {
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        addBeansToForm();
+
+        lockFormFileds(false);
+    }
+
     @Override
     protected void setBeanFromFields(Owner ownerBean) {
         ownerBean.setFKIDCustomer((Customer) customer.getValue());
@@ -161,12 +207,16 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
     }
 
     @Override
-    protected final void setFieldsFromBean(Owner o) {
-        customer.setValue(o.getFKIDCustomer());
-        fs.setValue(o.getFkIdFs());
-        dateFrom.setValue(o.getDateFrom());
-        dateTo.setValue(o.getDateTo());
-        active.setValue(o.getActive());
+    public final void setFieldsFromBean(Object o) {
+        if (o instanceof Owner) {
+            Owner ow = (Owner) o;
+
+            customer.setValue(ow.getFKIDCustomer());
+            fs.setValue(ow.getFkIdFs());
+            dateFrom.setValue(ow.getDateFrom());
+            dateTo.setValue(ow.getDateTo());
+            active.setValue(ow.getActive());
+        }
     }
 
     @Override
@@ -191,4 +241,15 @@ public class FSOWNER_Form extends CRUDForm2<Owner> {
         fs.setRequired(true);
         dateFrom.setRequired(true);
     }
+
+    @Override
+    protected final void lockFormFileds(boolean lockAll) {
+        if (!lockAll) {
+            customer.setEnabled(false);
+            fs.setEnabled(false);
+            dateFrom.setEnabled(false);
+            dateTo.setEnabled(true);
+        }
+    }
+
 }

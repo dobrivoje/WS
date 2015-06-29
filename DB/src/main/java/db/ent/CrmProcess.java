@@ -68,6 +68,7 @@ public class CrmProcess implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDP")
     private Long idp;
+    @Basic(optional = false)
     @Column(name = "ActionDate")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date actionDate;
@@ -149,9 +150,13 @@ public class CrmProcess implements Serializable {
 
     @Override
     public String toString() {
-        return getFK_IDCS().getStatusName()
-                + ", "
-                + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate());
+        try {
+            return getFK_IDCS().getStatusName()
+                    + ", "
+                    + new SimpleDateFormat("dd.MM.yyyy").format(getActionDate());
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

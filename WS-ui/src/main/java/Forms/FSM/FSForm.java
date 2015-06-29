@@ -130,7 +130,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     }
 
     @Override
-    protected void setFieldsFromBean(Fuelstation t) {
+    public void setFieldsFromBean(Object o) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

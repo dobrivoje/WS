@@ -143,13 +143,17 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     }
 
     @Override
-    protected final void setFieldsFromBean(CrmCase cc) {
-        startDate.setValue(cc.getStartDate());
-        endDate.setValue(cc.getEndDate());
-        description.setValue(cc.getDescription());
-        finished.setValue(cc.getFinished());
-        salesman.setValue(cc.getFK_IDRSC().getFK_IDS());
-        customer.setValue(cc.getFK_IDRSC().getFK_IDC());
+    public final void setFieldsFromBean(Object object) {
+        if (object instanceof CrmCase) {
+            CrmCase cc = (CrmCase) object;
+
+            startDate.setValue(cc.getStartDate());
+            endDate.setValue(cc.getEndDate());
+            description.setValue(cc.getDescription());
+            finished.setValue(cc.getFinished());
+            salesman.setValue(cc.getFK_IDRSC().getFK_IDS());
+            customer.setValue(cc.getFK_IDRSC().getFK_IDC());
+        }
     }
 
     @Override

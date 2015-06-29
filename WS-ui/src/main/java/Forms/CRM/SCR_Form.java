@@ -145,12 +145,16 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     }
 
     @Override
-    protected void setFieldsFromBean(RelSALESMANCUST r) {
-        customer.setValue(r.getFK_IDC());
-        salesman.setValue(r.getFK_IDS());
-        dateFrom.setValue(r.getDateFrom());
-        dateTo.setValue(r.getDateTo());
-        active.setValue(r.getActive());
+    public void setFieldsFromBean(Object o) {
+        if (o instanceof RelSALESMANCUST) {
+            RelSALESMANCUST r = (RelSALESMANCUST) o;
+
+            customer.setValue(r.getFK_IDC());
+            salesman.setValue(r.getFK_IDS());
+            dateFrom.setValue(r.getDateFrom());
+            dateTo.setValue(r.getDateTo());
+            active.setValue(r.getActive());
+        }
     }
 
     @Override

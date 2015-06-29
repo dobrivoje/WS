@@ -154,7 +154,7 @@ public class SC_Tree extends CustomObjectTree<Salesman> {
     }
 
     @Override
-    protected void iterateAllNodes(Salesman s) {
+    protected void createSubNodes(Salesman s) {
         createNodeItems(s, DS.getCRMController().getCRM_Customers(s));
     }
 }

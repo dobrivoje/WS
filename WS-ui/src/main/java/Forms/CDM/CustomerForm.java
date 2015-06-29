@@ -187,22 +187,26 @@ public class CustomerForm extends CRUDForm2<Customer> {
     }
 
     @Override
-    protected void setFieldsFromBean(Customer c) {
-        name.setValue(c.getName());
-        address.setValue(c.getAddress());
-        city.setValue(c.getFKIDCity());
-        pib.setValue(c.getPib());
-        matBr.setValue(c.getMatBr());
-        navCode.setValue(c.getNavCode());
-        licence.setValue(c.getLicence());
-        zone.setValue(c.getZone());
-        tel1.setValue(c.getTel1());
-        tel2.setValue(c.getTel2());
-        fax.setValue(c.getFax());
-        mob.setValue(c.getMob());
-        email1.setValue(c.getEmail1());
-        email2.setValue(c.getEmail2());
-        comment.setValue(c.getComment());
+    public void setFieldsFromBean(Object o) {
+        if (o instanceof Customer) {
+            Customer c = (Customer) o;
+
+            name.setValue(c.getName());
+            address.setValue(c.getAddress());
+            city.setValue(c.getFKIDCity());
+            pib.setValue(c.getPib());
+            matBr.setValue(c.getMatBr());
+            navCode.setValue(c.getNavCode());
+            licence.setValue(c.getLicence());
+            zone.setValue(c.getZone());
+            tel1.setValue(c.getTel1());
+            tel2.setValue(c.getTel2());
+            fax.setValue(c.getFax());
+            mob.setValue(c.getMob());
+            email1.setValue(c.getEmail1());
+            email2.setValue(c.getEmail2());
+            comment.setValue(c.getComment());
+        }
     }
 
     @Override
@@ -213,7 +217,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
     @Override
     protected final void initFields() {
         setRequiredFields();
-        
+
         licence.addItem(false);
         licence.setItemCaption(false, "No licence");
         licence.addItem(true);

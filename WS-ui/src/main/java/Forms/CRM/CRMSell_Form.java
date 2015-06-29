@@ -12,7 +12,6 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.converter.StringToDoubleConverter;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -26,8 +25,6 @@ import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.IPRODUCTController;
 import db.interfaces.ISalesmanController;
-import java.text.NumberFormat;
-import java.util.Locale;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.converters.MyNumberWithNoGrouping;
 import static ws.MyUI.DS;
@@ -146,17 +143,22 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
     }
 
     @Override
-    protected final void setFieldsFromBean(RelSALE sale) {
-        sellDate.setValue(sale.getSellDate());
+    public final void setFieldsFromBean(Object o) {
+        if (o instanceof RelSALE) {
+            RelSALE sale = (RelSALE) o;
 
-        if (sale.getAmmount() > 0) {
-            amount.setValue(String.valueOf(sale.getAmmount()));
+            sellDate.setValue(sale.getSellDate());
+
+            if (sale.getAmmount() > 0) {
+                amount.setValue(String.valueOf(sale.getAmmount()));
+            }
+
+            product.setValue(sale.getFK_IDP().getName());
+            paymentMethod.setValue(sale.getPaymentMethod());
+            crmCase.setValue(sale.getFK_IDCA());
+            salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
         }
 
-        product.setValue(sale.getFK_IDP().getName());
-        paymentMethod.setValue(sale.getPaymentMethod());
-        crmCase.setValue(sale.getFK_IDCA());
-        salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
     }
 
     @Override

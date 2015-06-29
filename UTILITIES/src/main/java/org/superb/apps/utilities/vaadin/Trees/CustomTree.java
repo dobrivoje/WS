@@ -6,7 +6,9 @@
 package org.superb.apps.utilities.vaadin.Trees;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
+import com.vaadin.ui.VerticalLayout;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,12 @@ import java.util.List;
  */
 public class CustomTree<T> extends Tree {
 
+    protected VerticalLayout propPanel;
+    protected List propTrees;
+
+    protected String winFormCaption;
+    protected Panel winFormPropPanel;
+    
     /**
      * <b>Lista počvorova ovog stabla</b>
      */
@@ -26,8 +34,12 @@ public class CustomTree<T> extends Tree {
     private void init(String caption) {
         setCaption(caption);
         elements = new ArrayList();
+
+        propPanel = new VerticalLayout();
+        propPanel.setMargin(true);
+        propTrees = new ArrayList<>();
     }
-    
+
     public CustomTree(String caption) {
         init(caption);
     }

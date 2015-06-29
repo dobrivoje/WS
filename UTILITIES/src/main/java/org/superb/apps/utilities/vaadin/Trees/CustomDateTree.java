@@ -5,7 +5,6 @@
  */
 package org.superb.apps.utilities.vaadin.Trees;
 
-import com.vaadin.event.ItemClickEvent;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -28,20 +27,8 @@ public abstract class CustomDateTree<T> extends CustomObjectTree<T> {
         "no end date !", "To: "
     };
 
-    public CustomDateTree(String caption, List treeItems, boolean formEditAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+    public CustomDateTree(String caption, List treeItems, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
-
-        //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
-        super.addItemClickListener((ItemClickEvent event) -> {
-            if (formEditAllowed) {
-                if (event.isDoubleClick()) {
-                    if (event.getItemId() instanceof List) {
-                        
-                    }
-                }
-            }
-        });
-        //</editor-fold>
     }
 
     protected void iterateAllNodesForDates(T t, Date dateFrom, Date dateTo) {
