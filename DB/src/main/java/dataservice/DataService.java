@@ -55,6 +55,7 @@ public class DataService {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Interfaces Defs">
     private final ICBTController cBTController = new CBT_Controller(DBH);
     private final ICityController cityController = new City_Controller(DBH);
     private final ICustomerController customerController = new Customer_Controller(DBH);
@@ -70,7 +71,9 @@ public class DataService {
     private final IInfSysUserController infSysUserController = new InfSysUser_Controller(DBH);
     private final ILOGController iLogController = new LOG_Controller(DBH);
     private final IPRODUCTController iPRODUCTController = new Product_Controller(DBH);
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Get Interfaces">
     public ICBTController getCBTController() {
         return cBTController;
     }
@@ -130,5 +133,6 @@ public class DataService {
     public IPRODUCTController getProductController() {
         return iPRODUCTController;
     }
+    //</editor-fold>
 
 }

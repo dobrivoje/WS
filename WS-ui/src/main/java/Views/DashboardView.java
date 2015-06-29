@@ -36,6 +36,8 @@ public abstract class DashboardView extends Panel implements View {
 
     private Window notificationsWindow;
 
+    private MenuBar.MenuItem max;
+
     protected DashboardView(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
@@ -121,8 +123,7 @@ public abstract class DashboardView extends Panel implements View {
 
         MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
-        MenuBar.MenuItem max = tools.addItem("", FontAwesome.EXPAND, new MenuBar.Command() {
-
+        max = tools.addItem("", FontAwesome.EXPAND, new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem selectedItem) {
                 if (!slot.getStyleName().contains("max")) {
@@ -140,14 +141,14 @@ public abstract class DashboardView extends Panel implements View {
         panelOptions.addItem("Configure", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem selectedItem) {
-                Notification.show("Not implemented in this demo");
+                Notification.show("Not implemented.");
             }
         });
         panelOptions.addSeparator();
         panelOptions.addItem("Close", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem selectedItem) {
-                Notification.show("Not implemented in this demo");
+                Notification.show("Not implemented.");
             }
         });
 

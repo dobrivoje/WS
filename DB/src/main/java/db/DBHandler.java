@@ -35,6 +35,7 @@ import db.ent.InfSysUser;
 import db.ent.Log;
 import db.ent.Product;
 import db.ent.RelSALE;
+import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -383,26 +384,6 @@ public class DBHandler {
             return (Salesman) getEm().createNamedQuery("Salesman.findByIds")
                     .setParameter("ids", IDS)
                     .getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Salesman> getSalesmanByName(String name) {
-        try {
-            return getEm().createNamedQuery("Salesman.findByName")
-                    .setParameter("name", name)
-                    .getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Salesman> getSalesmanBySurname(String surname) {
-        try {
-            return getEm().createNamedQuery("Salesman.findBySurname")
-                    .setParameter("surname", surname)
-                    .getResultList();
         } catch (Exception ex) {
             return null;
         }
@@ -1493,7 +1474,7 @@ public class DBHandler {
 
     public InfSysUser getByID(long ID) {
         try {
-            return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByIdun")
+            return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByIDUN")
                     .setParameter("idun", ID)
                     .getSingleResult();
         } catch (Exception ex) {
@@ -1501,7 +1482,7 @@ public class DBHandler {
         }
     }
 
-    public InfSysUser getByShiroUserPrincipal(String shiroUserPrincipal) {
+    public InfSysUser getByID(String shiroUserPrincipal) {
         try {
             return (InfSysUser) getEm().createNamedQuery("InfSysUser.findByShiroPrincipal")
                     .setParameter("shiroUserPrincipal", shiroUserPrincipal)
@@ -1509,6 +1490,100 @@ public class DBHandler {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public List<InfSysUser> getSectorManagerUsers(boolean sectorManager) {
+        try {
+            return getEm().createNamedQuery("InfSysUser.SectorManagers")
+                    .setParameter("sectorManager", sectorManager)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<InfSysUser> getTopManagerUsers(boolean topManager) {
+        try {
+            return getEm().createNamedQuery("InfSysUser.TopManagers")
+                    .setParameter("topManager", topManager)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<InfSysUser> getAdminUsers(boolean admin) {
+        try {
+            return getEm().createNamedQuery("InfSysUser.AdminUsers")
+                    .setParameter("admin", admin)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public ISUserType getInfUserType(String shiroUserPrincipal) {
+        try {
+            if (getByID(shiroUserPrincipal).getAdmin()) {
+                return ISUserType.ADMIN;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (getByID(shiroUserPrincipal).getTopManager()) {
+                return ISUserType.TOP_MANAGER;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (getByID(shiroUserPrincipal).getSectorManager()) {
+                return ISUserType.SECTOR_MANAGER;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (getSalesman(getByID(shiroUserPrincipal)) != null) {
+                return ISUserType.SALESMAN;
+            }
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+
+    public ISUserType getInfSysUserType(InfSysUser infSysUser) {
+        try {
+            if (infSysUser.getAdmin()) {
+                return ISUserType.ADMIN;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (infSysUser.getTopManager()) {
+                return ISUserType.TOP_MANAGER;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (infSysUser.getSectorManager()) {
+                return ISUserType.SECTOR_MANAGER;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (getSalesman(infSysUser) != null) {
+                return ISUserType.SALESMAN;
+            }
+        } catch (Exception e) {
+        }
+
+        return ISUserType.ТЕST;
     }
     //</editor-fold>
     //</editor-fold>

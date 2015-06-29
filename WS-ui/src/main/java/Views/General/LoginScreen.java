@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.Enums.LOGS;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -171,7 +172,7 @@ public class LoginScreen extends CssLayout {
                         new Date(),
                         LOGS.LOGIN.toString(),
                         accessControl.getPrincipal() + " Domain=" + domain.getValue(),
-                        DS.getINFSYSUSERController().getByID(accessControl.getPrincipal()));
+                        MyUI.get().getGetLoggedInUser());
 
                 loginListener.doAfterLogin();
             } catch (Exception ex) {

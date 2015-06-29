@@ -11,7 +11,7 @@ import db.ent.Salesman;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public interface ISalesmanController {
 

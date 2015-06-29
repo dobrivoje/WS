@@ -10,6 +10,7 @@ import db.DBHandler;
 import db.ent.Salesman;
 import db.ent.InfSysUser;
 import db.interfaces.IInfSysUserController;
+import enums.ISUserType;
 
 /**
  *
@@ -36,7 +37,7 @@ public class InfSysUser_Controller implements IInfSysUserController {
 
     @Override
     public InfSysUser getByID(String shiroUserPrincipal) {
-        return dbh.getByShiroUserPrincipal(shiroUserPrincipal);
+        return dbh.getByID(shiroUserPrincipal);
     }
 
     @Override
@@ -47,6 +48,31 @@ public class InfSysUser_Controller implements IInfSysUserController {
     @Override
     public Salesman getSalesman(InfSysUser user) {
         return dbh.getSalesman(user, true);
+    }
+
+    @Override
+    public List<InfSysUser> getSectorManagerUsers(boolean sectorManager) {
+        return dbh.getSectorManagerUsers(sectorManager);
+    }
+
+    @Override
+    public List<InfSysUser> getTopManagerUsers(boolean topManager) {
+        return dbh.getTopManagerUsers(topManager);
+    }
+
+    @Override
+    public List<InfSysUser> getAdminUsers(boolean admin) {
+        return dbh.getAdminUsers(admin);
+    }
+
+    @Override
+    public ISUserType getInfUserType(String shiroUserPrincipal) {
+        return dbh.getInfUserType(shiroUserPrincipal);
+    }
+
+    @Override
+    public ISUserType getInfSysUserType(InfSysUser infSysUser) {
+        return dbh.getInfSysUserType(infSysUser);
     }
     //</editor-fold>
 }

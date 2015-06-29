@@ -18,6 +18,8 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
+import db.ent.InfSysUser;
+import enums.ISUserType;
 import org.dobrivoje.auth.IntermolADAccessControl;
 import org.dobrivoje.utils.date.formats.DateFormat;
 
@@ -33,6 +35,9 @@ public class MyUI extends UI {
 
     public static final DataService DS = DataService.getDefault();
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
+
+    private InfSysUser getLoggedInUser;
+    private ISUserType IS_USER_TYPE;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -62,6 +67,9 @@ public class MyUI extends UI {
             setContent(new LoginScreen(accessControl, new LoginListener() {
                 @Override
                 public void doAfterLogin() {
+                    getLoggedInUser = DS.getINFSYSUSERController().getByID(accessControl.getPrincipal());
+                    IS_USER_TYPE = DS.getINFSYSUSERController().getInfSysUserType(MyUI.get().getLoggedInUser);
+
                     showMainView();
                 }
             }));
@@ -77,6 +85,7 @@ public class MyUI extends UI {
         return (MyUI) UI.getCurrent();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Interfaces">
     public IAccessAuthControl getAccessControl() {
         return accessControl;
     }
@@ -84,6 +93,15 @@ public class MyUI extends UI {
     public boolean isPermitted(String permission) {
         return accessControl.isPermitted(permission);
     }
+
+    public InfSysUser getGetLoggedInUser() {
+        return getLoggedInUser;
+    }
+
+    public ISUserType getIS_USER_TYPE() {
+        return IS_USER_TYPE;
+    }
+    //</editor-fold>
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = true)

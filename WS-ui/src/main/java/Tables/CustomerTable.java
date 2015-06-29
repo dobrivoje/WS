@@ -86,19 +86,7 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button editBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        Customer c = (Customer) row;
-
-                        CustomerForm cf = new CustomerForm(c, () -> {
-                            source.markAsDirtyRecursive();
-                        },
-                                false);
-
-                        getUI().addWindow(new WindowForm3(
-                                "Customer Update Form",
-                                cf,
-                                null,
-                                cf.getClickListener())
-                        );
+                        openForm((Customer) row, source, MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                     }
                 });
 
@@ -284,26 +272,7 @@ public class CustomerTable extends GENTable<Customer> {
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
-                    Customer c = (Customer) (source.getValue());
-                    CustomerForm cf = new CustomerForm(
-                            c,
-                            () -> {
-                                source.markAsDirtyRecursive();
-                            },
-                            false);
-
-                    if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
-                        getUI().addWindow(new WindowForm3(
-                                "Customer Update Form",
-                                cf,
-                                "img/crm/crm-user-3.png",
-                                cf.getClickListener(),
-                                250, 205)
-                        );
-
-                    } else {
-                        Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
-                    }
+                    openForm((Customer) (source.getValue()), source, MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
                 //</editor-fold>
 
@@ -386,4 +355,24 @@ public class CustomerTable extends GENTable<Customer> {
         }
     }
 
+    private void openForm(Customer c, Table source, boolean permitted) {
+        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+            CustomerForm cf = new CustomerForm(
+                    c,
+                    () -> {
+                        source.markAsDirtyRecursive();
+                    },
+                    false);
+
+            getUI().addWindow(new WindowForm3(
+                    "Customer Update Form",
+                    cf,
+                    "img/crm/crm-user-3.png",
+                    cf.getClickListener(),
+                    250, 205)
+            );
+        } else {
+            Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
+        }
+    }
 }

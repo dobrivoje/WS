@@ -8,10 +8,11 @@ package db.interfaces;
 import db.ent.Salesman;
 import java.util.List;
 import db.ent.InfSysUser;
+import enums.ISUserType;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public interface IInfSysUserController {
 
@@ -23,6 +24,16 @@ public interface IInfSysUserController {
     InfSysUser getByID(String shiroUserPrincipal);
 
     InfSysUser getInfSysUser(Salesman salesman);
+
+    List<InfSysUser> getSectorManagerUsers(boolean sectorManager);
+
+    List<InfSysUser> getTopManagerUsers(boolean topManager);
+
+    List<InfSysUser> getAdminUsers(boolean admin);
+
+    ISUserType getInfUserType(String shiroUserPrincipal);
+
+    ISUserType getInfSysUserType(InfSysUser infSysUser);
 
     Salesman getSalesman(InfSysUser user);
     //</editor-fold>

@@ -7,14 +7,11 @@ package test;
 
 import dataservice.DataService;
 import db.DBHandler;
-import db.ent.CrmCase;
-import db.ent.CrmStatus;
+import db.ent.InfSysUser;
+import db.ent.RelUserSalesman;
 import db.interfaces.ICRMController;
+import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -24,39 +21,46 @@ public class Test1 {
 
     static ICRMController CC = DataService.getDefault().getCRMController();
     static ISalesmanController SC = DataService.getDefault().getSalesmanController();
-
-    static final Set<CrmStatus> S_ALL = new HashSet(CC.getCRM_AllStatuses());
-
+    static IInfSysUserController IS = DataService.getDefault().getINFSYSUSERController();
     static DBHandler dbh = DBHandler.getDefault();
 
     public static void main(String[] args) {
-
-        List<CrmStatus> START_END = CC.getCRM_Statuses("start", "end");
-        Set<CrmStatus> S_START_END = new HashSet<>(START_END);
-
-        CrmStatus START = CC.getCRM_Statuses("start").get(0);
-        CrmStatus CURRENT = CC.getCRM_Statuses("current").get(0);
-        CrmStatus END = CC.getCRM_Statuses("end").get(0);
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////
-        List<CrmCase> cc1 = CC.getCRM_Cases(SC.getByID(1L), false);
-        System.err.println("active crm cases, " + cc1);
-        for (CrmCase c : cc1) {
-            System.err.println(c.getDescription());
-            System.err.println("|____" + c.getIdca() + ", " + Arrays.toString(c.getCrmProcessList().toArray()));
+        for (InfSysUser I : IS.getAll()) {
+            System.err.println(I.getUserName() + ", SectorManager : " + I.getSectorManager() + ", TopManager : " + I.getTopManager());
         }
 
-        CrmCase c2 = CC.getCRM_Case(5);
-        List<CrmStatus> statusi2 = dbh.getCRM_CaseStatuses(c2);
-        Set<CrmStatus> ss2 = new HashSet<>(statusi2);
-        System.err.println("crm case : " + c2.getDescription() + "-> statuses : " + statusi2);
+        for (InfSysUser I : IS.getAll()) {
+            for (RelUserSalesman R : I.getRelUserSalesmanList()) {
+                System.err.println(R.getFK_IDS().toString() + " -> " + I.getUserName());
+            }
+        }
 
-        CrmCase Dekic_Case1 = CC.getCRM_Case(4);
-        List<CrmStatus> statusi3 = CC.getCRM_CaseStatuses(Dekic_Case1);
-        Set<CrmStatus> ss3 = new HashSet<>(statusi3);
-        System.err.println("crm case : " + Dekic_Case1.getDescription() + "-> statuses : " + statusi3);
+        System.err.println("INTERMOL\\sjankovic Top Manager -> " + IS.getByID("INTERMOL\\sjankovic").getTopManager());
 
-        System.err.println("ss3 = " + ss3);
-        System.err.println("preostaju sledeći statusi : " + CC.getCRM_AvailableStatuses(Dekic_Case1));
+        for (InfSysUser I : IS.getAdminUsers(true)) {
+            System.err.println("Admin users : " + I.getUserName());
+        }
+
+        for (InfSysUser I : IS.getTopManagerUsers(true)) {
+            System.err.println("TopManagerUsers users : " + I.getUserName());
+        }
+
+        for (InfSysUser I : IS.getSectorManagerUsers(true)) {
+            System.err.println("SectorManagerUsers users : " + I.getUserName());
+        }
+
+        InfSysUser IU = IS.getByID("INTERMOL\\SJankovic");
+        System.err.println();
+        System.err.println(IU + " ,admin user ? " + IS.getAdminUsers(true).contains(IU));
+        System.err.println(IU + " ,sector manager ? " + IS.getSectorManagerUsers(true).contains(IU));
+        System.err.println(IU + " ,top manager ? " + IS.getTopManagerUsers(true).contains(IU));
+
+        System.err.println("User type : " + IS.getInfSysUserType(IU));
+
+        System.err.println("---------------------------------------------------");
+
+        for (InfSysUser u : IS.getAll()) {
+            System.err.println("User : " + u.getUserName() + ", type : " + IS.getInfSysUserType(u));
+        }
     }
 }

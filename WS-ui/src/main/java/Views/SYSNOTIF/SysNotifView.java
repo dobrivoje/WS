@@ -5,26 +5,54 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import db.ent.InfSysUser;
+import db.ent.Salesman;
+import enums.ISUserType;
+import ws.MyUI;
+import static ws.MyUI.DS;
 
 public class SysNotifView extends DashboardView {
 
     public SysNotifView() {
         super("System Notification Board");
-        buildContentWithComponents(
-                cardsPanel(), blackListCustomersPanel(), fuelPanel(), notesPanel());
+
+        ISUserType IST = MyUI.get().getIS_USER_TYPE();
+        InfSysUser ISU = MyUI.get().getGetLoggedInUser();
+        Salesman S = DS.getINFSYSUSERController().getSalesman(ISU);
+
+        String caption;
+
+        switch (IST) {
+            case SALESMAN:
+                caption = S.getFkIdbl().getName().concat(" PANEL");
+                buildContentWithComponents(panel(caption), panel("BLACK LIST CUSTOMERS !"), panel(caption), notesPanel(caption));
+                break;
+            case ADMIN:
+                buildContentWithComponents(panel("ADMIN PANEL"), panel("users who don't work often"), panel("logged users in the period"), notesPanel("admin notes"));
+                break;
+            case SECTOR_MANAGER:
+                buildContentWithComponents(panel("NEW CRM CASES"), panel("NEW SALES !"));
+                break;
+            case TOP_MANAGER:
+                buildContentWithComponents(panel("CARDS"), panel("FUEL"), panel("LPG"), panel("LUB"), notesPanel("NOTES"));
+                break;
+            default:
+                buildContentWithComponents(panel("UNKNOWN USER TYPE."));
+        }
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
-    private Component cardsPanel() {
+    private Component panel(String caption) {
         VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("CARDS SECTOR");
+        VL.setCaption(caption);
         Component contentWrapper = createContentWrapper(VL);
 
         return contentWrapper;
     }
 
-    private Component notesPanel() {
-        TextArea notes = new TextArea("NOTES");
+    private Component notesPanel(String caption) {
+        TextArea notes = new TextArea(caption);
         notes.setValue("Remember to:\n· Zoom in and out in the Sales view\n· Filter the transactions and drag a set of them to the Reports tab\n· Create a new report\n· Change the schedule");
         notes.setSizeFull();
         notes.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
@@ -32,23 +60,6 @@ public class SysNotifView extends DashboardView {
         panel.addStyleName("notes");
 
         return panel;
-    }
-
-    private Component fuelPanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("FUEL SECTOR");
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
-    }
-
-    private Component blackListCustomersPanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("BLACK LIST CUSTOMERS !");
-
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
     }
     //</editor-fold>
 }
