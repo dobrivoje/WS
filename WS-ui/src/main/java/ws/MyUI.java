@@ -19,6 +19,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
 import db.ent.InfSysUser;
+import db.ent.RelUserSalesman;
+import db.ent.Salesman;
 import enums.ISUserType;
 import org.dobrivoje.auth.IntermolADAccessControl;
 import org.dobrivoje.utils.date.formats.DateFormat;
@@ -36,8 +38,9 @@ public class MyUI extends UI {
     public static final DataService DS = DataService.getDefault();
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
-    private InfSysUser getLoggedInUser;
-    private ISUserType IS_USER_TYPE;
+    private InfSysUser loggedISUser;
+    private ISUserType loggedISUserType;
+    private Salesman loggedInSalesman;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -67,8 +70,9 @@ public class MyUI extends UI {
             setContent(new LoginScreen(accessControl, new LoginListener() {
                 @Override
                 public void doAfterLogin() {
-                    getLoggedInUser = DS.getINFSYSUSERController().getByID(accessControl.getPrincipal());
-                    IS_USER_TYPE = DS.getINFSYSUSERController().getInfSysUserType(MyUI.get().getLoggedInUser);
+                    loggedISUser = DS.getINFSYSUSERController().getByID(accessControl.getPrincipal());
+                    loggedISUserType = DS.getINFSYSUSERController().getInfSysUserType(MyUI.get().loggedISUser);
+                    loggedInSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
 
                     showMainView();
                 }
@@ -94,12 +98,16 @@ public class MyUI extends UI {
         return accessControl.isPermitted(permission);
     }
 
-    public InfSysUser getGetLoggedInUser() {
-        return getLoggedInUser;
+    public InfSysUser getLoggedISUser() {
+        return loggedISUser;
     }
 
-    public ISUserType getIS_USER_TYPE() {
-        return IS_USER_TYPE;
+    public ISUserType getLoggedISUserType() {
+        return loggedISUserType;
+    }
+
+    public Salesman getLoggedSalesman() {
+        return loggedInSalesman;
     }
     //</editor-fold>
 

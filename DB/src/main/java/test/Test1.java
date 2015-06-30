@@ -9,9 +9,11 @@ import dataservice.DataService;
 import db.DBHandler;
 import db.ent.InfSysUser;
 import db.ent.RelUserSalesman;
+import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
+import enums.ISUserType;
 
 /**
  *
@@ -19,6 +21,7 @@ import db.interfaces.ISalesmanController;
  */
 public class Test1 {
 
+    public static final DataService DS = DataService.getDefault();
     static ICRMController CC = DataService.getDefault().getCRMController();
     static ISalesmanController SC = DataService.getDefault().getSalesmanController();
     static IInfSysUserController IS = DataService.getDefault().getINFSYSUSERController();
@@ -62,5 +65,17 @@ public class Test1 {
         for (InfSysUser u : IS.getAll()) {
             System.err.println("User : " + u.getUserName() + ", type : " + IS.getInfSysUserType(u));
         }
+
+        InfSysUser loggedISUser;
+        ISUserType loggedISUserType;
+        Salesman loggedInSalesman;
+
+        loggedISUser = DS.getINFSYSUSERController().getByID("test");
+        loggedISUserType = DS.getINFSYSUSERController().getInfSysUserType(loggedISUser);
+        loggedInSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
+
+        System.err.println(loggedISUser);
+        System.err.println(loggedISUserType);
+        System.err.println(loggedInSalesman == null ? "n/a" : loggedInSalesman);
     }
 }

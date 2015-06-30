@@ -41,8 +41,6 @@ public class FSView extends VerticalLayout implements View {
     private Button newFSPropButton;
     private Button newFSOButton;
 
-    private final String UN = MyUI.get().getAccessControl().getPrincipal();
-
     public FSView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
         setSizeFull();
@@ -108,8 +106,8 @@ public class FSView extends VerticalLayout implements View {
                     DS.getLOGController().addNew(
                             new Date(),
                             LOGS.DATA_SEARCH.toString(),
-                            "User : " + UN + ", FS search: " + event.getText(),
-                            DS.getINFSYSUSERController().getByID(MyUI.get().getAccessControl().getPrincipal()));
+                            "User : " + MyUI.get().getLoggedISUser().getUserName() + ", FS search: " + event.getText(),
+                            MyUI.get().getLoggedISUser());
                 } catch (Exception ex) {
                     Logger.getLogger(FSView.class.getName()).log(Level.SEVERE, null, ex);
                 }

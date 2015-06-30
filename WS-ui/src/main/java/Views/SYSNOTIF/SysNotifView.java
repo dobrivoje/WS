@@ -5,33 +5,25 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import db.ent.InfSysUser;
-import db.ent.Salesman;
 import enums.ISUserType;
 import ws.MyUI;
-import static ws.MyUI.DS;
 
 public class SysNotifView extends DashboardView {
 
     public SysNotifView() {
         super("System Notification Board");
 
-        ISUserType IST = MyUI.get().getIS_USER_TYPE();
-        InfSysUser ISU = MyUI.get().getGetLoggedInUser();
-        Salesman S = DS.getINFSYSUSERController().getSalesman(ISU);
-
-        String caption;
+        ISUserType IST = MyUI.get().getLoggedISUserType();
 
         switch (IST) {
             case SALESMAN:
-                caption = S.getFkIdbl().getName().concat(" PANEL");
-                buildContentWithComponents(panel(caption), panel("BLACK LIST CUSTOMERS !"), panel(caption), notesPanel(caption));
+                buildContentWithComponents(panel("Active Cases"), panel("Current Month Sales"), panel("BLACK LIST CUSTOMERS !"), notesPanel(IST.toString() + " Notifications"));
                 break;
             case ADMIN:
-                buildContentWithComponents(panel("ADMIN PANEL"), panel("users who don't work often"), panel("logged users in the period"), notesPanel("admin notes"));
+                buildContentWithComponents(panel("ADMIN PANEL"), panel("users who don't work often"), panel("logged users in the period"), notesPanel(IST.toString() + " notes"));
                 break;
             case SECTOR_MANAGER:
-                buildContentWithComponents(panel("NEW CRM CASES"), panel("NEW SALES !"));
+                buildContentWithComponents(panel("NEW CRM CASES"), panel("NEW SALES THIS MONTH"));
                 break;
             case TOP_MANAGER:
                 buildContentWithComponents(panel("CARDS"), panel("FUEL"), panel("LPG"), panel("LUB"), notesPanel("NOTES"));

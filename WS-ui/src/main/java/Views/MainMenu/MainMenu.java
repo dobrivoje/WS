@@ -61,7 +61,6 @@ import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
 import com.vaadin.ui.Notification;
-import db.ent.InfSysUser;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,24 +107,37 @@ public class MainMenu extends CssLayout {
         menuPart.addComponent(top);
 
         // logout menu item
+        String ISU = MyUI.get().getLoggedISUser().getUserName();
+        String S;
+
+        try {
+            S = MyUI.get().getLoggedSalesman().toString();
+        } catch (Exception e) {
+            S = "";
+        }
+
         MenuBar logoutMenu = new MenuBar();
-        logoutMenu.addItem("Logout " + MyUI.get().getAccessControl().getPrincipal(), FontAwesome.SIGN_OUT, new Command() {
-            @Override
-            public void menuSelected(MenuItem selectedItem) {
-                try {
-                    String u = MyUI.get().getAccessControl().getPrincipal();
-                    InfSysUser isu = DS.getINFSYSUSERController().getByID(u);
+        logoutMenu.addItem("Logout " + (S.equals("") ? ISU : S),
+                FontAwesome.SIGN_OUT,
+                new Command() {
+                    @Override
+                    public void menuSelected(MenuItem selectedItem) {
+                        try {
+                            DS.getLOGController().addNew(
+                                    new Date(),
+                                    LOGS.LOGOUT.toString(),
+                                    MyUI.get().getLoggedISUser().getUserName(),
+                                    MyUI.get().getLoggedISUser()
+                            );
+                        } catch (Exception ex) {
+                            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
-                    DS.getLOGController().addNew(new Date(), LOGS.LOGOUT.toString(), u, isu);
-                } catch (Exception ex) {
-                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                MyUI.get().getAccessControl().logout();
-                VaadinSession.getCurrent().getSession().invalidate();
-                Page.getCurrent().reload();
-            }
-        });
+                        MyUI.get().getAccessControl().logout();
+                        VaadinSession.getCurrent().getSession().invalidate();
+                        Page.getCurrent().reload();
+                    }
+                });
 
         logoutMenu.addStyleName("user-menu");
         menuPart.addComponent(logoutMenu);

@@ -51,7 +51,6 @@ public class CustomersView extends VerticalLayout implements View {
     private Button simpleViewMode;
     private Button fullViewMode;
 
-    private final String UN = MyUI.get().getAccessControl().getPrincipal();
     private final boolean formEditAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
 
     public CustomersView() {
@@ -108,13 +107,13 @@ public class CustomersView extends VerticalLayout implements View {
         filter.setImmediate(true);
         filter.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             customersTable.setFilter(event.getText());
-            
+
             try {
                 DS.getLOGController().addNew(
                         new Date(),
                         LOGS.DATA_SEARCH.toString(),
-                        "User : " + UN + ", Customer search: " + event.getText(),
-                        DS.getINFSYSUSERController().getByID(UN)
+                        "User : " + MyUI.get().getLoggedISUser().getUserName() + ", Customer search: " + event.getText(),
+                        MyUI.get().getLoggedISUser()
                 );
             } catch (Exception ex) {
                 Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,7 +151,7 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                RELCBT_Tree rcbtt =  new RELCBT_Tree("", c, formEditAllowed);
+                RELCBT_Tree rcbtt = new RELCBT_Tree("", c, formEditAllowed);
                 propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
