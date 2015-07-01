@@ -1,15 +1,10 @@
 package Views.MainMenu.CRM;
 
-import Layouts.InlineCSSLayout;
 import Trees.CRM.Customer_CRMCases_Tree;
 import Trees.CRM.Salesman_CRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.Salesman;
@@ -23,86 +18,37 @@ public class CRMView extends DashboardView {
 
     public CRMView() {
         super("Customer Relationship Management");
-        buildContentWithComponents(
-                activeCasesBySalesmanPanel(), activeCasesByCustomerPanel(), overduePanel(), notesPanel());
+        buildContentWithComponents(activeCasesBySalesmanPanel(), activeCasesByCustomerPanel(), overduePanel(), createNotesPanel(""));
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
     private Component activeCasesBySalesmanPanel() {
-        VerticalLayout rootPanel = new VerticalLayout();
-
-        rootPanel.setCaption("Active CRM Cases by Salesman");
-        InlineCSSLayout ICL = new InlineCSSLayout();
-        ICL.setSizeFull();
-
-        rootPanel.addComponent(ICL);
-
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
                 Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, formAllowed);
-
-                Panel p = new Panel(S.toString(), csct);
-                p.setWidth(275, Unit.PIXELS);
-
-                HorizontalLayout hl = new HorizontalLayout(p);
-                hl.setMargin(true);
-                hl.setSpacing(true);
-
-                ICL.addComponent(hl);
+                subPanels.add(new Panel(S.toString(), csct));
             }
-
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
-        Component contentWrapper = createContentWrapper(rootPanel);
-        return contentWrapper;
+
+        return createPanelComponent("Active CRM Cases by Salesman", subPanels, formAllowed);
     }
 
     private Component activeCasesByCustomerPanel() {
-        VerticalLayout rootPanel = new VerticalLayout();
-
-        rootPanel.setCaption("Active CRM Cases by Customers");
-        InlineCSSLayout ICL = new InlineCSSLayout();
-        ICL.setSizeFull();
-
-        rootPanel.addComponent(ICL);
-
         try {
-            for (Customer c : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
-                Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", c, formAllowed);
-
-                Panel p = new Panel(c.toString(), ccct);
-                p.setWidth(275, Unit.PIXELS);
-
-                HorizontalLayout hl = new HorizontalLayout(p);
-                hl.setMargin(true);
-                hl.setSpacing(true);
-
-                ICL.addComponent(hl);
+            for (Customer S : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
+                Customer_CRMCases_Tree ccct = new Customer_CRMCases_Tree("", S, formAllowed);
+                subPanels.add(new Panel(S.toString(), ccct));
             }
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        Component contentWrapper = createContentWrapper(rootPanel);
-        return contentWrapper;
+        return createPanelComponent("Active CRM Cases by Customers", subPanels, formAllowed);
     }
 
     private Component overduePanel() {
-        VerticalLayout VL = new VerticalLayout();
-        VL.setCaption("Overdue Processes");
-        Component contentWrapper = createContentWrapper(VL);
-
-        return contentWrapper;
-    }
-
-    private Component notesPanel() {
-        TextArea notes = new TextArea("NOTES");
-        notes.setValue("Remember to:\n· Zoom in and out in the Sales view\n· Filter the transactions and drag a set of them to the Reports tab\n· Create a new report\n· Change the schedule");
-        notes.setSizeFull();
-        notes.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
-        Component panel = createContentWrapper(notes);
-        panel.addStyleName("notes");
-
-        return panel;
+        subPanels.add(new Panel());
+        return createPanelComponent("Overdue CRM Cases", subPanels, formAllowed);
     }
     //</editor-fold>
 }

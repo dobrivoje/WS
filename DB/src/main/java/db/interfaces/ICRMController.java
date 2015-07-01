@@ -38,6 +38,10 @@ public interface ICRMController {
 
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished);
 
+    List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo);
+
+    List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo);
+
     List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished);
 
     CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s);

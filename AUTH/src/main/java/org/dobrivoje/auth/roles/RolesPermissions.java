@@ -19,7 +19,8 @@ public class RolesPermissions implements Serializable {
     public static final String R_FUELSALES_MANAGER = "FuelsalesManager";
     public static final String R_FUELSALES_USER = "FuelsalesUser";
 
-    public static final String P_USER_LOGIN = "user:login";
+    // public static final String P_USER_LOGIN = "user:login";
+    public static final String P_USER_LOGIN = "UserLogin";
 
     //<editor-fold defaultstate="collapsed" desc="GENERAL PERMISSIONS">
     //GENERAL PERMISSIONS - CUSTOMERS

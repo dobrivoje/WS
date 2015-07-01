@@ -51,7 +51,7 @@ public class testKlasa {
         try {
             //intermolAD.login("intermol\\dprtenjak", "...");
             //intermolAD.login("root", "...");
-            intermolAD.login("ws", "");
+            intermolAD.login("cu", "");
 
             System.err.println(intermolAD.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 

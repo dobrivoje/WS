@@ -1365,6 +1365,19 @@ public class DBHandler {
         }
     }
 
+    public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean caseFinished, int ammount) {
+        try {
+            return getEm().createNamedQuery("RelSALE.Salesman_Sale_Cases")
+                    .setParameter("IDS", salesman)
+                    .setParameter("dateFrom", dateFrom)
+                    .setParameter("dateTo", dateTo)
+                    .setParameter("ammount", ammount)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.CustomerActiveCases")
@@ -1441,8 +1454,17 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
-    public void fff() {
-
+    public List<RelSALE> getSales(Salesman s, Date dateFrom, Date dateTo) {
+        try {
+            return getEm().createNamedQuery("RelSALE.Salesman_Sales_ForPeriod")
+                    .setParameter("IDS", s)
+                    .setParameter("dateFrom", dateFrom)
+                    .setParameter("dateTo", dateTo)
+                    .setParameter("ammount", 0)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
     }
     //</editor-fold>
 

@@ -1,5 +1,6 @@
 package Views;
 
+import Layouts.InlineCSSLayout;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,6 +16,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -33,6 +35,7 @@ public abstract class DashboardView extends Panel implements View {
     private NotificationsButton notificationsButton;
     private CssLayout dashboardPanels;
     protected final VerticalLayout root = new VerticalLayout();
+    protected List<Panel> subPanels = new ArrayList<>();
 
     private Window notificationsWindow;
 
@@ -162,7 +165,47 @@ public abstract class DashboardView extends Panel implements View {
         return slot;
     }
 
+    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed) {
+        VerticalLayout componentRootVL = new VerticalLayout();
+
+        componentRootVL.setCaption(caption);
+        InlineCSSLayout ICL = new InlineCSSLayout();
+        ICL.setSizeFull();
+
+        for (Panel p : panels) {
+            p.setWidth(275, Unit.PIXELS);
+
+            HorizontalLayout HL = new HorizontalLayout(p);
+            HL.setMargin(true);
+            ICL.addComponent(HL);
+        }
+
+        componentRootVL.addComponent(ICL);
+
+        try {
+            panels.clear();
+        } catch (Exception e) {
+        }
+
+        return createContentWrapper(componentRootVL);
+    }
+
+    protected Component createNotesPanel(String notesContent) {
+        TextArea textArea = new TextArea("NOTES");
+        textArea.setValue(notesContent);
+        textArea.setSizeFull();
+        textArea.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
+        Component panel = createContentWrapper(textArea);
+        panel.addStyleName("notes");
+
+        return panel;
+    }
+
     protected final void buildContentWithComponents(Component... components) {
+        buildContentWithComponents(Arrays.asList(components));
+    }
+
+    protected final void buildContentWithComponents(List<Component> components) {
         dashboardPanels = new CssLayout();
         dashboardPanels.addStyleName("dashboard-panels");
         Responsive.makeResponsive(dashboardPanels);

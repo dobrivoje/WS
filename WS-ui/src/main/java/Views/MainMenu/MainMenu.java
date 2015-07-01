@@ -107,8 +107,14 @@ public class MainMenu extends CssLayout {
         menuPart.addComponent(top);
 
         // logout menu item
-        String ISU = MyUI.get().getLoggedISUser().getUserName();
+        String ISU;
         String S;
+
+        try {
+            ISU = MyUI.get().getLoggedISUser().getUserName();
+        } catch (Exception e) {
+            ISU = MyUI.get().accessControl.getPrincipal();
+        }
 
         try {
             S = MyUI.get().getLoggedSalesman().toString();

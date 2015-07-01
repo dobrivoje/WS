@@ -100,6 +100,11 @@ public class CRM_Controller implements ICRMController {
         return dbh.getCRMProcessesByStatus(crmStatus);
     }
 
+    @Override
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo) {
+        return dbh.getCRM_Cases(salesman, dateFrom, dateTo, caseFinished, 0);
+    }
+
     /**
      * Overdue proces je poslednji uneti proces od strane Prodavca za kog važi
      * da je broj dana koji je protekao od kreiranja tog procesa do posmatranog
@@ -222,5 +227,10 @@ public class CRM_Controller implements ICRMController {
         dbh.addNewSale(sale);
     }
     //</editor-fold>
+
+    @Override
+    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
+        return dbh.getSales(s, dateFrom, dateTo);
+    }
 
 }

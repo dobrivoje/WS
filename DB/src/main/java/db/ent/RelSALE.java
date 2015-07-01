@@ -38,7 +38,12 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelSALE.ForPeriod",
                     query = "SELECT r FROM RelSALE r WHERE r.sellDate BETWEEN :SellDateFrom AND :SellDateTo"),
 
-            @NamedQuery(name = "RelSALE.findByAmmount", query = "SELECT r FROM RelSALE r WHERE r.ammount = :ammount"),
+            @NamedQuery(name = "RelSALE.Salesman_Sales_ForPeriod",
+                    query = "SELECT r FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo AND r.FK_IDCA.FK_IDRSC.FK_IDS = :IDS and r.ammount > :ammount"),
+
+            @NamedQuery(name = "RelSALE.Salesman_Sale_Cases",
+                    query = "SELECT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo AND r.FK_IDCA.FK_IDRSC.FK_IDS = :IDS and r.ammount > :ammount"),
+
             @NamedQuery(name = "RelSALE.findByPaymentMethod", query = "SELECT r FROM RelSALE r WHERE r.paymentMethod = :paymentMethod")
         }
 )
