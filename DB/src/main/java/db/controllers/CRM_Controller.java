@@ -100,6 +100,15 @@ public class CRM_Controller implements ICRMController {
         return dbh.getCRMProcessesByStatus(crmStatus);
     }
 
+    /**
+     *
+     * @param salesman
+     * @param caseFinished - Ako su oba datuma null, vraćaju se CRM case-ovi za
+     * prethodni i tekući mesec.
+     * @param dateFrom
+     * @param dateTo
+     * @return
+     */
     @Override
     public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo) {
         return dbh.getCRM_Cases(salesman, dateFrom, dateTo, caseFinished, 0);

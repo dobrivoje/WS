@@ -37,6 +37,7 @@ import db.ent.Product;
 import db.ent.RelSALE;
 import enums.ISUserType;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -1366,11 +1367,23 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean caseFinished, int ammount) {
+        Date from = dateFrom;
+        Date to = dateTo;
+        Calendar now;
+
+        if (dateFrom == null && dateTo == null) {
+            now = Calendar.getInstance();
+            now.add(Calendar.MONTH, -1);
+            now.set(Calendar.DAY_OF_MONTH, 1);
+            from = new Date(now.getTimeInMillis());
+            to = new Date();
+        }
+
         try {
             return getEm().createNamedQuery("RelSALE.Salesman_Sale_Cases")
                     .setParameter("IDS", salesman)
-                    .setParameter("dateFrom", dateFrom)
-                    .setParameter("dateTo", dateTo)
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to)
                     .setParameter("ammount", ammount)
                     .getResultList();
         } catch (Exception ex) {
@@ -1455,11 +1468,23 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<RelSALE> getSales(Salesman s, Date dateFrom, Date dateTo) {
+        Date from = dateFrom;
+        Date to = dateTo;
+        Calendar now;
+
+        if (dateFrom == null && dateTo == null) {
+            now = Calendar.getInstance();
+            now.add(Calendar.MONTH, -1);
+            now.set(Calendar.DAY_OF_MONTH, 1);
+            from = new Date(now.getTimeInMillis());
+            to = new Date();
+        }
+
         try {
             return getEm().createNamedQuery("RelSALE.Salesman_Sales_ForPeriod")
                     .setParameter("IDS", s)
-                    .setParameter("dateFrom", dateFrom)
-                    .setParameter("dateTo", dateTo)
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to)
                     .setParameter("ammount", 0)
                     .getResultList();
         } catch (Exception ex) {

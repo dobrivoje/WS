@@ -40,6 +40,14 @@ public interface ICRMController {
 
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo);
 
+    /**
+     *
+     * @param s - Salesman
+     * @param dateFrom - Ako su oba datuma null, onda se traži prodaja za
+     * prethodni i sadašnji mesec
+     * @param dateTo
+     * @return
+     */
     List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo);
 
     List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished);

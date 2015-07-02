@@ -1,5 +1,6 @@
 package Views.SYSNOTIF;
 
+import Trees.CRM.SALES.Salesman_Sales_Tree;
 import Trees.CRM.Salesman_CRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
@@ -20,14 +21,15 @@ public class SysNotifView extends DashboardView {
 
     ISUserType IST = MyUI.get().getLoggedISUserType();
     Salesman S = MyUI.get().getLoggedSalesman();
-    boolean allowed = MyUI.get().isPermitted(R_FUELSALES_USER) || MyUI.get().isPermitted(R_CARDS_USER);
+    boolean FS_allowed = MyUI.get().isPermitted(R_FUELSALES_USER);
+    boolean CARD_allowed = MyUI.get().isPermitted(R_CARDS_USER);
 
     public SysNotifView() {
         super("System Notification Board");
 
         switch (IST) {
             case SALESMAN:
-                createSalesmanView(allowed);
+                createSalesmanView(FS_allowed || CARD_allowed);
                 break;
             case ADMIN:
                 createAdminView();
@@ -49,7 +51,7 @@ public class SysNotifView extends DashboardView {
         List<Component> C = new ArrayList();
 
         try {
-            Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, true);
+            Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, FS_allowed || CARD_allowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -58,12 +60,12 @@ public class SysNotifView extends DashboardView {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
-            Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, true);
+            Salesman_Sales_Tree csct = new Salesman_Sales_Tree(R_CARDS_USER, S, null, null, FS_allowed || CARD_allowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("Current Month Sales", subPanels, formEditAllowed));
+        C.add(createPanelComponent("Current/Previous Month Sales", subPanels, formEditAllowed));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         buildContentWithComponents(C);

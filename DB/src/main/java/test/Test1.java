@@ -59,5 +59,10 @@ public class Test1 {
         for (RelSALE r : DS.getCRMController().getCRM_Sales(loggedInSalesman, from, to)) {
             System.err.println("prodaja : " + r.getAmmount());
         }
+        
+        for (RelSALE r : DS.getCRMController().getCRM_Sales(loggedInSalesman, null, null)) {
+            System.err.println("prodaja : " + r.getAmmount());
+        }
+        
     }
 }
