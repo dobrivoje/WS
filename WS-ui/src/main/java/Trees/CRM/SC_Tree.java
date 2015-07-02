@@ -81,7 +81,7 @@ public class SC_Tree extends CustomObjectTree<Salesman> {
                                 },
                                 false);
 
-                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
                             getUI().addWindow(new WindowForm3(
                                     "Customer Update Form",
                                     cf,

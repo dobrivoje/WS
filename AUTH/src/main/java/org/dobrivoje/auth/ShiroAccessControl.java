@@ -17,7 +17,8 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     //<editor-fold defaultstate="collapsed" desc="Infrastructure">
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
-    private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s-HG786hjgghH11H50HH8911-mNNmn558wuuuw768x8c7";
+    // private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s-HG786hjgghH11H50HH8911-mNNmn558wuuuw768x8c7";
+    private String UN_SESSION_KEY;
     private static int loggedInUsers = 0;
     private static final Set<Serializable> usersSessions = new HashSet<>();
 
@@ -41,7 +42,7 @@ public class ShiroAccessControl implements IAccessAuthControl {
             try {
                 subject.login(token);
 
-                subject.getSession().setAttribute(UN_SESSION_KEY, getPrincipal());
+                subject.getSession().setAttribute(UN_SESSION_KEY = (String) getSubjectSessionID(), getPrincipal());
                 incLoggedUsers();
 
                 return true;
@@ -158,5 +159,9 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
 
     }
+
     //</editor-fold>
+    public static Set<Serializable> getUsersSessions() {
+        return usersSessions;
+    }
 }

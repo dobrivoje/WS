@@ -23,7 +23,9 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import db.ent.Fuelstation;
 import java.util.List;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
@@ -91,11 +93,11 @@ public class FSTable extends GENTable<Fuelstation> {
 
                 editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
                 editBtn.setDescription("Update this Fuelstation with new data...");
-                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSTATIONS_EDIT_ALL));
+                editBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_STATION));
 
                 ownerBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
                 ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
-                ownerBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER));
+                ownerBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
 
                 optLayout.addComponents(editBtn, ownerBtn);
                 optLayout.setSizeFull();
@@ -149,7 +151,7 @@ public class FSTable extends GENTable<Fuelstation> {
                 final FSTable source = (FSTable) sender;
                 Fuelstation f = (Fuelstation) source.getValue();
 
-                String caption = null;
+                String caption = "";
                 CRUDForm2 cf = null;
 
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
@@ -160,7 +162,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     }
                 }
 
-                if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
+                if (MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_PROPERTY)) {
                     if (action.equals(FSTable.ACTION_FS_OWNER)) {
                         caption = "Fuelstation Owner Form";
                         cf = new FSOWNER_Form(f, null, false);
@@ -181,13 +183,12 @@ public class FSTable extends GENTable<Fuelstation> {
                         )
                         );
                     }
-
                 } else {
-                    Notification.show("User Rights Error", "You don't have rights\nto change customer owner !", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("User Rights Error", "You don't have appropriate rights !", Notification.Type.ERROR_MESSAGE);
                 }
-
             }
-        });
+        }
+        );
     }
 
 }

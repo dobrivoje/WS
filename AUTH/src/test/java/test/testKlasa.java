@@ -15,6 +15,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.dobrivoje.auth.IAccessAuthControl;
 import org.dobrivoje.auth.IntermolADAccessControl;
+import org.dobrivoje.auth.ShiroAccessControl;
 import org.dobrivoje.auth.roles.RolesPermissions;
 
 /**
@@ -51,7 +52,7 @@ public class testKlasa {
         try {
             //intermolAD.login("intermol\\dprtenjak", "...");
             //intermolAD.login("root", "...");
-            intermolAD.login("cu", "");
+            intermolAD.login("fs", "");
 
             System.err.println(intermolAD.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -143,7 +144,11 @@ public class testKlasa {
         System.err.println("intermolAD1.getAttributeKeys: " + intermolAD1.getSubjectSession().getAttributeKeys().toString());
         System.err.println("intermolAD1.getId: " + intermolAD1.getSubjectSession().getId());
 
+        System.err.println("sve sesije : " + ShiroAccessControl.getUsersSessions());
+        
         intermolAD1.logout();
+        System.err.println("---- logout ----");
+        
 
         System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
         System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());

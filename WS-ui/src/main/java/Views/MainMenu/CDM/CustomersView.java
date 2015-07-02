@@ -25,7 +25,9 @@ import db.ent.Customer;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_SC_REL;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
 import org.superb.apps.utilities.Enums.LOGS;
 import static org.superb.apps.utilities.Enums.ViewModes.FULL;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
@@ -50,8 +52,6 @@ public class CustomersView extends VerticalLayout implements View {
 
     private Button simpleViewMode;
     private Button fullViewMode;
-
-    private final boolean formEditAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
 
     public CustomersView() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
@@ -151,20 +151,20 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                RELCBT_Tree rcbtt = new RELCBT_Tree("", c, formEditAllowed);
+                RELCBT_Tree rcbtt = new RELCBT_Tree("", c, MyUI.get().isPermitted(P_CRM_NEW_SC_REL));
                 propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
             }
 
             try {
-                propPanels[1].setContent(new FSOwner_Tree("", c, true, formEditAllowed));
+                propPanels[1].setContent(new FSOwner_Tree("", c, true, MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER)));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[1].setContent(new Tree());
             }
 
             try {
-                final Customer_CRMCases_Tree cc = new Customer_CRMCases_Tree("", c, formEditAllowed);
+                final Customer_CRMCases_Tree cc = new Customer_CRMCases_Tree("", c, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS));
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

@@ -8,13 +8,13 @@ import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.Salesman;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
 public class CRMView extends DashboardView {
 
-    private final boolean formAllowed = MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS);
+    private final boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
 
     public CRMView() {
         super("Customer Relationship Management");

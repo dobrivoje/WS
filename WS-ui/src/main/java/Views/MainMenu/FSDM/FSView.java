@@ -23,7 +23,8 @@ import db.ent.Fuelstation;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY;
 import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
@@ -115,7 +116,7 @@ public class FSView extends VerticalLayout implements View {
         });
 
         newFSPropButton = new Button("New FS Property");
-        newFSPropButton.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY));
+        newFSPropButton.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_PROPERTY));
         newFSPropButton.setWidth(170, Unit.PIXELS);
         newFSPropButton.setIcon(FontAwesome.ARCHIVE);
         newFSPropButton.focus();
@@ -128,7 +129,7 @@ public class FSView extends VerticalLayout implements View {
         });
 
         newFSOButton = new Button("New FS Owner");
-        newFSOButton.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER));
+        newFSOButton.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
         newFSOButton.setWidth(150, Unit.PIXELS);
         newFSOButton.setIcon(FontAwesome.BULLSEYE);
         newFSOButton.addClickListener(new Button.ClickListener() {
@@ -172,7 +173,7 @@ public class FSView extends VerticalLayout implements View {
     //<editor-fold defaultstate="collapsed" desc="openProperties">
     public void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
         if (fs != null) {
-            newFSPropButton.setEnabled(DS.getFSOController().getCurrentFSOwner(fs) != null);
+            newFSPropButton.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_PROPERTY));
             HL.setSplitPosition(50, Unit.PERCENTAGE);
 
             if (propVL.getComponentCount() > 0) {

@@ -10,7 +10,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -66,6 +65,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.UnknownSessionException;
+import org.dobrivoje.auth.ShiroAccessControl;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
@@ -140,7 +140,14 @@ public class MainMenu extends CssLayout {
                         }
 
                         MyUI.get().getAccessControl().logout();
-                        VaadinSession.getCurrent().getSession().invalidate();
+
+                        System.err.println("logout sessions : " + ShiroAccessControl.getUsersSessions());
+
+                        // VEOMA VAŽNO !!!
+                        // ONEMOGUĆAVANJE KODA ISPOD, DOVODI DO TOGA DA SE NA ISTOM RAČUNARU
+                        // NA KOME SE LOGUJE VIŠE PUTA ISTI KORISNIK POSLE LOGOUT-A, OSTALI
+                        // KORISNICI I DALJE MOGU DA RADE !!!
+                        // VaadinSession.getCurrent().getSession().invalidate();
                         Page.getCurrent().reload();
                     }
                 });
@@ -265,7 +272,7 @@ public class MainMenu extends CssLayout {
                             navigator.navigateTo(CustomersView.class.getSimpleName());
                             break;
                         case CUST_DATA_MANAG_NEW_CUST:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                                 navigator.navigateTo(CustomersView.class.getSimpleName());
 
                                 CustomerForm cf = new CustomerForm(false);
@@ -282,7 +289,7 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case CUST_DATA_MANAG_NEW_CBT:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
 
                                 RELCBTForm rcbtf = new RELCBTForm(false);
 
@@ -299,7 +306,7 @@ public class MainMenu extends CssLayout {
                             break;
 
                         case SALE_NEW:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 CRMSell_Form csf = new CRMSell_Form(false);
 
                                 getUI().addWindow(new WindowForm3(
@@ -317,7 +324,7 @@ public class MainMenu extends CssLayout {
                             navigator.navigateTo(CRMView.class.getSimpleName());
                             break;
                         case CRM_MANAG_NEW_CASE:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 CRMCase_Form ccf = new CRMCase_Form(null, null, true);
 
                                 getUI().addWindow(new WindowForm3(
@@ -332,7 +339,7 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case CRM_MANAG_NEW_PROCESS:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
                                     CRMProcess_Form cpf = new CRMProcess_Form(null, true, null, false);
 
@@ -351,7 +358,7 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case CRM_MANAG_NEW_SALESMAN_CUST_REL:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                                 SCR_Form scf = new SCR_Form(false);
 
                                 getUI().addWindow(new WindowForm3(
@@ -367,14 +374,14 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                                 navigator.navigateTo(CRMSCView.class.getSimpleName());
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
                         case FS_DATA_MANAG_NEW_FS:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                                 navigator.navigateTo(FSView.class.getSimpleName());
 
                                 FSForm fof = new FSForm(false);
@@ -392,7 +399,7 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case FS_DATA_MANAG_NEW_FS_OWNER:
-                            if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
+                            if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
 
                                 FSOWNER_Form fof = new FSOWNER_Form(false);
 

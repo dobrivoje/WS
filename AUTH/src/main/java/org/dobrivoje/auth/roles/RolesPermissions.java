@@ -18,11 +18,12 @@ public class RolesPermissions implements Serializable {
     public static final String R_CARDS_USER = "CardsUser";
     public static final String R_FUELSALES_MANAGER = "FuelsalesManager";
     public static final String R_FUELSALES_USER = "FuelsalesUser";
-
-    // public static final String P_USER_LOGIN = "user:login";
-    public static final String P_USER_LOGIN = "UserLogin";
+    public static final String R_USER_LOGIN = "UserLogin";
 
     //<editor-fold defaultstate="collapsed" desc="GENERAL PERMISSIONS">
+    //GENERAL PERMISSIONS - SYSTEM USERS
+    public static final String P_USER_LOGIN = "user:login";
+
     //GENERAL PERMISSIONS - CUSTOMERS
     public static final String P_CUSTOMERS_SEARCH_ALL = "customers:search:all";
     public static final String P_CUSTOMERS_SEARCH_OWN = "customers:search:own";
@@ -68,7 +69,8 @@ public class RolesPermissions implements Serializable {
             R_CARDS_MANAGER,
             R_CARDS_USER,
             R_FUELSALES_MANAGER,
-            R_FUELSALES_USER
+            R_FUELSALES_USER,
+            R_USER_LOGIN
         };
     }
 

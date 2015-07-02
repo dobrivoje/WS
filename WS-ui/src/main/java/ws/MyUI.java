@@ -19,10 +19,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import dataservice.DataService;
 import db.ent.InfSysUser;
-import db.ent.RelUserSalesman;
 import db.ent.Salesman;
 import enums.ISUserType;
 import org.dobrivoje.auth.IntermolADAccessControl;
+import org.dobrivoje.auth.ShiroAccessControl;
 import org.dobrivoje.utils.date.formats.DateFormat;
 
 /**
@@ -40,7 +40,7 @@ public class MyUI extends UI {
 
     private InfSysUser loggedISUser;
     private ISUserType loggedISUserType;
-    private Salesman loggedInSalesman;
+    private Salesman loggedSalesman;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -71,10 +71,12 @@ public class MyUI extends UI {
                 @Override
                 public void doAfterLogin() {
                     loggedISUser = DS.getINFSYSUSERController().getByID(accessControl.getPrincipal());
-                    loggedISUserType = DS.getINFSYSUSERController().getInfSysUserType(MyUI.get().loggedISUser);
-                    loggedInSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
+                    loggedISUserType = DS.getINFSYSUSERController().getInfSysUserType(loggedISUser);
+                    loggedSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
 
                     showMainView();
+
+                    System.err.println("login sessions : " + ShiroAccessControl.getUsersSessions());
                 }
             }));
         }
@@ -107,7 +109,7 @@ public class MyUI extends UI {
     }
 
     public Salesman getLoggedSalesman() {
-        return loggedInSalesman;
+        return loggedSalesman;
     }
     //</editor-fold>
 

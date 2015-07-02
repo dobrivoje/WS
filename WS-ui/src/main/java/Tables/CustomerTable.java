@@ -86,7 +86,7 @@ public class CustomerTable extends GENTable<Customer> {
                 final Button editBtn = new Button("", new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        openForm((Customer) row, source, MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                        openForm((Customer) row, source, MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                     }
                 });
 
@@ -94,16 +94,16 @@ public class CustomerTable extends GENTable<Customer> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         showCBTForm((Customer) row,
-                                MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                                MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                     }
                 });
 
                 editBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
-                editBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                editBtn.setEnabled(MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 editBtn.setDescription("Update this customer with new data...");
 
                 cbtypeBtn.setIcon(FontAwesome.THUMBS_O_UP);
-                cbtypeBtn.setEnabled(MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                cbtypeBtn.setEnabled(MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
                 custOptionsHL.addComponents(editBtn, cbtypeBtn);
@@ -272,7 +272,7 @@ public class CustomerTable extends GENTable<Customer> {
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
-                    openForm((Customer) (source.getValue()), source, MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                    openForm((Customer) (source.getValue()), source, MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
                 //</editor-fold>
 
@@ -280,7 +280,7 @@ public class CustomerTable extends GENTable<Customer> {
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
                     showCBTForm(
                             (Customer) source.getValue(),
-                            MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                            MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
                 }
                 //</editor-fold>
 
@@ -296,7 +296,7 @@ public class CustomerTable extends GENTable<Customer> {
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_NEW_CASE">
                 if (action.equals(ACTION_CRM_NEW_CASE)) {
                     try {
-                        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Customer c = (Customer) source.getValue();
 
                             String infsysuser = MyUI.get().accessControl.getPrincipal();
@@ -356,7 +356,7 @@ public class CustomerTable extends GENTable<Customer> {
     }
 
     private void openForm(Customer c, Table source, boolean permitted) {
-        if (MyUI.get().getAccessControl().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
             CustomerForm cf = new CustomerForm(
                     c,
                     () -> {
