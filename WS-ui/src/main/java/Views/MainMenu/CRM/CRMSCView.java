@@ -1,6 +1,6 @@
 package Views.MainMenu.CRM;
 
-import Trees.CRM.SC_Tree;
+import Trees.CRM.SalesmanCustomer_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
@@ -24,7 +24,7 @@ public class CRMSCView extends DashboardView {
         P.setWidth(70, Unit.PERCENTAGE);
 
         try {
-            P.setContent(new SC_Tree("", DS.getSalesmanController().getAll()));
+            P.setContent(new SalesmanCustomer_Tree("", DS.getSalesmanController().getAll()));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
             Logger.getLogger(CRMSCView.class.getName()).log(Level.WARNING, null, ex);
         }

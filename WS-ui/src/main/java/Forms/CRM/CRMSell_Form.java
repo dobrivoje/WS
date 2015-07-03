@@ -179,7 +179,7 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
                     crmCase.setContainerDataSource(
                             new BeanItemContainer(
                                     CrmCase.class,
-                                    CRM_Controller.getCRM_CompletedCases(s, true)
+                                    CRM_Controller.getCRM_CompletedCases(s, true, true)
                             )
                     );
 

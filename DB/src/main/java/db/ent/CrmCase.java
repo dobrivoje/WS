@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDC = :IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
 
             @NamedQuery(name = "CrmCase.findBySalesman",
-                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.finished = :Finished ORDER BY c.idca DESC"),
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :FK_IDS AND c.finished = :finished ORDER BY c.idca DESC"),
 
             @NamedQuery(name = "CrmCase.SalesmanCustomers",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDRSC.FK_IDC =:IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
@@ -58,10 +58,10 @@ import javax.xml.bind.annotation.XmlTransient;
                     query = "SELECT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :Finished GROUP BY C.FK_IDRSC.FK_IDC"),
 
             @NamedQuery(name = "CrmCase.SalesmanCompletedCases",
-                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :Salesman AND c.finished = :CaseAggreed"),
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :salesman AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded"),
 
-            @NamedQuery(name = "CrmCase.findByStartDate", query = "SELECT c FROM CrmCase c WHERE c.startDate = :startDate"),
-            @NamedQuery(name = "CrmCase.findByDescription", query = "SELECT c FROM CrmCase c WHERE c.description = :description")
+            @NamedQuery(name = "CrmCase.SaleAgreededCases",
+                    query = "SELECT c FROM CrmCase c WHERE c.finished = :finished AND c.saleAgreeded = :saleAgreeded AND c.startDate >= :startDate AND c.endDate <= :endDate")
         }
 )
 
@@ -82,8 +82,12 @@ public class CrmCase implements Serializable {
     private Date endDate;
     @Column(name = "Description")
     private String description;
+    @Basic(optional = false)
     @Column(name = "Finished")
     private Boolean finished;
+    @Basic(optional = false)
+    @Column(name = "SaleAgreeded")
+    private Boolean saleAgreeded;
     @JoinColumn(name = "FK_IDRBLC", referencedColumnName = "IDRBLC")
     @ManyToOne
     private RelSALESMANCUST FK_IDRSC;
@@ -100,6 +104,7 @@ public class CrmCase implements Serializable {
         this.description = description;
         this.FK_IDRSC = FK_IDRSC;
         this.finished = false;
+        this.saleAgreeded = false;
     }
 
     public Long getIdca() {
@@ -158,22 +163,20 @@ public class CrmCase implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CrmCase)) {
-            return false;
-        }
-        CrmCase other = (CrmCase) object;
-        return !((this.idca == null && other.idca != null) || (this.idca != null && !this.idca.equals(other.idca)));
-    }
-
     public Boolean getFinished() {
         return finished;
     }
 
     public void setFinished(Boolean finished) {
         this.finished = finished;
+    }
+
+    public Boolean getSaleAgreeded() {
+        return saleAgreeded;
+    }
+
+    public void setSaleAgreeded(Boolean saleAgreeded) {
+        this.saleAgreeded = saleAgreeded;
     }
 
     @XmlTransient
@@ -183,6 +186,16 @@ public class CrmCase implements Serializable {
 
     public void setRelSALEList(List<RelSALE> relSALEList) {
         this.relSALEList = relSALEList;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CrmCase)) {
+            return false;
+        }
+        CrmCase other = (CrmCase) object;
+        return !((this.idca == null && other.idca != null) || (this.idca != null && !this.idca.equals(other.idca)));
     }
 
     @Override

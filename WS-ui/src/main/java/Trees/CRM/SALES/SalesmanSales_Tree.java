@@ -16,14 +16,14 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Salesman_Sales_Tree extends CustomObjectTree<CrmCase> {
+public class SalesmanSales_Tree extends CustomObjectTree<CrmCase> {
 
     private final Date dateFrom;
     private final Date dateTo;
 
-    public Salesman_Sales_Tree(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
+    public SalesmanSales_Tree(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCRMController().getCRM_Cases(salesman, true, dateFrom, dateTo));
+        super(caption, DS.getCRMController().getCRM_CompletedCases(salesman, true, true));
 
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -31,7 +31,7 @@ public class Salesman_Sales_Tree extends CustomObjectTree<CrmCase> {
 
     @Override
     protected void createSubNodes(CrmCase cc) {
-        createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc.getFK_IDRSC().getFK_IDS(), dateFrom, dateTo));
+        createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
     }
 
 }

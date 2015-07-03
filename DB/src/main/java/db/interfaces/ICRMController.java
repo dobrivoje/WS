@@ -38,11 +38,21 @@ public interface ICRMController {
 
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished);
 
-    List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo);
+    List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished, boolean saleAgreeded, Date dateFrom, Date dateTo);
 
     /**
      *
-     * @param s - Salesman
+     * @param c
+     * @param dateFrom - Ako su oba datuma null, onda se traži prodaja za
+     * prethodni i sadašnji mesec
+     * @param dateTo
+     * @return
+     */
+    List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo);
+
+    /**
+     *
+     * @param s
      * @param dateFrom - Ako su oba datuma null, onda se traži prodaja za
      * prethodni i sadašnji mesec
      * @param dateTo
@@ -87,11 +97,12 @@ public interface ICRMController {
      * sklopljen !
      *
      * @param salesman
+     * @param finished
      * @param caseAggreed - true: Ugovor zaključen, false: CRM aktivan -
      * pregovori u toku.
      * @return
      */
-    List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean caseAggreed);
+    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">

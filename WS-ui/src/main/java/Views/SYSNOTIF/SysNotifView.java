@@ -1,7 +1,7 @@
 package Views.SYSNOTIF;
 
-import Trees.CRM.SALES.Salesman_Sales_Tree;
-import Trees.CRM.Salesman_CRMCases_Tree;
+import Trees.CRM.SALES.SalesmanSales_Tree;
+import Trees.CRM.SalesmanCRMCases_Tree;
 import Views.DashboardView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
@@ -10,10 +10,9 @@ import db.ent.Salesman;
 import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.List;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_CARDS_MANAGER;
-import static org.dobrivoje.auth.roles.RolesPermissions.R_CARDS_USER;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_MANAGER;
-import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_USER;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import ws.MyUI;
 
@@ -21,15 +20,14 @@ public class SysNotifView extends DashboardView {
 
     ISUserType IST = MyUI.get().getLoggedISUserType();
     Salesman S = MyUI.get().getLoggedSalesman();
-    boolean FS_allowed = MyUI.get().isPermitted(R_FUELSALES_USER);
-    boolean CARD_allowed = MyUI.get().isPermitted(R_CARDS_USER);
+    boolean formEditAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
 
     public SysNotifView() {
         super("System Notification Board");
 
         switch (IST) {
             case SALESMAN:
-                createSalesmanView(FS_allowed || CARD_allowed);
+                createSalesmanView(formEditAllowed);
                 break;
             case ADMIN:
                 createAdminView();
@@ -51,7 +49,7 @@ public class SysNotifView extends DashboardView {
         List<Component> C = new ArrayList();
 
         try {
-            Salesman_CRMCases_Tree csct = new Salesman_CRMCases_Tree("", S, FS_allowed || CARD_allowed);
+            SalesmanCRMCases_Tree csct = new SalesmanCRMCases_Tree("", S, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -60,7 +58,7 @@ public class SysNotifView extends DashboardView {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
-            Salesman_Sales_Tree csct = new Salesman_Sales_Tree(R_CARDS_USER, S, null, null, FS_allowed || CARD_allowed);
+            SalesmanSales_Tree csct = new SalesmanSales_Tree("", S, null, null, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }

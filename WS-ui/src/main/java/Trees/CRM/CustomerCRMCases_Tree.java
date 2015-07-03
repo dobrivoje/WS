@@ -15,7 +15,10 @@ import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
+import db.ent.Customer;
 import db.ent.Salesman;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import static ws.MyUI.DS;
@@ -24,24 +27,16 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> {
+public class CustomerCRMCases_Tree extends CustomObjectTree<CrmCase> {
 
     private CRUDForm2 crudForm;
     private Salesman salesman;
 
-    /**
-     *
-     * @param caption
-     * @param salesman
-     * @param formAllowed - Da li krisnik ima prava da otvara formu
-     * @throws CustomTreeNodesEmptyException
-     * @throws NullPointerException
-     */
-    public Salesman_CRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCRMController().getCRM_Cases(salesman, false));
+    public CustomerCRMCases_Tree(String caption, final Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, DS.getCRMController().getCRM_Cases(customer, false));
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
-        super.addItemClickListener((ItemClickEvent event) -> {
+        addItemClickListener((ItemClickEvent event) -> {
             propTrees.clear();
             propPanel.removeAllComponents();
 
@@ -66,29 +61,29 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                             try {
                                 CrmProcess crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
-                                Salesman_CRMCases_Tree cc = new Salesman_CRMCases_Tree("", salesman, formAllowed);
-                                crudForm = new CRMProcess_Form(crmProcess, cc, false);
+                                CustomerCRMCases_Tree ccct = new CustomerCRMCases_Tree("", customer, formAllowed);
+                                crudForm = new CRMProcess_Form(crmProcess, ccct, false);
 
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
-                            } catch (NullPointerException | IllegalArgumentException ex) {
+                            } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
                             }
                         }
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
-                            CRM_SingleCase_Tree csct = new CRM_SingleCase_Tree("Case by " + this.salesman.toString(), ac, crudForm);
+                            CRMSingleCase_Tree csct = new CRMSingleCase_Tree("Case by " + salesman.toString(), ac, crudForm);
                             propTrees.add(csct);
-
+                            
                             propPanel.addComponent(csct);
                         }
-
+                        
                         propTrees.stream().forEach((ct) -> {
-                            ((CRM_SingleCase_Tree) ct).refreshVisualContainer();
+                            ((CRMSingleCase_Tree) ct).refreshVisualContainer();
                         });
-
+                        
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
-
+                        
                         getUI().addWindow(
                                 new WindowFormProp(
                                         winFormCaption,
@@ -105,14 +100,17 @@ public class Salesman_CRMCases_Tree extends CustomObjectTree<CrmCase> {
                     }
                 }
 
-            } catch (CustomTreeNodesEmptyException | NullPointerException e) {
+            } catch (NullPointerException | CustomTreeNodesEmptyException ex) {
+                Logger.getLogger(CustomerCRMCases_Tree.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         //</editor-fold>
     }
 
     @Override
-    protected void createSubNodes(CrmCase cc) {
-        createNodeItems(cc, DS.getCRMController().getCRM_Processes(cc, false));
+    protected void createSubNodes(CrmCase c) {
+        if (!c.getFinished()) {
+            createNodeItems(c, DS.getCRMController().getCRM_Processes(c, false));
+        }
     }
 }

@@ -52,7 +52,10 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     private final TextArea description = new TextArea("Description");
 
     @PropertyId("finished")
-    private final CheckBox finished = new CheckBox("Case finished ?");
+    private final CheckBox finished = new CheckBox("Case Finished ?");
+
+    @PropertyId("saleAgreeded")
+    private final CheckBox saleAgreeded = new CheckBox("Sale Agreeded ?");
 
     @PropertyId("endDate")
     private final DateField endDate = new DateField("Case End Date");
@@ -78,6 +81,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         startDate.setEnabled(newCase);
 
         finished.setEnabled(!newCase);
+        saleAgreeded.setEnabled(!newCase);
         endDate.setEnabled(false);
     }
 
@@ -130,6 +134,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         crmCase.setEndDate(endDate.getValue());
         crmCase.setDescription(description.getValue());
         crmCase.setFinished(finished.getValue());
+        crmCase.setSaleAgreeded(saleAgreeded.getValue());
 
         try {
             crmCase.setFK_IDRSC(
@@ -151,6 +156,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
             endDate.setValue(cc.getEndDate());
             description.setValue(cc.getDescription());
             finished.setValue(cc.getFinished());
+            saleAgreeded.setValue(cc.getSaleAgreeded());
             salesman.setValue(cc.getFK_IDRSC().getFK_IDS());
             customer.setValue(cc.getFK_IDRSC().getFK_IDC());
         }
@@ -187,6 +193,9 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
 
         finished.setValue(false);
         finished.setEnabled(false);
+
+        saleAgreeded.setValue(false);
+        saleAgreeded.setEnabled(false);
 
         endDate.setValue(null);
         endDate.setEnabled(false);

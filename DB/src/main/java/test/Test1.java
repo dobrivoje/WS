@@ -7,6 +7,7 @@ package test;
 
 import dataservice.DataService;
 import db.DBHandler;
+import db.ent.CrmCase;
 import db.ent.InfSysUser;
 import db.ent.RelSALE;
 import db.ent.Salesman;
@@ -16,6 +17,7 @@ import db.interfaces.ISalesmanController;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -54,15 +56,43 @@ public class Test1 {
                 + new SimpleDateFormat("dd.MM.yyyy").format(from) + " - "
                 + new SimpleDateFormat("dd.MM.yyyy").format(to)
         );
-        System.err.println(DS.getCRMController().getCRM_Cases(loggedInSalesman, true, from, to));
+        System.err.println(DS.getCRMController().getCRM_Cases(loggedInSalesman, true, true, null, null));
 
-        for (RelSALE r : DS.getCRMController().getCRM_Sales(loggedInSalesman, from, to)) {
-            System.err.println("prodaja : " + r.getAmmount());
+        for (CrmCase cc : DS.getCRMController().getCRM_CompletedCases(loggedInSalesman, true, true)) {
+            System.err.println("case : " + cc.getDescription());
+
+            for (RelSALE r : DS.getCRMController().getCRM_Sales(cc, from, to)) {
+                System.err.println("prodaja : " + r.getAmmount());
+            }
         }
-        
-        for (RelSALE r : DS.getCRMController().getCRM_Sales(loggedInSalesman, null, null)) {
-            System.err.println("prodaja : " + r.getAmmount());
+
+        System.err.println("-----salesman sales cases-----");
+        for (Salesman S : DS.getSalesmanController().getAll()) {
+            System.err.println("salesman : " + S);
+            System.err.println(dbh.getCRM_CompletedCases(S, true, true));
         }
-        
+
+        System.err.println("-----salesman getCRM_Cases-----");
+        for (Salesman S : DS.getSalesmanController().getAll()) {
+            System.err.println("salesman : " + S);
+            System.err.println(DS.getCRMController().getCRM_Cases(S, true, true, null, null));
+        }
+
+        System.err.println("-----salesman active cases-----");
+        for (Salesman S : DS.getSalesmanController().getAll()) {
+            System.err.println("salesman : " + S);
+            System.err.println(dbh.getCRM_Cases(S, false));
+        }
+
+        System.err.println("-----salesman active cases 2-----");
+        for (Salesman S : DS.getSalesmanController().getAll()) {
+            System.err.println("salesman : " + S);
+
+            List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
+            if (!L.isEmpty() ) {
+                System.err.println(L);
+            }
+        }
+
     }
 }

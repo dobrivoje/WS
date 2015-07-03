@@ -105,13 +105,14 @@ public class CRM_Controller implements ICRMController {
      * @param salesman
      * @param caseFinished - Ako su oba datuma null, vraćaju se CRM case-ovi za
      * prethodni i tekući mesec.
+     * @param saleAgreeded
      * @param dateFrom
      * @param dateTo
      * @return
      */
     @Override
-    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, Date dateFrom, Date dateTo) {
-        return dbh.getCRM_Cases(salesman, dateFrom, dateTo, caseFinished, 0);
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, boolean saleAgreeded, Date dateFrom, Date dateTo) {
+        return dbh.getCRM_Cases(salesman, dateFrom, dateTo, caseFinished, saleAgreeded, 0);
     }
 
     /**
@@ -160,8 +161,8 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean caseAggreed) {
-        return dbh.getCRM_CompletedCases(salesman, caseAggreed);
+    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed) {
+        return dbh.getCRM_CompletedCases(salesman, finished, caseAggreed);
     }
 
     @Override
@@ -237,6 +238,10 @@ public class CRM_Controller implements ICRMController {
     }
     //</editor-fold>
 
+    @Override
+    public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
+        return dbh.getSales(c, dateFrom, dateTo);
+    }
     @Override
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
         return dbh.getSales(s, dateFrom, dateTo);

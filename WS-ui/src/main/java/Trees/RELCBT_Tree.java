@@ -7,8 +7,8 @@ package Trees;
 
 import Forms.CDM.RELCBTForm;
 import Forms.CRUDForm2;
-import Trees.CRM.CRM_SingleCase_Tree;
-import Trees.CRM.Customer_CRMCases_Tree;
+import Trees.CRM.CRMSingleCase_Tree;
+import Trees.CRM.CustomerCRMCases_Tree;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -55,7 +55,7 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
                             //<editor-fold defaultstate="collapsed" desc="Open form">
                             propTrees.stream().forEach((ct) -> {
-                                ((CRM_SingleCase_Tree) ct).refreshVisualContainer();
+                                ((CRMSingleCase_Tree) ct).refreshVisualContainer();
                             });
 
                             winFormPropPanel = new Panel(propPanel.getComponentCount() > 0
@@ -79,7 +79,7 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
                 }
 
             } catch (NullPointerException ex) {
-                Logger.getLogger(Customer_CRMCases_Tree.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CustomerCRMCases_Tree.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
