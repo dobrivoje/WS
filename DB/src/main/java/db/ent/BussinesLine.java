@@ -28,10 +28,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "BUSSINES_LINE")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "BussinesLine.findAll", query = "SELECT b FROM BussinesLine b"),
-    @NamedQuery(name = "BussinesLine.findByIdbl", query = "SELECT b FROM BussinesLine b WHERE b.idbl = :idbl"),
-    @NamedQuery(name = "BussinesLine.findByName", query = "SELECT b FROM BussinesLine b WHERE b.name = :name")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "BussinesLine.findAll", query = "SELECT b FROM BussinesLine b"),
+            @NamedQuery(name = "BussinesLine.findByIdbl", query = "SELECT b FROM BussinesLine b WHERE b.idbl = :idbl"),
+            @NamedQuery(name = "BussinesLine.findByName", query = "SELECT b FROM BussinesLine b WHERE b.name = :name")
+        }
+)
 public class BussinesLine implements Serializable {
 
     private static final long serialVersionUID = 1L;

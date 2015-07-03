@@ -6,6 +6,7 @@
 package db.controllers;
 
 import db.DBHandler;
+import db.ent.BussinesLine;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
@@ -36,8 +37,8 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public List<CrmCase> getCRM_AllActiveCases(boolean caseFinished) {
-        return dbh.getCRM_AllActiveCases(caseFinished);
+    public List<CrmCase> getCRM_AllActiveCases(boolean finished) {
+        return dbh.getCRM_AllActiveCases(finished);
     }
 
     @Override
@@ -46,18 +47,23 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished) {
-        return dbh.getCRMCase(c, s, caseFinished);
+    public List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean finished) {
+        return dbh.getCRMCase(c, s, finished);
     }
 
     @Override
-    public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
-        return dbh.getCRM_Cases(customer, caseFinished);
+    public List<CrmCase> getCRM_Cases(Customer customer, boolean finished) {
+        return dbh.getCRM_Cases(customer, finished);
     }
 
     @Override
-    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished) {
-        return dbh.getCRM_Cases(salesman, caseFinished);
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished) {
+        return dbh.getCRM_Cases(salesman, finished);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_Cases(BussinesLine bussinesLine, boolean finished) {
+        return dbh.getCRM_Cases(bussinesLine, finished);
     }
 
     @Override
@@ -103,7 +109,7 @@ public class CRM_Controller implements ICRMController {
     /**
      *
      * @param salesman
-     * @param caseFinished - Ako su oba datuma null, vraćaju se CRM case-ovi za
+     * @param finished - Ako su oba datuma null, vraćaju se CRM case-ovi za
      * prethodni i tekući mesec.
      * @param saleAgreeded
      * @param dateFrom
@@ -111,8 +117,8 @@ public class CRM_Controller implements ICRMController {
      * @return
      */
     @Override
-    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished, boolean saleAgreeded, Date dateFrom, Date dateTo) {
-        return dbh.getCRM_Cases(salesman, dateFrom, dateTo, caseFinished, saleAgreeded, 0);
+    public List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished, boolean saleAgreeded, Date dateFrom, Date dateTo) {
+        return dbh.getCRM_Cases(salesman, dateFrom, dateTo, finished, saleAgreeded, 0);
     }
 
     /**
@@ -152,12 +158,17 @@ public class CRM_Controller implements ICRMController {
     /**
      * Lista svih kupaca sa otvorenim slučajevima.
      *
-     * @param caseFinished
+     * @param finished
      * @return
      */
     @Override
-    public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished) {
-        return dbh.getCRM_CustomerActiveCases(caseFinished);
+    public List<Customer> getCRM_CustomerActiveCases(boolean finished) {
+        return dbh.getCRM_CustomerActiveCases(finished);
+    }
+
+    @Override
+    public List<Customer> getCRM_CustomerActiveCases(boolean finished, BussinesLine bl) {
+        return dbh.getCRM_CustomerActiveCases(finished, bl);
     }
 
     @Override
@@ -183,6 +194,16 @@ public class CRM_Controller implements ICRMController {
     @Override
     public List<CrmStatus> getCRM_CaseStatuses(CrmCase crmCase) {
         return dbh.getCRM_CaseStatuses(crmCase);
+    }
+
+    @Override
+    public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
+        return dbh.getSales(c, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
+        return dbh.getSales(s, dateFrom, dateTo);
     }
     //</editor-fold>
 
@@ -237,14 +258,5 @@ public class CRM_Controller implements ICRMController {
         dbh.addNewSale(sale);
     }
     //</editor-fold>
-
-    @Override
-    public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
-        return dbh.getSales(c, dateFrom, dateTo);
-    }
-    @Override
-    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        return dbh.getSales(s, dateFrom, dateTo);
-    }
 
 }

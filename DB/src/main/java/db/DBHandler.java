@@ -380,6 +380,16 @@ public class DBHandler {
         }
     }
 
+    public List<Salesman> getSalesman(BussinesLine bl) {
+        try {
+            return getEm().createNamedQuery("Salesman.SalesmenByBL")
+                    .setParameter("FK_IDBL", bl)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Salesman getSalesman(Long IDS) {
         try {
             return (Salesman) getEm().createNamedQuery("Salesman.findByIds")
@@ -1367,6 +1377,17 @@ public class DBHandler {
         }
     }
 
+    public List<CrmCase> getCRM_Cases(BussinesLine bussinesLine, boolean finished) {
+        try {
+            return getEm().createNamedQuery("CrmCase.ByBussinesLine")
+                    .setParameter("FK_IDBL", bussinesLine)
+                    .setParameter("finished", finished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded, int ammount) {
         Date from = dateFrom;
         Date to = dateTo;
@@ -1398,6 +1419,17 @@ public class DBHandler {
         try {
             return getEm().createNamedQuery("CrmCase.CustomerActiveCases")
                     .setParameter("Finished", caseFinished)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Customer> getCRM_CustomerActiveCases(boolean caseFinished, BussinesLine bl) {
+        try {
+            return getEm().createNamedQuery("CrmCase.BL_CustomerActiveCases")
+                    .setParameter("finished", caseFinished)
+                    .setParameter("FK_IDBL", bl)
                     .getResultList();
         } catch (Exception ex) {
             return null;
@@ -1533,9 +1565,9 @@ public class DBHandler {
         }
     }
     //</editor-fold>
+    //</editor-fold>
+    //</editor-fold>
 
-    //</editor-fold>
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="USER">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<InfSysUser> getAllUsers() {
@@ -1785,8 +1817,28 @@ public class DBHandler {
         }
     }
     //</editor-fold>
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    //<editor-fold defaultstate="collapsed" desc="BUSSINES LINE">
+    //<editor-fold defaultstate="collapsed" desc="READ">
+    public BussinesLine getBussinesLine(Long ID) {
+        try {
+            return (BussinesLine) getEm().createNamedQuery("BussinesLine.findByIdbl")
+                    .setParameter("idbl", ID)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<BussinesLine> getBussinesLines() {
+        try {
+            return getEm().createNamedQuery("BussinesLine.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
     //</editor-fold>
     //</editor-fold>
 }

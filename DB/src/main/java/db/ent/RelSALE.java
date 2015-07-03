@@ -153,7 +153,11 @@ public class RelSALE implements Serializable {
 
     @Override
     public String toString() {
-        return FK_IDP.getName() + " - " + Integer.toString((int) ammount);
+        try {
+            return FK_IDP.getName() + " - " + Integer.toString((int) ammount);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

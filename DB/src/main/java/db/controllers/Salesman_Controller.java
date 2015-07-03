@@ -33,6 +33,11 @@ public class Salesman_Controller implements ISalesmanController {
     public Salesman getByID(Long customerID) {
         return dbh.getSalesman(customerID);
     }
+
+    @Override
+    public List<Salesman> getSalesman(BussinesLine bl) {
+        return dbh.getSalesman(bl);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/Update">

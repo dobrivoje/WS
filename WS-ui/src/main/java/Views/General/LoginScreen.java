@@ -171,7 +171,7 @@ public class LoginScreen extends CssLayout {
                 DS.getLOGController().addNew(
                         new Date(),
                         LOGS.LOGIN.toString(),
-                        accessControl.getPrincipal() + " Domain=" + domain.getValue(),
+                        accessControl.getPrincipal() + " ,Domain=" + domain.getValue(),
                         MyUI.get().getLoggedISUser());
 
                 loginListener.doAfterLogin();

@@ -22,7 +22,6 @@ import db.ent.InfSysUser;
 import db.ent.Salesman;
 import enums.ISUserType;
 import org.dobrivoje.auth.IntermolADAccessControl;
-import org.dobrivoje.auth.ShiroAccessControl;
 import org.dobrivoje.utils.date.formats.DateFormat;
 
 /**
@@ -75,8 +74,6 @@ public class MyUI extends UI {
                     loggedSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
 
                     showMainView();
-
-                    System.err.println("login sessions : " + ShiroAccessControl.getUsersSessions());
                 }
             }));
         }
@@ -108,7 +105,11 @@ public class MyUI extends UI {
         return loggedISUserType;
     }
 
-    public Salesman getLoggedSalesman() {
+    public Salesman getLoggedSalesman() throws Exception {
+        if (loggedSalesman == null) {
+            throw new Exception("User " + loggedISUser.getUserName() + ", is not defined as the salesman.");
+        }
+
         return loggedSalesman;
     }
     //</editor-fold>

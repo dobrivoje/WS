@@ -7,6 +7,7 @@ package test;
 
 import dataservice.DataService;
 import db.DBHandler;
+import db.ent.BussinesLine;
 import db.ent.CrmCase;
 import db.ent.InfSysUser;
 import db.ent.RelSALE;
@@ -15,6 +16,7 @@ import db.interfaces.ICRMController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -89,10 +91,27 @@ public class Test1 {
             System.err.println("salesman : " + S);
 
             List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
-            if (!L.isEmpty() ) {
+            if (!L.isEmpty()) {
                 System.err.println(L);
             }
         }
 
+        System.err.println("-----prodaje prodavca iz sektora-----");
+
+        for (BussinesLine BL : DS.getBLController().getAll()) {
+            System.err.println("sektor : " + BL.getName());
+
+            for (Salesman sss : DS.getSalesmanController().getSalesman(BL)) {
+                System.err.println("salesman : " + sss);
+
+                List<RelSALE> LS = DS.getCRMController().getCRM_Sales(sss, null, null);
+
+                if (LS.isEmpty()) {
+                    LS = Arrays.asList(new RelSALE(null, 0, "", null, null));
+                }
+
+                System.err.println(LS);
+            }
+        }
     }
 }

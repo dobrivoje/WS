@@ -51,11 +51,17 @@ import javax.xml.bind.annotation.XmlTransient;
             @NamedQuery(name = "CrmCase.findBySalesman",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :FK_IDS AND c.finished = :finished ORDER BY c.idca DESC"),
 
+            @NamedQuery(name = "CrmCase.ByBussinesLine",
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS.fkIdbl = :FK_IDBL AND c.finished = :finished ORDER BY c.idca DESC"),
+
             @NamedQuery(name = "CrmCase.SalesmanCustomers",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS AND c.FK_IDRSC.FK_IDC =:IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
 
             @NamedQuery(name = "CrmCase.CustomerActiveCases",
                     query = "SELECT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :Finished GROUP BY C.FK_IDRSC.FK_IDC"),
+
+            @NamedQuery(name = "CrmCase.BL_CustomerActiveCases",
+                    query = "SELECT c FROM CrmCase c WHERE c.finished = :finished AND c.FK_IDRSC.FK_IDS.fkIdbl = :FK_IDBL"),
 
             @NamedQuery(name = "CrmCase.SalesmanCompletedCases",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :salesman AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded"),

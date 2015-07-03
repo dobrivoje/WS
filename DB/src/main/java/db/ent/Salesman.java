@@ -29,15 +29,20 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "SALESMAN")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Salesman.findAll", query = "SELECT s FROM Salesman s"),
-    @NamedQuery(name = "Salesman.findByIds", query = "SELECT s FROM Salesman s WHERE s.ids = :ids"),
-    @NamedQuery(name = "Salesman.findByName", query = "SELECT s FROM Salesman s WHERE s.name = :name"),
-    @NamedQuery(name = "Salesman.findBySurname", query = "SELECT s FROM Salesman s WHERE s.surname = :surname"),
-    @NamedQuery(name = "Salesman.findByPosition", query = "SELECT s FROM Salesman s WHERE s.position = :position"),
-    @NamedQuery(name = "Salesman.findByActive", query = "SELECT s FROM Salesman s WHERE s.active = :active"),
-    @NamedQuery(name = "Salesman.findByDateFrom", query = "SELECT s FROM Salesman s WHERE s.dateFrom = :dateFrom"),
-    @NamedQuery(name = "Salesman.findByDateTo", query = "SELECT s FROM Salesman s WHERE s.dateTo = :dateTo")})
+@NamedQueries(
+        {
+            @NamedQuery(name = "Salesman.findAll", query = "SELECT s FROM Salesman s"),
+
+            @NamedQuery(name = "Salesman.SalesmenByBL",
+                    query = "SELECT s FROM Salesman s WHERE s.fkIdbl = :FK_IDBL"),
+
+            @NamedQuery(name = "Salesman.findByIds", query = "SELECT s FROM Salesman s WHERE s.ids = :ids"),
+            @NamedQuery(name = "Salesman.findByName", query = "SELECT s FROM Salesman s WHERE s.name = :name"),
+            @NamedQuery(name = "Salesman.findBySurname", query = "SELECT s FROM Salesman s WHERE s.surname = :surname"),
+            @NamedQuery(name = "Salesman.findByPosition", query = "SELECT s FROM Salesman s WHERE s.position = :position"),
+            @NamedQuery(name = "Salesman.findByActive", query = "SELECT s FROM Salesman s WHERE s.active = :active"),
+        }
+)
 public class Salesman implements Serializable {
 
     private static final long serialVersionUID = 1L;

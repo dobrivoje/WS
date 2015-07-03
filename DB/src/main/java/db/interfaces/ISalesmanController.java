@@ -18,6 +18,8 @@ public interface ISalesmanController {
     //<editor-fold defaultstate="collapsed" desc="data to read">
     List<Salesman> getAll();
 
+    List<Salesman> getSalesman(BussinesLine bl);
+
     Salesman getByID(Long customerID);
     //</editor-fold>
 

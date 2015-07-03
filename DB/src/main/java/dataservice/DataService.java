@@ -6,6 +6,7 @@
 package dataservice;
 
 import db.DBHandler;
+import db.controllers.BLController;
 import db.controllers.CBT_Controller;
 import db.controllers.CRM_Controller;
 import db.controllers.City_Controller;
@@ -20,6 +21,7 @@ import db.controllers.Salesman_Controller;
 import db.controllers.InfSysUser_Controller;
 import db.controllers.LOG_Controller;
 import db.controllers.Product_Controller;
+import db.interfaces.IBLController;
 import db.interfaces.ICBTController;
 import db.interfaces.ICRMController;
 import db.interfaces.ICityController;
@@ -71,6 +73,7 @@ public class DataService {
     private final IInfSysUserController infSysUserController = new InfSysUser_Controller(DBH);
     private final ILOGController iLogController = new LOG_Controller(DBH);
     private final IPRODUCTController iPRODUCTController = new Product_Controller(DBH);
+    private final IBLController iBLC = new BLController(DBH);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Get Interfaces">
@@ -132,6 +135,10 @@ public class DataService {
 
     public IPRODUCTController getProductController() {
         return iPRODUCTController;
+    }
+
+    public IBLController getBLController() {
+        return iBLC;
     }
     //</editor-fold>
 

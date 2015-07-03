@@ -5,6 +5,7 @@
  */
 package db.interfaces;
 
+import db.ent.BussinesLine;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
@@ -30,13 +31,17 @@ public interface ICRMController {
 
     List<CrmStatus> getCRM_CaseStatuses(CrmCase crmCase);
 
-    List<Customer> getCRM_CustomerActiveCases(boolean caseFinished);
+    List<Customer> getCRM_CustomerActiveCases(boolean finished);
 
-    List<CrmCase> getCRM_AllActiveCases(boolean caseFinished);
+    List<Customer> getCRM_CustomerActiveCases(boolean finished, BussinesLine bl);
 
-    List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished);
+    List<CrmCase> getCRM_AllActiveCases(boolean finished);
 
-    List<CrmCase> getCRM_Cases(Salesman salesman, boolean caseFinished);
+    List<CrmCase> getCRM_Cases(Customer customer, boolean finished);
+
+    List<CrmCase> getCRM_Cases(BussinesLine bussinesLine, boolean finished);
+
+    List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished);
 
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished, boolean saleAgreeded, Date dateFrom, Date dateTo);
 
@@ -60,7 +65,7 @@ public interface ICRMController {
      */
     List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo);
 
-    List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean caseFinished);
+    List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean finished);
 
     CrmCase getCRM_LastActive_CRMCase(Customer c, Salesman s);
 
