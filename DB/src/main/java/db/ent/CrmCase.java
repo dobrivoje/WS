@@ -211,8 +211,13 @@ public class CrmCase implements Serializable {
          + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate())
          + (isFinished() ? " - Finished." : "");
          */
-        return getFK_IDRSC().getFK_IDC().getName() + ", "
-                + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate());
+
+        try {
+            return getFK_IDRSC().getFK_IDC().getName() + ", "
+                    + new SimpleDateFormat("dd.MM.yyyy").format(getStartDate());
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

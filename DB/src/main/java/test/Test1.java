@@ -21,10 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author root
- */
 public class Test1 {
 
     public static final DataService DS = DataService.getDefault();

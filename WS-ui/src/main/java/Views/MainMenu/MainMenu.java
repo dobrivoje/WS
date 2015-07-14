@@ -348,7 +348,7 @@ public class MainMenu extends CssLayout {
                                             cpf,
                                             "img/crm/crm-process3.png",
                                             cpf.getClickListener(),
-                                            false)
+                                            236, 223)
                                     );
 
                                 } catch (NullPointerException | IllegalArgumentException ex) {
