@@ -23,8 +23,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import db.ent.Fuelstation;
 import java.util.List;
+import org.dobrivoje.auth.roles.RolesPermissions;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
@@ -154,15 +154,16 @@ public class FSTable extends GENTable<Fuelstation> {
                 String caption = "";
                 CRUDForm2 cf = null;
 
+                // svima je dozvoljeno da gledaju galeriju stanica !
                 if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
                     try {
                         IG.openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
                     } catch (Exception e) {
                         Notification.show("Gallery Info Message", "Fuelstation Has No Images Yet.", Notification.Type.ERROR_MESSAGE);
                     }
-                }
-
-                if (MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_PROPERTY)) {
+                
+                // obavezno proveriti prava
+                } else if (MyUI.get().isPermitted(RolesPermissions.P_FUELSTATIONS_MANAGEMENT)) {
                     if (action.equals(FSTable.ACTION_FS_OWNER)) {
                         caption = "Fuelstation Owner Form";
                         cf = new FSOWNER_Form(f, null, false);

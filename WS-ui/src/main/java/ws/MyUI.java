@@ -5,6 +5,7 @@ import Views.General.LoginScreen;
 import Views.General.LoginScreen.LoginListener;
 import Views.General.MainScreen;
 import Views.SYSNOTIF.SysNotifView;
+import com.vaadin.annotations.PreserveOnRefresh;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -29,6 +30,8 @@ import org.dobrivoje.utils.date.formats.DateFormat;
  */
 @Theme("mytheme")
 @Widgetset("ws.MyAppWidgetset")
+@PreserveOnRefresh
+
 public class MyUI extends UI {
 
     public final IAccessAuthControl accessControl = new IntermolADAccessControl();

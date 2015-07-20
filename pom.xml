@@ -128,5 +128,6 @@
     <module>DB</module>
     <module>UTILITIES</module>
     <module>AUTH</module>
+    <module>JASPER</module>
   </modules>
 </project>

@@ -145,7 +145,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     }
 
     @Override
-    protected void setRequiredFields() {
+    protected final void setRequiredFields() {
         name.setRequired(true);
         city.setRequired(true);
     }

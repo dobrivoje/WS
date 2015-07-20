@@ -59,6 +59,7 @@ import Views.MainMenu.CRM.CRMView;
 import Views.MainMenu.CRM.CRMSCView;
 import Views.MainMenu.FSDM.FSView;
 import Views.SYSNOTIF.SysNotifView;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
 import java.util.Date;
 import java.util.logging.Level;
@@ -144,10 +145,11 @@ public class MainMenu extends CssLayout {
                         System.err.println("logout sessions : " + ShiroAccessControl.getUsersSessions());
 
                         // VEOMA VAŽNO !!!
-                        // ONEMOGUĆAVANJE KODA ISPOD, DOVODI DO TOGA DA SE NA ISTOM RAČUNARU
+                        // ONEMOGUĆAVANJE KODA : VaadinSession.getCurrent().getSession().invalidate();, 
+                        // DOVODI DO TOGA DA SE NA ISTOM RAČUNARU
                         // NA KOME SE LOGUJE VIŠE PUTA ISTI KORISNIK POSLE LOGOUT-A, OSTALI
                         // KORISNICI I DALJE MOGU DA RADE !!!
-                        // VaadinSession.getCurrent().getSession().invalidate();
+                        VaadinSession.getCurrent().getSession().invalidate();
                         Page.getCurrent().reload();
                     }
                 });
@@ -282,7 +284,7 @@ public class MainMenu extends CssLayout {
                                         cf,
                                         "img/crm/crm-user-3.png",
                                         cf.getClickListener(),
-                                        250, 205)
+                                        236, 194)
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
@@ -298,7 +300,7 @@ public class MainMenu extends CssLayout {
                                         rcbtf,
                                         "img/crm/cbt.png",
                                         rcbtf.getClickListener(),
-                                        220, 202)
+                                        236, 216)
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -313,7 +315,9 @@ public class MainMenu extends CssLayout {
                                         SALE_NEW.toString(),
                                         csf,
                                         "img/crm/crm-new-sale.png",
-                                        csf.getClickListener())
+                                        csf.getClickListener(),
+                                        236, 177
+                                )
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -391,7 +395,7 @@ public class MainMenu extends CssLayout {
                                         fof,
                                         "img/crm/cbt.png",
                                         fof.getClickListener(),
-                                        220, 202)
+                                        236, 216)
                                 );
 
                             } else {
@@ -408,7 +412,7 @@ public class MainMenu extends CssLayout {
                                         fof,
                                         "img/crm/cbt.png",
                                         fof.getClickListener(),
-                                        220, 202)
+                                        236, 216)
                                 );
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);

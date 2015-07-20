@@ -159,8 +159,8 @@ public class ShiroAccessControl implements IAccessAuthControl {
         }
 
     }
-
     //</editor-fold>
+
     public static Set<Serializable> getUsersSessions() {
         return usersSessions;
     }

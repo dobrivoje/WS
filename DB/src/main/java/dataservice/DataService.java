@@ -37,6 +37,7 @@ import db.interfaces.ISalesmanController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ILOGController;
 import db.interfaces.IPRODUCTController;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -55,6 +56,11 @@ public class DataService {
     public static synchronized DataService getDefault() {
         return instance == null ? instance = new DataService() : instance;
     }
+    
+    public static synchronized EntityManager getEM() throws Exception {
+        return DBHandler.getEm();
+    }
+    
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Interfaces Defs">

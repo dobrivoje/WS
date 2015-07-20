@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -72,7 +71,6 @@ public class CrmProcess implements Serializable {
     @Column(name = "ActionDate")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date actionDate;
-    @Lob
     @Column(name = "Comment")
     private String comment;
     @JoinColumn(name = "FK_IDCA", referencedColumnName = "IDCA")

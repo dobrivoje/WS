@@ -51,8 +51,9 @@ public class testKlasa {
 
         try {
             //intermolAD.login("intermol\\dprtenjak", "...");
-            //intermolAD.login("root", "...");
-            intermolAD.login("fs", "");
+            //intermolAD.login("root", "");
+            //intermolAD.login("fs", "");
+            intermolAD.login("cu", "");
 
             System.err.println(intermolAD.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -90,9 +91,12 @@ public class testKlasa {
             System.err.println("ExcessiveAttempts !");
         }
 
+        System.err.println("All Permissions :");
         for (String s : RolesPermissions.getAllPermissions()) {
             System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.isPermitted(s));
         }
+
+        System.err.println("All Roles :");
         for (String s : RolesPermissions.getAllRoles()) {
             System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.hasRole(s));
         }
@@ -145,10 +149,9 @@ public class testKlasa {
         System.err.println("intermolAD1.getId: " + intermolAD1.getSubjectSession().getId());
 
         System.err.println("sve sesije : " + ShiroAccessControl.getUsersSessions());
-        
+
         intermolAD1.logout();
         System.err.println("---- logout ----");
-        
 
         System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
         System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());
