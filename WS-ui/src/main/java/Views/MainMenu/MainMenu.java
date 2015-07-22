@@ -23,12 +23,12 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.themes.ValoTheme;
-import Forms.CDM.CustomerForm;
-import Forms.CDM.RELCBTForm;
-import Forms.CRM.CRMCase_Form;
-import Forms.CRM.CRMProcess_Form;
-import Forms.CRM.CRMSell_Form;
-import Forms.CRM.SCR_Form;
+import Forms.CDM.Form_Customer;
+import Forms.CDM.Form_RELCBT;
+import Forms.CRM.Form_CRMCase;
+import Forms.CRM.Form_CRMProcess;
+import Forms.CRM.Form_CRMSell;
+import Forms.CRM.Form_SCR;
 import Menu.Menu;
 import Menu.MenuDefinitions;
 import static Menu.MenuDefinitions.CUST_CRM_MANAG;
@@ -45,9 +45,9 @@ import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST;
 import static Menu.MenuDefinitions.SYS_NOTIF_BOARD_LICENCES_OVERDUE;
-import Views.MainMenu.CDM.CustomersView;
-import Forms.FSM.FSForm;
-import Forms.FSM.FSOWNER_Form;
+import Views.MainMenu.CDM.View_Customers;
+import Forms.FSM.Form_FS;
+import Forms.FSM.Form_FSOwner;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_SALESMAN_CUST_REL;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
@@ -55,10 +55,10 @@ import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
 import static Menu.MenuDefinitions.SALE;
 import static Menu.MenuDefinitions.SALE_NEW;
-import Views.MainMenu.CRM.CRMView;
-import Views.MainMenu.CRM.CRMSCView;
-import Views.MainMenu.FSDM.FSView;
-import Views.SYSNOTIF.SysNotifView;
+import Views.MainMenu.CRM.View_CRM;
+import Views.MainMenu.CRM.View_CRMSC;
+import Views.MainMenu.FSDM.View_FS;
+import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
 import java.util.Date;
@@ -268,16 +268,16 @@ public class MainMenu extends CssLayout {
 
                     switch ((MenuDefinitions) (event.getItemId())) {
                         case SYS_NOTIF_BOARD:
-                            navigator.navigateTo(SysNotifView.class.getSimpleName());
+                            navigator.navigateTo(View_SysNotif.class.getSimpleName());
                             break;
                         case CUST_DATA_MANAG_SEARCH_ENGINE:
-                            navigator.navigateTo(CustomersView.class.getSimpleName());
+                            navigator.navigateTo(View_Customers.class.getSimpleName());
                             break;
                         case CUST_DATA_MANAG_NEW_CUST:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
-                                navigator.navigateTo(CustomersView.class.getSimpleName());
+                                navigator.navigateTo(View_Customers.class.getSimpleName());
 
-                                CustomerForm cf = new CustomerForm(false);
+                                Form_Customer cf = new Form_Customer(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         CUST_DATA_MANAG_NEW_CUST.toString(),
@@ -293,7 +293,7 @@ public class MainMenu extends CssLayout {
                         case CUST_DATA_MANAG_NEW_CBT:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
 
-                                RELCBTForm rcbtf = new RELCBTForm(false);
+                                Form_RELCBT rcbtf = new Form_RELCBT(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         "New Customer Business Type",
@@ -309,7 +309,7 @@ public class MainMenu extends CssLayout {
 
                         case SALE_NEW:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                CRMSell_Form csf = new CRMSell_Form(false);
+                                Form_CRMSell csf = new Form_CRMSell(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         SALE_NEW.toString(),
@@ -325,11 +325,11 @@ public class MainMenu extends CssLayout {
                             break;
 
                         case CUST_CRM_MANAG:
-                            navigator.navigateTo(CRMView.class.getSimpleName());
+                            navigator.navigateTo(View_CRM.class.getSimpleName());
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                CRMCase_Form ccf = new CRMCase_Form(null, null, true);
+                                Form_CRMCase ccf = new Form_CRMCase(null, null, true);
 
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_CASE.toString(),
@@ -345,7 +345,7 @@ public class MainMenu extends CssLayout {
                         case CRM_MANAG_NEW_PROCESS:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                                 try {
-                                    CRMProcess_Form cpf = new CRMProcess_Form(null, true, null, false);
+                                    Form_CRMProcess cpf = new Form_CRMProcess(null, true, null, false);
 
                                     getUI().addWindow(new WindowForm3(
                                             CRM_MANAG_NEW_PROCESS.toString(),
@@ -363,7 +363,7 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                SCR_Form scf = new SCR_Form(false);
+                                Form_SCR scf = new Form_SCR(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
@@ -379,16 +379,16 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                navigator.navigateTo(CRMSCView.class.getSimpleName());
+                                navigator.navigateTo(View_CRMSC.class.getSimpleName());
                             } else {
                                 Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
                             }
                             break;
                         case FS_DATA_MANAG_NEW_FS:
                             if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
-                                navigator.navigateTo(FSView.class.getSimpleName());
+                                navigator.navigateTo(View_FS.class.getSimpleName());
 
-                                FSForm fof = new FSForm(false);
+                                Form_FS fof = new Form_FS(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         FS_DATA_MANAG_NEW_FS.toString(),
@@ -405,7 +405,7 @@ public class MainMenu extends CssLayout {
                         case FS_DATA_MANAG_NEW_FS_OWNER:
                             if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
 
-                                FSOWNER_Form fof = new FSOWNER_Form(false);
+                                Form_FSOwner fof = new Form_FSOwner(false);
 
                                 getUI().addWindow(new WindowForm3(
                                         FS_DATA_MANAG_NEW_FS_OWNER.toString(),
@@ -419,13 +419,20 @@ public class MainMenu extends CssLayout {
                             }
                             break;
                         case FS_DATA_MANAG_SEARCH_ENGINE:
-                            navigator.navigateTo(FSView.class.getSimpleName());
+                            navigator.navigateTo(View_FS.class.getSimpleName());
                             break;
                     }
 
                 } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
-                    Notification.show("Session Expiration", "Your current session has expired.\nPlease logout, and login again.",
-                            Notification.Type.ERROR_MESSAGE);
+                    Notification.show(
+                            "Session Expiration",
+                            "Your current session has expired.\nPlease logout, and login again.",
+                            Notification.Type.ERROR_MESSAGE
+                    );
+
+                    MyUI.get().getAccessControl().decLoggedUsers();
+                } catch (Exception e1) {
+                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, e1);
                     MyUI.get().getAccessControl().decLoggedUsers();
                 }
             }

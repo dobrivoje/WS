@@ -13,7 +13,7 @@ import java.util.Date;
 import org.superb.apps.utilities.vaadin.Trees.ISetFieldsFromBean;
 import static ws.MyUI.APP_DATE_FORMAT;
 
-public abstract class CRUDForm2<T> extends FormLayout implements ISetFieldsFromBean {
+public abstract class Form_CRUD2<T> extends FormLayout implements ISetFieldsFromBean {
 
     protected FieldGroup fieldGroup;
     protected BeanItem<T> beanItem;
@@ -23,7 +23,7 @@ public abstract class CRUDForm2<T> extends FormLayout implements ISetFieldsFromB
     protected String btnCaption;
     protected boolean defaultCRUDButtonOnForm;
 
-    protected CRUDForm2() {
+    protected Form_CRUD2() {
         setSizeFull();
         setMargin(true);
         setSpacing(true);
@@ -33,12 +33,12 @@ public abstract class CRUDForm2<T> extends FormLayout implements ISetFieldsFromB
         crudButton.setWidth(150, Unit.PIXELS);
     }
 
-    public CRUDForm2(BeanItem<T> beanItem) {
+    public Form_CRUD2(BeanItem<T> beanItem) {
         this();
         this.beanItem = beanItem;
     }
 
-    public CRUDForm2(FieldGroup fieldGroup) {
+    public Form_CRUD2(FieldGroup fieldGroup) {
         this();
         this.fieldGroup = fieldGroup;
     }

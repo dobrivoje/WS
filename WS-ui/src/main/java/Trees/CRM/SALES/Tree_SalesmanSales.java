@@ -16,12 +16,12 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class SalesmanSales_Tree extends CustomObjectTree<CrmCase> {
+public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
     private final Date dateFrom;
     private final Date dateTo;
 
-    public SalesmanSales_Tree(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
+    public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCRMController().getCRM_CompletedCases(salesman, true, true));
 

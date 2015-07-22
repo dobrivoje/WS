@@ -1,7 +1,7 @@
 package Views.MainMenu.FSDM;
 
-import Forms.FSM.FSOWNER_Form;
-import Forms.FSPROP.FSPROP_Form;
+import Forms.FSM.Form_FSOwner;
+import Forms.FSPROP.Form_FSProp;
 import ImageGallery.CustomerFuelStationsGallery;
 import ImageGallery.IDocumentGallery;
 import static Menu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
@@ -14,7 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import Tables.FSTable;
+import Tables.Table_FS;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
@@ -30,19 +30,19 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
-public class FSView extends VerticalLayout implements View {
+public class View_FS extends VerticalLayout implements View {
 
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
     private final VerticalLayout propVL = new VerticalLayout();
 
-    private final FSTable FS_Table = new FSTable();
-    private FSPROP_Form fSPROP_Form = null;
+    private final Table_FS FS_Table = new Table_FS();
+    private Form_FSProp fSPROP_Form = null;
 
     private Button newFSPropButton;
     private Button newFSOButton;
 
-    public FSView() {
+    public View_FS() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
         setSizeFull();
         addStyleName("crud-view");
@@ -110,7 +110,7 @@ public class FSView extends VerticalLayout implements View {
                             "User : " + MyUI.get().getLoggedISUser().getUserName() + ", FS search: " + event.getText(),
                             MyUI.get().getLoggedISUser());
                 } catch (Exception ex) {
-                    Logger.getLogger(FSView.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(View_FS.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -138,14 +138,14 @@ public class FSView extends VerticalLayout implements View {
                 Fuelstation f = (Fuelstation) FS_Table.getValue();
                 IDocumentGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
 
-                FSOWNER_Form fof;
+                Form_FSOwner fof;
                 String msg;
 
                 if (f != null) {
-                    fof = new FSOWNER_Form(f, null, false);
+                    fof = new Form_FSOwner(f, null, false);
                     msg = "New Fuelstation Owner";
                 } else {
-                    fof = new FSOWNER_Form(false);
+                    fof = new Form_FSOwner(false);
                     msg = FS_DATA_MANAG_NEW_FS_OWNER.toString();
                 }
 
@@ -180,7 +180,7 @@ public class FSView extends VerticalLayout implements View {
                 propVL.removeAllComponents();
             }
 
-            fSPROP_Form = new FSPROP_Form(fs, formFieldsLocked, crudButtonOnForm);
+            fSPROP_Form = new Form_FSProp(fs, formFieldsLocked, crudButtonOnForm);
 
             propVL.addComponent(fSPROP_Form);
 

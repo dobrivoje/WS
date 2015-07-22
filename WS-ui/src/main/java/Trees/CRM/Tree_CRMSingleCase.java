@@ -18,13 +18,13 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CRMSingleCase_Tree extends CustomObjectTree<CrmCase> {
+public class Tree_CRMSingleCase extends CustomObjectTree<CrmCase> {
 
-    public CRMSingleCase_Tree(String caption, CrmCase crmCase) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_CRMSingleCase(String caption, CrmCase crmCase) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, Arrays.asList(crmCase));
     }
 
-    public CRMSingleCase_Tree(String caption, CrmCase crmCase, ISetFieldsFromBean sffb) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_CRMSingleCase(String caption, CrmCase crmCase, ISetFieldsFromBean sffb) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, Arrays.asList(crmCase));
 
         addItemClickListener((ItemClickEvent event) -> {

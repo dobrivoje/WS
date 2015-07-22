@@ -5,11 +5,11 @@
  */
 package Tables;
 
-import Forms.CDM.CustomerForm;
-import Forms.CDM.RELCBTForm;
-import Forms.CRM.CRMCase_Form;
+import Forms.CDM.Form_Customer;
+import Forms.CDM.Form_RELCBT;
+import Forms.CRM.Form_CRMCase;
 import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
-import Trees.RELCBT_Tree;
+import Trees.Tree_RelCBT;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
@@ -45,7 +45,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CustomerTable extends GENTable<Customer> {
+public class Table_Customer extends Table_GEN<Customer> {
 
     private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
     private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
@@ -54,7 +54,7 @@ public class CustomerTable extends GENTable<Customer> {
 
     private Action.Handler actionHandler;
 
-    public CustomerTable() {
+    public Table_Customer() {
         this(new BeanItemContainer<>(Customer.class), DS.getCustomerController().getAll());
 
         actionHandler = new Action.Handler() {
@@ -71,7 +71,7 @@ public class CustomerTable extends GENTable<Customer> {
         addActionHandler(actionHandler);
     }
 
-    public CustomerTable(BeanItemContainer<Customer> beanContainer, List list) {
+    public Table_Customer(BeanItemContainer<Customer> beanContainer, List list) {
         super(beanContainer, list);
 
         tableColumnsID = new ArrayList(Arrays.asList(
@@ -268,7 +268,7 @@ public class CustomerTable extends GENTable<Customer> {
 
             @Override
             public void handleAction(Action action, Object sender, Object target) {
-                final CustomerTable source = (CustomerTable) sender;
+                final Table_Customer source = (Table_Customer) sender;
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
@@ -305,7 +305,7 @@ public class CustomerTable extends GENTable<Customer> {
                             Salesman s = DS.getINFSYSUSERController().getSalesman(iu);
                             CrmCase cs = DS.getCRMController().getCRM_LastActive_CRMCase(c, s);
 
-                            CRMCase_Form ccf = new CRMCase_Form(cs, source, true);
+                            Form_CRMCase ccf = new Form_CRMCase(cs, source, true);
 
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
@@ -334,12 +334,12 @@ public class CustomerTable extends GENTable<Customer> {
             Tree cbtTree;
 
             try {
-                cbtTree = new RELCBT_Tree("BUSSINES TYPES", customer, formEditAllowed);
+                cbtTree = new Tree_RelCBT("BUSSINES TYPES", customer, formEditAllowed);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 cbtTree = new Tree("No Customer Bussines Type.");
             }
 
-            RELCBTForm rcf = new RELCBTForm(customer, false);
+            Form_RELCBT rcf = new Form_RELCBT(customer, false);
 
             getUI().addWindow(new WindowForm3(
                     "New Customer Business Type",
@@ -357,7 +357,7 @@ public class CustomerTable extends GENTable<Customer> {
 
     private void openForm(Customer c, Table source, boolean permitted) {
         if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
-            CustomerForm cf = new CustomerForm(
+            Form_Customer cf = new Form_Customer(
                     c,
                     () -> {
                         source.markAsDirtyRecursive();

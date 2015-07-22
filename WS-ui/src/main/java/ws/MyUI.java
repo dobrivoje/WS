@@ -4,7 +4,7 @@ import org.dobrivoje.auth.IAccessAuthControl;
 import Views.General.LoginScreen;
 import Views.General.LoginScreen.LoginListener;
 import Views.General.MainScreen;
-import Views.SYSNOTIF.SysNotifView;
+import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.annotations.PreserveOnRefresh;
 import javax.servlet.annotation.WebServlet;
 
@@ -84,7 +84,7 @@ public class MyUI extends UI {
 
     protected void showMainView() {
         setContent(new MainScreen(MyUI.this));
-        getNavigator().navigateTo(SysNotifView.class.getSimpleName());
+        getNavigator().navigateTo(View_SysNotif.class.getSimpleName());
     }
 
     public static MyUI get() {

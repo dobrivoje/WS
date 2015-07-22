@@ -5,9 +5,9 @@
  */
 package Trees.CRM;
 
-import Forms.CRM.CRMCase_Form;
-import Forms.CRM.CRMProcess_Form;
-import Forms.CRUDForm2;
+import Forms.CRM.Form_CRMCase;
+import Forms.CRM.Form_CRMProcess;
+import Forms.Form_CRUD2;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
@@ -24,9 +24,9 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class SalesmanCRMCases_Tree extends CustomObjectTree<CrmCase> {
+public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
-    private CRUDForm2 crudForm;
+    private Form_CRUD2 crudForm;
     private Salesman salesman;
 
     /**
@@ -37,7 +37,7 @@ public class SalesmanCRMCases_Tree extends CustomObjectTree<CrmCase> {
      * @throws CustomTreeNodesEmptyException
      * @throws NullPointerException
      */
-    public SalesmanCRMCases_Tree(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_SalesmanCRMCases(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCRMController().getCRM_Cases(salesman, false));
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
@@ -53,7 +53,7 @@ public class SalesmanCRMCases_Tree extends CustomObjectTree<CrmCase> {
                             try {
                                 CrmCase crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
-                                crudForm = new CRMCase_Form(crmCase, null, false);
+                                crudForm = new Form_CRMCase(crmCase, null, false);
 
                                 winFormCaption = "Existing CRM Case";
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -66,8 +66,8 @@ public class SalesmanCRMCases_Tree extends CustomObjectTree<CrmCase> {
                             try {
                                 CrmProcess crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
-                                SalesmanCRMCases_Tree cc = new SalesmanCRMCases_Tree("", salesman, formAllowed);
-                                crudForm = new CRMProcess_Form(crmProcess, cc, false);
+                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, formAllowed);
+                                crudForm = new Form_CRMProcess(crmProcess, cc, false);
 
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -77,14 +77,14 @@ public class SalesmanCRMCases_Tree extends CustomObjectTree<CrmCase> {
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
-                            CRMSingleCase_Tree csct = new CRMSingleCase_Tree("Case by " + this.salesman.toString(), ac, crudForm);
+                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
                             propTrees.add(csct);
 
                             propPanel.addComponent(csct);
                         }
 
                         propTrees.stream().forEach((ct) -> {
-                            ((CRMSingleCase_Tree) ct).refreshVisualContainer();
+                            ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
 
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);

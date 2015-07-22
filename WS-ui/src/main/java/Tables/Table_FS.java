@@ -7,9 +7,9 @@ package Tables;
 
 import ImageGallery.IDocumentGallery;
 import ImageGallery.CustomerFuelStationsGallery;
-import Forms.CRUDForm2;
-import Forms.FSM.FSForm;
-import Forms.FSM.FSOWNER_Form;
+import Forms.Form_CRUD2;
+import Forms.FSM.Form_FS;
+import Forms.FSM.Form_FSOwner;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
@@ -34,7 +34,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class FSTable extends GENTable<Fuelstation> {
+public class Table_FS extends Table_GEN<Fuelstation> {
 
     private static final Action ACTION_FS_OWNER = new Action("New Fuelstation Owner");
     private static final Action ACTION_FS_UPDATE = new Action("Fuelstation Data Update");
@@ -43,13 +43,13 @@ public class FSTable extends GENTable<Fuelstation> {
 
     private IDocumentGallery IG;
 
-    public FSTable() {
+    public Table_FS() {
         this(new BeanItemContainer<>(Fuelstation.class), DS.getFSController().getAll());
 
-        IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), FSTable.this::refreshVisualContainer);
+        IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), Table_FS.this::refreshVisualContainer);
     }
 
-    public FSTable(BeanItemContainer<Fuelstation> BIC_FS, List list) {
+    public Table_FS(BeanItemContainer<Fuelstation> BIC_FS, List list) {
         super(BIC_FS, DS.getFSController().getAll());
 
         addGeneratedColumn("options", new Table.ColumnGenerator() {
@@ -62,7 +62,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
 
-                        FSForm cf = new FSForm(f, null, false);
+                        Form_FS cf = new Form_FS(f, Table_FS.this::refreshVisualContainer, false);
 
                         getUI().addWindow(new WindowFormProp(
                                 "Fuelstation Update Form",
@@ -79,7 +79,7 @@ public class FSTable extends GENTable<Fuelstation> {
                     public void buttonClick(Button.ClickEvent event) {
                         Fuelstation f = (Fuelstation) row;
 
-                        FSOWNER_Form fof = new FSOWNER_Form(f, null, false);
+                        Form_FSOwner fof = new Form_FSOwner(f, Table_FS.this::refreshVisualContainer, false);
 
                         getUI().addWindow(new WindowFormProp(
                                 "Fuelstation Owner Form",
@@ -148,30 +148,30 @@ public class FSTable extends GENTable<Fuelstation> {
 
             @Override
             public void handleAction(Action action, Object sender, Object target) {
-                final FSTable source = (FSTable) sender;
+                final Table_FS source = (Table_FS) sender;
                 Fuelstation f = (Fuelstation) source.getValue();
 
                 String caption = "";
-                CRUDForm2 cf = null;
+                Form_CRUD2 cf = null;
 
                 // svima je dozvoljeno da gledaju galeriju stanica !
-                if (action.equals(FSTable.ACTION_FS_IMG_GALLERY)) {
+                if (action.equals(Table_FS.ACTION_FS_IMG_GALLERY)) {
                     try {
                         IG.openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
                     } catch (Exception e) {
                         Notification.show("Gallery Info Message", "Fuelstation Has No Images Yet.", Notification.Type.ERROR_MESSAGE);
                     }
-                
-                // obavezno proveriti prava
+
+                    // obavezno proveriti prava
                 } else if (MyUI.get().isPermitted(RolesPermissions.P_FUELSTATIONS_MANAGEMENT)) {
-                    if (action.equals(FSTable.ACTION_FS_OWNER)) {
+                    if (action.equals(Table_FS.ACTION_FS_OWNER)) {
                         caption = "Fuelstation Owner Form";
-                        cf = new FSOWNER_Form(f, null, false);
+                        cf = new Form_FSOwner(f, null, false);
                     }
 
-                    if (action.equals(FSTable.ACTION_FS_UPDATE)) {
+                    if (action.equals(Table_FS.ACTION_FS_UPDATE)) {
                         caption = "Fuelstation Update Form";
-                        cf = new FSForm(f, null, false);
+                        cf = new Form_FS(f, null, false);
                     }
 
                     if (cf != null) {
@@ -190,6 +190,11 @@ public class FSTable extends GENTable<Fuelstation> {
             }
         }
         );
+    }
+
+    @Override
+    public void refreshVisualContainer() {
+        super.refreshVisualContainer(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

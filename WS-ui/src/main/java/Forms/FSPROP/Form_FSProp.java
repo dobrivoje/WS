@@ -1,6 +1,6 @@
 package Forms.FSPROP;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -22,7 +22,7 @@ import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import static ws.MyUI.DS;
 
-public class FSPROP_Form extends CRUDForm2<FsProp> {
+public class Form_FSProp extends Form_CRUD2<FsProp> {
 
     private Owner currentOwner;
 
@@ -65,7 +65,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
     private final CheckBox active = new CheckBox("Active ?", true);
     //</editor-fold>
 
-    public FSPROP_Form() {
+    public Form_FSProp() {
         super(new BeanFieldGroup(FsProp.class));
 
         fieldGroup.bindMemberFields(this);
@@ -74,7 +74,7 @@ public class FSPROP_Form extends CRUDForm2<FsProp> {
         initFields();
     }
 
-    public FSPROP_Form(Fuelstation fuelstation, boolean formFieldsLocked, boolean crudButtonOnForm) {
+    public Form_FSProp(Fuelstation fuelstation, boolean formFieldsLocked, boolean crudButtonOnForm) {
         this();
 
         currentOwner = DS.getFSOController().getCurrentFSOwner(fuelstation);

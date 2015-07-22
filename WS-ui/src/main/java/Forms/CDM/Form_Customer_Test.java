@@ -5,12 +5,12 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import Forms.CRUDForm;
+import Forms.Form_CRUD;
 import Forms.IFormNotification;
 import db.ent.Customer;
 import static ws.MyUI.DS;
 
-public class CustomerForm_Test extends CRUDForm<Customer> {
+public class Form_Customer_Test extends Form_CRUD<Customer> {
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("name")
@@ -32,7 +32,7 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
     private final TextField pib = new TextField("customer PIB");
     //</editor-fold>
 
-    public CustomerForm_Test(final Customer customer) {
+    public Form_Customer_Test(final Customer customer) {
         super(customer, new IFormNotification() {
             @Override
             public String getNotification() {
@@ -46,7 +46,7 @@ public class CustomerForm_Test extends CRUDForm<Customer> {
         addComponents(name, address, city, zip, region, pib, formButton);
     }
 
-    public CustomerForm_Test(final Customer customer, final IRefreshVisualContainer visualContainer) {
+    public Form_Customer_Test(final Customer customer, final IRefreshVisualContainer visualContainer) {
         super(customer, visualContainer);
 
         fieldGroup = new BeanFieldGroup(Customer.class);

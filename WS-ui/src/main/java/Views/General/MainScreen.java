@@ -4,12 +4,12 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
-import Views.MainMenu.CDM.CustomersView;
-import Views.MainMenu.CRM.CRMView;
-import Views.MainMenu.CRM.CRMSCView;
-import Views.MainMenu.FSDM.FSView;
+import Views.MainMenu.CDM.View_Customers;
+import Views.MainMenu.CRM.View_CRM;
+import Views.MainMenu.CRM.View_CRMSC;
+import Views.MainMenu.FSDM.View_FS;
 import Views.MainMenu.MainMenu;
-import Views.SYSNOTIF.SysNotifView;
+import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.FontAwesome;
 import ws.MyUI;
 
@@ -38,11 +38,11 @@ public class MainScreen extends HorizontalLayout {
 
         // DODAVANJE VIEW-ova NOVIH AKCIJA I GL. MENIJA :
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
-        navigator.addView(CustomersView.class.getSimpleName(), CustomersView.class);
-        navigator.addView(CRMView.class.getSimpleName(), CRMView.class);
-        navigator.addView(CRMSCView.class.getSimpleName(), CRMSCView.class);
-        navigator.addView(FSView.class.getSimpleName(), FSView.class);
-        navigator.addView(SysNotifView.class.getSimpleName(), SysNotifView.class);
+        navigator.addView(View_Customers.class.getSimpleName(), View_Customers.class);
+        navigator.addView(View_CRM.class.getSimpleName(), View_CRM.class);
+        navigator.addView(View_CRMSC.class.getSimpleName(), View_CRMSC.class);
+        navigator.addView(View_FS.class.getSimpleName(), View_FS.class);
+        navigator.addView(View_SysNotif.class.getSimpleName(), View_SysNotif.class);
 
         navigator.addViewChangeListener(viewChangeListener);
 

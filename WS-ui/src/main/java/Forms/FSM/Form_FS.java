@@ -1,6 +1,6 @@
 package Forms.FSM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -16,7 +16,7 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class FSForm extends CRUDForm2<Fuelstation> {
+public class Form_FS extends Form_CRUD2<Fuelstation> {
 
     private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class,
             DS.getCityController().getAll());
@@ -35,7 +35,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
     private final TextField coordinates = new TextField("Coordinates");
     //</editor-fold>
 
-    public FSForm() {
+    public Form_FS() {
         super(new BeanFieldGroup(Fuelstation.class));
 
         fieldGroup.bindMemberFields(this);
@@ -45,7 +45,7 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         setRequiredFields();
     }
 
-    public FSForm(boolean defaultCRUDButtonOnForm) {
+    public Form_FS(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -79,11 +79,11 @@ public class FSForm extends CRUDForm2<Fuelstation> {
         addBeansToForm();
     }
 
-    public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
+    public Form_FS(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer) {
         this(fuelstation, visualContainer, true);
     }
 
-    public FSForm(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_FS(Fuelstation fuelstation, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;

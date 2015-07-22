@@ -1,6 +1,6 @@
 package Views;
 
-import Layouts.InlineCSSLayout;
+import Layouts.Layout_InlineCSS;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public abstract class DashboardView extends Panel implements View {
+public abstract class View_Dashboard extends Panel implements View {
 
     private static final String EDIT_ID = "dashboard-edit";
     private static final String TITLE_ID = "dashboard-title";
@@ -41,7 +41,7 @@ public abstract class DashboardView extends Panel implements View {
 
     private MenuBar.MenuItem max;
 
-    protected DashboardView(String dashBoardTitle) {
+    protected View_Dashboard(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
 
@@ -169,7 +169,7 @@ public abstract class DashboardView extends Panel implements View {
         VerticalLayout componentRootVL = new VerticalLayout();
 
         componentRootVL.setCaption(caption);
-        InlineCSSLayout ICL = new InlineCSSLayout();
+        Layout_InlineCSS ICL = new Layout_InlineCSS();
         ICL.setSizeFull();
 
         for (Panel p : panels) {

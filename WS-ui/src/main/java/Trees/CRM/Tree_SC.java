@@ -5,9 +5,9 @@
  */
 package Trees.CRM;
 
-import Forms.CDM.CustomerForm;
-import Forms.CRM.CRMCase_Form;
-import Forms.CRM.SCR_Form;
+import Forms.CDM.Form_Customer;
+import Forms.CRM.Form_CRMCase;
+import Forms.CRM.Form_SCR;
 import com.vaadin.event.Action;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -29,7 +29,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
+public class Tree_SC extends CustomObjectTree<Salesman> {
 
     private static final Action ACTION_NEW_CS_RELATION = new Action("New CRM Salesman Customer Relation");
     private static final Action ACTION_NEW_CRM_CASE = new Action("New CRM Case");
@@ -40,7 +40,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
         ACTION_NEW_CS_RELATION, ACTION_NEW_CRM_CASE, ACTION_CUSTOMER_DATA_UPDATE, ACTION_CUSTOMER_ACTIVE_NO_MORE
     };
 
-    public SalesmanCustomer_Tree(String caption, List<Salesman> L) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_SC(String caption, List<Salesman> L) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, L);
 
         //<editor-fold defaultstate="collapsed" desc="addActionHandler">
@@ -52,7 +52,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
 
             @Override
             public void handleAction(Action action, Object sender, Object target) {
-                final SalesmanCustomer_Tree source = (SalesmanCustomer_Tree) sender;
+                final Tree_SC source = (Tree_SC) sender;
 
                 if (source.getValue() != null) {
                     //<editor-fold defaultstate="collapsed" desc="ACTION_NEW_CS_RELATION">
@@ -60,7 +60,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                         Customer c = (Customer) target;
                         Salesman s = (Salesman) source.getParent(target);
 
-                        SCR_Form scf = new SCR_Form(s, c, null, false);
+                        Form_SCR scf = new Form_SCR(s, c, null, false);
 
                         getUI().addWindow(new WindowForm(
                                 ACTION_NEW_CS_RELATION.getCaption(),
@@ -74,7 +74,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                     if (action.equals(ACTION_CUSTOMER_DATA_UPDATE) && (source.getValue() instanceof Customer)) {
                         Customer c = (Customer) (source.getValue());
 
-                        CustomerForm cf = new CustomerForm(
+                        Form_Customer cf = new Form_Customer(
                                 c,
                                 () -> {
                                     source.markAsDirtyRecursive();
@@ -100,7 +100,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                         List<CrmCase> openCustomerCases = DS.getCRMController().getCRM_Cases(c, false);
 
                         if (openCustomerCases.isEmpty()) {
-                            CRMCase_Form ccf = new CRMCase_Form(null, null, true);
+                            Form_CRMCase ccf = new Form_CRMCase(null, null, true);
 
                             getUI().addWindow(new WindowForm(
                                     ACTION_NEW_CRM_CASE.getCaption(),
@@ -112,11 +112,11 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                             VerticalLayout VL_CRMCases = new VerticalLayout();
                             VL_CRMCases.setMargin(true);
 
-                            List<CRMSingleCase_Tree> csTrees = new ArrayList<>();
+                            List<Tree_CRMSingleCase> csTrees = new ArrayList<>();
 
                             try {
                                 for (CrmCase activeCRMCase : openCustomerCases) {
-                                    CRMSingleCase_Tree csct = new CRMSingleCase_Tree(
+                                    Tree_CRMSingleCase csct = new Tree_CRMSingleCase(
                                             "Case by " + activeCRMCase.getFK_IDRSC().getFK_IDS().toString(),
                                             activeCRMCase);
 
@@ -125,7 +125,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                                     VL_CRMCases.addComponent(csct);
                                 }
 
-                                CRMCase_Form ccf = new CRMCase_Form(DS.getCRMController().getCRM_LastActive_CRMCase(c, s), false, null);
+                                Form_CRMCase ccf = new Form_CRMCase(DS.getCRMController().getCRM_LastActive_CRMCase(c, s), false, null);
 
                                 getUI().addWindow(
                                         new WindowFormProp(
@@ -139,7 +139,7 @@ public class SalesmanCustomer_Tree extends CustomObjectTree<Salesman> {
                                         )
                                 );
 
-                                for (CRMSingleCase_Tree ct : csTrees) {
+                                for (Tree_CRMSingleCase ct : csTrees) {
                                     ct.refreshVisualContainer();
                                 }
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException e) {

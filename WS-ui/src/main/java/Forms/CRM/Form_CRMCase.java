@@ -5,7 +5,7 @@
  */
 package Forms.CRM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -34,7 +34,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CRMCase_Form extends CRUDForm2<CrmCase> {
+public class Form_CRMCase extends Form_CRUD2<CrmCase> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
@@ -61,7 +61,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
     private final DateField endDate = new DateField("Case End Date");
     //</editor-fold>
 
-    public CRMCase_Form() {
+    public Form_CRMCase() {
         super(new BeanFieldGroup(CrmCase.class));
 
         fieldGroup.bindMemberFields(this);
@@ -73,7 +73,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         salesman.focus();
     }
 
-    public CRMCase_Form(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase) {
+    public Form_CRMCase(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase) {
         this(crmCase, false, visualContainer);
 
         salesman.setEnabled(newCase);
@@ -85,7 +85,7 @@ public class CRMCase_Form extends CRUDForm2<CrmCase> {
         endDate.setEnabled(false);
     }
 
-    public CRMCase_Form(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
+    public Form_CRMCase(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;

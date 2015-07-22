@@ -5,7 +5,7 @@
  */
 package Forms.CRM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -33,7 +33,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CRMSell_Form extends CRUDForm2<RelSALE> {
+public class Form_CRMSell extends Form_CRUD2<RelSALE> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final IPRODUCTController PRODUCT_Controller = DS.getProductController();
@@ -59,7 +59,7 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
     private final TextField paymentMethod = new TextField("Payment Method");
     //</editor-fold>
 
-    public CRMSell_Form() {
+    public Form_CRMSell() {
         super(new BeanFieldGroup(RelSALE.class));
 
         fieldGroup.bindMemberFields(this);
@@ -72,7 +72,7 @@ public class CRMSell_Form extends CRUDForm2<RelSALE> {
         salesman.focus();
     }
 
-    public CRMSell_Form(boolean defaultCRUDButtonOnForm) {
+    public Form_CRMSell(boolean defaultCRUDButtonOnForm) {
         this();
 
         updateDynamicFields();

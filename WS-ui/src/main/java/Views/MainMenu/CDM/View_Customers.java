@@ -11,10 +11,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import Tables.CustomerTable;
-import Trees.CRM.CustomerCRMCases_Tree;
-import Trees.FSOwner_Tree;
-import Trees.RELCBT_Tree;
+import Tables.Table_Customer;
+import Trees.CRM.Tree_CustomerCRMCases;
+import Trees.Tree_FSOwner;
+import Trees.Tree_RelCBT;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -34,7 +34,7 @@ import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
-public class CustomersView extends VerticalLayout implements View {
+public class View_Customers extends VerticalLayout implements View {
 
     private final VerticalLayout VL = new VerticalLayout();
     private final HorizontalSplitPanel HL = new HorizontalSplitPanel();
@@ -47,13 +47,13 @@ public class CustomersView extends VerticalLayout implements View {
     private final Panel[] propPanels = new Panel[propPanelsCaptions.length];
 
     private final SaDesneStraneForm form = new SaDesneStraneForm();
-    private final CustomerTable customersTable = new CustomerTable();
+    private final Table_Customer customersTable = new Table_Customer();
     final TextField filter = new TextField();
 
     private Button simpleViewMode;
     private Button fullViewMode;
 
-    public CustomersView() {
+    public View_Customers() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
         propVL.setSpacing(true);
         propVL.setMargin(true);
@@ -116,7 +116,7 @@ public class CustomersView extends VerticalLayout implements View {
                         MyUI.get().getLoggedISUser()
                 );
             } catch (Exception ex) {
-                Logger.getLogger(CustomersView.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(View_Customers.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -151,20 +151,20 @@ public class CustomersView extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                RELCBT_Tree rcbtt = new RELCBT_Tree("", c, MyUI.get().isPermitted(P_CRM_NEW_SC_REL));
+                Tree_RelCBT rcbtt = new Tree_RelCBT("", c, MyUI.get().isPermitted(P_CRM_NEW_SC_REL));
                 propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
             }
 
             try {
-                propPanels[1].setContent(new FSOwner_Tree("", c, true, MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER)));
+                propPanels[1].setContent(new Tree_FSOwner("", c, true, MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER)));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[1].setContent(new Tree());
             }
 
             try {
-                final CustomerCRMCases_Tree cc = new CustomerCRMCases_Tree("", c, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS));
+                final Tree_CustomerCRMCases cc = new Tree_CustomerCRMCases("", c, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS));
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

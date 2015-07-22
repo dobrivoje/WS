@@ -1,6 +1,6 @@
 package Forms.CDM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -24,7 +24,7 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class RELCBTForm extends CRUDForm2<RelCBType> {
+public class Form_RELCBT extends Form_CRUD2<RelCBType> {
 
     private static final IRELCBTController RELCBTController = DS.getRELCBTController();
     private final ICustomerController customerController = DS.getCustomerController();
@@ -49,7 +49,7 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
     private final CheckBox active = new CheckBox("Active?");
     //</editor-fold>
 
-    public RELCBTForm() {
+    public Form_RELCBT() {
         super(new BeanFieldGroup(RelCBType.class));
 
         fieldGroup.bindMemberFields(this);
@@ -60,7 +60,7 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
         cBType.focus();
     }
 
-    public RELCBTForm(boolean defaultCRUDButtonOnForm) {
+    public Form_RELCBT(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -96,7 +96,7 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
         initFields();
     }
 
-    public RELCBTForm(final Customer existingCustomer, final Container container) {
+    public Form_RELCBT(final Customer existingCustomer, final Container container) {
         this();
 
         customer.setEnabled(false);
@@ -119,16 +119,19 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
                     container.addItem(new_RelCBT);
 
                     n.show(getUI().getPage());
+
                 } catch (NullPointerException npe) {
                     n.show(getUI().getPage());
+                } catch (FieldGroup.CommitException ex) {
+                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provided", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
             }
         };
     }
 
-    public RELCBTForm(final Customer c, boolean defaultCRUDButtonOnForm) {
+    public Form_RELCBT(final Customer c, boolean defaultCRUDButtonOnForm) {
         this(c, new BeanItemContainer<>(
                 RelCBType.class,
                 DS.getCustomerController().getAllCustomerBussinesTypes(c)
@@ -143,7 +146,7 @@ public class RELCBTForm extends CRUDForm2<RelCBType> {
         addBeansToForm();
     }
 
-    public RELCBTForm(RelCBType rct, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_RELCBT(RelCBType rct, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;

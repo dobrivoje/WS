@@ -5,10 +5,10 @@
  */
 package Trees;
 
-import Forms.CDM.RELCBTForm;
-import Forms.CRUDForm2;
-import Trees.CRM.CRMSingleCase_Tree;
-import Trees.CRM.CustomerCRMCases_Tree;
+import Forms.CDM.Form_RELCBT;
+import Forms.Form_CRUD2;
+import Trees.CRM.Tree_CRMSingleCase;
+import Trees.CRM.Tree_CustomerCRMCases;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -25,12 +25,12 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class RELCBT_Tree extends CustomDateTree<RelCBType> {
+public class Tree_RelCBT extends CustomDateTree<RelCBType> {
 
-    private CRUDForm2 crudForm;
+    private Form_CRUD2 crudForm;
     private RelCBType rcbt;
 
-    public RELCBT_Tree(String caption, Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_RelCBT(String caption, Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCustomerController().getAllCustomerBussinesTypes(customer), formAllowed);
 
         addItemClickListener((ItemClickEvent event) -> {
@@ -45,7 +45,7 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
                             try {
                                 this.rcbt = (RelCBType) event.getItemId();
-                                crudForm = new RELCBTForm(rcbt, null, false);
+                                crudForm = new Form_RELCBT(rcbt, null, false);
 
                                 winFormCaption = "Existing Customer Bussines Type Form";
 
@@ -55,7 +55,7 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
 
                             //<editor-fold defaultstate="collapsed" desc="Open form">
                             propTrees.stream().forEach((ct) -> {
-                                ((CRMSingleCase_Tree) ct).refreshVisualContainer();
+                                ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                             });
 
                             winFormPropPanel = new Panel(propPanel.getComponentCount() > 0
@@ -79,7 +79,7 @@ public class RELCBT_Tree extends CustomDateTree<RelCBType> {
                 }
 
             } catch (NullPointerException ex) {
-                Logger.getLogger(CustomerCRMCases_Tree.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 

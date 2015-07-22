@@ -5,7 +5,7 @@
  */
 package Forms.CRM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -35,7 +35,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class CRMProcess_Form extends CRUDForm2<CrmProcess> implements ISetFieldsFromBean {
+public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements ISetFieldsFromBean {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
@@ -58,7 +58,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> implements ISetFields
     private final TextArea comment = new TextArea("Comment");
     //</editor-fold>
 
-    public CRMProcess_Form() {
+    public Form_CRMProcess() {
         super(new BeanFieldGroup(CrmProcess.class));
 
         fieldGroup.bindMemberFields(this);
@@ -70,7 +70,7 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> implements ISetFields
         salesman.focus();
     }
 
-    public CRMProcess_Form(CrmCase crmCase, final boolean newCRMProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_CRMProcess(CrmCase crmCase, final boolean newCRMProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -114,11 +114,11 @@ public class CRMProcess_Form extends CRUDForm2<CrmProcess> implements ISetFields
         addBeansToForm();
     }
 
-    public CRMProcess_Form(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer) {
+    public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer) {
         this(crmProcess, visualContainer, true);
     }
 
-    public CRMProcess_Form(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;

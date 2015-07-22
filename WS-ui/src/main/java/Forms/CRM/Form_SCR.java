@@ -1,9 +1,8 @@
 package Forms.CRM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -21,7 +20,7 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
+public class Form_SCR extends Form_CRUD2<RelSALESMANCUST> {
 
     private final ICRMController CRMController = DS.getCRMController();
 
@@ -44,14 +43,14 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     private final CheckBox active = new CheckBox("Active?");
     //</editor-fold>
 
-    public SCR_Form() {
+    public Form_SCR() {
         super(new BeanFieldGroup(RelSALESMANCUST.class));
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
     }
 
-    public SCR_Form(boolean defaultCRUDButtonOnForm) {
+    public Form_SCR(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -75,7 +74,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
 
-                } catch (CommitException ex) {
+                } catch (FieldGroup.CommitException ex) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
@@ -88,7 +87,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
         initFields();
     }
 
-    public SCR_Form(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_SCR(Salesman s, Customer c, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -173,7 +172,7 @@ public class SCR_Form extends CRUDForm2<RelSALESMANCUST> {
     }
 
     @Override
-    protected void setRequiredFields() {
+    protected final void setRequiredFields() {
         salesman.setRequired(true);
         customer.setRequired(true);
         dateFrom.setRequired(true);

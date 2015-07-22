@@ -1,6 +1,6 @@
 package Forms.CDM;
 
-import Forms.CRUDForm2;
+import Forms.Form_CRUD2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -22,7 +22,7 @@ import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static ws.MyUI.DS;
 
-public class CustomerForm extends CRUDForm2<Customer> {
+public class Form_Customer extends Form_CRUD2<Customer> {
 
     private final ICustomerController customerController = DS.getCustomerController();
 
@@ -76,7 +76,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
     private final TextArea comment = new TextArea("Comment");
     //</editor-fold>
 
-    public CustomerForm() {
+    public Form_Customer() {
         super(new BeanFieldGroup(Customer.class));
 
         fieldGroup.bindMemberFields(this);
@@ -87,7 +87,7 @@ public class CustomerForm extends CRUDForm2<Customer> {
         name.focus();
     }
 
-    public CustomerForm(boolean defaultCRUDButtonOnForm) {
+    public Form_Customer(boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
@@ -120,11 +120,11 @@ public class CustomerForm extends CRUDForm2<Customer> {
         addBeansToForm();
     }
 
-    public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer) {
+    public Form_Customer(Customer customer, final IRefreshVisualContainer visualContainer) {
         this(customer, visualContainer, true);
     }
 
-    public CustomerForm(Customer customer, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
+    public Form_Customer(Customer customer, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;

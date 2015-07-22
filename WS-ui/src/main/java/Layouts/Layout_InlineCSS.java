@@ -12,9 +12,9 @@ import com.vaadin.ui.CssLayout;
  *
  * @author dprtenjak
  */
-public class InlineCSSLayout extends CssLayout {
+public class Layout_InlineCSS extends CssLayout {
 
-    public InlineCSSLayout() {
+    public Layout_InlineCSS() {
         super();
     }
 

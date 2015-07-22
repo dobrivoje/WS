@@ -15,7 +15,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
  * @author root
  * @param <T>
  */
-public abstract class GENTable<T> extends Table implements IRefreshVisualContainer {
+public abstract class Table_GEN<T> extends Table implements IRefreshVisualContainer {
 
     protected List<String> tableColumnsID;
     protected final BeanItemContainer<T> beanContainer;
@@ -32,7 +32,7 @@ public abstract class GENTable<T> extends Table implements IRefreshVisualContain
      */
     protected boolean tableSelected;
 
-    public GENTable(BeanItemContainer<T> beanContainer, List list) {
+    public Table_GEN(BeanItemContainer<T> beanContainer, List list) {
         this.tableSelected = false;
         this.beanContainer = beanContainer;
         this.list = list;

@@ -1,9 +1,9 @@
 package Views.SYSNOTIF;
 
-import Trees.CRM.CustomerCRMCases_Tree;
-import Trees.CRM.SALES.SalesmanSales_Tree;
-import Trees.CRM.SalesmanCRMCases_Tree;
-import Views.DashboardView;
+import Trees.CRM.Tree_CustomerCRMCases;
+import Trees.CRM.SALES.Tree_SalesmanSales;
+import Trees.CRM.Tree_SalesmanCRMCases;
+import Views.View_Dashboard;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
@@ -18,7 +18,7 @@ import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
-public class SysNotifView extends DashboardView {
+public class View_SysNotif extends View_Dashboard {
 
     ISUserType IST = MyUI.get().getLoggedISUserType();
     Salesman S = MyUI.get().getLoggedSalesman();
@@ -26,7 +26,7 @@ public class SysNotifView extends DashboardView {
 
     boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
 
-    public SysNotifView() throws Exception {
+    public View_SysNotif() throws Exception {
         super(MyUI.get().getLoggedSalesman().getFkIdbl().getName() + " Sector Active Events");
 
         switch (IST) {
@@ -53,7 +53,7 @@ public class SysNotifView extends DashboardView {
         List<Component> C = new ArrayList();
 
         try {
-            SalesmanCRMCases_Tree csct = new SalesmanCRMCases_Tree("", S, formEditAllowed);
+            Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -62,7 +62,7 @@ public class SysNotifView extends DashboardView {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
-            SalesmanSales_Tree csct = new SalesmanSales_Tree("", S, null, null, formEditAllowed);
+            Tree_SalesmanSales csct = new Tree_SalesmanSales("", S, null, null, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -90,7 +90,7 @@ public class SysNotifView extends DashboardView {
         try {
 
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                SalesmanSales_Tree csct = new SalesmanSales_Tree("", BLS, null, null, formAllowed);
+                Tree_SalesmanSales csct = new Tree_SalesmanSales("", BLS, null, null, formAllowed);
                 subPanels.add(new Panel(BLS.toString(), csct));
             }
 
@@ -103,7 +103,7 @@ public class SysNotifView extends DashboardView {
         try {
 
             for (Customer S : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
-                CustomerCRMCases_Tree ccct = new CustomerCRMCases_Tree("", S, formAllowed);
+                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", S, formAllowed);
                 subPanels.add(new Panel(S.toString(), ccct));
             }
 
@@ -116,7 +116,7 @@ public class SysNotifView extends DashboardView {
         try {
 
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                SalesmanCRMCases_Tree csct = new SalesmanCRMCases_Tree("", BLS, formAllowed);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", BLS, formAllowed);
                 subPanels.add(new Panel(BLS.toString(), csct));
             }
 

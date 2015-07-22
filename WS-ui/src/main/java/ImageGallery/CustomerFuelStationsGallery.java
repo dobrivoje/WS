@@ -5,7 +5,7 @@
  */
 package ImageGallery;
 
-import Layouts.InlineCSSLayout;
+import Layouts.Layout_InlineCSS;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
@@ -144,7 +144,7 @@ public class CustomerFuelStationsGallery extends ImageGallery<Fuelstation> {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
-        CssLayout FSLowerImagesCssLayout = new InlineCSSLayout();
+        CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
         for (final DocImg di : getAllDocuments(f)) {
             di.getImage().setHeight(40, Unit.PIXELS);

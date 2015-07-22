@@ -1,7 +1,7 @@
 package Views.MainMenu.CRM;
 
-import Trees.CRM.SalesmanCustomer_Tree;
-import Views.DashboardView;
+import Trees.CRM.Tree_SC;
+import Views.View_Dashboard;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
@@ -10,9 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static ws.MyUI.DS;
 
-public class CRMSCView extends DashboardView {
+public class View_CRMSC extends View_Dashboard {
 
-    public CRMSCView() {
+    public View_CRMSC() {
         super("Existing Salesman Customer Relationship");
         buildContentWithComponents(salesmanPanel());
     }
@@ -24,9 +24,9 @@ public class CRMSCView extends DashboardView {
         P.setWidth(70, Unit.PERCENTAGE);
 
         try {
-            P.setContent(new SalesmanCustomer_Tree("", DS.getSalesmanController().getAll()));
+            P.setContent(new Tree_SC("", DS.getSalesmanController().getAll()));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
-            Logger.getLogger(CRMSCView.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(View_CRMSC.class.getName()).log(Level.WARNING, null, ex);
         }
 
         return createPanelComponent("", Arrays.asList(P), true);
