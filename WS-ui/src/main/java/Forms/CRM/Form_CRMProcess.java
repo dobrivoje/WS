@@ -28,14 +28,13 @@ import java.util.Arrays;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import org.superb.apps.utilities.vaadin.Trees.ISetFieldsFromBean;
 import static ws.MyUI.DS;
 
 /**
  *
  * @author root
  */
-public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements ISetFieldsFromBean {
+public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
@@ -171,16 +170,12 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements ISetField
     }
 
     @Override
-    public final void setFieldsFromBean(Object object) {
-        if (object instanceof CrmProcess) {
-            CrmProcess cp = (CrmProcess) object;
-
-            salesman.setValue(cp.getFK_IDCA().getFK_IDRSC().getFK_IDS());
-            crmCase.setValue(cp.getFK_IDCA());
-            status.setContainerDataSource(new BeanItemContainer(CrmStatus.class, Arrays.asList(cp.getFK_IDCS())));
-            actionDate.setValue(cp.getActionDate());
-            comment.setValue(cp.getComment());
-        }
+    public final void setFieldsFromBean(CrmProcess crmProcess) {
+        salesman.setValue(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS());
+        crmCase.setValue(crmProcess.getFK_IDCA());
+        status.setContainerDataSource(new BeanItemContainer(CrmStatus.class, Arrays.asList(crmProcess.getFK_IDCS())));
+        actionDate.setValue(crmProcess.getActionDate());
+        comment.setValue(crmProcess.getComment());
     }
 
     @Override

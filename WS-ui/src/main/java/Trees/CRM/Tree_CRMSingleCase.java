@@ -5,13 +5,10 @@
  */
 package Trees.CRM;
 
-import com.vaadin.event.ItemClickEvent;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
-import db.ent.CrmProcess;
 import java.util.Arrays;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import org.superb.apps.utilities.vaadin.Trees.ISetFieldsFromBean;
 import static ws.MyUI.DS;
 
 /**
@@ -22,15 +19,6 @@ public class Tree_CRMSingleCase extends CustomObjectTree<CrmCase> {
 
     public Tree_CRMSingleCase(String caption, CrmCase crmCase) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, Arrays.asList(crmCase));
-    }
-
-    public Tree_CRMSingleCase(String caption, CrmCase crmCase, ISetFieldsFromBean sffb) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, Arrays.asList(crmCase));
-
-        addItemClickListener((ItemClickEvent event) -> {
-            sffb.setFieldsFromBean(event.getItemId() instanceof CrmProcess
-                    ? (CrmProcess) event.getItemId() : (CrmCase) event.getItemId());
-        });
     }
 
     @Override

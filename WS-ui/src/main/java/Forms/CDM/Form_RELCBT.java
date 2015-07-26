@@ -216,15 +216,11 @@ public class Form_RELCBT extends Form_CRUD2<RelCBType> {
     }
 
     @Override
-    public final void setFieldsFromBean(Object o) {
-        if (o instanceof RelCBType) {
-            RelCBType rcbt = (RelCBType) o;
-
-            customer.setValue(rcbt.getFkIdc());
-            cBType.setValue(rcbt.getFkIdcbt());
-            dateFrom.setValue(rcbt.getDateFrom());
-            active.setValue(rcbt.getActive());
-        }
+    public final void setFieldsFromBean(RelCBType rcbt) {
+        customer.setValue(rcbt.getFkIdc());
+        cBType.setValue(rcbt.getFkIdcbt());
+        dateFrom.setValue(rcbt.getDateFrom());
+        active.setValue(rcbt.getActive());
     }
 
     @Override

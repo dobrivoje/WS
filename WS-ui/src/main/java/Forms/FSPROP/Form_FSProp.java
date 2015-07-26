@@ -182,40 +182,36 @@ public class Form_FSProp extends Form_CRUD2<FsProp> {
     }
 
     @Override
-    public void setFieldsFromBean(Object o) {
-        if (o instanceof FsProp) {
-            FsProp fsp = (FsProp) o;
+    public void setFieldsFromBean(FsProp fsp) {
+        currentOwner = fsp.getFkIdo();
 
-            currentOwner = fsp.getFkIdo();
+        propertiesDate.setValue(fsp.getPropertiesDate());
 
-            propertiesDate.setValue(fsp.getPropertiesDate());
-
-            try {
-                noOfTanks.setValue(Integer.toString(fsp.getNoOfTanks()));
-            } catch (Exception ex) {
-            }
-
-            try {
-                truckCapable.setValue(Integer.toString(fsp.getTruckCapable()));
-            } catch (Exception ex) {
-            }
-
-            try {
-                restaurant.setValue(fsp.getRestaurant());
-            } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
-            }
-
-            try {
-                carWash.setValue(fsp.getCarWash());
-            } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
-            }
-
-            compliance.setValue(fsp.getCompliance());
-            comment.setValue(fsp.getComment());
-            licence.setValue(fsp.getLicence());
-            licDateFrom.setValue(fsp.getLicDateFrom());
-            licDateTo.setValue(fsp.getLicDateTo());
+        try {
+            noOfTanks.setValue(Integer.toString(fsp.getNoOfTanks()));
+        } catch (Exception ex) {
         }
+
+        try {
+            truckCapable.setValue(Integer.toString(fsp.getTruckCapable()));
+        } catch (Exception ex) {
+        }
+
+        try {
+            restaurant.setValue(fsp.getRestaurant());
+        } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
+        }
+
+        try {
+            carWash.setValue(fsp.getCarWash());
+        } catch (Property.ReadOnlyException | Converter.ConversionException ex) {
+        }
+
+        compliance.setValue(fsp.getCompliance());
+        comment.setValue(fsp.getComment());
+        licence.setValue(fsp.getLicence());
+        licDateFrom.setValue(fsp.getLicDateFrom());
+        licDateTo.setValue(fsp.getLicDateTo());
     }
 
     @Override

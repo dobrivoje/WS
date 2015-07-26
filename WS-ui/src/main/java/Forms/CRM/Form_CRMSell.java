@@ -143,22 +143,17 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
     }
 
     @Override
-    public final void setFieldsFromBean(Object o) {
-        if (o instanceof RelSALE) {
-            RelSALE sale = (RelSALE) o;
+    public final void setFieldsFromBean(RelSALE sale) {
+        sellDate.setValue(sale.getSellDate());
 
-            sellDate.setValue(sale.getSellDate());
-
-            if (sale.getAmmount() > 0) {
-                amount.setValue(String.valueOf(sale.getAmmount()));
-            }
-
-            product.setValue(sale.getFK_IDP().getName());
-            paymentMethod.setValue(sale.getPaymentMethod());
-            crmCase.setValue(sale.getFK_IDCA());
-            salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
+        if (sale.getAmmount() > 0) {
+            amount.setValue(String.valueOf(sale.getAmmount()));
         }
 
+        product.setValue(sale.getFK_IDP().getName());
+        paymentMethod.setValue(sale.getPaymentMethod());
+        crmCase.setValue(sale.getFK_IDCA());
+        salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
     }
 
     @Override

@@ -74,9 +74,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
                     Notification n = new Notification("New FS Owner Added.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
-
-                } catch (MyDBNullException ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                    
                 } catch (FieldGroup.CommitException ex) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
@@ -148,8 +146,6 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
 
-                } catch (MyDBNullException ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 } catch (FieldGroup.CommitException ex) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
@@ -196,9 +192,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
 
-                } catch (MyDBNullException ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                } catch (FieldGroup.CommitException ex) {
+                } catch (MyDBNullException | FieldGroup.CommitException ex) {
                     Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
@@ -222,16 +216,12 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
     }
 
     @Override
-    public final void setFieldsFromBean(Object o) {
-        if (o instanceof Owner) {
-            Owner ow = (Owner) o;
-
-            customer.setValue(ow.getFKIDCustomer());
-            fs.setValue(ow.getFkIdFs());
-            dateFrom.setValue(ow.getDateFrom());
-            dateTo.setValue(ow.getDateTo());
-            active.setValue(ow.getActive());
-        }
+    public final void setFieldsFromBean(Owner ow) {
+        customer.setValue(ow.getFKIDCustomer());
+        fs.setValue(ow.getFkIdFs());
+        dateFrom.setValue(ow.getDateFrom());
+        dateTo.setValue(ow.getDateTo());
+        active.setValue(ow.getActive());
     }
 
     @Override
@@ -274,18 +264,12 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
             fs.setEnabled(true);
             dateFrom.setEnabled(true);
             dateTo.setEnabled(false);
-
             active.setValue(true);
-            active.setEnabled(false);
         } else {
             customer.setEnabled(false);
             fs.setEnabled(false);
             dateFrom.setEnabled(false);
             dateTo.setEnabled(true);
-
-            dateTo.setRequired(true);
-            active.setValue(false);
-            active.setEnabled(false);
         }
     }
     //</editor-fold>

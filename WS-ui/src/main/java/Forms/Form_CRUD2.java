@@ -10,10 +10,9 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import java.util.Date;
-import org.superb.apps.utilities.vaadin.Trees.ISetFieldsFromBean;
 import static ws.MyUI.APP_DATE_FORMAT;
 
-public abstract class Form_CRUD2<T> extends FormLayout implements ISetFieldsFromBean {
+public abstract class Form_CRUD2<T> extends FormLayout {
 
     protected FieldGroup fieldGroup;
     protected BeanItem<T> beanItem;
@@ -65,6 +64,8 @@ public abstract class Form_CRUD2<T> extends FormLayout implements ISetFieldsFrom
      * @param t
      */
     protected abstract void setBeanFromFields(T t);
+
+    protected abstract void setFieldsFromBean(T t);
 
     protected final void setFormFieldsWidths(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {

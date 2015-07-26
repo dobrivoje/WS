@@ -144,16 +144,12 @@ public class Form_SCR extends Form_CRUD2<RelSALESMANCUST> {
     }
 
     @Override
-    public void setFieldsFromBean(Object o) {
-        if (o instanceof RelSALESMANCUST) {
-            RelSALESMANCUST r = (RelSALESMANCUST) o;
-
-            customer.setValue(r.getFK_IDC());
-            salesman.setValue(r.getFK_IDS());
-            dateFrom.setValue(r.getDateFrom());
-            dateTo.setValue(r.getDateTo());
-            active.setValue(r.getActive());
-        }
+    public void setFieldsFromBean(RelSALESMANCUST r) {
+        customer.setValue(r.getFK_IDC());
+        salesman.setValue(r.getFK_IDS());
+        dateFrom.setValue(r.getDateFrom());
+        dateTo.setValue(r.getDateTo());
+        active.setValue(r.getActive());
     }
 
     @Override
