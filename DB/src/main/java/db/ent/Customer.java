@@ -83,7 +83,7 @@ public class Customer implements Serializable {
     private List<RelCBType> relCBTypeList;
     @JoinColumn(name = "FK_IDCity", referencedColumnName = "IDC")
     @ManyToOne
-    private City fKIDCity;
+    private City FK_City;
     @Column(name = "Licence")
     private Boolean licence;
     @OneToMany(mappedBy = "FK_IDC")
@@ -111,7 +111,7 @@ public class Customer implements Serializable {
         this.mob = mob;
         this.email1 = email1;
         this.email2 = email2;
-        this.fKIDCity = fKIDCity;
+        this.FK_City = fKIDCity;
     }
 
     public Long getIdc() {
@@ -252,34 +252,34 @@ public class Customer implements Serializable {
         this.relCBTypeList = relCBTypeList;
     }
 
-    public City getFKIDCity() {
-        return fKIDCity;
+    public City getFK_City() {
+        return FK_City;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Custom Customer City getters">
     public String getMyCity() {
-        return fKIDCity != null
-                ? fKIDCity.getName() : " - ";
+        return FK_City != null
+                ? FK_City.getName() : " - ";
     }
 
     public String getMyCityMunicipality() {
-        return fKIDCity != null
-                ? fKIDCity.getMunicipality() : " - ";
+        return FK_City != null
+                ? FK_City.getMunicipality() : " - ";
     }
 
     public String getMyCityDistrict() {
-        return fKIDCity != null
-                ? fKIDCity.getDistrict() : " - ";
+        return FK_City != null
+                ? FK_City.getDistrict() : " - ";
     }
 
     public String getMyCityRegion() {
-        return fKIDCity != null
-                ? fKIDCity.getRegion() : " - ";
+        return FK_City != null
+                ? FK_City.getRegion() : " - ";
     }
     //</editor-fold>
 
-    public void setFKIDCity(City fKIDCity) {
-        this.fKIDCity = fKIDCity;
+    public void setFK_City(City fKIDCity) {
+        this.FK_City = fKIDCity;
     }
 
     @XmlTransient

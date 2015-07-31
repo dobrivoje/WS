@@ -160,7 +160,7 @@ public class DBHandler {
 
         newCustomer.setName(name);
         newCustomer.setAddress(address);
-        newCustomer.setFKIDCity(city);
+        newCustomer.setFK_City(city);
         newCustomer.setPib(PIB);
 
         addNewCustomer(newCustomer);
