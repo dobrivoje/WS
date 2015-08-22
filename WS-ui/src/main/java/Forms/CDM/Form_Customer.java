@@ -33,7 +33,7 @@ public class Form_Customer extends Form_CRUD2<Customer> {
     @PropertyId("address")
     private final TextField address = new TextField("Customer Address");
 
-    @PropertyId("FK_City")
+    @PropertyId("FK_IDCity")
     private final ComboBox city = new ComboBox("Customer City",
             new BeanItemContainer(City.class, DS.getCityController().getAll()));
 
@@ -167,7 +167,7 @@ public class Form_Customer extends Form_CRUD2<Customer> {
     protected void setBeanFromFields(Customer customerBean) {
         customerBean.setName(name.getValue());
         customerBean.setAddress(address.getValue());
-        customerBean.setFK_City((City) city.getValue());
+        customerBean.setFK_IDCity((City) city.getValue());
         customerBean.setPib(pib.getValue());
         customerBean.setMatBr(matBr.getValue());
         customerBean.setNavCode(navCode.getValue());
@@ -190,7 +190,7 @@ public class Form_Customer extends Form_CRUD2<Customer> {
     public void setFieldsFromBean(Customer c) {
         name.setValue(c.getName());
         address.setValue(c.getAddress());
-        city.setValue(c.getFK_City());
+        city.setValue(c.getFK_IDCity());
         pib.setValue(c.getPib());
         matBr.setValue(c.getMatBr());
         navCode.setValue(c.getNavCode());

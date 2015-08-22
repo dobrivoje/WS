@@ -13,7 +13,7 @@
     
     <dependencies>
         <!-- Versions for these are configured in the parent POM -->
-        <dependency>
+         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
             <!-- TODO this should have scope provided once http://dev.vaadin.com/ticket/14788 is resolved -->
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>2.4.3</version>
+            <version>2.4.4</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>

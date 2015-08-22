@@ -185,7 +185,7 @@ public class Table_Customer extends Table_GEN<Customer> {
         addGeneratedColumn("city", new Table.ColumnGenerator() {
             @Override
             public Object generateCell(final Table source, final Object row, Object column) {
-                City c = ((Customer) row).getFK_City();
+                City c = ((Customer) row).getFK_IDCity();
                 return (c != null) ? c.toString() : " - ";
             }
         });

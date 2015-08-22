@@ -55,7 +55,7 @@ public class City implements Serializable {
     private String region;
     @Column(name = "ZIP")
     private String zip;
-    @OneToMany(mappedBy = "FK_City")
+    @OneToMany(mappedBy = "FK_IDCity")
     private List<Customer> customerList;
     @OneToMany(mappedBy = "FK_City")
     private List<Fuelstation> fuelstationList;
