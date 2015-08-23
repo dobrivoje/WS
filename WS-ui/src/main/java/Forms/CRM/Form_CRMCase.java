@@ -28,6 +28,7 @@ import db.interfaces.ISalesmanController;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -73,8 +74,27 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         salesman.focus();
     }
 
-    public Form_CRMCase(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase) {
+    public Form_CRMCase(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase, boolean readOnly) {
         this(crmCase, false, visualContainer);
+
+        if (readOnly) {
+            lockFormFileds(readOnly);
+            salesman.setEnabled(!readOnly);
+            customer.setEnabled(!readOnly);
+        } else {
+            salesman.setEnabled(newCase);
+            customer.setEnabled(newCase);
+            startDate.setEnabled(newCase);
+
+            finished.setEnabled(!newCase);
+            saleAgreeded.setEnabled(!newCase);
+            endDate.setEnabled(false);
+        }
+
+    }
+
+    public Form_CRMCase(Salesman s, Customer c, boolean newCase) {
+        this(new CrmCase(new Date(), "", new RelSALESMANCUST()), false, null);
 
         salesman.setEnabled(newCase);
         customer.setEnabled(newCase);
@@ -83,6 +103,19 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         finished.setEnabled(!newCase);
         saleAgreeded.setEnabled(!newCase);
         endDate.setEnabled(false);
+
+        try {
+            salesman.setValue(MyUI.get().getLoggedSalesman());
+        } catch (Exception ex) {
+        }
+
+        RelSALESMANCUST rsc;
+
+        try {
+            rsc = CRM_Controller.getCRM_R_SalesmanCustomer(s, c);
+            customer.setValue(c);
+        } catch (Exception e) {
+        }
     }
 
     public Form_CRMCase(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {

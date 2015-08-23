@@ -1,7 +1,7 @@
 package Views.MainMenu.CRM;
 
-import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.SALES.Tree_SalesmanSales;
+import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.Tree_SalesmanCRMCases;
 import Views.View_Dashboard;
 import com.vaadin.ui.Component;
@@ -50,9 +50,9 @@ public class View_CRM extends View_Dashboard {
 
     private Component activeCasesByCustomerPanel() {
         try {
-            for (Customer S : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
-                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", S, formAllowed);
-                subPanels.add(new Panel(S.toString(), ccct));
+            for (Customer C : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
+                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", C, formAllowed);
+                subPanels.add(new Panel(C.toString(), ccct));
             }
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }

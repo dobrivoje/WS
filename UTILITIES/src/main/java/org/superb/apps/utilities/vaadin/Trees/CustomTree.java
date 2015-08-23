@@ -25,7 +25,9 @@ public class CustomTree<T> extends Tree {
 
     protected String winFormCaption;
     protected Panel winFormPropPanel;
-    
+
+    protected boolean readOnly = true;
+
     /**
      * <b>Lista počvorova ovog stabla</b>
      */

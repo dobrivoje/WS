@@ -161,6 +161,16 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         lockFormFileds(false);
     }
 
+    public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm, boolean readOnly) {
+        this(crmProcess, visualContainer, defaultCRUDButtonOnForm);
+
+        if (readOnly) {
+            lockFormFileds(readOnly);
+            salesman.setEnabled(!readOnly);
+        }
+
+    }
+
     @Override
     protected final void setBeanFromFields(CrmProcess crmProcess) {
         crmProcess.setActionDate(actionDate.getValue());

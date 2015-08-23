@@ -22,31 +22,33 @@ import com.vaadin.ui.themes.ValoTheme;
  * @author root
  */
 public class WindowFormProp extends Window {
-
+    
     protected final VerticalLayout content = new VerticalLayout();
-
+    
     protected Button.ClickListener externalButtonClickListener;
-
+    
     private final HorizontalSplitPanel HSP = new HorizontalSplitPanel();
     private final VerticalLayout leftVL = new VerticalLayout();
     private final VerticalLayout rightVL = new VerticalLayout();
-
+    private final Button closeBtn;
+    private final Button saveBtn;
+    
     public WindowFormProp(String caption, boolean bigForm, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
-
+        
         if (bigForm) {
             content.setSizeUndefined();
         } else {
             content.setSizeFull();
         }
-
+        
         content.setMargin(true);
         content.setSpacing(true);
-
+        
         this.externalButtonClickListener = externalButtonClickListener;
-        Button closeBtn = new Button("Close Window", new Button.ClickListener() {
+        closeBtn = new Button("Close Window", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 close();
@@ -54,13 +56,13 @@ public class WindowFormProp extends Window {
         });
         closeBtn.setStyleName(ValoTheme.BUTTON_DANGER);
         closeBtn.setWidth(150, Unit.PIXELS);
-
-        Button saveBtn = new Button("Save");
+        
+        saveBtn = new Button("Save");
         saveBtn.setWidth(150, Unit.PIXELS);
         if (externalButtonClickListener != null) {
             saveBtn.addClickListener(externalButtonClickListener);
         }
-
+        
         HSP.setSizeFull();
         HSP.setSplitPosition(60, Unit.PERCENTAGE);
         leftVL.addComponent(layout);
@@ -78,9 +80,9 @@ public class WindowFormProp extends Window {
         for (Component c : components) {
             rightVL.setComponentAlignment(c, Alignment.TOP_CENTER);
         }
-
+        
         content.addComponent(HSP);
-
+        
         HorizontalLayout footerLayout = new HorizontalLayout(saveBtn, closeBtn);
         footerLayout.setMargin(true);
         footerLayout.setSpacing(true);
@@ -91,14 +93,20 @@ public class WindowFormProp extends Window {
         content.addComponent(footerLayout);
         footerLayout.setComponentAlignment(saveBtn, Alignment.MIDDLE_RIGHT);
         footerLayout.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
-
+        
         content.setExpandRatio(HSP, 1);
-
+        
         setWindowSize();
         center();
         setContent(content);
     }
-
+    
+    public WindowFormProp(String caption, boolean bigForm, boolean readOnly, Layout layout, Component... components) {
+        this(caption, bigForm, null, layout, components);
+        
+        saveBtn.setVisible(!readOnly);
+    }
+    
     private void setWindowSize() {
         setHeight(73, Unit.PERCENTAGE);
         setWidth(64, Unit.PERCENTAGE);

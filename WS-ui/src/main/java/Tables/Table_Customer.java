@@ -25,9 +25,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.City;
-import db.ent.CrmCase;
 import db.ent.Customer;
-import db.ent.InfSysUser;
 import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -298,21 +296,22 @@ public class Table_Customer extends Table_GEN<Customer> {
                     try {
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Customer c = (Customer) source.getValue();
+                            Salesman s;
 
-                            String infsysuser = MyUI.get().accessControl.getPrincipal();
-                            InfSysUser iu = DS.getINFSYSUSERController().getByID(infsysuser);
+                            try {
+                                s = MyUI.get().getLoggedSalesman();
+                            } catch (Exception ex) {
+                                s = new Salesman();
+                            }
 
-                            Salesman s = DS.getINFSYSUSERController().getSalesman(iu);
-                            CrmCase cs = DS.getCRMController().getCRM_LastActive_CRMCase(c, s);
-
-                            Form_CRMCase ccf = new Form_CRMCase(cs, source, true);
+                            Form_CRMCase ccf = new Form_CRMCase(s, c, true);
 
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
                                     ccf,
                                     "img/crm/crm-case-new.png",
                                     ccf.getClickListener(),
-                                    false)
+                                    300, 253)
                             );
 
                         } else {

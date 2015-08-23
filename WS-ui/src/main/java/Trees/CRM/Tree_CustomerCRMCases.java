@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
+import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -48,7 +49,13 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                             try {
                                 CrmCase crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
-                                crudForm = new Form_CRMCase(crmCase, null, false);
+
+                                try {
+                                    readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
+                                } catch (Exception ex) {
+                                }
+
+                                crudForm = new Form_CRMCase(crmCase, null, false, readOnly);
 
                                 winFormCaption = "Existing CRM Case";
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -61,8 +68,14 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                             try {
                                 CrmProcess crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
+
+                                try {
+                                    readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
+                                } catch (Exception ex) {
+                                }
+
                                 Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", customer, formAllowed);
-                                crudForm = new Form_CRMProcess(crmProcess, ccct, false);
+                                crudForm = new Form_CRMProcess(crmProcess, ccct, false, readOnly);
 
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
                             } catch (CustomTreeNodesEmptyException | NullPointerException | IllegalArgumentException ex) {
@@ -74,25 +87,37 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac);
                             propTrees.add(csct);
-                            
+
                             propPanel.addComponent(csct);
                         }
-                        
+
                         propTrees.stream().forEach((ct) -> {
                             ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
-                        
+
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
-                        
-                        getUI().addWindow(
-                                new WindowFormProp(
-                                        winFormCaption,
-                                        false,
-                                        crudForm.getClickListener(),
-                                        crudForm,
-                                        winFormPropPanel
-                                )
-                        );
+
+                        if (readOnly) {
+                            getUI().addWindow(
+                                    new WindowFormProp(
+                                            winFormCaption,
+                                            false,
+                                            readOnly,
+                                            crudForm,
+                                            winFormPropPanel
+                                    )
+                            );
+                        } else {
+                            getUI().addWindow(
+                                    new WindowFormProp(
+                                            winFormCaption,
+                                            false,
+                                            crudForm.getClickListener(),
+                                            crudForm,
+                                            winFormPropPanel
+                                    )
+                            );
+                        }
                         //</editor-fold>
                     } else {
                         Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
