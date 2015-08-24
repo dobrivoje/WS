@@ -26,7 +26,7 @@ public class View_SysNotif extends View_Dashboard {
 
     boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
 
-    public View_SysNotif() throws Exception {
+    public View_SysNotif() {
         super(MyUI.get().getLoggedSalesman().getFkIdbl().getName() + " Sector Active Events");
 
         switch (IST) {

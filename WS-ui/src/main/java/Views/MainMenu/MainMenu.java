@@ -61,7 +61,6 @@ import Views.MainMenu.FSDM.View_FS;
 import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
-import db.ent.Salesman;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,14 +117,10 @@ public class MainMenu extends CssLayout {
             ISU = MyUI.get().accessControl.getPrincipal();
         }
 
-        try {
-            S = MyUI.get().getLoggedSalesman().toString();
-        } catch (Exception e) {
-            S = "";
-        }
+        S = MyUI.get().getLoggedSalesman().toString();
 
         MenuBar logoutMenu = new MenuBar();
-        logoutMenu.addItem("Logout " + (S.equals("") ? ISU : S),
+        logoutMenu.addItem("Logout " + (MyUI.get().getLoggedSalesman().getName().isEmpty() ? ISU : S),
                 FontAwesome.SIGN_OUT,
                 new Command() {
                     @Override
@@ -330,15 +325,8 @@ public class MainMenu extends CssLayout {
                             break;
                         case CRM_MANAG_NEW_CASE:
                             if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                Salesman s;
 
-                                try {
-                                    s = MyUI.get().getLoggedSalesman();
-                                } catch (Exception ex) {
-                                    s = new Salesman();
-                                }
-
-                                Form_CRMCase ccf = new Form_CRMCase(s, null, true);
+                                Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), null, true);
 
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_CASE.toString(),

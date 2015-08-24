@@ -40,8 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
             @NamedQuery(name = "Salesman.findByName", query = "SELECT s FROM Salesman s WHERE s.name = :name"),
             @NamedQuery(name = "Salesman.findBySurname", query = "SELECT s FROM Salesman s WHERE s.surname = :surname"),
             @NamedQuery(name = "Salesman.findByPosition", query = "SELECT s FROM Salesman s WHERE s.position = :position"),
-            @NamedQuery(name = "Salesman.findByActive", query = "SELECT s FROM Salesman s WHERE s.active = :active"),
-        }
+            @NamedQuery(name = "Salesman.findByActive", query = "SELECT s FROM Salesman s WHERE s.active = :active"),}
 )
 public class Salesman implements Serializable {
 
@@ -74,6 +73,7 @@ public class Salesman implements Serializable {
     private List<RelUserSalesman> relUserSalesmanList;
 
     public Salesman() {
+        this("", "", "", false, null, null, new BussinesLine());
     }
 
     public Salesman(String name, String surname, String position, Boolean active, String dateFrom, String dateTo, BussinesLine bussinesLine) {
@@ -195,6 +195,18 @@ public class Salesman implements Serializable {
 
     @Override
     public String toString() {
-        return getName() + " " + getSurname();
+        String s = "";
+
+        try {
+            s += getName();
+        } catch (Exception e) {
+        }
+
+        try {
+            s += " " + getSurname();
+        } catch (Exception e) {
+        }
+
+        return s;
     }
 }

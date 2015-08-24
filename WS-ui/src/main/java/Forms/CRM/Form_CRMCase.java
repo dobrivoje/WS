@@ -104,10 +104,7 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         saleAgreeded.setEnabled(!newCase);
         endDate.setEnabled(false);
 
-        try {
-            salesman.setValue(MyUI.get().getLoggedSalesman());
-        } catch (Exception ex) {
-        }
+        salesman.setValue(MyUI.get().getLoggedSalesman());
 
         RelSALESMANCUST rsc;
 

@@ -298,11 +298,7 @@ public class Table_Customer extends Table_GEN<Customer> {
                             Customer c = (Customer) source.getValue();
                             Salesman s;
 
-                            try {
-                                s = MyUI.get().getLoggedSalesman();
-                            } catch (Exception ex) {
-                                s = new Salesman();
-                            }
+                            s = MyUI.get().getLoggedSalesman();
 
                             Form_CRMCase ccf = new Form_CRMCase(s, c, true);
 

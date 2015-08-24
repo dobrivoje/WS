@@ -51,6 +51,7 @@ public class BussinesLine implements Serializable {
     private List<RelBLP> relBLPList;
 
     public BussinesLine() {
+        this.name = "";
     }
 
     public BussinesLine(Long idbl) {

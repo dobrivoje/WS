@@ -38,7 +38,7 @@ public class Test1 {
         loggedInSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
 
         System.err.println(loggedISUser);
-        System.err.println(loggedInSalesman);
+        System.err.println(loggedInSalesman == null ? "n/a" : loggedInSalesman);
 
         Date from, to;
 
@@ -94,13 +94,24 @@ public class Test1 {
 
         System.err.println("-----prodaje prodavca iz sektora-----");
 
+        now.add(Calendar.MONTH, -1);
+        now.set(Calendar.DAY_OF_MONTH, 11);
+        from = new Date(now.getTimeInMillis());
+
+        to = new Date();
+
+        System.err.println("salesman cases between "
+                + new SimpleDateFormat("dd.MM.yyyy").format(from) + " - "
+                + new SimpleDateFormat("dd.MM.yyyy").format(to)
+        );
+        
         for (BussinesLine BL : DS.getBLController().getAll()) {
             System.err.println("sektor : " + BL.getName());
 
             for (Salesman sss : DS.getSalesmanController().getSalesman(BL)) {
                 System.err.println("salesman : " + sss);
 
-                List<RelSALE> LS = DS.getCRMController().getCRM_Sales(sss, null, null);
+                List<RelSALE> LS = DS.getCRMController().getCRM_Sales(sss, from, to);
 
                 if (LS.isEmpty()) {
                     LS = Arrays.asList(new RelSALE(null, 0, "", null, null));
@@ -109,5 +120,6 @@ public class Test1 {
                 System.err.println(LS);
             }
         }
+
     }
 }

@@ -55,10 +55,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                                 CrmCase crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
-                                try {
-                                    readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                } catch (Exception ex) {
-                                }
+                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
                                 crudForm = new Form_CRMCase(crmCase, null, false, readOnly);
 
@@ -74,10 +71,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                                 CrmProcess crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
-                                try {
-                                    readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                } catch (Exception ex) {
-                                }
+                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
                                 Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, formAllowed);
                                 crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);

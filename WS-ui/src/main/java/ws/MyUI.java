@@ -108,12 +108,8 @@ public class MyUI extends UI {
         return loggedISUserType;
     }
 
-    public Salesman getLoggedSalesman() throws Exception {
-        if (loggedSalesman == null) {
-            throw new Exception("User " + loggedISUser.getUserName() + ", is not defined as the salesman.");
-        }
-
-        return loggedSalesman;
+    public Salesman getLoggedSalesman() {
+        return loggedSalesman == null ? new Salesman() : loggedSalesman;
     }
     //</editor-fold>
 
