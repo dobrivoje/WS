@@ -63,8 +63,10 @@ public class View_CRM extends View_Dashboard {
     private Component salesCasesPanel() {
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
-                Tree_SalesmanSales sst = new Tree_SalesmanSales("", S, null, null, formAllowed);
-                subPanels.add(new Panel(S.toString(), sst));
+                if (!DS.getCRMController().getCRM_Cases(S, false).isEmpty()) {
+                    Tree_SalesmanSales ccct = new Tree_SalesmanSales("", S, null, null, formAllowed);
+                    subPanels.add(new Panel(S.toString(), ccct));
+                }
             }
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }

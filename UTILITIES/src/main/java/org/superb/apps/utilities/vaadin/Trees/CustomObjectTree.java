@@ -25,8 +25,10 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
 
     //<editor-fold defaultstate="collapsed" desc="init">
     private void init() {
-        for (T e : elements) {
-            createSubNodes(e);
+        if (!elements.isEmpty()) {
+            for (T e : elements) {
+                createSubNodes(e);
+            }
         }
     }
     //</editor-fold>
@@ -34,7 +36,7 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     //<editor-fold defaultstate="collapsed" desc="createSubNodes">
     /**
      * <p>
- createSubNodes metod, se koristi u init metodu </p>
+     * createSubNodes metod, se koristi u init metodu </p>
      * kako bi se ispitao svaki čvor "t"
      *
      *

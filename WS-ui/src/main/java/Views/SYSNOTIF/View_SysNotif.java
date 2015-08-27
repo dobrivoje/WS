@@ -58,7 +58,7 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("Active CRM Cases by Salesman", subPanels, formEditAllowed));
+        C.add(createPanelComponent("My Active CRM Cases", subPanels, formEditAllowed));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
@@ -67,7 +67,7 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("last Two Month Sales", subPanels, formEditAllowed));
+        C.add(createPanelComponent("My Last Two Month Sales", subPanels, formEditAllowed));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         buildContentWithComponents(C);

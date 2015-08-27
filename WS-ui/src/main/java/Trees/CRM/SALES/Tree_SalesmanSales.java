@@ -5,7 +5,6 @@
  */
 package Trees.CRM.SALES;
 
-import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
@@ -42,7 +41,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        
+
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {
             propTrees.clear();

@@ -94,8 +94,8 @@ public class Test1 {
 
         System.err.println("-----prodaje prodavca iz sektora-----");
 
-        now.add(Calendar.MONTH, -1);
-        now.set(Calendar.DAY_OF_MONTH, 11);
+        now.add(Calendar.MONTH, 0);
+        now.set(Calendar.DAY_OF_MONTH, 1);
         from = new Date(now.getTimeInMillis());
 
         to = new Date();
@@ -104,22 +104,30 @@ public class Test1 {
                 + new SimpleDateFormat("dd.MM.yyyy").format(from) + " - "
                 + new SimpleDateFormat("dd.MM.yyyy").format(to)
         );
+
+        // now.set(Calendar.MONTH, -1);
+        from = new Date(now.getTimeInMillis());
+
+        System.err.println(">>>>>>>>>>>>>>>>> završeni slučajevi : "+DS.getCRMController().getCRM_CompletedCases(null, null, true, true));
         
-        for (BussinesLine BL : DS.getBLController().getAll()) {
-            System.err.println("sektor : " + BL.getName());
+        for (CrmCase CC : DS.getCRMController().getCRM_CompletedCases(null, null, true, true)) {
+            System.err.println("case : " + CC);
+            System.err.println("salesmane : " + CC.getFK_IDRSC().getFK_IDS());
 
-            for (Salesman sss : DS.getSalesmanController().getSalesman(BL)) {
-                System.err.println("salesman : " + sss);
-
-                List<RelSALE> LS = DS.getCRMController().getCRM_Sales(sss, from, to);
-
-                if (LS.isEmpty()) {
-                    LS = Arrays.asList(new RelSALE(null, 0, "", null, null));
-                }
-
-                System.err.println(LS);
+            for (RelSALE rs : DS.getCRMController().getCRM_Sales(CC, null, null)) {
+                System.err.println("sale : " + rs.toString());
             }
         }
-
+        
+        try {
+            for (Salesman S : DS.getSalesmanController().getAll()) {
+                
+                if (!DS.getCRMController().getCRM_Cases(S, false).isEmpty()) {
+                    System.err.println("----********- "+S);
+                    System.err.println("----********--------"+DS.getCRMController().getCRM_Cases(S, false));
+                }
+            }
+        } catch (NullPointerException ex) {
+        }
     }
 }

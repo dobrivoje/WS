@@ -108,6 +108,18 @@ public interface ICRMController {
      * @return
      */
     public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed);
+
+    /**
+     * Svi CRM slučajevi za prodavca koji su završeni, i gde je ugovor o prodaji
+     * sklopljen !
+     *
+     * @param dateFrom
+     * @param dateTo
+     * @param finished
+     * @param saleAgreeded true: Prodaja zaključena, ...
+     * @return
+     */
+    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">

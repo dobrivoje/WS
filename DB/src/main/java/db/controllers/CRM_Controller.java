@@ -177,6 +177,11 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
+    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
+        return dbh.getCRM_CompletedCases(dateFrom, dateTo, finished, saleAgreeded);
+    }
+
+    @Override
     public List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase) {
         return dbh.getCRM_AvailableStatuses(crmCase);
     }
@@ -198,12 +203,12 @@ public class CRM_Controller implements ICRMController {
 
     @Override
     public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
-        return dbh.getSales(c, dateFrom, dateTo);
+        return dbh.getCRM_Sales(c, dateFrom, dateTo);
     }
 
     @Override
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        return dbh.getSales(s, dateFrom, dateTo);
+        return dbh.getCRM_Sales(s, dateFrom, dateTo);
     }
     //</editor-fold>
 

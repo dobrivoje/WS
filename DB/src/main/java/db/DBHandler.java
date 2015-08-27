@@ -1355,6 +1355,31 @@ public class DBHandler {
         }
     }
 
+    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
+        Date from = dateFrom;
+        Date to = dateTo;
+        Calendar now;
+
+        if (dateFrom == null && dateTo == null) {
+            now = Calendar.getInstance();
+            now.add(Calendar.MONTH, -1);
+            now.set(Calendar.DAY_OF_MONTH, 1);
+            from = new Date(now.getTimeInMillis());
+            to = new Date();
+        }
+        
+        try {
+            return getEm().createNamedQuery("CrmCase.SaleAgreededCases")
+                    .setParameter("startDate", from)
+                    .setParameter("endDate", to)
+                    .setParameter("finished", finished)
+                    .setParameter("saleAgreeded", saleAgreeded)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.findByCustomer")
@@ -1502,7 +1527,7 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
-    public List<RelSALE> getSales(CrmCase c, Date dateFrom, Date dateTo) {
+    public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
         Date from = dateFrom;
         Date to = dateTo;
         Calendar now;
@@ -1527,7 +1552,7 @@ public class DBHandler {
         }
     }
 
-    public List<RelSALE> getSales(Salesman s, Date dateFrom, Date dateTo) {
+    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
         Date from = dateFrom;
         Date to = dateTo;
         Calendar now;
