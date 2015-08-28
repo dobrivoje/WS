@@ -22,8 +22,10 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public abstract class View_Dashboard extends Panel implements View {
@@ -35,11 +37,13 @@ public abstract class View_Dashboard extends Panel implements View {
     private NotificationsButton notificationsButton;
     private CssLayout dashboardPanels;
     protected final VerticalLayout root = new VerticalLayout();
-    protected List<Panel> subPanels = new ArrayList<>();
+    protected final List<Panel> subPanels = new ArrayList<>();
 
     private Window notificationsWindow;
 
     private MenuBar.MenuItem max;
+
+    protected final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
 
     protected View_Dashboard(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -105,7 +109,7 @@ public abstract class View_Dashboard extends Panel implements View {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Wrappers, builders, popups windows">
-    protected Component createContentWrapper(final Component content) {
+    protected Component createContentWrapper(final Component content, Map<String, MenuBar.Command> panelCommands) {
         final CssLayout slot = new CssLayout();
         slot.setWidth(100, Unit.PERCENTAGE);
         slot.addStyleName("dashboard-panel-slot");
@@ -140,20 +144,29 @@ public abstract class View_Dashboard extends Panel implements View {
             }
         });
         max.setStyleName("icon-only");
+
         MenuBar.MenuItem panelOptions = tools.addItem("", FontAwesome.COG, null);
-        panelOptions.addItem("Configure", new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem selectedItem) {
-                Notification.show("Not implemented.");
+
+        // pomocna varijabla za iscrtavanje separator linije
+        int separatorInd = 0;
+        if (panelCommands == null) {
+            panelCommands = new HashMap<>();
+            MenuBar.Command defComList = new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem selectedItem) {
+                    Notification.show("Info", "Not yet implemented.\nAny suggestions are welcomed.", Notification.Type.ERROR_MESSAGE);
+                }
+            };
+            panelCommands.put("Help", defComList);
+            panelCommands.put("Close", defComList);
+        }
+        for (Map.Entry<String, MenuBar.Command> ES : panelCommands.entrySet()) {
+            if (separatorInd++ > 0) {
+                panelOptions.addSeparator();
             }
-        });
-        panelOptions.addSeparator();
-        panelOptions.addItem("Close", new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem selectedItem) {
-                Notification.show("Not implemented.");
-            }
-        });
+
+            panelOptions.addItem(ES.getKey(), ES.getValue());
+        }
 
         toolbar.addComponents(caption, tools);
         toolbar.setExpandRatio(caption, 1);
@@ -165,7 +178,18 @@ public abstract class View_Dashboard extends Panel implements View {
         return slot;
     }
 
-    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed) {
+    protected Component createContentWrapper(final Component content) {
+        Map<String, MenuBar.Command> PC = new HashMap<>();
+        MenuBar.Command dcl = (MenuBar.MenuItem selectedItem) -> {
+            Notification.show("Info", "Not yet implemented.\nAny suggestions are welcomed.", Notification.Type.ERROR_MESSAGE);
+        };
+        PC.put("Help", dcl);
+        PC.put("Close", dcl);
+
+        return createContentWrapper(content, PC);
+    }
+
+    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed, Map<String, MenuBar.Command> PC) {
         VerticalLayout componentRootVL = new VerticalLayout();
 
         componentRootVL.setCaption(caption);
@@ -187,7 +211,11 @@ public abstract class View_Dashboard extends Panel implements View {
         } catch (Exception e) {
         }
 
-        return createContentWrapper(componentRootVL);
+        return createContentWrapper(componentRootVL, PC);
+    }
+
+    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed) {
+        return createPanelComponent(caption, panels, formEditAllowed, null);
     }
 
     protected Component createNotesPanel(String notesContent) {

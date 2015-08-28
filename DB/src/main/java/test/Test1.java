@@ -7,7 +7,6 @@ package test;
 
 import dataservice.DataService;
 import db.DBHandler;
-import db.ent.BussinesLine;
 import db.ent.CrmCase;
 import db.ent.InfSysUser;
 import db.ent.RelSALE;
@@ -16,7 +15,6 @@ import db.interfaces.ICRMController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -108,8 +106,8 @@ public class Test1 {
         // now.set(Calendar.MONTH, -1);
         from = new Date(now.getTimeInMillis());
 
-        System.err.println(">>>>>>>>>>>>>>>>> završeni slučajevi : "+DS.getCRMController().getCRM_CompletedCases(null, null, true, true));
-        
+        System.err.println(">>>>>>>>>>>>>>>>> završeni slučajevi : " + DS.getCRMController().getCRM_CompletedCases(null, null, true, true));
+
         for (CrmCase CC : DS.getCRMController().getCRM_CompletedCases(null, null, true, true)) {
             System.err.println("case : " + CC);
             System.err.println("salesmane : " + CC.getFK_IDRSC().getFK_IDS());
@@ -118,16 +116,14 @@ public class Test1 {
                 System.err.println("sale : " + rs.toString());
             }
         }
-        
-        try {
-            for (Salesman S : DS.getSalesmanController().getAll()) {
-                
-                if (!DS.getCRMController().getCRM_Cases(S, false).isEmpty()) {
-                    System.err.println("----********- "+S);
-                    System.err.println("----********--------"+DS.getCRMController().getCRM_Cases(S, false));
-                }
+
+        for (Salesman ss1 : DS.getSalesmanController().getAll()) {
+            List<RelSALE> L = DS.getCRMController().getCRM_Sales(ss1, null, null);
+
+            if (!L.isEmpty()) {
+                System.err.println("salesmane : " + ss1);
+                System.err.println("sale : " + L);
             }
-        } catch (NullPointerException ex) {
         }
     }
 }
