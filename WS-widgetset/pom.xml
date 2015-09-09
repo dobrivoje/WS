@@ -13,7 +13,7 @@
     
     <dependencies>
         <!-- Versions for these are configured in the parent POM -->
-         <dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
             <!-- TODO this should have scope provided once http://dev.vaadin.com/ticket/14788 is resolved -->

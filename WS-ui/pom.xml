@@ -20,11 +20,6 @@
         </dependency>
 
         <!-- Custom components -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>WS-widgetset</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- Bean validation implementation -->
 
@@ -59,6 +54,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>DB</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>WS-widgetset</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

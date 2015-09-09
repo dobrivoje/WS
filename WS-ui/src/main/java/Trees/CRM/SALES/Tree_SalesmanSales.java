@@ -30,8 +30,8 @@ import static ws.MyUI.DS;
  */
 public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
-    private final Date dateFrom;
-    private final Date dateTo;
+    private Date dateFrom;
+    private Date dateTo;
     private Salesman salesman;
     private Form_CRUD2 crudForm;
 
@@ -115,9 +115,22 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
+    public void setDateFrom(Date dateFrom,Date dateTo) {
+        this.dateFrom = dateFrom;
+    }
+
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
+    }
+
     @Override
     protected void createSubNodes(CrmCase cc) {
         createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
+    }
+
+    @Override
+    public void refreshVisualContainer() {
+        super.refreshVisualContainer();
     }
 
 }
