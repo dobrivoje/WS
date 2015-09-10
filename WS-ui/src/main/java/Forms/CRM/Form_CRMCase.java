@@ -93,7 +93,7 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
 
     }
 
-    public Form_CRMCase(Salesman s, Customer c, boolean newCase) {
+    public Form_CRMCase(Salesman s, boolean newCase) {
         this(new CrmCase(new Date(), "", new RelSALESMANCUST()), false, null);
 
         salesman.setEnabled(newCase);
@@ -105,14 +105,6 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         endDate.setEnabled(false);
 
         salesman.setValue(MyUI.get().getLoggedSalesman());
-
-        RelSALESMANCUST rsc;
-
-        try {
-            rsc = CRM_Controller.getCRM_R_SalesmanCustomer(s, c);
-            customer.setValue(c);
-        } catch (Exception e) {
-        }
     }
 
     public Form_CRMCase(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {

@@ -117,6 +117,10 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         this(crmProcess, visualContainer, true);
     }
 
+    public Form_CRMProcess(Salesman salesRep, boolean newAction) {
+        this(new CrmProcess(new CrmCase(new Date(), "", null), null, false));
+    }
+
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
         this();
 

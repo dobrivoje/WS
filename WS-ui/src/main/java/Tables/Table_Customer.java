@@ -300,7 +300,7 @@ public class Table_Customer extends Table_GEN<Customer> {
 
                             s = MyUI.get().getLoggedSalesman();
 
-                            Form_CRMCase ccf = new Form_CRMCase(s, c, true);
+                            Form_CRMCase ccf = new Form_CRMCase(s, true);
 
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
