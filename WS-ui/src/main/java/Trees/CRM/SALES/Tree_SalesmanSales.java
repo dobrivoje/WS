@@ -19,7 +19,7 @@ import db.ent.Salesman;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import ws.MyUI;
 import static ws.MyUI.DS;
@@ -50,15 +50,14 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
-                        //<editor-fold defaultstate="collapsed" desc="SALE Case">
-                        if (event.getItemId() instanceof CrmCase) {
+                        //<editor-fold defaultstate="collapsed" desc="RelSale">
+                        if (event.getItemId() instanceof RelSALE) {
+
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
-                                this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
+                                this.salesman = ((RelSALE) event.getItemId()).getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-
-                                crudForm = new Form_CRMSell();
+                                crudForm = new Form_CRMSell((RelSALE) event.getItemId(), readOnly);
 
                                 winFormCaption = "Existing Sale Case";
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -82,22 +81,22 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
                         if (readOnly) {
                             getUI().addWindow(
-                                    new WindowFormProp(
+                                    new WindowForm3(
                                             winFormCaption,
-                                            false,
-                                            readOnly,
                                             crudForm,
-                                            winFormPropPanel
+                                            "img/crm/crm-new-sale.png",
+                                            crudForm.getClickListener(),
+                                            236, 177
                                     )
                             );
                         } else {
                             getUI().addWindow(
-                                    new WindowFormProp(
+                                    new WindowForm3(
                                             winFormCaption,
-                                            false,
-                                            crudForm.getClickListener(),
                                             crudForm,
-                                            winFormPropPanel
+                                            "img/crm/crm-new-sale.png",
+                                            crudForm.getClickListener(),
+                                            236, 177
                                     )
                             );
                         }
@@ -115,7 +114,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
-    public void setDateFrom(Date dateFrom,Date dateTo) {
+    public void setDateFrom(Date dateFrom, Date dateTo) {
         this.dateFrom = dateFrom;
     }
 

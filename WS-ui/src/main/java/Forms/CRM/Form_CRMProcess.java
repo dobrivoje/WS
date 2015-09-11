@@ -69,56 +69,14 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         salesman.focus();
     }
 
-    public Form_CRMProcess(CrmCase crmCase, final boolean newCRMProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {
-        this();
-
-        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
-
-        CrmProcess crmProcess = new CrmProcess(new CrmCase(), CRM_Controller.getCRM_Status(1), "", new Date());
-
-        btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
-
-        fieldGroup.setItemDataSource(new BeanItem(crmProcess));
-        beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
-
-        clickListener = (Button.ClickEvent event) -> {
-            setBeanFromFields(beanItem.getBean());
-
-            try {
-                fieldGroup.commit();
-
-                if (newCRMProcess) {
-                    CRM_Controller.addNewCRM_Process(beanItem.getBean());
-                } else {
-                    CRM_Controller.updateCRM_Process(beanItem.getBean());
-                }
-
-                if (visualContainer != null) {
-                    visualContainer.refreshVisualContainer();
-                }
-
-                Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
-
-                n.setDelayMsec(500);
-                n.show(getUI().getPage());
-
-            } catch (FieldGroup.CommitException ex) {
-                Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-            }
-        };
-
-        addComponents(salesman);
-        addBeansToForm();
-    }
-
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer) {
         this(crmProcess, visualContainer, true);
     }
 
     public Form_CRMProcess(Salesman salesRep, boolean newAction) {
-        this(new CrmProcess(new CrmCase(new Date(), "", null), null, false));
+        this(new CrmProcess(new CrmCase(), new CrmStatus(), "", new Date()), null, false);
+
+        salesman.setValue(salesRep);
     }
 
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm) {

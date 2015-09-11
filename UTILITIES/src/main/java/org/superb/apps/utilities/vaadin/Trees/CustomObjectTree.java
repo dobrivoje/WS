@@ -11,8 +11,8 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  * <p>
- * CustomDateTree klasa kao ÄŤvorove ima objekte tipa T.</p>
- * Za svaki ÄŤvor, postoji lista.
+ * CustomDateTree klasa kao čvorove ima objekte tipa T.</p>
+ * Za svaki čvor, postoji lista.
  *
  * @param <T>
  */
@@ -48,10 +48,10 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     //<editor-fold defaultstate="collapsed" desc="createNodeItems">
     /**
      * <p>
-     * Kreiraj stablo sa podÄŤvorovima za ÄŤvor "t" tipa T</p>
+     * Kreiraj stablo sa podčvorovima za čvor "t" tipa T</p>
      *
-     * @param t ÄŚvor
-     * @param subList Lista podÄŤvorova ÄŤvora "t"
+     * @param t Čvor
+     * @param subList Lista podčvorova čvora "t"
      */
     protected void createNodeItems(T t, List subList) {
         super.setNodeItems(t, subList);

@@ -25,6 +25,7 @@ import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.IPRODUCTController;
 import db.interfaces.ISalesmanController;
+import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.converters.MyNumberWithNoGrouping;
 import static ws.MyUI.DS;
@@ -34,7 +35,7 @@ import static ws.MyUI.DS;
  * @author root
  */
 public class Form_CRMSell extends Form_CRUD2<RelSALE> {
-
+    
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final IPRODUCTController PRODUCT_Controller = DS.getProductController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
@@ -42,62 +43,68 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final ComboBox salesman = new ComboBox("Salesman",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
-
+    
     @PropertyId("FK_IDCA")
     private final ComboBox crmCase = new ComboBox("Concluded CRM Case", new BeanItemContainer(CrmCase.class));
-
+    
     @PropertyId("sellDate")
     private final DateField sellDate = new DateField("Sell Date");
-
+    
     @PropertyId("FK_IDP")
     private final ComboBox product = new ComboBox("Product", DS.getProductController().getAll());
-
+    
     @PropertyId("ammount")
     private final TextField amount = new TextField("Product Amount");
-
+    
     @PropertyId("paymentMethod")
     private final TextField paymentMethod = new TextField("Payment Method");
     //</editor-fold>
 
     public Form_CRMSell() {
         super(new BeanFieldGroup(RelSALE.class));
-
+        
         fieldGroup.bindMemberFields(this);
-
+        
         setFormFieldsWidths(250, Unit.PIXELS);
-
+        
         initFields();
         updateDynamicFields();
-
+        
         salesman.focus();
     }
-
-    public Form_CRMSell(boolean defaultCRUDButtonOnForm) {
+    
+    public Form_CRMSell(boolean readOnly) {
+        this(new RelSALE(new Date(), 0, "", new CrmCase(), new Product()), readOnly);
+    }
+    
+    public Form_CRMSell(RelSALE relSALE, boolean readOnly) {
         this();
-
-        updateDynamicFields();
-
-        this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
-
-        fieldGroup.setItemDataSource(new BeanItem(new RelSALE()));
+        
+        this.defaultCRUDButtonOnForm = false;
+        
+        setFieldsFromBean(relSALE);
+        
+        fieldGroup.setItemDataSource(new BeanItem(relSALE));
         beanItem = (BeanItem<RelSALE>) fieldGroup.getItemDataSource();
-
+        
+        salesman.setValue(relSALE.getFK_IDCA().getFK_IDRSC().getFK_IDS());
+        
         btnCaption = BUTTON_CAPTION_SAVE.toString();
-
+        
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setBeanFromFields(beanItem.getBean());
-
+                
                 try {
                     fieldGroup.commit();
-
+                    
                     if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
                         throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
                     }
-
+                    
                     CRM_Controller.addNewSale(beanItem.getBean());
-
+                    
                     Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
                     n.setDelayMsec(500);
                     n.show(getUI().getPage());
@@ -108,60 +115,62 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
                 }
             }
         };
-
+        
         addComponents(salesman);
         addBeansToForm();
+        
+        lockFormFileds(readOnly);
     }
-
+    
     @Override
     protected final void setBeanFromFields(RelSALE sale) {
         try {
             sale.setSellDate(sellDate.getValue());
         } catch (Exception e) {
         }
-
+        
         try {
             sale.setAmmount(Double.parseDouble(amount.getValue()));
         } catch (Exception e) {
         }
-
+        
         try {
             sale.setFK_IDP((Product) product.getValue());
         } catch (Exception e) {
         }
-
+        
         try {
             sale.setPaymentMethod(paymentMethod.getValue());
         } catch (Exception e) {
         }
-
+        
         try {
             // sale.setFkIdca(null);
         } catch (Exception e) {
         }
-
+        
     }
-
+    
     @Override
     public final void setFieldsFromBean(RelSALE sale) {
         sellDate.setValue(sale.getSellDate());
-
+        
         if (sale.getAmmount() > 0) {
             amount.setValue(String.valueOf(sale.getAmmount()));
         }
-
+        
         product.setValue(sale.getFK_IDP().getName());
         paymentMethod.setValue(sale.getPaymentMethod());
         crmCase.setValue(sale.getFK_IDCA());
         salesman.setValue(sale.getFK_IDCA().getFK_IDRSC().getFK_IDS());
     }
-
+    
     @Override
     protected final void lockFormFileds(boolean lockAll) {
         super.lockFormFileds(lockAll);
         salesman.setEnabled(false);
     }
-
+    
     @Override
     protected final void updateDynamicFields() {
         //<editor-fold defaultstate="collapsed" desc="salesman listener init">
@@ -170,14 +179,14 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
             public void valueChange(Property.ValueChangeEvent event) {
                 try {
                     Salesman s = (Salesman) salesman.getValue();
-
+                    
                     crmCase.setContainerDataSource(
                             new BeanItemContainer(
                                     CrmCase.class,
                                     CRM_Controller.getCRM_CompletedCases(s, true, true)
                             )
                     );
-
+                    
                     product.setContainerDataSource(
                             new BeanItemContainer(Product.class,
                                     PRODUCT_Controller.getProductsForBussinesLine(s))
@@ -189,20 +198,20 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
         });
         //</editor-fold>
     }
-
+    
     @Override
     protected final void initFields() {
         salesman.setWidth(250, Unit.PIXELS);
-
+        
         amount.setConverter(new MyNumberWithNoGrouping());
         amount.setConversionError("Amount must be a decimal number.");
         salesman.setNullSelectionAllowed(false);
         crmCase.setNullSelectionAllowed(false);
         product.setNullSelectionAllowed(false);
-
+        
         setRequiredFields();
     }
-
+    
     @Override
     protected void setRequiredFields() {
         salesman.setRequired(true);

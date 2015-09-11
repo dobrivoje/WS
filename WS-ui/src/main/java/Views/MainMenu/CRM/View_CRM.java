@@ -24,6 +24,7 @@ public class View_CRM extends View_Dashboard {
     private final boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
     private final Component salesCasesPanelComponent;
     
+    //<editor-fold defaultstate="collapsed" desc="pomoćna klasa Dates">
     class Dates {
         
         private Date from;
@@ -51,6 +52,7 @@ public class View_CRM extends View_Dashboard {
         }
         
     }
+    //</editor-fold>
     
     private final Dates dates;
     

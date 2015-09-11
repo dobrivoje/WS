@@ -28,7 +28,6 @@ import db.interfaces.ISalesmanController;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import ws.MyUI;
 import static ws.MyUI.DS;
 
 /**
@@ -104,7 +103,7 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         saleAgreeded.setEnabled(!newCase);
         endDate.setEnabled(false);
 
-        salesman.setValue(MyUI.get().getLoggedSalesman());
+        salesman.setValue(s);
     }
 
     public Form_CRMCase(CrmCase crmCase, boolean defaultCRUDButtonOnForm, final IRefreshVisualContainer visualContainer) {
