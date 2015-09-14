@@ -30,6 +30,7 @@ public class WindowForm3 extends Window {
 
     protected TabSheet detailsWrapper = new TabSheet();
     protected VerticalLayout content = new VerticalLayout();
+    protected Button saveBtn = new Button("Save");
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktor">
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener) {
@@ -46,6 +47,11 @@ public class WindowForm3 extends Window {
 
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
         init(caption, formLayout, imageLocation, externalButtonClickListener, imgWidth, imgHeight);
+    }
+
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
+        init(caption, formLayout, imageLocation, externalButtonClickListener, imgWidth, imgHeight);
+        saveBtn.setVisible(!readOnly);
     }
 
     private void init(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
@@ -136,7 +142,6 @@ public class WindowForm3 extends Window {
         });
         closeBtn.focus();
 
-        Button saveBtn = new Button("Save");
         saveBtn.setWidth(150, Unit.PIXELS);
 
         if (externalButtonClickListener != null) {
