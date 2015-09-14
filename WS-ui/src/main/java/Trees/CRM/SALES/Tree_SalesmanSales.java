@@ -5,6 +5,7 @@
  */
 package Trees.CRM.SALES;
 
+import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
@@ -34,6 +35,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
     private Date dateTo;
     private Salesman salesman;
     private Form_CRUD2 crudForm;
+    private String imageLocation;
 
     public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
@@ -60,6 +62,21 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                                 crudForm = new Form_CRMSell((RelSALE) event.getItemId(), readOnly);
 
                                 winFormCaption = "Existing Sale Case";
+                                imageLocation = "img/crm/sell.png";
+                            } catch (NullPointerException | IllegalArgumentException ex) {
+                            }
+                        }
+
+                        if (event.getItemId() instanceof CrmCase) {
+
+                            try {
+                                this.salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
+
+                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
+                                crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
+
+                                winFormCaption = "Existing CRM Case";
+                                imageLocation = "img/crm/crmCase.png";
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         }
@@ -79,28 +96,17 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
 
-                        if (readOnly) {
-                            getUI().addWindow(
-                                    new WindowForm3(
-                                            winFormCaption,
-                                            crudForm,
-                                            "img/crm/crm-new-sale.png",
-                                            crudForm.getClickListener(),
-                                            236, 177
-                                    )
-                            );
-                        } else {
-                            getUI().addWindow(
-                                    new WindowForm3(
-                                            winFormCaption,
-                                            crudForm,
-                                            "img/crm/crm-new-sale.png",
-                                            crudForm.getClickListener(),
-                                            236, 177
-                                    )
-                            );
-                        }
+                        getUI().addWindow(
+                                new WindowForm3(
+                                        winFormCaption,
+                                        crudForm,
+                                        imageLocation,
+                                        crudForm.getClickListener(),
+                                        236, 196, readOnly
+                                )
+                        );
                         //</editor-fold>
+
                     } else {
                         Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
                                 Notification.Type.ERROR_MESSAGE);

@@ -114,10 +114,11 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         CrmCase cc = crmCase == null ? new CrmCase(new Date(), "", new RelSALESMANCUST()) : crmCase;
         setFieldsFromBean(cc);
 
+        btnCaption = BUTTON_CAPTION_SAVE.toString();
+
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
 
-        btnCaption = BUTTON_CAPTION_SAVE.toString();
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

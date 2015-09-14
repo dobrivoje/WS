@@ -21,6 +21,7 @@ import com.vaadin.ui.TextArea;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
+import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
@@ -73,8 +74,8 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         this(crmProcess, visualContainer, true);
     }
 
-    public Form_CRMProcess(Salesman salesRep, boolean newAction) {
-        this(new CrmProcess(new CrmCase(), new CrmStatus(), "", new Date()), null, false);
+    public Form_CRMProcess(Salesman salesRep) {
+        this(null, null, false);
 
         salesman.setValue(salesRep);
     }
@@ -84,11 +85,14 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
         this.defaultCRUDButtonOnForm = defaultCRUDButtonOnForm;
 
-        setFieldsFromBean(crmProcess);
+        CrmProcess cp = crmProcess == null
+                ? new CrmProcess(new CrmCase(new Date(), "", new RelSALESMANCUST()), null, "", new Date())
+                : crmProcess;
+        setFieldsFromBean(cp);
 
         btnCaption = CrudOperations.BUTTON_CAPTION_SAVE.toString();
 
-        fieldGroup.setItemDataSource(new BeanItem(crmProcess));
+        fieldGroup.setItemDataSource(new BeanItem(cp));
         beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
 
         clickListener = new Button.ClickListener() {
@@ -120,7 +124,6 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
         addComponents(salesman);
         addBeansToForm();
-        lockFormFileds(false);
     }
 
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm, boolean readOnly) {
