@@ -347,7 +347,7 @@ public class MainMenu extends CssLayout {
                                     getUI().addWindow(new WindowForm3(
                                             CRM_MANAG_NEW_PROCESS.toString(),
                                             cpf,
-                                            "img/crm/crm7.png",
+                                            "img/crm/crm5.png",
                                             cpf.getClickListener(),
                                             300, 225)
                                     );
