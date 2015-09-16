@@ -83,8 +83,15 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
+                        Tree_CRMSingleCase csct;
+
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                            if (crudForm instanceof Form_CRMProcess) {
+                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
+                            } else {
+                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                            }
+
                             propTrees.add(csct);
 
                             propPanel.addComponent(csct);

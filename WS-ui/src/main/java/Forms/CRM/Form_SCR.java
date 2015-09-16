@@ -26,7 +26,7 @@ public class Form_SCR extends Form_CRUD2<RelSALESMANCUST> {
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("FK_IDS")
-    private final ComboBox salesman = new ComboBox("Salesman",
+    private final ComboBox salesman = new ComboBox("Sales rep",
             new BeanItemContainer(Salesman.class, DS.getSalesmanController().getAll()));
 
     @PropertyId("FK_IDC")

@@ -16,9 +16,7 @@ import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Customer;
-import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
@@ -80,8 +78,15 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
+                        Tree_CRMSingleCase csct;
+
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac);
+                            if (crudForm instanceof Form_CRMProcess) {
+                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac, crudForm);
+                            } else {
+                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac, crudForm);
+                            }
+
                             propTrees.add(csct);
 
                             propPanel.addComponent(csct);

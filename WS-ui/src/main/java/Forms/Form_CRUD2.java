@@ -10,38 +10,39 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import java.util.Date;
+import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import static ws.MyUI.APP_DATE_FORMAT;
 
-public abstract class Form_CRUD2<T> extends FormLayout {
-
+public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T> {
+    
     protected FieldGroup fieldGroup;
     protected BeanItem<T> beanItem;
-
+    
     protected Button crudButton;
     protected Button.ClickListener clickListener;
     protected String btnCaption;
     protected boolean defaultCRUDButtonOnForm;
-
+    
     protected Form_CRUD2() {
         setSizeFull();
         setMargin(true);
         setSpacing(true);
-
+        
         defaultCRUDButtonOnForm = false;
         crudButton = new Button();
         crudButton.setWidth(150, Unit.PIXELS);
     }
-
+    
     public Form_CRUD2(BeanItem<T> beanItem) {
         this();
         this.beanItem = beanItem;
     }
-
+    
     public Form_CRUD2(FieldGroup fieldGroup) {
         this();
         this.fieldGroup = fieldGroup;
     }
-
+    
     public Button.ClickListener getClickListener() {
         return clickListener;
     }
@@ -64,21 +65,21 @@ public abstract class Form_CRUD2<T> extends FormLayout {
      * @param t
      */
     protected abstract void setBeanFromFields(T t);
-
+    
     protected abstract void setFieldsFromBean(T t);
-
+    
     protected final void setFormFieldsWidths(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {
-
+            
             c.setWidth(width, unit);
-
+            
             if (c instanceof TextField) {
                 ((TextField) c).setNullRepresentation("");
             }
             if (c instanceof DateField) {
                 ((DateField) c).setConverter(Date.class);
                 ((DateField) c).setDateFormat(APP_DATE_FORMAT);
-
+                
             }
             if (c instanceof TextArea) {
                 ((TextArea) c).setNullRepresentation("");
@@ -86,16 +87,16 @@ public abstract class Form_CRUD2<T> extends FormLayout {
             }
         }
     }
-
+    
     protected void addBeansToForm() {
         for (Component c : fieldGroup.getFields()) {
             addComponent(c);
         }
-
+        
         if (defaultCRUDButtonOnForm) {
             crudButton.setCaption(btnCaption);
             crudButton.addClickListener(clickListener);
-
+            
             addComponents(crudButton);
         }
     }
@@ -116,4 +117,9 @@ public abstract class Form_CRUD2<T> extends FormLayout {
      * kako bi se uvek dobio što ažurniji sadržaj.
      */
     protected abstract void updateDynamicFields();
+    
+    @Override
+    public void update(T t) {
+        setFieldsFromBean(t);
+    }
 }

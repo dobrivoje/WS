@@ -40,7 +40,7 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final ComboBox salesman = new ComboBox("Salesman",
+    private final ComboBox salesman = new ComboBox("Sales rep",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
 
     private final ComboBox customer = new ComboBox("Customer");

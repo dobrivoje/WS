@@ -6,6 +6,7 @@
 package Forms.CRM;
 
 import Forms.Form_CRUD2;
+import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -25,7 +26,6 @@ import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
 import db.interfaces.ISalesmanController;
-import java.util.Arrays;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
@@ -35,13 +35,13 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
+public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements IUpdateData<CrmProcess> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final ComboBox salesman = new ComboBox("Salesman",
+    private final ComboBox salesman = new ComboBox("Sales rep",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
 
     @PropertyId("FK_IDCA")
@@ -148,7 +148,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     public final void setFieldsFromBean(CrmProcess crmProcess) {
         salesman.setValue(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS());
         crmCase.setValue(crmProcess.getFK_IDCA());
-        status.setContainerDataSource(new BeanItemContainer(CrmStatus.class, Arrays.asList(crmProcess.getFK_IDCS())));
+        status.setValue(crmProcess.getFK_IDCS());
         actionDate.setValue(crmProcess.getActionDate());
         comment.setValue(crmProcess.getComment());
     }
@@ -212,5 +212,10 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         crmCase.setRequired(true);
         status.setRequired(true);
         actionDate.setRequired(true);
+    }
+
+    @Override
+    public void update(CrmProcess crmProcess) {
+        setFieldsFromBean(crmProcess);
     }
 }

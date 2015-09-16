@@ -42,7 +42,7 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final ComboBox salesman = new ComboBox("Salesman",
+    private final ComboBox salesman = new ComboBox("Sales rep",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
 
     @PropertyId("FK_IDCA")
