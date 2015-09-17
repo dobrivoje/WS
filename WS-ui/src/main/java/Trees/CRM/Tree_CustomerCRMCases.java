@@ -84,7 +84,7 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                             if (crudForm instanceof Form_CRMProcess) {
                                 csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);

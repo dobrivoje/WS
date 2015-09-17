@@ -22,6 +22,7 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
     protected Button.ClickListener clickListener;
     protected String btnCaption;
     protected boolean defaultCRUDButtonOnForm;
+    protected boolean readOnly;
     
     protected Form_CRUD2() {
         setSizeFull();
@@ -29,6 +30,7 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
         setSpacing(true);
         
         defaultCRUDButtonOnForm = false;
+        readOnly = true;
         crudButton = new Button();
         crudButton.setWidth(150, Unit.PIXELS);
     }

@@ -93,6 +93,17 @@ public interface ICRMController {
 
     RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception;
 
+    /**
+     *
+     * @param crmCase
+     * @return Vrati samo statuse koji su logičan sled crm procesa !
+     * <p>
+     * Npr. ako je slučaj otvoren, vrati samo "negotiation started".
+     * <p>
+     * Ako već postoji "negotiation started", onda vrati samo "offer", a ako
+     * "offer" već postoji, dati samo opcije "offer", "contract signed", ili
+     * "contract not signed".
+     */
     List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase);
 
     List<CrmStatus> getCRM_Statuses(String... type);

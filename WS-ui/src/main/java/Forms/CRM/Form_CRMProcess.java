@@ -6,7 +6,6 @@
 package Forms.CRM;
 
 import Forms.Form_CRUD2;
-import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -35,7 +34,7 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements IUpdateData<CrmProcess> {
+public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
@@ -129,7 +128,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements IUpdateDa
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm, boolean readOnly) {
         this(crmProcess, visualContainer, defaultCRUDButtonOnForm);
 
-        if (readOnly) {
+        if (this.readOnly = readOnly) {
             lockFormFileds(readOnly);
             salesman.setEnabled(!readOnly);
         }
@@ -216,6 +215,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> implements IUpdateDa
 
     @Override
     public void update(CrmProcess crmProcess) {
-        setFieldsFromBean(crmProcess);
+        fieldGroup.setItemDataSource(new BeanItem(crmProcess));
+        lockFormFileds(readOnly);
     }
 }
