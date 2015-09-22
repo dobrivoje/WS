@@ -35,7 +35,7 @@ public abstract class View_Dashboard extends Panel implements View {
 
     private Label titleLabel;
     private NotificationsButton notificationsButton;
-    private CssLayout dashboardPanels;
+    protected CssLayout dashboardPanels;
     protected final VerticalLayout root = new VerticalLayout();
     protected final List<Panel> subPanels = new ArrayList<>();
 
@@ -99,10 +99,7 @@ public abstract class View_Dashboard extends Panel implements View {
         result.addStyleName("icon-edit");
         result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         result.setDescription("Edit Dashboard");
-        result.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
-            }
+        result.addClickListener((final Button.ClickEvent event) -> {
         });
         return result;
     }
@@ -151,11 +148,8 @@ public abstract class View_Dashboard extends Panel implements View {
         int separatorInd = 0;
         if (panelCommands == null) {
             panelCommands = new HashMap<>();
-            MenuBar.Command defComList = new MenuBar.Command() {
-                @Override
-                public void menuSelected(MenuBar.MenuItem selectedItem) {
-                    Notification.show("Info", "Not yet implemented.\nAny suggestions are welcomed.", Notification.Type.ERROR_MESSAGE);
-                }
+            MenuBar.Command defComList = (MenuBar.MenuItem selectedItem) -> {
+                Notification.show("Info", "Not yet implemented.\nAny suggestions are welcomed.", Notification.Type.ERROR_MESSAGE);
             };
             panelCommands.put("Help", defComList);
             panelCommands.put("Close", defComList);
@@ -282,13 +276,9 @@ public abstract class View_Dashboard extends Panel implements View {
         HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footer.setWidth(100, Unit.PERCENTAGE);
-        Button showAll = new Button("View All Notifications",
-                new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(final Button.ClickEvent event) {
-                        Notification.show("Not implemented in this demo");
-                    }
-                });
+        Button showAll = new Button("View All Notifications", (final Button.ClickEvent event1) -> {
+            Notification.show("Not implemented in this demo");
+        });
         showAll.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         showAll.addStyleName(ValoTheme.BUTTON_SMALL);
         footer.addComponent(showAll);

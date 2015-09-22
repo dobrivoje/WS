@@ -17,6 +17,6 @@ public class Datumi {
     private Date dateFrom;
     private Date dateTo;
 
-    private Calendar now = Calendar.getInstance();
+    private final Calendar now = Calendar.getInstance();
     
 }
