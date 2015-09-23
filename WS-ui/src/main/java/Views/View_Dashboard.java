@@ -39,6 +39,12 @@ public abstract class View_Dashboard extends Panel implements View {
     protected final VerticalLayout root = new VerticalLayout();
     protected final List<Panel> subPanels = new ArrayList<>();
 
+    /**
+     * <b>salesCasesPanelComponent</b> je pomoćna varijabla kako bismo koristili
+     * manipulisali komandama panela !
+     */
+    protected final List<Component> salesCasesPanelComponent;
+
     private Window notificationsWindow;
 
     private MenuBar.MenuItem max;
@@ -54,6 +60,8 @@ public abstract class View_Dashboard extends Panel implements View {
         root.addStyleName("dashboard-view");
         setContent(root);
         Responsive.makeResponsive(root);
+
+        salesCasesPanelComponent = new ArrayList<>();
 
         root.addComponent(buildHeader(dashBoardTitle));
     }
@@ -238,6 +246,18 @@ public abstract class View_Dashboard extends Panel implements View {
 
         root.addComponent(dashboardPanels);
         root.setExpandRatio(dashboardPanels, 1);
+    }
+
+    /**
+     *
+     * @param panel Panel u kome kreiramo podpanele sa stablima koji
+     * reprezentuju prodaje, slučajeve, i slično.
+     * @param newComponent Panel posle poziva komande panela
+     */
+    protected void updateUIPanel(CssLayout panel, Component newComponent) {
+        Component oldComponent = salesCasesPanelComponent.get(0);
+        panel.replaceComponent(oldComponent, newComponent);
+        salesCasesPanelComponent.set(0, newComponent);
     }
 
     protected void openNotificationsPopup(final Button.ClickEvent event) {
