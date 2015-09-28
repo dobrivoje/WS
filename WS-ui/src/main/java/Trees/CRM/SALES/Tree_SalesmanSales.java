@@ -31,18 +31,13 @@ import static ws.MyUI.DS;
  */
 public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
-    private Date dateFrom;
-    private Date dateTo;
     private Salesman salesman;
     private Form_CRUD2 crudForm;
     private String imageLocation;
 
     public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCRMController().getCRM_CompletedCases(salesman, true, true));
-
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
+        super(caption, DS.getCRMController().getCRM_Salesrep_Sales_Cases(salesman, dateFrom, dateTo), dateFrom, dateTo);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {
@@ -66,7 +61,9 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         }
+                        //</editor-fold>
 
+                        //<editor-fold defaultstate="collapsed" desc="CrmCase">
                         if (event.getItemId() instanceof CrmCase) {
 
                             try {
@@ -120,22 +117,14 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
-    public void setDateFrom(Date dateFrom, Date dateTo) {
-        this.dateFrom = dateFrom;
-    }
-
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
+    public Tree_SalesmanSales(String caption, CrmCase cc, Date dateFrom, Date dateTo, boolean formAllowed)
+            throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, DS.getCRMController().getCRM_Sales_Cases(dateFrom, dateTo), dateFrom, dateTo);
     }
 
     @Override
     protected void createSubNodes(CrmCase cc) {
         createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
-    }
-
-    @Override
-    public void refreshVisualContainer() {
-        super.refreshVisualContainer();
     }
 
 }

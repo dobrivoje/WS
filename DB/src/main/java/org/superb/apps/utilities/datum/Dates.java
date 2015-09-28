@@ -15,7 +15,7 @@ public class Dates {
     private Date to;
 
     /**
-     * Pozivanje ovog konstruktora postavlja interval datuma : <br>
+     * pozivanje ovog konstruktora postavlja interval datuma : <br>
      * od 1. dana prethodnog meseca do današnjeg datuma.
      */
     public Dates() {
@@ -40,19 +40,16 @@ public class Dates {
 
     /**
      *
-     * @param months Broj meseci - podešavanje intervala.
-     * <p>
-     * months > 0 : Od danas do poslednjeg dana za <u>months</u> unapred. <br>
-     * months < 0 : Od 1. dana za <u>months</u> unazad, do danas. <br>
+     * @param months from months back/forth, to the current date
      */
     public Dates(int months) {
         setMonthsBF(months);
     }
 
-    /* <pre>
-     * @param months Broj meseci - podešavanje intervala. <p>
-     * months > 0 : Od danas do poslednjeg dana za <u>months</u> unapred. <br>
-     * months < 0 : Od 1. dana za <u>months</u> unazad, do danas. <br>
+    /**
+     *
+     * @param months from months back/forth, to the current date Pozitivna
+     * vrednost pravi interval od danas do posl. dana za broj meseci unapred.
      */
     public synchronized void setMonthsBackForth(int months) {
         setMonthsBF(months);
@@ -84,12 +81,6 @@ public class Dates {
 
             this.from = new Date();
             this.to = setHMS(c1, 23, 59, 59);
-        }
-
-        if (from.after(to)) {
-            Date z = from;
-            from = to;
-            to = z;
         }
     }
 
@@ -127,12 +118,4 @@ public class Dates {
         this.to = setDMY(month, day, year);
     }
     //</editor-fold>
-
-    @Override
-    public String toString() {
-        return "["
-                + from + ", " + to
-                + "]";
-    }
-
 }

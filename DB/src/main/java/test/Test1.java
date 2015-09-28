@@ -92,37 +92,86 @@ public class Test1 {
 
         System.err.println("-----prodaje prodavca iz sektora-----");
 
-        now.add(Calendar.MONTH, 0);
+        now.set(Calendar.MONTH, 5);
         now.set(Calendar.DAY_OF_MONTH, 1);
+        now.set(Calendar.HOUR_OF_DAY, 0);
         from = new Date(now.getTimeInMillis());
 
-        to = new Date();
+        now.set(Calendar.MONTH, 5);
+        now.set(Calendar.DAY_OF_MONTH, 30);
+        now.set(Calendar.HOUR_OF_DAY, 23);
+        now.set(Calendar.MINUTE, 59);
+        now.set(Calendar.SECOND, 59);
 
-        System.err.println("salesman cases between "
+        to = new Date(now.getTimeInMillis());
+
+        System.err.println("prodaje između : "
                 + new SimpleDateFormat("dd.MM.yyyy").format(from) + " - "
                 + new SimpleDateFormat("dd.MM.yyyy").format(to)
         );
 
         // now.set(Calendar.MONTH, -1);
-        from = new Date(now.getTimeInMillis());
+        System.err.println(">>>>>>>>>>>>>>>>> PRODAJE jun : ");
 
-        System.err.println(">>>>>>>>>>>>>>>>> završeni slučajevi : " + DS.getCRMController().getCRM_CompletedCases(null, null, true, true));
+        for (CrmCase CC : DS.getCRMController().getCRM_Sales_Cases(from, to)) {
 
-        for (CrmCase CC : DS.getCRMController().getCRM_CompletedCases(null, null, true, true)) {
-            System.err.println("case : " + CC);
-            System.err.println("salesmane : " + CC.getFK_IDRSC().getFK_IDS());
+            System.err.println(
+                    "Sell Case : " + CC.getDescription()
+                    + ", " + CC.getStartDate() + " - "
+                    + ", " + CC.getEndDate()
+            );
 
-            for (RelSALE rs : DS.getCRMController().getCRM_Sales(CC, null, null)) {
-                System.err.println("sale : " + rs.toString());
+            for (RelSALE RS : DS.getCRMController().getCRM_Sales(CC, from, to)) {
+                System.err.println("sale : " + RS.getAmmount() + ", " + RS.getSellDate());
             }
         }
 
-        for (Salesman ss1 : DS.getSalesmanController().getAll()) {
-            List<RelSALE> L = DS.getCRMController().getCRM_Sales(ss1, null, null);
+        System.err.println(">>>>>>>>>>>>>>>>> PRODAJE 2 meseca: ");
+
+        now.set(Calendar.MONTH, 7);
+        now.set(Calendar.DAY_OF_MONTH, 1);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        from = new Date(now.getTimeInMillis());
+
+        to = new Date();
+
+        for (CrmCase CC : DS.getCRMController().getCRM_Sales_Cases(from, to)) {
+
+            System.err.println(
+                    "Sell Case : " + CC.getDescription()
+                    + ", " + CC.getStartDate() + " - "
+                    + ", " + CC.getEndDate()
+            );
+
+            for (RelSALE RS : DS.getCRMController().getCRM_Sales(CC, from, to)) {
+                System.err.println("sale : " + RS.getAmmount() + ", " + RS.getSellDate());
+            }
+        }
+
+        System.err.println(">>>>>>>>>>>>>>>>> PRODAJE prodavaca 2 meseca : ");
+
+        now.set(Calendar.MONTH, 7);
+        now.set(Calendar.DAY_OF_MONTH, 1);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        from = new Date(now.getTimeInMillis());
+
+        to = new Date();
+
+        for (Salesman S : DS.getSalesmanController().getAll()) {
+
+            List<RelSALE> L = DS.getCRMController().getCRM_Sales(S, from, to);
 
             if (!L.isEmpty()) {
-                System.err.println("salesmane : " + ss1);
-                System.err.println("sale : " + L);
+                for (RelSALE CC : DS.getCRMController().getCRM_Sales(S, from, to)) {
+                    System.err.println(
+                            "Sales rep : " + CC.getFK_IDCA().getFK_IDRSC().getFK_IDS()
+                            + ", Sell Case : " + CC.getFK_IDCA().getDescription()
+                            + ", " + CC.getFK_IDCA().getStartDate() + " - "
+                            + ", " + CC.getFK_IDCA().getEndDate()
+                    );
+
+                    System.err.println("sale : " + CC.getAmmount() + ", " + CC.getSellDate());
+                }
             }
         }
     }

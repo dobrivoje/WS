@@ -46,24 +46,49 @@ public interface ICRMController {
     List<CrmCase> getCRM_Cases(Salesman salesman, boolean finished, boolean saleAgreeded, Date dateFrom, Date dateTo);
 
     /**
+     * Ako su oba datuma null, onda se traži prodaja <br>
+     * za prethodni i sadašnji mesec.
      *
-     * @param c
-     * @param dateFrom - Ako su oba datuma null, onda se traži prodaja za
-     * prethodni i sadašnji mesec
+     * @param crmCase
+     * @param dateFrom
      * @param dateTo
      * @return
      */
-    List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo);
+    List<RelSALE> getCRM_Sales(CrmCase crmCase, Date dateFrom, Date dateTo);
 
     /**
+     * Ako su oba datuma null, onda se traži prodaja <br>
+     * za prethodni i sadašnji mesec.
      *
-     * @param s
-     * @param dateFrom - Ako su oba datuma null, onda se traži prodaja za
-     * prethodni i sadašnji mesec
+     * @param s Sales rep
+     * @param dateFrom
      * @param dateTo
      * @return
      */
     List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo);
+
+    /**
+     * Ako su oba datuma null, onda se traži prodaja <br>
+     * za prethodni i sadašnji mesec.
+     *
+     * @param s Sales rep
+     * @param dateFrom
+     * @param dateTo
+     * @return
+     */
+    List<CrmCase> getCRM_Salesrep_Sales_Cases(Salesman s, Date dateFrom, Date dateTo);
+
+    /**
+     * Svi CRM case-ovi koji IMAJU OSTVARENE prodaje, u posmatranom periodu.
+     * <p>
+     * Ako su oba datuma null, onda se traži prodaja<br>
+     * od 1. danaa prethodnog meseca, do sadašnjeg dana.
+     *
+     * @param dateFrom
+     * @param dateTo
+     * @return
+     */
+    List<CrmCase> getCRM_Sales_Cases(Date dateFrom, Date dateTo);
 
     List<CrmCase> getCRM_Cases(Customer c, Salesman s, boolean finished);
 
@@ -93,30 +118,31 @@ public interface ICRMController {
 
     RelSALESMANCUST getCRM_R_SalesmanCustomer(Salesman s, Customer c) throws Exception;
 
-    /**
-     *
-     * @param crmCase
-     * @return Vrati samo statuse koji su logičan sled crm procesa !
+    /*
+     * Metod koji ispravno uređuje sledeći CRM status <br>
+     * u odnosu na dosadašnje  unete statuse.
      * <p>
-     * Npr. ako je slučaj otvoren, vrati samo "negotiation started".
-     * <p>
-     * Ako već postoji "negotiation started", onda vrati samo "offer", a ako
-     * "offer" već postoji, dati samo opcije "offer", "contract signed", ili
-     * "contract not signed".
+     * @param crmCase Za CRM slučaj, metod vraća isključivo
+     * jedan status - npr. za tek otvoren, vraća "Negotiation Started". <br>
+     * Ako za CRM status već postoji "Negotiation Started", sledeći mogući
+     * status može biti SAMO "Offer". Ako već postoji "Offer", sledeći unetii
+     * status mogu biti "Offer" (jer može biti više ponuda", kao i statusi
+     * "Contract Signed", ili "Contract Not Signed"
+     * @return Lista ispravnih CRM statusa.
      */
     List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase);
 
     List<CrmStatus> getCRM_Statuses(String... type);
 
     /**
-     * Svi CRM slučajevi za prodavca koji su završeni, i gde je ugovor o prodaji
-     * sklopljen !
+     * Svi CRM slučajevi za prodavca koji su završeni<br>
+     * i gde je ugovor o prodaji sklopljen !
      *
      * @param salesman
      * @param finished
-     * @param caseAggreed - true: Ugovor zaključen, false: CRM aktivan -
-     * pregovori u toku.
-     * @return
+     * @param caseAggreed Ako je true, Ugovor zaključen, <br>
+     * a ako je false - CRM aktivan - pregovori u toku.
+     * @return Lista sCRM slučajeva.
      */
     public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed);
 
@@ -127,7 +153,7 @@ public interface ICRMController {
      * @param dateFrom
      * @param dateTo
      * @param finished
-     * @param saleAgreeded true: Prodaja zaključena, ...
+     * @param saleAgreeded true: Prodaja zaključena.
      * @return
      */
     public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded);

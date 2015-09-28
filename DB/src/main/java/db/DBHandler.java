@@ -37,9 +37,9 @@ import db.ent.Product;
 import db.ent.RelSALE;
 import enums.ISUserType;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import org.superb.apps.utilities.datum.Dates;
 
 /**
  *
@@ -1273,6 +1273,20 @@ public class DBHandler {
         }
     }
 
+    /**
+     *
+     * @param crmCase Metod koji ispravno uređuje sledeći CRM status u odnosu na
+     * dosadašnje unete statuse.
+     * <p>
+     * Npr. ako je otvoren CRM slučaj, metod vraća isključivo jedan status -
+     * "Negotiation Started".
+     * <p>
+     * Ako za CRM status već postoji "Negotiation Started", sledeći mogući
+     * status može biti SAMO "Offer". Ako već postoji "Offer", sledeći unetii
+     * status mogu biti "Offer" (jer može biti više ponuda", kao i statusi
+     * "Contract Signed", ili "Contract Not Signed"
+     * @return Lista ispravnih CRM statusa.
+     */
     public List<CrmStatus> getCRM_AvailableStatuses(CrmCase crmCase) {
         Set<CrmStatus> s = new HashSet<>(getCRM_CaseStatuses(crmCase));
 
@@ -1356,18 +1370,12 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        Date from = dateFrom;
-        Date to = dateTo;
-        Calendar now;
+        Dates d = new Dates();
+        Date from, to;
 
-        if (dateFrom == null && dateTo == null) {
-            now = Calendar.getInstance();
-            now.add(Calendar.MONTH, -1);
-            now.set(Calendar.DAY_OF_MONTH, 1);
-            from = new Date(now.getTimeInMillis());
-            to = new Date();
-        }
-        
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
+
         try {
             return getEm().createNamedQuery("CrmCase.SaleAgreededCases")
                     .setParameter("startDate", from)
@@ -1414,17 +1422,11 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded, int ammount) {
-        Date from = dateFrom;
-        Date to = dateTo;
-        Calendar now;
+        Dates d = new Dates();
+        Date from, to;
 
-        if (dateFrom == null && dateTo == null) {
-            now = Calendar.getInstance();
-            now.add(Calendar.MONTH, -1);
-            now.set(Calendar.DAY_OF_MONTH, 1);
-            from = new Date(now.getTimeInMillis());
-            to = new Date();
-        }
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
 
         try {
             return getEm().createNamedQuery("RelSALE.Salesman_Sale_Cases")
@@ -1528,17 +1530,11 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
-        Date from = dateFrom;
-        Date to = dateTo;
-        Calendar now;
+        Dates d = new Dates();
+        Date from, to;
 
-        if (dateFrom == null && dateTo == null) {
-            now = Calendar.getInstance();
-            now.add(Calendar.MONTH, -1);
-            now.set(Calendar.DAY_OF_MONTH, 1);
-            from = new Date(now.getTimeInMillis());
-            to = new Date();
-        }
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
 
         try {
             return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForPeriod")
@@ -1552,25 +1548,72 @@ public class DBHandler {
         }
     }
 
-    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        Date from = dateFrom;
-        Date to = dateTo;
-        Calendar now;
-
-        if (dateFrom == null && dateTo == null) {
-            now = Calendar.getInstance();
-            now.add(Calendar.MONTH, -1);
-            now.set(Calendar.DAY_OF_MONTH, 1);
-            from = new Date(now.getTimeInMillis());
-            to = new Date();
+    public List<RelSALE> getCRM_Sales(CrmCase crmCase) {
+        try {
+            return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForACase")
+                    .setParameter("FK_IDCA", crmCase)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
         }
+    }
+
+    public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
+        Dates d = new Dates();
+        Date from, to;
+
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
 
         try {
-            return getEm().createNamedQuery("RelSALE.Salesman_Sale_Cases")
+            return getEm().createNamedQuery("RelSALE.Salesman_Sales_In_Period")
                     .setParameter("IDS", s)
                     .setParameter("dateFrom", from)
                     .setParameter("dateTo", to)
                     .setParameter("ammount", 0)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmCase> CRM_Salesrep_Sales(Salesman s, Date dateFrom, Date dateTo) {
+        Dates d = new Dates();
+        Date from, to;
+
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
+
+        try {
+            return getEm().createNamedQuery("RelSALE.CRM_Salesrep_Sales_Cases")
+                    .setParameter("IDS", s)
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to)
+                    .setParameter("ammount", 0)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmCase> getCRM_Sales_Cases(Date dateFrom, Date dateTo) {
+        Date from, to;
+
+        Dates d = new Dates();
+
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
+
+        if (from.after(to)) {
+            Date z = from;
+            from = to;
+            to = z;
+        }
+
+        try {
+            return getEm().createNamedQuery("RelSALE.CRM_Sales_Cases")
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to)
                     .getResultList();
         } catch (Exception ex) {
             return null;

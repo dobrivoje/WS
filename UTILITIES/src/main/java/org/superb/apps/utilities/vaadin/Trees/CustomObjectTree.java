@@ -6,6 +6,7 @@
 package org.superb.apps.utilities.vaadin.Trees;
 
 import db.Exceptions.CustomTreeNodesEmptyException;
+import java.util.Date;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
@@ -18,8 +19,20 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
  */
 public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefreshVisualContainer {
 
+    protected Date dateFrom;
+    protected Date dateTo;
+
     public CustomObjectTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
+        init();
+    }
+
+    public CustomObjectTree(String caption, List treeItems, Date dateFrom, Date dateTo) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, treeItems);
+
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+
         init();
     }
 

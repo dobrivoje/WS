@@ -210,6 +210,16 @@ public class CRM_Controller implements ICRMController {
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
         return dbh.getCRM_Sales(s, dateFrom, dateTo);
     }
+
+    @Override
+    public List<CrmCase> getCRM_Salesrep_Sales_Cases(Salesman s, Date dateFrom, Date dateTo) {
+        return dbh.CRM_Salesrep_Sales(s, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_Sales_Cases(Date dateFrom, Date dateTo) {
+        return dbh.getCRM_Sales_Cases(dateFrom, dateTo);
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Add/update data">
