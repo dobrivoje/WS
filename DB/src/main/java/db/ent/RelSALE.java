@@ -50,11 +50,11 @@ import javax.xml.bind.annotation.XmlRootElement;
                     + "AND r.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND r.ammount > :ammount"),
 
             @NamedQuery(name = "RelSALE.CRM_Salesrep_Sales_Cases",
-                    query = "SELECT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo "
+                    query = "SELECT DISTINCT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo "
                     + "AND r.FK_IDCA.FK_IDRSC.FK_IDS = :IDS AND r.ammount > :ammount"),
 
             @NamedQuery(name = "RelSALE.CRM_Sales_Cases",
-                    query = "SELECT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo AND r.ammount > 0"),
+                    query = "SELECT DISTINCT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo AND r.ammount > 0"),
 
             @NamedQuery(name = "RelSALE.findByPaymentMethod", query = "SELECT r FROM RelSALE r WHERE r.paymentMethod = :paymentMethod")
         }

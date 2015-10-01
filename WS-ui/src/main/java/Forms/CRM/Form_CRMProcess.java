@@ -40,7 +40,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
-    private final ComboBox salesman = new ComboBox("Sales rep",
+    private final ComboBox salesman = new ComboBox("Salesrep",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
 
     @PropertyId("FK_IDCA")

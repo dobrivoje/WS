@@ -34,18 +34,18 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
-    SALE_NEW("New Sale Case"),
+    SALE_NEW("New Sell Case"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Activity"),
     CRM_MANAG_EXISTING_PROCESS("Existing CRM Activity Action"),
-    CRM_MANAG_NEW_SALESMAN_CUST_REL("New SC Relationship"),
+    CRM_MANAG_NEW_SALESMAN_CUST_REL("New Salesrep Customer Relationship"),
     CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
     //
-    FS_DATA_MANAG_SEARCH_ENGINE("Fuelstation Search Engine"),
-    FS_DATA_MANAG_NEW_FS("New Fuelstation"),
-    FS_DATA_MANAG_NEW_FS_OWNER("New Fuelstation Owner"),
-    FS_DATA_MANAG_DOCS("Fuelstation's Documents");
+    FS_DATA_MANAG_SEARCH_ENGINE("FS Search Engine"),
+    FS_DATA_MANAG_NEW_FS("New FS"),
+    FS_DATA_MANAG_NEW_FS_OWNER("New FS Owner"),
+    FS_DATA_MANAG_DOCS("FS Documents");
 
     private final String menuItem;
 

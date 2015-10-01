@@ -117,11 +117,6 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
-    public Tree_SalesmanSales(String caption, CrmCase cc, Date dateFrom, Date dateTo, boolean formAllowed)
-            throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCRMController().getCRM_Sales_Cases(dateFrom, dateTo), dateFrom, dateTo);
-    }
-
     @Override
     protected void createSubNodes(CrmCase cc) {
         createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
