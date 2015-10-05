@@ -15,15 +15,12 @@ import db.ent.Salesman;
 import java.util.Date;
 import java.util.List;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
-import org.superb.apps.utilities.datum.Dates;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
 public class View_CRM extends View_Dashboard {
 
     private final boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
-
-    private final Dates dateInterval = new Dates();
 
     public View_CRM() {
         super("Customer Relationship Management");
@@ -73,10 +70,13 @@ public class View_CRM extends View_Dashboard {
         //<editor-fold defaultstate="collapsed" desc="Last Two Months Sales">
         panelCommands.put("Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
-            getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo());
 
             updateUIPanel(dashboardPanels,
-                    createPanelComponent("Realized Sales", subPanels, formAllowed, panelCommands)
+                    createPanelComponent(
+                            "Realized Sales",
+                            getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                            formAllowed,
+                            panelCommands)
             );
         });
         //</editor-fold>
@@ -86,10 +86,13 @@ public class View_CRM extends View_Dashboard {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setMonthsBackForth(-2);
-                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo());
 
                 updateUIPanel(dashboardPanels,
-                        createPanelComponent("Realized Sales", subPanels, formAllowed, panelCommands)
+                        createPanelComponent(
+                                "Realized Sales",
+                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                                formAllowed,
+                                panelCommands)
                 );
             }
         });
@@ -102,10 +105,13 @@ public class View_CRM extends View_Dashboard {
                 // subPanels.clear();
                 dateInterval.setFrom(1, 6, 2015);
                 dateInterval.setTo(30, 6, 2015);
-                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo());
 
                 updateUIPanel(dashboardPanels,
-                        createPanelComponent("Realized Sales", subPanels, formAllowed, panelCommands)
+                        createPanelComponent(
+                                "Realized Sales",
+                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                                formAllowed,
+                                panelCommands)
                 );
             }
         });
@@ -117,7 +123,7 @@ public class View_CRM extends View_Dashboard {
     }
     //</editor-fold>
 
-    private void getSalesForPeriod(Date from, Date to) {
+    private List<Panel> getSalesForPeriod(Date from, Date to) {
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
@@ -128,7 +134,10 @@ public class View_CRM extends View_Dashboard {
                     subPanels.add(new Panel(S.toString(), tss));
                 }
             }
+            return subPanels;
+
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+            return null;
         }
     }
 

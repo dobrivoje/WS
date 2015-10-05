@@ -90,21 +90,22 @@ public class View_SysNotif extends View_Dashboard {
         try {
 
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanSales csct = new Tree_SalesmanSales("", BLS, null, null, formAllowed);
+                Tree_SalesmanSales csct = new Tree_SalesmanSales("", BLS,
+                        dateInterval.getFrom(), dateInterval.getTo(), formAllowed);
                 subPanels.add(new Panel(BLS.toString(), csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("NEW SALES FOR THE LAST TWO MONTHS", subPanels, formAllowed));
+        C.add(createPanelComponent("REALIZED SALES", subPanels, formAllowed));
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
 
-            for (Customer S : DS.getCRMController().getCRM_CustomerActiveCases(false)) {
-                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", S, formAllowed);
-                subPanels.add(new Panel(S.toString(), ccct));
+            for (Customer CC : DS.getCRMController().getCRM_CustomerActiveCases(false, S.getFkIdbl())) {
+                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", CC, formAllowed);
+                subPanels.add(new Panel(CC.toString(), ccct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

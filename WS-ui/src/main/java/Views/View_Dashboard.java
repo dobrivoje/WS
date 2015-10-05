@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.superb.apps.utilities.datum.Dates;
 
 @SuppressWarnings("serial")
 public abstract class View_Dashboard extends Panel implements View {
@@ -37,7 +38,16 @@ public abstract class View_Dashboard extends Panel implements View {
     private NotificationsButton notificationsButton;
     protected CssLayout dashboardPanels;
     protected final VerticalLayout root = new VerticalLayout();
-    protected final List<Panel> subPanels = new ArrayList<>();
+
+    protected boolean viewMaximized;
+
+    /**
+     * <b>subPanels</b> predstavlja listu pod Panel-a koji sadrže stabla sa
+     * konkretnim podacima, npr. panel za realizovane prodaje prodavaca
+     */
+    protected final List<Panel> subPanels;
+
+    protected final Dates dateInterval = new Dates();
 
     /**
      * <b>salesCasesPanelComponent</b> je pomoćna varijabla kako bismo koristili
@@ -61,6 +71,9 @@ public abstract class View_Dashboard extends Panel implements View {
         setContent(root);
         Responsive.makeResponsive(root);
 
+        viewMaximized = false;
+
+        subPanels = new ArrayList<>();
         salesCasesPanelComponent = new ArrayList<>();
 
         root.addComponent(buildHeader(dashBoardTitle));
@@ -140,11 +153,11 @@ public abstract class View_Dashboard extends Panel implements View {
             public void menuSelected(final MenuBar.MenuItem selectedItem) {
                 if (!slot.getStyleName().contains("max")) {
                     selectedItem.setIcon(FontAwesome.COMPRESS);
-                    toggleMaximized(slot, true);
+                    toggleMaximized(slot, viewMaximized = true);
                 } else {
                     slot.removeStyleName("max");
                     selectedItem.setIcon(FontAwesome.EXPAND);
-                    toggleMaximized(slot, false);
+                    toggleMaximized(slot, viewMaximized = false);
                 }
             }
         });
@@ -156,11 +169,14 @@ public abstract class View_Dashboard extends Panel implements View {
         int separatorInd = 0;
         if (panelCommands == null) {
             panelCommands = new HashMap<>();
-            MenuBar.Command defComList = (MenuBar.MenuItem selectedItem) -> {
-                Notification.show("Info", "Not yet implemented.\nAny suggestions are welcomed.", Notification.Type.ERROR_MESSAGE);
-            };
-            panelCommands.put("Help", defComList);
-            panelCommands.put("Close", defComList);
+
+            panelCommands.put("Last two months period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+                dateInterval.setMonthsBackForth(-1);
+            });
+            
+            panelCommands.put("Help", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+                Notification.show("Help", "Select appropriate date interval\nto narrow selection.", Notification.Type.ERROR_MESSAGE);
+            });
         }
         for (Map.Entry<String, MenuBar.Command> ES : panelCommands.entrySet()) {
             if (separatorInd++ > 0) {
@@ -258,6 +274,8 @@ public abstract class View_Dashboard extends Panel implements View {
         Component oldComponent = salesCasesPanelComponent.get(0);
         panel.replaceComponent(oldComponent, newComponent);
         salesCasesPanelComponent.set(0, newComponent);
+
+        toggleMaximized(newComponent, viewMaximized);
     }
 
     protected void openNotificationsPopup(final Button.ClickEvent event) {
