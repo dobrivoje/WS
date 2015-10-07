@@ -24,11 +24,20 @@ public class WindowForm extends Window {
 
     protected final VerticalLayout content = new VerticalLayout();
 
+    protected Button closeButton;
+    protected Button actionButton;
+
     public WindowForm(String caption, boolean bigForm, Layout formLayout) {
         this(caption, bigForm, formLayout, null);
     }
 
     public WindowForm(String caption, boolean bigForm, Layout formLayout, Button.ClickListener externalButtonClickListener) {
+        this(caption, bigForm, formLayout, externalButtonClickListener, "Save");
+    }
+
+    public WindowForm(String caption, boolean bigForm, Layout formLayout,
+            Button.ClickListener externalButtonClickListener, String actionButtonCaption) {
+
         setCaption(caption);
         setModal(true);
 
@@ -41,6 +50,9 @@ public class WindowForm extends Window {
         } else {
             content.setSizeFull();
         }
+
+        actionButton = new Button(actionButtonCaption);
+        closeButton = new Button("Close");
 
         content.setMargin(new MarginInfo(true, false, true, false));
 
@@ -59,27 +71,25 @@ public class WindowForm extends Window {
         footerLayout.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footerLayout.setWidth(100, Unit.PERCENTAGE);
 
-        Button closeBtn = new Button("Close");
-        closeBtn.setWidth(150, Unit.PIXELS);
-        closeBtn.addStyleName(ValoTheme.BUTTON_DANGER);
-        closeBtn.addClickListener((Button.ClickEvent event) -> {
+        closeButton.setWidth(150, Unit.PIXELS);
+        closeButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        closeButton.addClickListener((Button.ClickEvent event) -> {
             close();
         });
-        closeBtn.focus();
+        closeButton.focus();
 
-        Button saveBtn = new Button("Save");
-        saveBtn.setWidth(150, Unit.PIXELS);
+        actionButton.setWidth(150, Unit.PIXELS);
 
         if (externalButtonClickListener != null) {
-            saveBtn.addClickListener(externalButtonClickListener);
+            actionButton.addClickListener(externalButtonClickListener);
         }
-        footerLayout.addComponent(saveBtn);
-        footerLayout.addComponent(closeBtn);
+        footerLayout.addComponent(actionButton);
+        footerLayout.addComponent(closeButton);
 
-        footerLayout.setExpandRatio(saveBtn, 1.0f);
+        footerLayout.setExpandRatio(actionButton, 1.0f);
 
-        footerLayout.setComponentAlignment(saveBtn, Alignment.TOP_RIGHT);
-        footerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+        footerLayout.setComponentAlignment(actionButton, Alignment.TOP_RIGHT);
+        footerLayout.setComponentAlignment(closeButton, Alignment.TOP_RIGHT);
 
         return footerLayout;
     }

@@ -30,31 +30,78 @@ public class WindowForm3 extends Window {
 
     protected TabSheet detailsWrapper = new TabSheet();
     protected VerticalLayout content = new VerticalLayout();
-    protected Button saveBtn = new Button("Save");
 
-    //<editor-fold defaultstate="collapsed" desc="Konstruktor">
-    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener) {
-        this(caption, formLayout, imageLocation, externalButtonClickListener, false);
+    protected Button actionButton;
+    protected Button closeButton;
+
+    //<editor-fold defaultstate="collapsed" desc="Konstruktori">
+    private WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener) {
+        this(caption, formLayout, imageLocation, "Save", externalButtonClickListener, false);
     }
 
-    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
+    private WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener) {
+        this(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, false);
+    }
+
+    private WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
         if (imageDefaultSize) {
-            init(caption, formLayout, imageLocation, externalButtonClickListener, 150, -1);
+            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, 150, -1);
         } else {
-            init(caption, formLayout, imageLocation, externalButtonClickListener, -1, -1);
+            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, -1, -1);
         }
     }
 
+    /**
+     * Implementacija Save-Close forme
+     *
+     * @param caption Form caption
+     * @param formLayout Form to inject into this frame
+     * @param imageLocation Left image on the frame
+     * @param externalButtonClickListener Click listener to call upon action
+     * button click
+     * @param imgWidth Left image width
+     * @param imgHeight Left image height
+     */
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
-        init(caption, formLayout, imageLocation, externalButtonClickListener, imgWidth, imgHeight);
+        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight);
     }
 
+    /**
+     * Implementacija Save-Close forme
+     *
+     * @param caption Form caption
+     * @param formLayout Form to inject into this frame
+     * @param imageLocation Left image on the frame
+     * @param externalButtonClickListener Click listener to call upon action
+     * button click
+     * @param imgWidth Left image width
+     * @param imgHeight Left image height
+     * @param readOnly If true, prevent adding action button on the form
+     */
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
-        init(caption, formLayout, imageLocation, externalButtonClickListener, imgWidth, imgHeight);
-        saveBtn.setVisible(!readOnly);
+        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight);
+        actionButton.setVisible(!readOnly);
     }
 
-    private void init(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
+    /**
+     * Implementacija Specifične Action-Close forme
+     *
+     * @param caption Form caption
+     * @param formLayout Form to inject into this frame
+     * @param imageLocation Left image on the frame
+     * @param actionButtonCaption Caption for the action button
+     * @param externalButtonClickListener Click listener to call upon action
+     * button click
+     * @param imgWidth Left image width
+     * @param imgHeight Left image height
+     * @param readOnly If true, prevent adding action button on the form
+     */
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
+        init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imgWidth, imgHeight);
+        actionButton.setVisible(!readOnly);
+    }
+
+    private void init(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
@@ -63,6 +110,9 @@ public class WindowForm3 extends Window {
         setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
         setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
+
+        actionButton = new Button(actionButtonCaption);
+        closeButton = new Button("Close");
 
         content.setSizeFull();
         content.setMargin(new MarginInfo(true, false, true, false));
@@ -134,27 +184,26 @@ public class WindowForm3 extends Window {
         footerLayout.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footerLayout.setWidth(100, Unit.PERCENTAGE);
 
-        Button closeBtn = new Button("Close");
-        closeBtn.setWidth(150, Unit.PIXELS);
-        closeBtn.addStyleName(ValoTheme.BUTTON_DANGER);
-        closeBtn.addClickListener((Button.ClickEvent event) -> {
+        closeButton.setWidth(150, Unit.PIXELS);
+        closeButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        closeButton.addClickListener((Button.ClickEvent event) -> {
             close();
         });
-        closeBtn.focus();
+        closeButton.focus();
 
-        saveBtn.setWidth(150, Unit.PIXELS);
+        actionButton.setWidth(150, Unit.PIXELS);
 
         if (externalButtonClickListener != null) {
-            saveBtn.addClickListener(externalButtonClickListener);
+            actionButton.addClickListener(externalButtonClickListener);
         }
 
-        footerLayout.addComponent(saveBtn);
-        footerLayout.addComponent(closeBtn);
+        footerLayout.addComponent(actionButton);
+        footerLayout.addComponent(closeButton);
 
-        footerLayout.setExpandRatio(saveBtn, 1.0f);
+        footerLayout.setExpandRatio(actionButton, 1.0f);
 
-        footerLayout.setComponentAlignment(saveBtn, Alignment.MIDDLE_RIGHT);
-        footerLayout.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
+        footerLayout.setComponentAlignment(actionButton, Alignment.MIDDLE_RIGHT);
+        footerLayout.setComponentAlignment(closeButton, Alignment.MIDDLE_RIGHT);
 
         return footerLayout;
     }
