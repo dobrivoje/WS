@@ -7,25 +7,27 @@ package Dialogs;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 
 /**
- *
- * @author root
+ * Dialog for custom filtering options.
+ * <p>
+ * Primary use of this dialog is in the CRM panels.
  */
-public class SelectorDialog extends WindowForm {
+public class SelectorDialog extends WindowForm3 {
 
     /**
      *
      * @param caption Form caption
-     * @param bigForm Default is false
-     * @param formLayout Form to put inside this frame
-     * @param externalButtonClickListener listener to run upon calling action
-     * button
+     * @param imageLocation Left image in the frame
      * @param actionButtonCaption Caption of the action button
+     * @param formLayout Form with defined fields, to put inside this frame
+     * @param imageDefaultSize True for default image size
+     * @param externalButtonClickListener Listener to run upon calling action
+     * button
      */
-    public SelectorDialog(String caption, boolean bigForm, Layout formLayout, Button.ClickListener externalButtonClickListener, String actionButtonCaption) {
-        super(caption, bigForm, formLayout, externalButtonClickListener, actionButtonCaption);
+    public SelectorDialog(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
+        super(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imageDefaultSize);
     }
 
 }

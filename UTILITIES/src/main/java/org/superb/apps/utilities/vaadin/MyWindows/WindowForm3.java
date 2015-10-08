@@ -43,7 +43,7 @@ public class WindowForm3 extends Window {
         this(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, false);
     }
 
-    private WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
         if (imageDefaultSize) {
             init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, 150, -1);
         } else {
@@ -67,7 +67,7 @@ public class WindowForm3 extends Window {
     }
 
     /**
-     * Implementacija Save-Close forme
+     * Typical Save-Close form
      *
      * @param caption Form caption
      * @param formLayout Form to inject into this frame
@@ -84,7 +84,7 @@ public class WindowForm3 extends Window {
     }
 
     /**
-     * Implementacija Specifične Action-Close forme
+     * Typical Action-Close form
      *
      * @param caption Form caption
      * @param formLayout Form to inject into this frame

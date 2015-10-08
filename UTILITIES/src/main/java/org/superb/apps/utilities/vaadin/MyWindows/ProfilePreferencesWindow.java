@@ -130,11 +130,8 @@ public class ProfilePreferencesWindow extends Window {
         profilePic.setWidth(100.0f, Sizeable.Unit.PIXELS);
         pic.addComponent(profilePic);
 
-        Button upload = new Button("Change…", new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
+        Button upload = new Button("Change…", (ClickEvent event) -> {
+            Notification.show("Not implemented in this demo");
         });
         upload.addStyleName(ValoTheme.BUTTON_TINY);
         pic.addComponent(upload);
@@ -217,20 +214,16 @@ public class ProfilePreferencesWindow extends Window {
 
         Button ok = new Button("OK");
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                // Updated user should also be persisted to database. But
-                // not in this demo.
-
-                Notification success = new Notification(
-                        "Profile updated successfully");
-                success.setDelayMsec(2000);
-                success.setStyleName("bar success small");
-                success.setPosition(Position.BOTTOM_CENTER);
-                success.show(Page.getCurrent());
-
-            }
+        ok.addClickListener((ClickEvent event) -> {
+            // Updated user should also be persisted to database. But
+            // not in this demo.
+            
+            Notification success = new Notification(
+                    "Profile updated successfully");
+            success.setDelayMsec(2000);
+            success.setStyleName("bar success small");
+            success.setPosition(Position.BOTTOM_CENTER);
+            success.show(Page.getCurrent());
         });
         ok.focus();
         footer.addComponent(ok);

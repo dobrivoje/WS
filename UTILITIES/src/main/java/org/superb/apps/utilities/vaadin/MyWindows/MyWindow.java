@@ -31,11 +31,8 @@ public class MyWindow extends Window {
 
         VerticalLayout vL = new VerticalLayout();
 
-        Button exitButton = new Button("Exit", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                close();
-            }
+        Button exitButton = new Button("Exit", (Button.ClickEvent event) -> {
+            close();
         });
 
         exitButton.setWidth(150, Unit.PIXELS);
