@@ -61,7 +61,7 @@ import javax.xml.bind.annotation.XmlTransient;
                     query = "SELECT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :Finished GROUP BY C.FK_IDRSC.FK_IDC"),
 
             @NamedQuery(name = "CrmCase.BL_CustomerActiveCases",
-                    query = "SELECT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :finished AND c.FK_IDRSC.FK_IDS.fkIdbl = :FK_IDBL"),
+                    query = "SELECT DISTINCT c.FK_IDRSC.FK_IDC FROM CrmCase c WHERE c.finished = :finished AND c.FK_IDRSC.FK_IDS.fkIdbl = :FK_IDBL"),
 
             @NamedQuery(name = "CrmCase.SalesmanCompletedCases",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :salesman AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded"),
