@@ -10,10 +10,11 @@ import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.Subject;
 
-public class ShiroAccessControl implements IAccessAuthControl {
+public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
 
     //<editor-fold defaultstate="collapsed" desc="Infrastructure">
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
@@ -163,5 +164,20 @@ public class ShiroAccessControl implements IAccessAuthControl {
 
     public static Set<Serializable> getUsersSessions() {
         return usersSessions;
+    }
+
+    @Override
+    public void onStart(Session sn) {
+        System.err.println("start sesije.");
+    }
+
+    @Override
+    public void onStop(Session sn) {
+        System.err.println("stop sesije.");
+    }
+
+    @Override
+    public void onExpiration(Session sn) {
+        System.err.println("sesija istekla.");
     }
 }

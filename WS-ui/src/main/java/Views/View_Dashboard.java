@@ -42,24 +42,22 @@ public abstract class View_Dashboard extends Panel implements View {
     protected boolean viewMaximized;
 
     /**
-     * <b>subPanels</b> predstavlja listu pod Panel-a koji sadrže stabla sa
-     * konkretnim podacima, npr. panel za realizovane prodaje prodavaca
+     * <b>subPanels</b> predstavlja listu svih Panel-a sa stablima, npr. paneli
+     * sa prodajama, crm slučajevima, i slično.
      */
     protected final List<Panel> subPanels;
 
     protected final Dates dateInterval = new Dates();
 
     /**
-     * <b>salesCasesPanelComponent</b> je pomoćna varijabla kako bismo koristili
-     * manipulisali komandama panela !
+     * <b>dynamicPanels</b> Lista komponenti (panela) koje se dinamičko
+     * ažuriraju posle odgovarajuće komande panela.
      */
-    protected final List<Component> salesCasesPanelComponent;
+    protected final List<Component> dynamicPanels;
 
     private Window notificationsWindow;
 
     private MenuBar.MenuItem max;
-
-    protected final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
 
     protected View_Dashboard(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -74,7 +72,7 @@ public abstract class View_Dashboard extends Panel implements View {
         viewMaximized = false;
 
         subPanels = new ArrayList<>();
-        salesCasesPanelComponent = new ArrayList<>();
+        dynamicPanels = new ArrayList<>();
 
         root.addComponent(buildHeader(dashBoardTitle));
     }
@@ -173,7 +171,7 @@ public abstract class View_Dashboard extends Panel implements View {
             panelCommands.put("Last two months period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
                 dateInterval.setMonthsBackForth(-1);
             });
-            
+
             panelCommands.put("Help", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
                 Notification.show("Help", "Select appropriate date interval\nto narrow selection.", Notification.Type.ERROR_MESSAGE);
             });
@@ -268,12 +266,19 @@ public abstract class View_Dashboard extends Panel implements View {
      *
      * @param panel Panel u kome kreiramo podpanele sa stablima koji
      * reprezentuju prodaje, slučajeve, i slično.
+     * @param oldComponent Panel pre poziva komande panela
      * @param newComponent Panel posle poziva komande panela
      */
-    protected void updateUIPanel(CssLayout panel, Component newComponent) {
-        Component oldComponent = salesCasesPanelComponent.get(0);
+    protected void updateUIPanel(CssLayout panel, Component oldComponent, Component newComponent) {
         panel.replaceComponent(oldComponent, newComponent);
-        salesCasesPanelComponent.set(0, newComponent);
+
+        toggleMaximized(newComponent, viewMaximized);
+    }
+
+    protected void updateUIPanel(int dynamicCasesPanelIndex, Component newComponent) {
+        dashboardPanels.replaceComponent(dynamicPanels.get(dynamicCasesPanelIndex), newComponent);
+
+        dynamicPanels.set(dynamicCasesPanelIndex, newComponent);
 
         toggleMaximized(newComponent, viewMaximized);
     }

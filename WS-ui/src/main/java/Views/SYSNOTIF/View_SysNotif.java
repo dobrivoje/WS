@@ -67,7 +67,7 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("My Last Two Month Sales", subPanels, formEditAllowed));
+        C.add(createPanelComponent("My Sales", subPanels, formEditAllowed));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         buildContentWithComponents(C);
@@ -85,7 +85,7 @@ public class View_SysNotif extends View_Dashboard {
     }
 
     private void createSectorManagerView() {
-        List<Component> C = new ArrayList();
+        List<Component> sectorManagerPanels = new ArrayList();
 
         try {
 
@@ -98,7 +98,22 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("REALIZED SALES", subPanels, formAllowed));
+        sectorManagerPanels.add(createPanelComponent("REALIZED SALES", subPanels, formAllowed));
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        try {
+
+            for (Salesman S1 : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
+                        "", S1, false, true, formAllowed, dateInterval.getTo(), dateInterval.getTo());
+
+                subPanels.add(new Panel(S1.toString(), csct));
+            }
+
+        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+        }
+
+        sectorManagerPanels.add(createPanelComponent("CASES NOT SIGNED !", subPanels, formAllowed));
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
@@ -111,7 +126,7 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("NEW CUSTOMER CASES", subPanels, formAllowed));
+        sectorManagerPanels.add(createPanelComponent("NEW CUSTOMER CASES", subPanels, formAllowed));
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
@@ -124,9 +139,9 @@ public class View_SysNotif extends View_Dashboard {
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("NEW CRM CASES", subPanels, formAllowed));
+        sectorManagerPanels.add(createPanelComponent("NEW SALESREP CASES", subPanels, formAllowed));
 
-        buildContentWithComponents(C);
+        buildContentWithComponents(sectorManagerPanels);
     }
 
     private void createGeneralManagerPanel() {
