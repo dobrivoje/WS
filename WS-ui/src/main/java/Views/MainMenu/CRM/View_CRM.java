@@ -199,7 +199,7 @@ public class View_CRM extends View_Dashboard {
                 List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, true, false, from, to);
 
                 if (!L.isEmpty()) {
-                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", S, false, true, formAllowed, from, to);
+                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", S, true, false, formAllowed, from, to);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }

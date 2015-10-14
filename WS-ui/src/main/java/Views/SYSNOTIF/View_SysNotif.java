@@ -104,8 +104,7 @@ public class View_SysNotif extends View_Dashboard {
         try {
 
             for (Salesman S1 : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
-                        "", S1, false, true, formAllowed, dateInterval.getTo(), dateInterval.getTo());
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S1, true, false, formAllowed);
 
                 subPanels.add(new Panel(S1.toString(), csct));
             }

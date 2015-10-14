@@ -172,13 +172,23 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed) {
-        return dbh.getCRM_CompletedCases(salesman, finished, caseAggreed);
+    public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean finished, boolean caseAggreed) {
+        return dbh.getCRM_CasesStats(salesman, finished, caseAggreed);
     }
 
     @Override
-    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        return dbh.getCRM_CompletedCases(dateFrom, dateTo, finished, saleAgreeded);
+    public List<CrmCase> getCRM_CasesStats(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
+        return dbh.getCRM_CasesStats(dateFrom, dateTo, finished, saleAgreeded);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean finished, boolean saleAgreeded, Date from, Date to) {
+        return dbh.getCRM_CasesStats(salesman, from, to, finished, saleAgreeded);
+    }
+
+    @Override
+    public List<CrmCase> getCRM_CasesStats(BussinesLine bussinesLine, boolean finished, boolean saleAgreeded) {
+        return dbh.getCRM_CasesStats(bussinesLine, finished, saleAgreeded);
     }
 
     @Override

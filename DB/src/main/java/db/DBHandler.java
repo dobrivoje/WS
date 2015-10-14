@@ -1357,7 +1357,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmCase> getCRM_CompletedCases(Salesman s, boolean finished, boolean saleAgreeded) {
+    public List<CrmCase> getCRM_CasesStats(Salesman s, boolean finished, boolean saleAgreeded) {
         try {
             return getEm().createNamedQuery("CrmCase.SalesmanCompletedCases")
                     .setParameter("salesman", s)
@@ -1369,7 +1369,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
+    public List<CrmCase> getCRM_CasesStats(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
         Dates d = new Dates();
         Date from, to;
 
@@ -1388,6 +1388,40 @@ public class DBHandler {
         }
     }
 
+    public List<CrmCase> getCRM_CasesStats(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
+        Dates d = new Dates();
+        Date from, to;
+
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
+
+        try {
+            return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
+                    .setParameter("IDS", salesman)
+                    .setParameter("startDate", from)
+                    .setParameter("endDate", to)
+                    .setParameter("finished", finished)
+                    .setParameter("saleAgreeded", saleAgreeded)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    
+    public List<CrmCase> getCRM_CasesStats(BussinesLine bussinesLine, boolean finished, boolean saleAgreeded) {
+        try {
+            return getEm().createNamedQuery("CrmCase.BussinesLine_Cases")
+                    .setParameter("IDBL", bussinesLine)
+                    .setParameter("finished", finished)
+                    .setParameter("saleAgreeded", saleAgreeded)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    
     public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.findByCustomer")
@@ -1429,10 +1463,10 @@ public class DBHandler {
         to = dateTo == null ? d.getTo() : dateTo;
 
         try {
-            return getEm().createNamedQuery("RelSALE.Salesman_Sale_Cases")
+            return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
                     .setParameter("IDS", salesman)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
+                    .setParameter("startDate", from)
+                    .setParameter("endDate", to)
                     .setParameter("ammount", ammount)
                     .setParameter("finished", finished)
                     .setParameter("saleAgreeded", saleAgreeded)

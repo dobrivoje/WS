@@ -67,7 +67,17 @@ import javax.xml.bind.annotation.XmlTransient;
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :salesman AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded"),
 
             @NamedQuery(name = "CrmCase.SaleAgreededCases",
-                    query = "SELECT c FROM CrmCase c WHERE c.finished = :finished AND c.saleAgreeded = :saleAgreeded AND c.startDate >= :startDate AND c.endDate <= :endDate")
+                    query = "SELECT c FROM CrmCase c WHERE c.finished = :finished AND c.saleAgreeded = :saleAgreeded AND c.startDate >= :startDate AND c.endDate <= :endDate"),
+
+            @NamedQuery(name = "CrmCase.Salesrep_Cases",
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS "
+                    + "AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded "
+                    + "AND c.startDate >= :startDate AND c.endDate <= :endDate"),
+
+            @NamedQuery(name = "CrmCase.BussinesLine_Cases",
+                    query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS.fkIdbl = :IDBL "
+                    + "AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded ")
+
         }
 )
 

@@ -21,6 +21,7 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
 
     protected Date dateFrom;
     protected Date dateTo;
+    protected boolean caseFinished;
 
     public CustomObjectTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, treeItems);
@@ -32,6 +33,14 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
 
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+
+        init();
+    }
+
+    public CustomObjectTree(String caption, List treeItems, boolean caseFinished) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, treeItems);
+
+        this.caseFinished = caseFinished;
 
         init();
     }

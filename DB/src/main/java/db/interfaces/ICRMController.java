@@ -135,16 +135,20 @@ public interface ICRMController {
     List<CrmStatus> getCRM_Statuses(String... type);
 
     /**
-     * Svi CRM slučajevi za prodavca koji su završeni<br>
-     * i gde je ugovor o prodaji sklopljen !
+     * Svi CRM slučajevi za prodavca koji su završeni ili ne<br>
+     * i gde je ugovor o prodaji sklopljen ili ne!
      *
      * @param salesman
-     * @param finished
-     * @param caseAggreed Ako je true, Ugovor zaključen, <br>
+     * @param caseFinished
+     * @param saleAgreeded Ako je true, Ugovor zaključen, <br>
      * a ako je false - CRM aktivan - pregovori u toku.
      * @return Lista sCRM slučajeva.
      */
-    public List<CrmCase> getCRM_CompletedCases(Salesman salesman, boolean finished, boolean caseAggreed);
+    public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean caseFinished, boolean saleAgreeded);
+
+    public List<CrmCase> getCRM_CasesStats(BussinesLine bussinesLine, boolean caseFinished, boolean saleAgreeded);
+    
+    public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean caseFinished, boolean saleAgreeded, Date from, Date to);
 
     /**
      * Svi CRM slučajevi za prodavca koji su završeni, i gde je ugovor o prodaji
@@ -156,7 +160,7 @@ public interface ICRMController {
      * @param saleAgreeded true: Prodaja zaključena.
      * @return
      */
-    public List<CrmCase> getCRM_CompletedCases(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded);
+    public List<CrmCase> getCRM_CasesStats(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="data to create, and update">
