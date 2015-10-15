@@ -87,6 +87,11 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
+    public List<CrmProcess> getCRM_Processes(CrmCase crmCase) {
+        return dbh.getCRMProcesses(crmCase);
+    }
+
+    @Override
     public List<CrmProcess> getCRM_Processes(Customer customer, boolean finished, Date dateFrom, Date dateTo) {
         return dbh.getCRM_CustomerProcessesByDate(customer, finished, dateFrom, dateTo);
     }

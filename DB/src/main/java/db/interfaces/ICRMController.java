@@ -96,6 +96,8 @@ public interface ICRMController {
 
     List<Customer> getCRM_Customers(Salesman salesman);
 
+    List<CrmProcess> getCRM_Processes(CrmCase crmCase);
+
     List<CrmProcess> getCRM_Processes(CrmCase crmCase, boolean finished);
 
     List<CrmProcess> getCRM_Processes(Customer customer, boolean finished, Date dateFrom, Date dateTo);
@@ -147,7 +149,7 @@ public interface ICRMController {
     public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean caseFinished, boolean saleAgreeded);
 
     public List<CrmCase> getCRM_CasesStats(BussinesLine bussinesLine, boolean caseFinished, boolean saleAgreeded);
-    
+
     public List<CrmCase> getCRM_CasesStats(Salesman salesman, boolean caseFinished, boolean saleAgreeded, Date from, Date to);
 
     /**

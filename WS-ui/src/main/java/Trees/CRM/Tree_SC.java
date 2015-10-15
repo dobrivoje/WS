@@ -117,7 +117,7 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
                             try {
                                 for (CrmCase activeCRMCase : openCustomerCases) {
                                     Tree_CRMSingleCase csct = new Tree_CRMSingleCase(
-                                            "Case by " + activeCRMCase.getFK_IDRSC().getFK_IDS().toString(),
+                                            activeCRMCase.getFK_IDRSC().getFK_IDS().toString(),
                                             activeCRMCase);
                                     
                                     csTrees.add(csct);

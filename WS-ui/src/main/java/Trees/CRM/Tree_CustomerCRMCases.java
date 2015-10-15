@@ -82,9 +82,9 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -136,7 +136,7 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
     @Override
     protected void createSubNodes(CrmCase c) {
         if (!c.getFinished()) {
-            createNodeItems(c, DS.getCRMController().getCRM_Processes(c, false));
+            createNodeItems(c, DS.getCRMController().getCRM_Processes(c));
         }
     }
 }

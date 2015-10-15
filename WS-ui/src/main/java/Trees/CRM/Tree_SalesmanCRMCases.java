@@ -85,9 +85,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -172,7 +172,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
-                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, formAllowed);
+                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, true, false, formAllowed, startDate, endDate);
                                 crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);
 
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
@@ -184,11 +184,11 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="Open form">
                         Tree_CRMSingleCase csct;
 
-                        for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
+                        for (CrmCase ac : DS.getCRMController().getCRM_CasesStats(salesman, true, false, startDate, endDate)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -273,7 +273,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
-                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, formAllowed);
+                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("", salesman, true, false, formAllowed);
                                 crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);
 
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
@@ -285,11 +285,11 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="Open form">
                         Tree_CRMSingleCase csct;
 
-                        for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
+                        for (CrmCase ac : DS.getCRMController().getCRM_CasesStats(salesman, true, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -388,9 +388,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase("Case by " + this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -440,6 +440,6 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
     @Override
     protected void createSubNodes(CrmCase cc) {
-        createNodeItems(cc, DS.getCRMController().getCRM_Processes(cc, caseFinished));
+        createNodeItems(cc, DS.getCRMController().getCRM_Processes(cc));
     }
 }

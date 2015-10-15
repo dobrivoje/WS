@@ -49,10 +49,12 @@ public class Dates {
         setMonthsBF(months);
     }
 
-    /* <pre>
-     * @param months Broj meseci - podešavanje intervala. <p>
-     * months > 0 : Od danas do poslednjeg dana za <u>months</u> unapred. <br>
-     * months < 0 : Od 1. dana za <u>months</u> unazad, do danas. <br>
+    /**
+     * @param months Broj meseci - podešavanje intervala.<br>
+     * months &lt 0 : Interval je : Od 1. dana za <u>months</u> unazad, do
+     * danas. <br>
+     * months > 0 : Interval je : Od danas do poslednjeg dana za <u>months</u>
+     * unapred. <br>
      */
     public synchronized void setMonthsBackForth(int months) {
         setMonthsBF(months);

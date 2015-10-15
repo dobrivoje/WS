@@ -1186,6 +1186,16 @@ public class DBHandler {
         }
     }
 
+    public List<CrmProcess> getCRMProcesses(CrmCase crmCase) {
+        try {
+            return getEm().createNamedQuery("CrmProcess.ByCRMCase")
+                    .setParameter("FK_IDCA", crmCase)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public void updateCRM_Process(CrmProcess crmProcess) throws Exception {
         try {
             getEm().getTransaction().begin();
@@ -1408,7 +1418,6 @@ public class DBHandler {
         }
     }
 
-    
     public List<CrmCase> getCRM_CasesStats(BussinesLine bussinesLine, boolean finished, boolean saleAgreeded) {
         try {
             return getEm().createNamedQuery("CrmCase.BussinesLine_Cases")
@@ -1421,7 +1430,6 @@ public class DBHandler {
         }
     }
 
-    
     public List<CrmCase> getCRM_Cases(Customer customer, boolean caseFinished) {
         try {
             return getEm().createNamedQuery("CrmCase.findByCustomer")
