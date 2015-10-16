@@ -31,6 +31,8 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
     private Form_CRUD2 crudForm;
     private Salesman salesman;
+    private CrmProcess crmProcess;
+    private CrmCase crmCase;
 
     public Tree_SalesmanCRMCases(String caption, Salesman salesman, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         this(caption, salesman, false, formAllowed);
@@ -50,7 +52,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -66,7 +68,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
-                                CrmProcess crmProcess = (CrmProcess) event.getItemId();
+                                crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -85,9 +87,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac);
                             }
 
                             propTrees.add(csct);
@@ -99,7 +101,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                             ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
 
-                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "CRM Case - " + salesman : "No Active CRM Case - " + salesman, propPanel);
 
                         if (readOnly) {
                             getUI().addWindow(
@@ -151,7 +153,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -167,7 +169,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
-                                CrmProcess crmProcess = (CrmProcess) event.getItemId();
+                                crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -186,9 +188,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_CasesStats(salesman, true, false, startDate, endDate)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac);
                             }
 
                             propTrees.add(csct);
@@ -200,7 +202,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                             ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
 
-                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "CRM Case - " + salesman : "No Active CRM Case - " + salesman, propPanel);
 
                         if (readOnly) {
                             getUI().addWindow(
@@ -252,7 +254,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -268,7 +270,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
-                                CrmProcess crmProcess = (CrmProcess) event.getItemId();
+                                crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -287,9 +289,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_CasesStats(salesman, true, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac);
                             }
 
                             propTrees.add(csct);
@@ -301,7 +303,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                             ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
 
-                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "CRM Case - " + salesman : "No Active CRM Case - " + salesman, propPanel);
 
                         if (readOnly) {
                             getUI().addWindow(
@@ -353,7 +355,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -369,7 +371,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
-                                CrmProcess crmProcess = (CrmProcess) event.getItemId();
+                                crmProcess = (CrmProcess) event.getItemId();
                                 this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
@@ -388,9 +390,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDC().getName(), ac);
                             }
 
                             propTrees.add(csct);
@@ -402,7 +404,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                             ((Tree_CRMSingleCase) ct).refreshVisualContainer();
                         });
 
-                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "CRM Case - " + salesman : "No Active CRM Case - " + salesman, propPanel);
 
                         if (readOnly) {
                             getUI().addWindow(

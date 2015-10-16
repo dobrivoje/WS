@@ -52,6 +52,7 @@ public class View_SysNotif extends View_Dashboard {
     private void createSalesmanView(boolean formEditAllowed) {
         List<Component> C = new ArrayList();
 
+        //<editor-fold defaultstate="collapsed" desc="My Active CRM Cases">
         try {
             Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
@@ -59,19 +60,19 @@ public class View_SysNotif extends View_Dashboard {
         }
 
         C.add(createPanelComponent("My Active CRM Cases", subPanels, formEditAllowed));
+        //</editor-fold>
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //<editor-fold defaultstate="collapsed" desc="My Realised Sales">
         try {
             Tree_SalesmanSales csct = new Tree_SalesmanSales("", S, null, null, formEditAllowed);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
-        C.add(createPanelComponent("My Sales", subPanels, formEditAllowed));
+        C.add(createPanelComponent("My Realised Sales", subPanels, formEditAllowed));
+        //</editor-fold>
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         buildContentWithComponents(C);
-
     }
 
     private void createAdminView() {

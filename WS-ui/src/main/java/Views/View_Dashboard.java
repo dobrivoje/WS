@@ -283,6 +283,20 @@ public abstract class View_Dashboard extends Panel implements View {
         toggleMaximized(newComponent, viewMaximized);
     }
 
+    protected MenuBar.Command getCommand(String panelHeader, int panelIndex, List<Panel> panels, boolean formAllowed, Map<String, MenuBar.Command> panelCommands, int monthsBack) {
+        return (MenuBar.MenuItem selectedItem) -> {
+            dateInterval.setMonthsBackForth(monthsBack);
+
+            updateUIPanel(panelIndex,
+                    createPanelComponent(
+                            panelHeader,
+                            panels,
+                            formAllowed,
+                            panelCommands)
+            );
+        };
+    }
+
     protected void openNotificationsPopup(final Button.ClickEvent event) {
         VerticalLayout notificationsLayout = new VerticalLayout();
         notificationsLayout.setMargin(true);
