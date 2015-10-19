@@ -1,7 +1,7 @@
 package Views.MainMenu.CRM;
 
+import Dialogs.CustomSearchData;
 import Dialogs.SelectorDialog;
-import Forms.CRM.Form_CRMCase;
 import Trees.CRM.SALES.Tree_SalesmanSales;
 import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.Tree_SalesmanCRMCases;
@@ -124,15 +124,15 @@ public class View_CRM extends View_Dashboard {
                 );
             }
         });
+        //</editor-fold>
 
+        //<editor-fold defaultstate="collapsed" desc="Custom Search Dialog">
         panelCommands.put("Test - Custom Dialog", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             getUI().addWindow(
-                    new SelectorDialog(
-                            "Selector Dialog",
-                            new Form_CRMCase(),
-                            "img/crm/crmCovekILaptop.png",
-                            "Find", null, true)
-            );
+                    new SelectorDialog(MyUI.get().getLoggedSalesman(), (CustomSearchData csd) -> {
+                        System.err.println("podatak : " + csd.toString());
+                    }));
+
         });
         //</editor-fold>
 

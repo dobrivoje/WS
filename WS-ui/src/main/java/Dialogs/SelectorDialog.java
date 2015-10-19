@@ -6,8 +6,9 @@
 package Dialogs;
 
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Layout;
+import db.ent.Salesman;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
+import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 
 /**
  * Dialog for custom filtering options.
@@ -18,16 +19,32 @@ public class SelectorDialog extends WindowForm3 {
 
     /**
      *
-     * @param caption Form caption
-     * @param imageLocation Left image in the frame
-     * @param actionButtonCaption Caption of the action button
-     * @param formLayout Form with defined fields, to put inside this frame
-     * @param imageDefaultSize True for default image size
+     * @param csd
+     * @param salesman
      * @param externalButtonClickListener Listener to run upon calling action
      * button
      */
-    public SelectorDialog(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
-        super(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imageDefaultSize);
+    public SelectorDialog(CustomSearchData csd, Salesman salesman, Button.ClickListener externalButtonClickListener) {
+        super("Custom Search Dialog",
+                new Form_CustomSearch(
+                        csd,
+                        salesman,
+                        ""),
+                "img/crm/cbt.png",
+                "Search",
+                externalButtonClickListener,
+                true);
+    }
+
+    public SelectorDialog(Salesman salesman, IUpdateData<CustomSearchData> iUpdateData) {
+        super("Custom Search Dialog",
+                new Form_CustomSearch(
+                        salesman,
+                        iUpdateData),
+                "img/crm/cbt.png",
+                "Search",
+                null,
+                true);
     }
 
 }
