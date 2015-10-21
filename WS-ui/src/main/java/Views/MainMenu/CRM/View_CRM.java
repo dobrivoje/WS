@@ -93,11 +93,12 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
-        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
+        //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
+        panelCommands.put("3. Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                dateInterval.setMonthsBackForth(-2);
+                dateInterval.setFrom(1, 6, 2015);
+                dateInterval.setTo(30, 6, 2015);
 
                 updateUIPanel(0,
                         createPanelComponent(
@@ -110,12 +111,11 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
-        panelCommands.put("3. Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
+        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
+        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                dateInterval.setFrom(1, 6, 2015);
-                dateInterval.setTo(30, 6, 2015);
+                dateInterval.setMonthsBackForth(-2);
 
                 updateUIPanel(0,
                         createPanelComponent(

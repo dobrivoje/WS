@@ -1,5 +1,6 @@
 package Dialogs;
 
+import db.ent.Customer;
 import db.ent.Product;
 import db.ent.Salesman;
 import java.io.Serializable;
@@ -28,8 +29,14 @@ public class CustomSearchData implements Serializable {
     private Date endDate;
     @Column(name = "Salesman")
     private Salesman salesman;
+    @Column(name = "Customer")
+    private Customer customer;
     @Column(name = "Product")
     private Product product;
+    @Column(name = "Amount")
+    private Integer amount;
+    @Column(name = "CaseFinished")
+    private Boolean caseFinished;
     @Column(name = "SaleAgreeded")
     private Boolean saleAgreeded;
 
@@ -77,6 +84,30 @@ public class CustomSearchData implements Serializable {
         this.salesman = salesman;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Boolean getCaseFinished() {
+        return caseFinished;
+    }
+
+    public void setCaseFinished(Boolean caseFinished) {
+        this.caseFinished = caseFinished;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -107,15 +138,6 @@ public class CustomSearchData implements Serializable {
         }
         CustomSearchData other = (CustomSearchData) object;
         return !((this.idca == null && other.idca != null) || (this.idca != null && !this.idca.equals(other.idca)));
-    }
-
-    @Override
-    public String toString() {
-        return "[" + startDate != null ? startDate + "], " : "]"
-                + "[" + endDate != null ? endDate + "], " : "]"
-                        + "[" + salesman != null ? salesman.toString() + "], " : "]"
-                                + "[" + product != null ? product.toString() + "], " : "]"
-                                        + "[" + saleAgreeded != null ? saleAgreeded.toString() + "], " : "]";
     }
 
 }
