@@ -1,6 +1,7 @@
 package Views.MainMenu.CRM;
 
 import Dialogs.CustomSearchData;
+import Dialogs.Form_CustomSearch;
 import Dialogs.SelectorDialog;
 import Trees.CRM.SALES.Tree_SalesmanSales;
 import Trees.CRM.Tree_CustomerCRMCases;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
+import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import ws.MyUI;
 import static ws.MyUI.DS;
 
@@ -78,7 +80,7 @@ public class View_CRM extends View_Dashboard {
         final String panelHeader = "Realized Sales";
         final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
 
-        panelCommands.put("Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+        panelCommands.put("1. Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
 
             updateUIPanel(0,
@@ -92,7 +94,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
-        panelCommands.put("Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
+        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setMonthsBackForth(-2);
@@ -109,7 +111,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
-        panelCommands.put("Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
+        panelCommands.put("3. Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setFrom(1, 6, 2015);
@@ -127,12 +129,24 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Custom Search Dialog">
-        panelCommands.put("Test - Custom Dialog", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
-            getUI().addWindow(
-                    new SelectorDialog(MyUI.get().getLoggedSalesman(), (CustomSearchData csd) -> {
-                        System.err.println("podatak : " + csd.toString());
-                    }));
+        panelCommands.put("4. Advanced Search", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            Form_CustomSearch FCS = new Form_CustomSearch("akcija");
+            SelectorDialog SD = new SelectorDialog(FCS);
 
+            FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
+                System.err.println("test33 : "
+                        + CSD.getStartDate() + ", "
+                        + CSD.getEndDate() + ", "
+                        + CSD.getSalesman().toString() + ", "
+                        + CSD.getProduct().toString() + ", "
+                        + CSD.getSaleAgreeded()
+                );
+
+                System.err.println("test34 toString(): " + CSD.toString());
+
+            });
+
+            getUI().addWindow(SD);
         });
         //</editor-fold>
 

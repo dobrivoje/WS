@@ -26,6 +26,8 @@ import static ws.MyUI.DS;
  */
 public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
+    private IUpdateData iUpdateDataListener;
+
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("startDate")
     private final DateField startDate = new DateField("Case Start Date");
@@ -56,13 +58,12 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         salesman.focus();
     }
 
-    public Form_CustomSearch(CustomSearchData customSearchData, Salesman salesman, String actionButtonCaption) {
+    public Form_CustomSearch(String actionButtonCaption /*,IUpdateData<CustomSearchData> iUpdateData */) {
         this();
 
         this.defaultCRUDButtonOnForm = false;
 
-        CustomSearchData cc = customSearchData == null
-                ? new CustomSearchData(null, null, salesman, null, false) : customSearchData;
+        CustomSearchData cc = new CustomSearchData();
         setFieldsFromBean(cc);
 
         btnCaption = actionButtonCaption;
@@ -72,18 +73,24 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
         clickListener = (Button.ClickEvent event) -> {
             setBeanFromFields(beanItem.getBean());
+
+            if (iUpdateDataListener != null) {
+                iUpdateDataListener.update(beanItem.getBean());
+            }
         };
 
         addBeansToForm();
     }
 
-    public Form_CustomSearch(Salesman salesman, IUpdateData<CustomSearchData> customSearch) {
-        this(null, salesman, "search 2");
-
-        if (customSearch != null) {
-            customSearch.update(beanItem.getBean());
-        }
+    //<editor-fold defaultstate="collapsed" desc="UpdateDataListener">
+    public IUpdateData getUpdateDataListener() {
+        return iUpdateDataListener;
     }
+
+    public void setUpdateDataListener(IUpdateData iUpdateDataListener) {
+        this.iUpdateDataListener = iUpdateDataListener;
+    }
+    //</editor-fold>
 
     @Override
     protected final void setBeanFromFields(CustomSearchData csd) {

@@ -128,7 +128,11 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        try {
+            return name;
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

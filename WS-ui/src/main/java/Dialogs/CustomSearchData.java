@@ -34,6 +34,7 @@ public class CustomSearchData implements Serializable {
     private Boolean saleAgreeded;
 
     public CustomSearchData() {
+        this(null, new Date(), new Salesman(), new Product(), false);
     }
 
     public CustomSearchData(Date startDate, Date endDate, Salesman salesman, Product product, Boolean saleAgreeded) {
@@ -85,7 +86,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Boolean getSaleAgreeded() {
-        return saleAgreeded;
+        return saleAgreeded == null ? false : saleAgreeded;
     }
 
     public void setSaleAgreeded(Boolean saleAgreeded) {
@@ -112,8 +113,9 @@ public class CustomSearchData implements Serializable {
     public String toString() {
         return "[" + startDate != null ? startDate + "], " : "]"
                 + "[" + endDate != null ? endDate + "], " : "]"
-                        + "[" + salesman != null ? salesman + "], " : "]"
-                                + "[" + product != null ? product + "], " : "]";
+                        + "[" + salesman != null ? salesman.toString() + "], " : "]"
+                                + "[" + product != null ? product.toString() + "], " : "]"
+                                        + "[" + saleAgreeded != null ? saleAgreeded.toString() + "], " : "]";
     }
 
 }
