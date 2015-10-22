@@ -11,6 +11,7 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.converter.StringToIntegerConverter;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -20,7 +21,6 @@ import com.vaadin.ui.TextField;
 import db.ent.Customer;
 import db.ent.Product;
 import db.ent.Salesman;
-import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import static ws.MyUI.DS;
 
 /**
@@ -28,8 +28,6 @@ import static ws.MyUI.DS;
  * @author root
  */
 public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
-
-    private IUpdateData iUpdateDataListener;
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("startDate")
@@ -66,21 +64,10 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        initFields();
         updateDynamicFields();
 
-        salesman.focus();
-    }
-
-    public Form_CustomSearch(String actionButtonCaption /*,IUpdateData<CustomSearchData> iUpdateData */) {
-        this();
-
-        this.defaultCRUDButtonOnForm = false;
-
         CustomSearchData cc = new CustomSearchData();
-        setFieldsFromBean(cc);
-
-        btnCaption = actionButtonCaption;
+        // setFieldsFromBean(cc);
 
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();
@@ -95,16 +82,6 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
         addBeansToForm();
     }
-
-    //<editor-fold defaultstate="collapsed" desc="UpdateDataListener">
-    public IUpdateData getUpdateDataListener() {
-        return iUpdateDataListener;
-    }
-
-    public void setUpdateDataListener(IUpdateData iUpdateDataListener) {
-        this.iUpdateDataListener = iUpdateDataListener;
-    }
-    //</editor-fold>
 
     @Override
     protected final void setBeanFromFields(CustomSearchData csd) {
@@ -130,17 +107,23 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         salesman.setValue(cc.getSalesman());
         customer.setValue(cc.getCustomer());
         product.setValue(cc.getProduct());
+        
+        try {
+            amount.setValue(Integer.toString(cc.getAmount()));
+        } catch (Exception e) {
+        }
+        
         caseFinished.setValue(cc.getCaseFinished());
         saleAgreeded.setValue(cc.getSaleAgreeded());
     }
 
     @Override
     protected final void initFields() {
-        salesman.setWidth(250, Unit.PIXELS);
-        product.setWidth(250, Unit.PIXELS);
-
         caseFinished.setEnabled(true);
         saleAgreeded.setEnabled(false);
+
+        amount.setConverter(new StringToIntegerConverter());
+        amount.setConversionError("Must be a natural number !");
     }
 
     @Override
@@ -153,6 +136,11 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         caseFinished.addValueChangeListener((Property.ValueChangeEvent event) -> {
             saleAgreeded.setEnabled(caseFinished.getValue() == null
                     ? false : caseFinished.getValue()
+            );
+
+            saleAgreeded.setValue(
+                    caseFinished.getValue() == null || caseFinished.getValue() == false
+                            ? false : saleAgreeded.getValue()
             );
         });
     }

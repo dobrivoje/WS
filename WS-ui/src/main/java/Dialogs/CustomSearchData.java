@@ -93,7 +93,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Integer getAmount() {
-        return amount;
+        return amount == null ? 0 : amount;
     }
 
     public void setAmount(Integer amount) {

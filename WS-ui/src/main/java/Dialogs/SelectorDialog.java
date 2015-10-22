@@ -5,6 +5,8 @@
  */
 package Dialogs;
 
+import Forms.Form_CRUD2;
+import com.vaadin.ui.Button;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 
 /**
@@ -18,13 +20,17 @@ public class SelectorDialog extends WindowForm3 {
      *
      * @param formCustomSearch
      */
-    public SelectorDialog(Form_CustomSearch formCustomSearch) {
+    public SelectorDialog(Form_CRUD2 formCustomSearch) {
         super("Advanced Search Dialog",
                 formCustomSearch,
                 "img/crm/cbt.png",
                 "Search",
                 formCustomSearch.getClickListener(),
                 false);
+
+        actionButton.addClickListener((Button.ClickEvent event) -> {
+            closeButton.click();
+        });
     }
 
 }

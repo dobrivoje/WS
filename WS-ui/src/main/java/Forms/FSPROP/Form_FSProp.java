@@ -230,9 +230,9 @@ public class Form_FSProp extends Form_CRUD2<FsProp> {
 
         // postavi validatore
         noOfTanks.setConverter(new StringToIntegerConverter());
-        noOfTanks.setConversionError("Must be natural number !");
+        noOfTanks.setConversionError("Must be a natural number !");
         truckCapable.setConverter(new StringToIntegerConverter());
-        truckCapable.setConversionError("Must be natural number !");
+        truckCapable.setConversionError("Must be a natural number !");
 
         // sprečiti korisnika da menja vrednost, jer pogrešne vrednosti ovog polja
         // mogu napraviti problem sa prikazom u formi !
@@ -241,6 +241,6 @@ public class Form_FSProp extends Form_CRUD2<FsProp> {
 
     @Override
     protected void setRequiredFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

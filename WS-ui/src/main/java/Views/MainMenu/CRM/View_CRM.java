@@ -94,6 +94,23 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
+        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                dateInterval.setMonthsBackForth(-2);
+
+                updateUIPanel(0,
+                        createPanelComponent(
+                                panelHeader,
+                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                                formAllowed,
+                                panelCommands)
+                );
+            }
+        });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
         panelCommands.put("3. Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
@@ -111,26 +128,9 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
-        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                dateInterval.setMonthsBackForth(-2);
-
-                updateUIPanel(0,
-                        createPanelComponent(
-                                panelHeader,
-                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
-                                formAllowed,
-                                panelCommands)
-                );
-            }
-        });
-        //</editor-fold>
-
         //<editor-fold defaultstate="collapsed" desc="Custom Search Dialog">
         panelCommands.put("4. Advanced Search", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
-            Form_CustomSearch FCS = new Form_CustomSearch("akcija");
+            Form_CustomSearch FCS = new Form_CustomSearch();
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
@@ -138,7 +138,10 @@ public class View_CRM extends View_Dashboard {
                         + CSD.getStartDate() + ", "
                         + CSD.getEndDate() + ", "
                         + CSD.getSalesman().toString() + ", "
+                        + CSD.getCustomer().toString() + ", "
                         + CSD.getProduct().toString() + ", "
+                        + CSD.getAmount() + ", "
+                        + CSD.getCaseFinished() + ", "
                         + CSD.getSaleAgreeded()
                 );
 
