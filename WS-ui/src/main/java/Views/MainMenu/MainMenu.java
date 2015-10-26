@@ -61,6 +61,8 @@ import Views.MainMenu.FSDM.View_FS;
 import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
+import static enums.REPORTS.REPORT1;
+import gen.ReportGenerator1;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -263,6 +265,18 @@ public class MainMenu extends CssLayout {
                     String un = MyUI.get().getAccessControl().getPrincipal();
 
                     switch ((MenuDefinitions) (event.getItemId())) {
+                        case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
+
+                            try {
+                                new ReportGenerator1().generateReport(REPORT1);
+
+                                Logger.getLogger("Views.MainMenu.MainMenu.java")
+                                        .log(Level.INFO, "Jasper uspe\u0161no izvr\u0161en : {0}", (new Date()).toString());
+                            } catch (Exception ex) {
+                                Logger.getLogger("Views.MainMenu.MainMenu.java / public void createViewTree(final String name)").log(Level.WARNING, ex.getMessage());
+                            }
+
+                            break;
                         case SYS_NOTIF_BOARD:
                             navigator.navigateTo(View_SysNotif.class.getSimpleName());
                             break;

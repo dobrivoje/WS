@@ -59,7 +59,7 @@ public class WindowFormProp extends Window {
         content.setSpacing(true);
 
         this.externalButtonClickListener = externalButtonClickListener;
-        closeButton = new Button("Close Window", (Button.ClickEvent event) -> {
+        closeButton = new Button("Close", (Button.ClickEvent event) -> {
             close();
         });
         closeButton.setStyleName(ValoTheme.BUTTON_DANGER);

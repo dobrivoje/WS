@@ -140,7 +140,7 @@ public class View_CRM extends View_Dashboard {
                         + CSD.getSalesman().toString() + ", "
                         + CSD.getCustomer().toString() + ", "
                         + CSD.getProduct().toString() + ", "
-                        + CSD.getAmount() + ", "
+                        + CSD.getAmount().toString() + ", "
                         + CSD.getCaseFinished() + ", "
                         + CSD.getSaleAgreeded()
                 );

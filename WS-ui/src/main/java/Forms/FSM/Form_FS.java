@@ -1,6 +1,7 @@
 package Forms.FSM;
 
 import Forms.Form_CRUD2;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -18,7 +19,7 @@ import static ws.MyUI.DS;
 
 public class Form_FS extends Form_CRUD2<Fuelstation> {
 
-    private final BeanItemContainer<City> bicc = new BeanItemContainer(City.class,
+    private final BeanItemContainer<City> cityBC = new BeanItemContainer(City.class,
             DS.getCityController().getAll());
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
@@ -26,7 +27,7 @@ public class Form_FS extends Form_CRUD2<Fuelstation> {
     private final TextField name = new TextField("Fuelstation Name");
 
     @PropertyId("FK_City")
-    private final ComboBox city = new ComboBox("City", bicc);
+    private final ComboBox city = new ComboBox("City", cityBC);
 
     @PropertyId("address")
     private final TextField address = new TextField("Address");
@@ -130,8 +131,27 @@ public class Form_FS extends Form_CRUD2<Fuelstation> {
     }
 
     @Override
-    public void setFieldsFromBean(Fuelstation f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setFieldsFromBean(Fuelstation FSBean) {
+        try {
+            name.setValue(FSBean.getName());
+        } catch (Property.ReadOnlyException roe) {
+        }
+
+        try {
+            address.setValue(FSBean.getAddress());
+        } catch (Property.ReadOnlyException roe) {
+        }
+
+        try {
+            city.setValue(FSBean.getFK_City());
+        } catch (Property.ReadOnlyException roe) {
+        }
+
+        try {
+            coordinates.setValue(FSBean.getCoordinates());
+        } catch (Property.ReadOnlyException roe) {
+        }
+
     }
 
     @Override
@@ -141,7 +161,7 @@ public class Form_FS extends Form_CRUD2<Fuelstation> {
 
     @Override
     protected void initFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        setRequiredFields();
     }
 
     @Override

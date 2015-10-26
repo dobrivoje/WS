@@ -11,7 +11,6 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.converter.StringToIntegerConverter;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -64,10 +63,11 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
+        initFields();
         updateDynamicFields();
 
         CustomSearchData cc = new CustomSearchData();
-        // setFieldsFromBean(cc);
+        //setFieldsFromBean(cc);
 
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();
@@ -107,28 +107,26 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         salesman.setValue(cc.getSalesman());
         customer.setValue(cc.getCustomer());
         product.setValue(cc.getProduct());
-        
+
         try {
             amount.setValue(Integer.toString(cc.getAmount()));
         } catch (Exception e) {
         }
-        
+
         caseFinished.setValue(cc.getCaseFinished());
         saleAgreeded.setValue(cc.getSaleAgreeded());
     }
 
     @Override
     protected final void initFields() {
-        caseFinished.setEnabled(true);
-        saleAgreeded.setEnabled(false);
-
-        amount.setConverter(new StringToIntegerConverter());
-        amount.setConversionError("Must be a natural number !");
+        salesman.focus();
+        setRequiredFields();
     }
 
     @Override
     protected void setRequiredFields() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        caseFinished.setEnabled(true);
+        saleAgreeded.setEnabled(false);
     }
 
     @Override

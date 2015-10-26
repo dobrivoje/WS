@@ -48,8 +48,6 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
         initFields();
-
-        customer.focus();
     }
 
     public Form_FSOwner(boolean defaultCRUDButtonOnForm) {
@@ -240,6 +238,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
     @Override
     protected final void initFields() {
         customer.setWidth(250, Unit.PIXELS);
+        customer.focus();
 
         customer.setNullSelectionAllowed(false);
         fs.setNullSelectionAllowed(false);
