@@ -40,18 +40,38 @@ public class CustomSearchData implements Serializable {
     @Column(name = "SaleAgreeded")
     private Boolean saleAgreeded;
 
+    //<editor-fold defaultstate="collapsed" desc="constructors">
     public CustomSearchData() {
-        this(null, new Date(), new Salesman(), new Product(), false);
+        this(null, new Date(), new Salesman(), new Customer(),
+                new Product(), 0, false, false);
     }
 
-    public CustomSearchData(Date startDate, Date endDate, Salesman salesman, Product product, Boolean saleAgreeded) {
+    public CustomSearchData(CustomSearchData newCustomSearchData) {
+        this(newCustomSearchData.getStartDate(),
+                newCustomSearchData.getEndDate(),
+                newCustomSearchData.getSalesman(),
+                newCustomSearchData.getCustomer(),
+                newCustomSearchData.getProduct(),
+                newCustomSearchData.getAmount(),
+                newCustomSearchData.getCaseFinished(),
+                newCustomSearchData.getSaleAgreeded()
+        );
+    }
+
+    public CustomSearchData(Date startDate, Date endDate, Salesman salesman, Customer customer,
+            Product product, int amount, boolean caseFinished, boolean saleAgreeded) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.salesman = salesman;
+        this.customer = customer;
         this.product = product;
+        this.amount = amount;
+        this.caseFinished = caseFinished;
         this.saleAgreeded = saleAgreeded;
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="getters/setters">
     public Long getIdca() {
         return idca;
     }
@@ -123,6 +143,7 @@ public class CustomSearchData implements Serializable {
     public void setSaleAgreeded(Boolean saleAgreeded) {
         this.saleAgreeded = saleAgreeded;
     }
+    //</editor-fold>
 
     @Override
     public int hashCode() {
@@ -139,5 +160,79 @@ public class CustomSearchData implements Serializable {
         CustomSearchData other = (CustomSearchData) object;
         return !((this.idca == null && other.idca != null) || (this.idca != null && !this.idca.equals(other.idca)));
     }
+
+    //<editor-fold defaultstate="collapsed" desc="toString">
+    @Override
+    public String toString() {
+        String s = "";
+
+        try {
+            if (getStartDate() == null) {
+                s += "[] - ";
+            } else {
+                s += "[" + getStartDate() + "] - ";
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (getEndDate() == null) {
+                s += "[]";
+            } else {
+                s += "[" + getEndDate() + "], ";
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (!getSalesman().toString().trim().isEmpty()) {
+                s += "[" + getSalesman().toString() + "], ";
+            } else {
+                s += "[no salesman], ";
+            }
+        } catch (Exception e) {
+            s += "[no salesman], ";
+        }
+
+        try {
+            if (!getCustomer().toString().isEmpty()) {
+                s += "[" + getCustomer().toString() + "], ";
+            } else {
+                s += "[no customer], ";
+            }
+        } catch (Exception e) {
+            s += "[no customer], ";
+        }
+
+        try {
+            if (!getProduct().toString().isEmpty()) {
+                s += "[" + getProduct().toString() + "], ";
+            } else {
+                s += "[no product], ";
+            }
+        } catch (Exception e) {
+            s += "[no product], ";
+        }
+        try {
+            s += "[ammount: " + getAmount().toString() + "], ";
+        } catch (Exception e) {
+            s += "[no amount], ";
+        }
+
+        try {
+            s += "[finished ? : " + getCaseFinished() + "], ";
+        } catch (Exception e) {
+            s += "[finished ? : false ], ";
+        }
+
+        try {
+            s += "[agreed ? : " + getSaleAgreeded() + "], ";
+        } catch (Exception e) {
+            s += "[agreed ? : false ]";
+        }
+
+        return s;
+    }
+    //</editor-fold>
 
 }

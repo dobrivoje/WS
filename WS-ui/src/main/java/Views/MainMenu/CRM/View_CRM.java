@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import ws.MyUI;
@@ -134,19 +136,7 @@ public class View_CRM extends View_Dashboard {
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
-                System.err.println("test33 : "
-                        + CSD.getStartDate() + ", "
-                        + CSD.getEndDate() + ", "
-                        + CSD.getSalesman().toString() + ", "
-                        + CSD.getCustomer().toString() + ", "
-                        + CSD.getProduct().toString() + ", "
-                        + CSD.getAmount().toString() + ", "
-                        + CSD.getCaseFinished() + ", "
-                        + CSD.getSaleAgreeded()
-                );
-
-                System.err.println("test34 toString(): " + CSD.toString());
-
+                Logger.getLogger("CustomSearchData.toString() Test").log(Level.INFO, CSD.toString());
             });
 
             getUI().addWindow(SD);
