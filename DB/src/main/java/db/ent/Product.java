@@ -51,6 +51,8 @@ public class Product implements Serializable {
     private List<RelBLP> relBLPList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDP")
     private List<RelSALE> relSALEList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "FK_IDP")
+    private List<CrmProcess> crmProcessList;
 
     public Product() {
     }

@@ -52,6 +52,12 @@ public class CrmStatus implements Serializable {
     @Basic(optional = false)
     @Column(name = "Type")
     private String type;
+    @Column(name = "WithQuantity")
+    private boolean withQuantity;
+    @Column(name = "WithMoneyAmount")
+    private boolean withMoneyAmount;
+    @Column(name = "WithProduct")
+    private boolean withProduct;
     @OneToMany(mappedBy = "FK_IDCS")
     private List<CrmProcess> crmProcessList;
 
@@ -75,6 +81,14 @@ public class CrmStatus implements Serializable {
     public CrmStatus(String statusName, Integer daysForOverdue, String type) {
         this(statusName, daysForOverdue);
         this.type = type;
+    }
+
+    public CrmStatus(String statusName, Integer daysForOverdue, String type, boolean withAmount, boolean withMoneyAmount, boolean withProduct) {
+        this(statusName, daysForOverdue, type);
+
+        this.withQuantity = withAmount;
+        this.withMoneyAmount = withMoneyAmount;
+        this.withProduct = withProduct;
     }
 
     public Long getIdcs() {
@@ -107,6 +121,30 @@ public class CrmStatus implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isWithQuantity() {
+        return withQuantity;
+    }
+
+    public void setWithQuantity(boolean withQuantity) {
+        this.withQuantity = withQuantity;
+    }
+
+    public boolean isWithMoneyAmount() {
+        return withMoneyAmount;
+    }
+
+    public void setWithMoneyAmount(boolean withMoneyAmount) {
+        this.withMoneyAmount = withMoneyAmount;
+    }
+
+    public boolean isWithProduct() {
+        return withProduct;
+    }
+
+    public void setWithProduct(boolean withProduct) {
+        this.withProduct = withProduct;
     }
 
     @XmlTransient

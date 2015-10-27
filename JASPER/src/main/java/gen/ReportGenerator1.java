@@ -55,7 +55,7 @@ public class ReportGenerator1 {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="init">
-    public void init() throws Exception {
+    private void init() throws Exception {
         if (listParamNames.size() != listParamObjects.size() || listParamNames == null || listParamObjects == null) {
             throw new Exception("Error. Parameters not valid.");
         } else {
@@ -66,8 +66,17 @@ public class ReportGenerator1 {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="generateReport">
-    private void genReport() {
+    //<editor-fold defaultstate="collapsed" desc="generateReportWithPopUpDialog">
+    /**
+     * Just export a report to the PDF file (without jasper dialog appearing)
+     *
+     * @param jasperReportPath File path of the jasper report file.
+     * @param exportLocation Location where to store generated PDF report.
+     * @throws Exception
+     */
+    public void generateReportWithPopUpDialog(String jasperReportPath, String exportLocation) throws Exception {
+        is = this.getClass().getClassLoader().getResourceAsStream(jasperReportPath);
+        init();
 
         if (!entityManager.getTransaction().isActive()) {
             entityManager.getTransaction().begin();
@@ -80,8 +89,8 @@ public class ReportGenerator1 {
                     entityManager.unwrap(java.sql.Connection.class)
             );
 
-            // JasperViewer.setDefaultLookAndFeelDecorated(false);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "\\\\GLADIATOR\\Users\\Public\\Downloads\\report.pdf");
+            JasperViewer.setDefaultLookAndFeelDecorated(false);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, exportLocation);
             JasperViewer.viewReport(jasperPrint, false);
             entityManager.getTransaction().commit();
         } catch (NullPointerException | JRException e1) {
@@ -94,16 +103,40 @@ public class ReportGenerator1 {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Definicije Izveštaja.">
-    public void generateReport(String reportPath) throws Exception {
-        is = this.getClass().getClassLoader().getResourceAsStream(reportPath);
+    //<editor-fold defaultstate="collapsed" desc="export to PDF">
+    /**
+     * Just export a report to the PDF file (without jasper dialog appearing)
+     *
+     * @param jasperReportPath File path of the jasper report file.
+     * @param exportLocation Location where to store generated PDF report.
+     * @throws Exception
+     */
+    public void exportPDF(String jasperReportPath, String exportLocation) throws Exception {
+        is = this.getClass().getClassLoader().getResourceAsStream(jasperReportPath);
 
         init();
-        genReport();
-    }
 
-    public void generateReport(REPORTS reports) throws Exception {
-        generateReport(reports.toString());
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
+
+        try {
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    is,
+                    jHashMap,
+                    entityManager.unwrap(java.sql.Connection.class)
+            );
+
+            JasperExportManager.exportReportToPdfFile(jasperPrint, exportLocation);
+
+            entityManager.getTransaction().commit();
+        } catch (NullPointerException | JRException e1) {
+            if (!entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+        } catch (IllegalStateException e3) {
+            entityManager.getTransaction().rollback();
+        }
     }
 
     public OutputStream exportPDF(REPORTS report) throws Exception {
@@ -121,7 +154,7 @@ public class ReportGenerator1 {
                     jHashMap,
                     entityManager.unwrap(java.sql.Connection.class)
             );
-            
+
             JasperExportManager.exportReportToPdfStream(jasperPrint, os);
 
             entityManager.getTransaction().commit();

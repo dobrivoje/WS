@@ -254,198 +254,195 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(FS_DATA_MANAG_DOCS, false);
         //</editor-fold>
 
-        customersTree.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent event) {
-
-                // proveri da li je sesija aktivna, pa ako nije, izbaci poruku
-                try {
-                    // varijabla "un" se ovde samo koristi da bi se utvrdilo 
-                    // da li je accessControl aktivan.
-                    String un = MyUI.get().getAccessControl().getPrincipal();
-
-                    switch ((MenuDefinitions) (event.getItemId())) {
-                        case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
-
-                            try {
-                                new ReportGenerator1().generateReport(REPORT1);
-
-                                Logger.getLogger("Views.MainMenu.MainMenu.java")
-                                        .log(Level.INFO, "Jasper uspe\u0161no izvr\u0161en : {0}", (new Date()).toString());
-                            } catch (Exception ex) {
-                                Logger.getLogger("Views.MainMenu.MainMenu.java / public void createViewTree(final String name)").log(Level.WARNING, ex.getMessage());
-                            }
-
-                            break;
-                        case SYS_NOTIF_BOARD:
-                            navigator.navigateTo(View_SysNotif.class.getSimpleName());
-                            break;
-                        case CUST_DATA_MANAG_SEARCH_ENGINE:
+        customersTree.addItemClickListener((ItemClickEvent event) -> {
+            // proveri da li je sesija aktivna, pa ako nije, izbaci poruku
+            try {
+                // varijabla "un" se ovde samo koristi da bi se utvrdilo
+                // da li je accessControl aktivan.
+                String un = MyUI.get().getAccessControl().getPrincipal();
+                
+                switch ((MenuDefinitions) (event.getItemId())) {
+                    case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
+                        
+                        try {
+                            new ReportGenerator1().exportPDF(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
+                            // new ReportGenerator1().generateReportWithPopUpDialog(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
+                            
+                            Logger.getLogger("Views.MainMenu.MainMenu.java")
+                                    .log(Level.INFO, "Jasper uspe\u0161no izvr\u0161en : {0}", (new Date()).toString());
+                        } catch (Exception ex) {
+                            Logger.getLogger("Views.MainMenu.MainMenu.java / public void createViewTree(final String name)").log(Level.WARNING, ex.getMessage());
+                        }
+                        
+                        break;
+                    case SYS_NOTIF_BOARD:
+                        navigator.navigateTo(View_SysNotif.class.getSimpleName());
+                        break;
+                    case CUST_DATA_MANAG_SEARCH_ENGINE:
+                        navigator.navigateTo(View_Customers.class.getSimpleName());
+                        break;
+                    case CUST_DATA_MANAG_NEW_CUST:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                             navigator.navigateTo(View_Customers.class.getSimpleName());
-                            break;
-                        case CUST_DATA_MANAG_NEW_CUST:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
-                                navigator.navigateTo(View_Customers.class.getSimpleName());
-
-                                Form_Customer cf = new Form_Customer(false);
-
+                            
+                            Form_Customer cf = new Form_Customer(false);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    CUST_DATA_MANAG_NEW_CUST.toString(),
+                                    cf,
+                                    "img/crm/crm-user-3.png",
+                                    cf.getClickListener(),
+                                    236, 194)
+                            );
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case CUST_DATA_MANAG_NEW_CBT:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
+                            
+                            Form_RELCBT rcbtf = new Form_RELCBT(false);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    "New Customer Business Type",
+                                    rcbtf,
+                                    "img/crm/cbt.png",
+                                    rcbtf.getClickListener(),
+                                    236, 216)
+                            );
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                        
+                    case SALE_NEW:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    SALE_NEW.toString(),
+                                    csf,
+                                    "img/crm/sell.png",
+                                    csf.getClickListener(),
+                                    236, 196
+                            )
+                            );
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                        
+                    case CUST_CRM_MANAG:
+                        navigator.navigateTo(View_CRM.class.getSimpleName());
+                        break;
+                    case CRM_MANAG_NEW_CASE:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            
+                            Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), true);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    CRM_MANAG_NEW_CASE.toString(),
+                                    ccf,
+                                    "img/crm/crm-case-new.png",
+                                    ccf.getClickListener(),
+                                    300, 253)
+                            );
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case CRM_MANAG_NEW_PROCESS:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                            try {
+                                Form_CRMProcess cpf = new Form_CRMProcess(MyUI.get().getLoggedSalesman());
+                                
                                 getUI().addWindow(new WindowForm3(
-                                        CUST_DATA_MANAG_NEW_CUST.toString(),
-                                        cf,
-                                        "img/crm/crm-user-3.png",
-                                        cf.getClickListener(),
-                                        236, 194)
+                                        CRM_MANAG_NEW_PROCESS.toString(),
+                                        cpf,
+                                        "img/crm/crm5.png",
+                                        cpf.getClickListener(),
+                                        300, 225)
                                 );
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
+                                
+                            } catch (NullPointerException | IllegalArgumentException ex) {
                             }
-                            break;
-                        case CUST_DATA_MANAG_NEW_CBT:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
-
-                                Form_RELCBT rcbtf = new Form_RELCBT(false);
-
-                                getUI().addWindow(new WindowForm3(
-                                        "New Customer Business Type",
-                                        rcbtf,
-                                        "img/crm/cbt.png",
-                                        rcbtf.getClickListener(),
-                                        236, 216)
-                                );
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-
-                        case SALE_NEW:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
-
-                                getUI().addWindow(new WindowForm3(
-                                        SALE_NEW.toString(),
-                                        csf,
-                                        "img/crm/sell.png",
-                                        csf.getClickListener(),
-                                        236, 196
-                                )
-                                );
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-
-                        case CUST_CRM_MANAG:
-                            navigator.navigateTo(View_CRM.class.getSimpleName());
-                            break;
-                        case CRM_MANAG_NEW_CASE:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-
-                                Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), true);
-
-                                getUI().addWindow(new WindowForm3(
-                                        CRM_MANAG_NEW_CASE.toString(),
-                                        ccf,
-                                        "img/crm/crm-case-new.png",
-                                        ccf.getClickListener(),
-                                        300, 253)
-                                );
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case CRM_MANAG_NEW_PROCESS:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                                try {
-                                    Form_CRMProcess cpf = new Form_CRMProcess(MyUI.get().getLoggedSalesman());
-
-                                    getUI().addWindow(new WindowForm3(
-                                            CRM_MANAG_NEW_PROCESS.toString(),
-                                            cpf,
-                                            "img/crm/crm5.png",
-                                            cpf.getClickListener(),
-                                            300, 225)
-                                    );
-
-                                } catch (NullPointerException | IllegalArgumentException ex) {
-                                }
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case CRM_MANAG_NEW_SALESMAN_CUST_REL:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                Form_SCR scf = new Form_SCR(false);
-
-                                getUI().addWindow(new WindowForm3(
-                                        CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
-                                        scf,
-                                        "img/crm/new-sc-rel2.jpg",
-                                        scf.getClickListener(),
-                                        230, 256)
-                                );
-
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                                navigator.navigateTo(View_CRMSC.class.getSimpleName());
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case FS_DATA_MANAG_NEW_FS:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
-                                navigator.navigateTo(View_FS.class.getSimpleName());
-
-                                Form_FS fof = new Form_FS(false);
-
-                                getUI().addWindow(new WindowForm3(
-                                        FS_DATA_MANAG_NEW_FS.toString(),
-                                        fof,
-                                        "img/crm/cbt.png",
-                                        fof.getClickListener(),
-                                        236, 216)
-                                );
-
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case FS_DATA_MANAG_NEW_FS_OWNER:
-                            if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
-
-                                Form_FSOwner fof = new Form_FSOwner(false);
-
-                                getUI().addWindow(new WindowForm3(
-                                        FS_DATA_MANAG_NEW_FS_OWNER.toString(),
-                                        fof,
-                                        "img/crm/cbt.png",
-                                        fof.getClickListener(),
-                                        236, 216)
-                                );
-                            } else {
-                                Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
-                            }
-                            break;
-                        case FS_DATA_MANAG_SEARCH_ENGINE:
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case CRM_MANAG_NEW_SALESMAN_CUST_REL:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                            Form_SCR scf = new Form_SCR(false);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
+                                    scf,
+                                    "img/crm/new-sc-rel2.jpg",
+                                    scf.getClickListener(),
+                                    230, 256)
+                            );
+                            
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                            navigator.navigateTo(View_CRMSC.class.getSimpleName());
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case FS_DATA_MANAG_NEW_FS:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                             navigator.navigateTo(View_FS.class.getSimpleName());
-                            break;
-                    }
-
-                } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
-                    Notification.show(
-                            "Session Expiration",
-                            "Your current session has expired.\nPlease logout, and login again.",
-                            Notification.Type.ERROR_MESSAGE
-                    );
-
-                    MyUI.get().getAccessControl().decLoggedUsers();
-                } catch (Exception e1) {
-                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, e1);
-                    MyUI.get().getAccessControl().decLoggedUsers();
+                            
+                            Form_FS fof = new Form_FS(false);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    FS_DATA_MANAG_NEW_FS.toString(),
+                                    fof,
+                                    "img/crm/cbt.png",
+                                    fof.getClickListener(),
+                                    236, 216)
+                            );
+                            
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case FS_DATA_MANAG_NEW_FS_OWNER:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
+                            
+                            Form_FSOwner fof = new Form_FSOwner(false);
+                            
+                            getUI().addWindow(new WindowForm3(
+                                    FS_DATA_MANAG_NEW_FS_OWNER.toString(),
+                                    fof,
+                                    "img/crm/cbt.png",
+                                    fof.getClickListener(),
+                                    236, 216)
+                            );
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+                    case FS_DATA_MANAG_SEARCH_ENGINE:
+                        navigator.navigateTo(View_FS.class.getSimpleName());
+                        break;
                 }
+                
+            } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
+                Notification.show(
+                        "Session Expiration",
+                        "Your current session has expired.\nPlease logout, and login again.",
+                        Notification.Type.ERROR_MESSAGE
+                );
+                
+                MyUI.get().getAccessControl().decLoggedUsers();
+            } catch (Exception e1) {
+                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, e1);
+                MyUI.get().getAccessControl().decLoggedUsers();
             }
         });
 

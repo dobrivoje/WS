@@ -59,7 +59,7 @@ public class Test1 {
         for (Salesman S : DS.getSalesmanController().getAll()) {
 
             List<CrmCase> L = DS.getCRMController().getCRM_CasesStats(S, true, false, d.getFrom(), d.getTo());
-            if(!L.isEmpty()) {
+            if (!L.isEmpty()) {
                 System.err.println(L);
             }
         }

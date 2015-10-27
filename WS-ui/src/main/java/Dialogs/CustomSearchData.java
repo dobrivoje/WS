@@ -33,8 +33,10 @@ public class CustomSearchData implements Serializable {
     private Customer customer;
     @Column(name = "Product")
     private Product product;
-    @Column(name = "Amount")
-    private Integer amount;
+    @Column(name = "Quantity")
+    private Double quantity;
+    @Column(name = "MoneyAmount")
+    private Double moneyAmount;
     @Column(name = "CaseFinished")
     private Boolean caseFinished;
     @Column(name = "SaleAgreeded")
@@ -43,7 +45,7 @@ public class CustomSearchData implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="constructors">
     public CustomSearchData() {
         this(null, new Date(), new Salesman(), new Customer(),
-                new Product(), 0, false, false);
+                new Product(), 0, 0, false, false);
     }
 
     public CustomSearchData(CustomSearchData newCustomSearchData) {
@@ -52,20 +54,22 @@ public class CustomSearchData implements Serializable {
                 newCustomSearchData.getSalesman(),
                 newCustomSearchData.getCustomer(),
                 newCustomSearchData.getProduct(),
-                newCustomSearchData.getAmount(),
+                newCustomSearchData.getQuantity(),
+                newCustomSearchData.getMoneyAmount(),
                 newCustomSearchData.getCaseFinished(),
                 newCustomSearchData.getSaleAgreeded()
         );
     }
 
     public CustomSearchData(Date startDate, Date endDate, Salesman salesman, Customer customer,
-            Product product, int amount, boolean caseFinished, boolean saleAgreeded) {
+            Product product, double quantity, double moneyAmount, boolean caseFinished, boolean saleAgreeded) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.salesman = salesman;
         this.customer = customer;
         this.product = product;
-        this.amount = amount;
+        this.quantity = quantity;
+        this.moneyAmount = moneyAmount;
         this.caseFinished = caseFinished;
         this.saleAgreeded = saleAgreeded;
     }
@@ -112,12 +116,20 @@ public class CustomSearchData implements Serializable {
         this.customer = customer;
     }
 
-    public Integer getAmount() {
-        return amount == null ? 0 : amount;
+    public Double getQuantity() {
+        return quantity == null ? 0 : quantity;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public void setMoneyAmount(Double moneyAmount) {
+        this.moneyAmount = moneyAmount;
     }
 
     public Boolean getCaseFinished() {
@@ -214,9 +226,14 @@ public class CustomSearchData implements Serializable {
             s += "[no product], ";
         }
         try {
-            s += "[ammount: " + getAmount().toString() + "], ";
+            s += "[quantity: " + getQuantity().toString() + "], ";
         } catch (Exception e) {
-            s += "[no amount], ";
+            s += "[no quantity], ";
+        }
+        try {
+            s += "[money ammount: " + getMoneyAmount().toString() + "], ";
+        } catch (Exception e) {
+            s += "[no money amount], ";
         }
 
         try {

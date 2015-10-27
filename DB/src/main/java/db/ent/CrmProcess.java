@@ -82,6 +82,13 @@ public class CrmProcess implements Serializable {
     @JoinColumn(name = "FK_IDCS", referencedColumnName = "IDCS")
     @ManyToOne(optional = false)
     private CrmStatus FK_IDCS;
+    @Column(name = "Quantity")
+    private Double quantity;
+    @Column(name = "MoneyAmount")
+    private Double moneyAmount;
+    @JoinColumn(name = "FK_IDP", referencedColumnName = "IDP")
+    @ManyToOne(optional = false)
+    private Product FK_IDP;
 
     public CrmProcess() {
     }
@@ -91,6 +98,19 @@ public class CrmProcess implements Serializable {
         this.comment = comment;
         this.FK_IDCA = crmCase;
         this.FK_IDCS = crmStatus;
+    }
+
+    public CrmProcess(Date actionDate, String comment, CrmCase crmCase, CrmStatus crmStatus, Product product) {
+        this(crmCase, crmStatus, comment, actionDate);
+        this.FK_IDP = product;
+    }
+
+    public CrmProcess(Date actionDate, String comment, CrmCase crmCase, CrmStatus crmStatus, Product product, double quantity, double moneyAmmount) {
+        this(crmCase, crmStatus, comment, actionDate);
+
+        this.FK_IDP = product;
+        this.quantity = quantity;
+        this.moneyAmount = moneyAmmount;
     }
 
     public Long getIdp() {
@@ -131,6 +151,30 @@ public class CrmProcess implements Serializable {
 
     public void setFK_IDCS(CrmStatus FK_IDCS) {
         this.FK_IDCS = FK_IDCS;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public void setMoneyAmount(Double moneyAmount) {
+        this.moneyAmount = moneyAmount;
+    }
+
+    public Product getFK_IDP() {
+        return FK_IDP;
+    }
+
+    public void setFK_IDP(Product FK_IDP) {
+        this.FK_IDP = FK_IDP;
     }
 
     @Override

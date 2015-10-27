@@ -18,7 +18,7 @@ public class NewMain {
     public static void main(String[] args) {
 
         try {
-            new ReportGenerator1().generateReport(REPORT1);
+            new ReportGenerator1().generateReportWithPopUpDialog(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\test.report.pdf");
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }

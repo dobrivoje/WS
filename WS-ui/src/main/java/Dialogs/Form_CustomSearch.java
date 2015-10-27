@@ -30,10 +30,10 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("startDate")
-    private final DateField startDate = new DateField("From");
+    private final DateField startDate = new DateField("Date from");
 
     @PropertyId("endDate")
-    private final DateField endDate = new DateField("To");
+    private final DateField endDate = new DateField("Date to");
 
     @PropertyId("salesman")
     private final ComboBox salesman = new ComboBox("Salesrep",
@@ -47,8 +47,11 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     private final ComboBox product = new ComboBox("Product",
             new BeanItemContainer(Product.class, DS.getProductController().getAll()));
 
-    @PropertyId("amount")
-    private final TextField amount = new TextField("Amount");
+    @PropertyId("quantity")
+    private final TextField quantity = new TextField("Quantity");
+
+    @PropertyId("moneyAmount")
+    private final TextField moneyAmount = new TextField("Money Amount");
 
     @PropertyId("caseFinished")
     private final CheckBox caseFinished = new CheckBox("Case Finished ?");
@@ -92,7 +95,12 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         csd.setProduct((Product) product.getValue());
 
         try {
-            csd.setAmount(Integer.valueOf(amount.getValue()));
+            csd.setQuantity(Double.valueOf(quantity.getValue()));
+        } catch (Exception e) {
+        }
+
+        try {
+            csd.setMoneyAmount(Double.valueOf(moneyAmount.getValue()));
         } catch (Exception e) {
         }
 
@@ -109,7 +117,12 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         product.setValue(cc.getProduct());
 
         try {
-            amount.setValue(Integer.toString(cc.getAmount()));
+            quantity.setValue(Double.toString(cc.getQuantity()));
+        } catch (Exception e) {
+        }
+
+        try {
+            moneyAmount.setValue(Double.toString(cc.getMoneyAmount()));
         } catch (Exception e) {
         }
 
@@ -121,6 +134,9 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     protected final void initFields() {
         salesman.focus();
         setRequiredFields();
+
+        quantity.setConverter(Integer.class);
+        moneyAmount.setConverter(Integer.class);
     }
 
     @Override
