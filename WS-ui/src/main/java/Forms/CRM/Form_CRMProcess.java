@@ -18,12 +18,15 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.CrmStatus;
+import db.ent.Product;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import db.interfaces.ICRMController;
+import db.interfaces.IPRODUCTController;
 import db.interfaces.ISalesmanController;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
@@ -38,6 +41,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
     private final ICRMController CRM_Controller = DS.getCRMController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
+    private final IPRODUCTController pController = DS.getProductController();
 
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final ComboBox salesman = new ComboBox("Salesrep",
@@ -52,6 +56,16 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
     @PropertyId("actionDate")
     private final DateField actionDate = new DateField("Date");
+
+    @PropertyId("FK_IDP")
+    private final ComboBox product = new ComboBox("Product",
+            new BeanItemContainer(Product.class, pController.getAll()));
+
+    @PropertyId("quantity")
+    private final TextField quantity = new TextField("Quantity");
+
+    @PropertyId("moneyAmount")
+    private final TextField moneyAmount = new TextField("Money Amount");
 
     @PropertyId("comment")
     private final TextArea comment = new TextArea("Comment");
@@ -141,6 +155,18 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         crmProcess.setComment(comment.getValue());
         crmProcess.setFK_IDCA((CrmCase) crmCase.getValue());
         crmProcess.setFK_IDCS((CrmStatus) status.getValue());
+
+        crmProcess.setFK_IDP((Product) product.getValue());
+
+        try {
+            crmProcess.setQuantity(Double.valueOf(quantity.getValue()));
+        } catch (Exception e) {
+        }
+
+        try {
+            crmProcess.setMoneyAmount(Double.valueOf(moneyAmount.getValue()));
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -150,6 +176,10 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         status.setValue(crmProcess.getFK_IDCS());
         actionDate.setValue(crmProcess.getActionDate());
         comment.setValue(crmProcess.getComment());
+
+        product.setValue(crmProcess.getFK_IDP());
+        quantity.setValue(String.valueOf(crmProcess.getQuantity()));
+        moneyAmount.setValue(String.valueOf(crmProcess.getMoneyAmount()));
     }
 
     @Override
@@ -166,31 +196,35 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
     @Override
     protected final void updateDynamicFields() {
-        salesman.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                try {
-                    crmCase.setContainerDataSource(new BeanItemContainer(
-                            CrmCase.class,
-                            CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
-                } catch (Exception e) {
-                    Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
-                }
+        salesman.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            try {
+                crmCase.setContainerDataSource(new BeanItemContainer(
+                        CrmCase.class,
+                        CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
+            } catch (Exception e) {
+                Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
             }
         });
 
-        crmCase.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                try {
-                    status.setContainerDataSource(
-                            new BeanItemContainer(
-                                    CrmStatus.class,
-                                    CRM_Controller.getCRM_AvailableStatuses((CrmCase) crmCase.getValue())));
-                } catch (Exception e) {
-                    Notification.show("Notification", "There is no active CRM status for this case.", Notification.Type.ERROR_MESSAGE);
-                }
+        crmCase.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            try {
+                status.setContainerDataSource(
+                        new BeanItemContainer(
+                                CrmStatus.class,
+                                CRM_Controller.getCRM_AvailableStatuses((CrmCase) crmCase.getValue())));
+            } catch (Exception e) {
+                Notification.show("Notification", "There is no active CRM status for this case.", Notification.Type.ERROR_MESSAGE);
             }
+        });
+
+        status.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            boolean q = ((CrmStatus) event.getProperty().getValue()).isWithQuantity();
+            boolean m = ((CrmStatus) event.getProperty().getValue()).isWithMoneyAmount();
+            boolean p = ((CrmStatus) event.getProperty().getValue()).isWithProduct();
+
+            product.setEnabled(p);
+            quantity.setEnabled(q);
+            moneyAmount.setEnabled(m);
         });
     }
 
@@ -199,6 +233,9 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         salesman.setWidth(250, Unit.PIXELS);
 
         setRequiredFields();
+
+        quantity.setConverter(Double.class);
+        moneyAmount.setConverter(Double.class);
 
         salesman.setNullSelectionAllowed(false);
         crmCase.setNullSelectionAllowed(false);

@@ -265,8 +265,8 @@ public class MainMenu extends CssLayout {
                     case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
                         
                         try {
-                            new ReportGenerator1().exportPDF(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
-                            // new ReportGenerator1().generateReportWithPopUpDialog(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
+                            // new ReportGenerator1().exportPDF(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
+                            new ReportGenerator1().generateReportWithPopUpDialog(REPORT1.toString(), "\\\\GLADIATOR\\Users\\Public\\Downloads\\izvestaj.pdf");
                             
                             Logger.getLogger("Views.MainMenu.MainMenu.java")
                                     .log(Level.INFO, "Jasper uspe\u0161no izvr\u0161en : {0}", (new Date()).toString());
