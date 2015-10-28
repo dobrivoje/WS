@@ -1,6 +1,6 @@
 package Views.MainMenu.CRM;
 
-import Dialogs.CustomSearchData;
+import db.ent.custom.CustomSearchData;
 import Dialogs.Form_CustomSearch;
 import Dialogs.SelectorDialog;
 import Trees.CRM.SALES.Tree_SalesmanSales;

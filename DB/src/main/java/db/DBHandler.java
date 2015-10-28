@@ -35,6 +35,7 @@ import db.ent.InfSysUser;
 import db.ent.Log;
 import db.ent.Product;
 import db.ent.RelSALE;
+import db.ent.custom.CustomSearchData;
 import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -1951,4 +1952,22 @@ public class DBHandler {
     }
     //</editor-fold>
     //</editor-fold>
+
+    public List<RelSALE> getAllSales(CustomSearchData csd) {
+        Dates d = new Dates();
+        Date from, to;
+
+        from = csd.getStartDate() == null ? d.getFrom() : csd.getStartDate();
+        to = csd.getEndDate() == null ? d.getTo() : csd.getEndDate();
+
+        try {
+            return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForPeriod")
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to)
+                    .setParameter("ammount", 0)
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

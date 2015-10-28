@@ -5,6 +5,7 @@
  */
 package Dialogs;
 
+import db.ent.custom.CustomSearchData;
 import Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
@@ -70,7 +71,6 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         updateDynamicFields();
 
         CustomSearchData cc = new CustomSearchData();
-        //setFieldsFromBean(cc);
 
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();

@@ -1,4 +1,4 @@
-package Dialogs;
+package db.ent.custom;
 
 import db.ent.Customer;
 import db.ent.Product;
