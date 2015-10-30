@@ -146,17 +146,14 @@ public abstract class View_Dashboard extends Panel implements View {
 
         MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
-        max = tools.addItem("", FontAwesome.EXPAND, new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem selectedItem) {
-                if (!slot.getStyleName().contains("max")) {
-                    selectedItem.setIcon(FontAwesome.COMPRESS);
-                    toggleMaximized(slot, viewMaximized = true);
-                } else {
-                    slot.removeStyleName("max");
-                    selectedItem.setIcon(FontAwesome.EXPAND);
-                    toggleMaximized(slot, viewMaximized = false);
-                }
+        max = tools.addItem("", FontAwesome.EXPAND, (final MenuBar.MenuItem selectedItem) -> {
+            if (!slot.getStyleName().contains("max")) {
+                selectedItem.setIcon(FontAwesome.COMPRESS);
+                toggleMaximized(slot, viewMaximized = true);
+            } else {
+                slot.removeStyleName("max");
+                selectedItem.setIcon(FontAwesome.EXPAND);
+                toggleMaximized(slot, viewMaximized = false);
             }
         });
         max.setStyleName("icon-only");
@@ -213,7 +210,7 @@ public abstract class View_Dashboard extends Panel implements View {
         ICL.setSizeFull();
 
         for (Panel p : panels) {
-            p.setWidth(275, Unit.PIXELS);
+            p.setWidth(250, Unit.PIXELS);
 
             HorizontalLayout HL = new HorizontalLayout(p);
             HL.setMargin(true);

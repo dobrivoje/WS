@@ -52,7 +52,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     private final TextField quantity = new TextField("Quantity");
 
     @PropertyId("moneyAmount")
-    private final TextField moneyAmount = new TextField("Money Amount");
+    private final TextField moneyAmount = new TextField("Amount");
 
     @PropertyId("caseFinished")
     private final CheckBox caseFinished = new CheckBox("Case Finished ?");

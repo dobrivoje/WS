@@ -82,7 +82,7 @@ public class View_CRM extends View_Dashboard {
         final String panelHeader = "Realized Sales";
         final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
 
-        panelCommands.put("1. Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+        panelCommands.put("Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
 
             updateUIPanel(0,
@@ -96,7 +96,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
-        panelCommands.put("2. Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
+        panelCommands.put("Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setMonthsBackForth(-2);
@@ -113,7 +113,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
-        panelCommands.put("3. Sales In the June 2015", (MenuBar.Command) new MenuBar.Command() {
+        panelCommands.put("Sales - June 2015", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setFrom(1, 6, 2015);
@@ -131,7 +131,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Custom Search Dialog">
-        panelCommands.put("4. Advanced Search", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+        panelCommands.put("Search - Advanced Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             Form_CustomSearch FCS = new Form_CustomSearch();
             SelectorDialog SD = new SelectorDialog(FCS);
 

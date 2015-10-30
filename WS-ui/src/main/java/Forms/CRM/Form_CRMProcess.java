@@ -65,7 +65,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     private final TextField quantity = new TextField("Quantity");
 
     @PropertyId("moneyAmount")
-    private final TextField moneyAmount = new TextField("Money Amount");
+    private final TextField moneyAmount = new TextField("Amount");
 
     @PropertyId("comment")
     private final TextArea comment = new TextArea("Comment");
@@ -202,7 +202,6 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
                         CrmCase.class,
                         CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
             } catch (Exception e) {
-                Notification.show("Notification", "There is no active CRM cases for this customer.", Notification.Type.ERROR_MESSAGE);
             }
         });
 
@@ -213,7 +212,6 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
                                 CrmStatus.class,
                                 CRM_Controller.getCRM_AvailableStatuses((CrmCase) crmCase.getValue())));
             } catch (Exception e) {
-                Notification.show("Notification", "There is no active CRM status for this case.", Notification.Type.ERROR_MESSAGE);
             }
         });
 
@@ -222,9 +220,13 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
             boolean m = ((CrmStatus) event.getProperty().getValue()).isWithMoneyAmount();
             boolean p = ((CrmStatus) event.getProperty().getValue()).isWithProduct();
 
-            product.setEnabled(p);
-            quantity.setEnabled(q);
-            moneyAmount.setEnabled(m);
+            product.setVisible(p);
+            product.setRequired(p);
+
+            quantity.setVisible(q);
+            quantity.setRequired(q);
+
+            moneyAmount.setVisible(m);
         });
     }
 
@@ -240,6 +242,10 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         salesman.setNullSelectionAllowed(false);
         crmCase.setNullSelectionAllowed(false);
         status.setNullSelectionAllowed(false);
+
+        product.setVisible(false);
+        quantity.setVisible(false);
+        moneyAmount.setVisible(false);
     }
 
     @Override
