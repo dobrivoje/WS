@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.superb.apps.utilities.datum.Dates;
 
 public class CustomSearchData implements Serializable {
 
@@ -44,8 +45,14 @@ public class CustomSearchData implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
     public CustomSearchData() {
-        this(null, new Date(), new Salesman(), new Customer(),
-                new Product(), 0, 0, false, false);
+        Dates d = new Dates();
+        d.setMonthsBackForth(-12);
+
+        startDate = startDate == null ? d.getFrom() : startDate;
+        endDate = endDate == null ? new Date() : endDate;
+
+        caseFinished = true;
+        saleAgreeded = true;
     }
 
     public CustomSearchData(CustomSearchData newCustomSearchData) {

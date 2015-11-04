@@ -21,6 +21,8 @@ import db.controllers.Salesman_Controller;
 import db.controllers.InfSysUser_Controller;
 import db.controllers.LOG_Controller;
 import db.controllers.Product_Controller;
+import db.controllers.Search_Controller;
+import db.ent.custom.CustomSearchData;
 import db.interfaces.IBLController;
 import db.interfaces.ICBTController;
 import db.interfaces.ICRMController;
@@ -37,6 +39,7 @@ import db.interfaces.ISalesmanController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ILOGController;
 import db.interfaces.IPRODUCTController;
+import db.interfaces.ISearchController;
 import javax.persistence.EntityManager;
 
 /**
@@ -56,13 +59,12 @@ public class DataService {
     public static synchronized DataService getDefault() {
         return instance == null ? instance = new DataService() : instance;
     }
-    
+
     public static synchronized EntityManager getEM() throws Exception {
         return DBHandler.getEm();
     }
-    
-    //</editor-fold>
 
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Interfaces Defs">
     private final ICBTController cBTController = new CBT_Controller(DBH);
     private final ICityController cityController = new City_Controller(DBH);
@@ -80,6 +82,7 @@ public class DataService {
     private final ILOGController iLogController = new LOG_Controller(DBH);
     private final IPRODUCTController iPRODUCTController = new Product_Controller(DBH);
     private final IBLController iBLC = new BLController(DBH);
+    private final ISearchController<CustomSearchData> iSC = new Search_Controller(DBH);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Get Interfaces">
@@ -146,6 +149,10 @@ public class DataService {
     public IBLController getBLController() {
         return iBLC;
     }
-    //</editor-fold>
 
+    public ISearchController<CustomSearchData> getSearchController() {
+        return iSC;
+    }
+
+    //</editor-fold>
 }

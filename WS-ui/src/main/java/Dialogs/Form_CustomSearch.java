@@ -135,14 +135,19 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         salesman.focus();
         setRequiredFields();
 
-        quantity.setConverter(Integer.class);
-        moneyAmount.setConverter(Integer.class);
+        // quantity.setConverter(Integer.class);
+        // moneyAmount.setConverter(Integer.class);
+        
+        quantity.setEnabled(false);
+        moneyAmount.setEnabled(false);
+        caseFinished.setEnabled(false);
+        saleAgreeded.setEnabled(false);
     }
 
     @Override
     protected void setRequiredFields() {
         caseFinished.setEnabled(true);
-        saleAgreeded.setEnabled(false);
+        saleAgreeded.setEnabled(caseFinished.getValue() == null ? false : caseFinished.getValue());
     }
 
     @Override

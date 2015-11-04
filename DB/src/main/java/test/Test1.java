@@ -9,11 +9,17 @@ import dataservice.DataService;
 import db.DBHandler;
 import db.ent.CrmCase;
 import db.ent.InfSysUser;
+import db.ent.RelSALE;
 import db.ent.Salesman;
+import db.ent.custom.CustomSearchData;
 import db.interfaces.ICRMController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import org.superb.apps.utilities.datum.Dates;
 
 public class Test1 {
@@ -64,5 +70,84 @@ public class Test1 {
             }
         }
 
+        CustomSearchData csd = new CustomSearchData();
+        System.err.println("------------------------");
+        System.err.println("test1 : getAllSales ");
+
+        for (RelSALE s : dbh.getAllSales(csd)) {
+            System.err.println(s
+                    + ", " + s.getFK_IDCA().getDescription() + ", "
+                    + s.getFK_IDCA().getFK_IDRSC().getFK_IDC() + ", "
+                    + s.getFK_IDCA().getFK_IDRSC().getFK_IDS()
+            );
+        }
+
+        d.setTo(31, 8, 2015);
+        csd.setEndDate(d.getTo());
+        System.err.println("------------------------");
+        System.err.println("test2 : getAllSales until 31.8.2015");
+
+        for (RelSALE s : dbh.getAllSales(csd)) {
+            System.err.println(s);
+        }
+
+        CustomSearchData csd1 = new CustomSearchData();
+        csd1.setSalesman(DS.getSalesmanController().getByID(1L));
+        System.err.println("------------------------");
+        System.err.println("test3 : getAllSales for salesman : " + csd1.getSalesman());
+
+        for (RelSALE s : dbh.getAllSales(csd1)) {
+            System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
+        }
+
+        CustomSearchData csd2 = new CustomSearchData();
+        csd2.setCustomer(DS.getCustomerController().getByID(878L));
+        System.err.println("------------------------");
+        System.err.println("test4 : getAllSales for customer : " + csd2.getCustomer());
+
+        for (RelSALE s : dbh.getAllSales(csd2)) {
+            System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
+        }
+
+        CustomSearchData csd3 = new CustomSearchData();
+        csd3.setProduct(DS.getProductController().getByID(4L));
+        System.err.println("------------------------");
+        System.err.println("test5 : getAllSales for product : " + csd3.getProduct());
+
+        for (RelSALE s : DS.getSearchController().getAllSales(csd3)) {
+            System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
+        }
+
+        System.err.println("------------------------------------------------------------------------");
+        System.err.println("------------------------------------------------------------------------");
+
+        Dates d1 = new Dates();
+        d1.setFrom(1, 1, 2015);
+        d1.setTo(1, 7, 2015);
+        CustomSearchData c4 = new CustomSearchData();
+        c4.setStartDate(d1.getFrom());
+        c4.setEndDate(d1.getTo());
+        System.err.println("------------------------");
+        System.err.println("test6 : getAllCRMCases : " + d1.getFrom() + "-" + d1.getTo());
+
+        for (CrmCase c : DS.getSearchController().getAllCrmCases(c4)) {
+            System.err.println(
+                    c.toString() + " - " + c.getFK_IDRSC().getFK_IDS()
+            );
+        }
+
+        Map<String, Integer> M = new LinkedHashMap<>();
+
+        M.put("Last Two Month Sales", 2);
+        M.put("Last Three Month Sales", 3);
+        M.put("Last Month Sale", 1);
+
+        for (Map.Entry<String, Integer> entrySet : M.entrySet()) {
+            String key = entrySet.getKey();
+            Integer value = entrySet.getValue();
+
+            System.err.println(key + "-" + value);
+
+        }
     }
 }

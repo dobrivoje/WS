@@ -56,7 +56,8 @@ import javax.xml.bind.annotation.XmlRootElement;
             @NamedQuery(name = "RelSALE.CRM_Sales_Cases",
                     query = "SELECT DISTINCT r.FK_IDCA FROM RelSALE r WHERE r.sellDate BETWEEN :dateFrom AND :dateTo AND r.ammount > 0"),
 
-            @NamedQuery(name = "RelSALE.findByPaymentMethod", query = "SELECT r FROM RelSALE r WHERE r.paymentMethod = :paymentMethod")
+            @NamedQuery(name = "RelSALE.findByPaymentMethod", 
+                    query = "SELECT r FROM RelSALE r WHERE r.paymentMethod = :paymentMethod")
         }
 )
 public class RelSALE implements Serializable {

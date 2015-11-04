@@ -40,6 +40,7 @@ import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Query;
 import org.superb.apps.utilities.datum.Dates;
 
 /**
@@ -1953,21 +1954,162 @@ public class DBHandler {
     //</editor-fold>
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Custom Search Data Queries">
     public List<RelSALE> getAllSales(CustomSearchData csd) {
-        Dates d = new Dates();
         Date from, to;
+        Query query;
 
-        from = csd.getStartDate() == null ? d.getFrom() : csd.getStartDate();
-        to = csd.getEndDate() == null ? d.getTo() : csd.getEndDate();
+        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
+
+        String Q = "SELECT S from RelSALE S WHERE S.sellDate BETWEEN :dateFrom AND :dateTo ";
 
         try {
-            return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForPeriod")
+
+            if (csd.getCustomer() != null) {
+                Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
+            }
+
+            if (csd.getSalesman() != null) {
+                Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
+            }
+
+            if (csd.getProduct() != null) {
+                Q += " AND S.FK_IDP = :IDP ";
+            }
+
+            query = getEm().createQuery(Q)
                     .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
-                    .setParameter("ammount", 0)
-                    .getResultList();
+                    .setParameter("dateTo", to);
+
+            if (csd.getCustomer() != null) {
+                query.setParameter("IDC", csd.getCustomer());
+            }
+            if (csd.getSalesman() != null) {
+                query.setParameter("IDS", csd.getSalesman());
+            }
+            if (csd.getProduct() != null) {
+                query.setParameter("IDP", csd.getProduct());
+            }
+
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }
     }
+
+    public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
+        Date from, to;
+        Query query;
+
+        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
+
+        String Q = "SELECT DISTINCT p.FK_IDCA from CrmProcess p WHERE p.FK_IDCA.startDate >= :dateFrom AND p.FK_IDCA.endDate <= :dateTo ";
+
+        try {
+
+            if (csd.getCustomer() != null) {
+                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
+            }
+
+            if (csd.getSalesman() != null) {
+                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
+            }
+
+            if (csd.getProduct() != null) {
+                Q += " AND p.FK_IDP = :IDP ";
+            }
+
+            if (csd.getCaseFinished() != null) {
+                Q += " AND p.FK_IDCA.finished = :finished ";
+            }
+
+            if (csd.getSaleAgreeded() != null) {
+                Q += " AND p.FK_IDCA.saleAgreeded = :saleAgreeded";
+            }
+
+            query = getEm().createQuery(Q)
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to);
+
+            if (csd.getCustomer() != null) {
+                query.setParameter("IDC", csd.getCustomer());
+            }
+            if (csd.getSalesman() != null) {
+                query.setParameter("IDS", csd.getSalesman());
+            }
+            if (csd.getProduct() != null) {
+                query.setParameter("IDP", csd.getProduct());
+            }
+            if (csd.getCaseFinished() != null) {
+                query.setParameter("finished", csd.getCaseFinished());
+            }
+            if (csd.getSaleAgreeded() != null) {
+                query.setParameter("saleAgreeded", csd.getSaleAgreeded());
+            }
+
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
+        Date from, to;
+        Query query;
+
+        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
+
+        String Q = "SELECT p from CrmProcess p WHERE p.actionDate BETWEEN :dateFrom AND :dateTo ";
+
+        try {
+
+            if (csd.getCustomer() != null) {
+                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
+            }
+
+            if (csd.getSalesman() != null) {
+                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
+            }
+
+            if (csd.getProduct() != null) {
+                Q += " AND p.FK_IDP = :IDP ";
+            }
+
+            if (csd.getCaseFinished() != null) {
+                Q += " AND S.FK_IDCA.finished = :finished ";
+            }
+
+            if (csd.getSaleAgreeded() != null) {
+                Q += " AND S.FK_IDCA.saleAgreeded = :saleAgreeded";
+            }
+
+            query = getEm().createQuery(Q)
+                    .setParameter("dateFrom", from)
+                    .setParameter("dateTo", to);
+
+            if (csd.getCustomer() != null) {
+                query.setParameter("IDC", csd.getCustomer());
+            }
+            if (csd.getSalesman() != null) {
+                query.setParameter("IDS", csd.getSalesman());
+            }
+            if (csd.getProduct() != null) {
+                query.setParameter("IDP", csd.getProduct());
+            }
+            if (csd.getCaseFinished() != null) {
+                query.setParameter("finished", csd.getCaseFinished());
+            }
+            if (csd.getSaleAgreeded() != null) {
+                query.setParameter("saleAgreeded", csd.getSaleAgreeded());
+            }
+
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    //</editor-fold>
 }

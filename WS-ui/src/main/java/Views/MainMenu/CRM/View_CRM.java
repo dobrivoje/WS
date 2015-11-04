@@ -17,12 +17,11 @@ import db.ent.Customer;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import ws.MyUI;
@@ -35,8 +34,8 @@ public class View_CRM extends View_Dashboard {
     public View_CRM() {
         super("Customer Relationship Management");
 
-        dynamicPanels.add(salesCasesPanel());
-        dynamicPanels.add(notRelizedCasesPanel());
+        dynamicPanels.add(0, salesCasesPanel());
+        dynamicPanels.add(1, notRelizedCasesPanel());
 
         buildContentWithComponents(
                 activeCasesBySalesmanPanel(),
@@ -51,8 +50,8 @@ public class View_CRM extends View_Dashboard {
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
-                // listom ispod, kontrolišemo not null vrednosti,
-                // da bi se stablo kreiralo, inače zbog null, stablo se neće kreirati.
+                // listom ispod, kontroliĹˇemo not null vrednosti,
+                // da bi se stablo kreiralo, inaÄŤe zbog null, stablo se neÄ‡e kreirati.
                 List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
                 if (!L.isEmpty()) {
                     Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formAllowed);
@@ -78,10 +77,24 @@ public class View_CRM extends View_Dashboard {
     }
 
     private Component salesCasesPanel() {
-        //<editor-fold defaultstate="collapsed" desc="Last Two Months Sales">
-        final String panelHeader = "Realized Sales";
-        final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
+        final String panelHeader = "REALIZED SALES";
+        final Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
 
+        //<editor-fold defaultstate="collapsed" desc="Last Months Sales">
+        panelCommands.put("Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            dateInterval.setMonthsBackForth(0);
+
+            updateUIPanel(0,
+                    createPanelComponent(
+                            panelHeader,
+                            getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                            formAllowed,
+                            panelCommands)
+            );
+        });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Last Two Months Sales">
         panelCommands.put("Last Two Months Sales", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
 
@@ -95,7 +108,7 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Sales In the June 2015">
+        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
         panelCommands.put("Last Three Months Sales", (MenuBar.Command) new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
@@ -112,31 +125,19 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Last Three Months Sales">
-        panelCommands.put("Sales - June 2015", (MenuBar.Command) new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                dateInterval.setFrom(1, 6, 2015);
-                dateInterval.setTo(30, 6, 2015);
-
-                updateUIPanel(0,
-                        createPanelComponent(
-                                panelHeader,
-                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
-                                formAllowed,
-                                panelCommands)
-                );
-            }
-        });
-        //</editor-fold>
-
         //<editor-fold defaultstate="collapsed" desc="Custom Search Dialog">
-        panelCommands.put("Search - Advanced Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+        panelCommands.put("Advanced Search Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             Form_CustomSearch FCS = new Form_CustomSearch();
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
-                Logger.getLogger("CustomSearchData.toString() Test").log(Level.INFO, CSD.toString());
+                updateUIPanel(0,
+                        createPanelComponent(
+                                panelHeader,
+                                getAdvancedSearchSell(CSD),
+                                formAllowed,
+                                panelCommands)
+                );
             });
 
             getUI().addWindow(SD);
@@ -151,11 +152,11 @@ public class View_CRM extends View_Dashboard {
 
     private Component notRelizedCasesPanel() {
         final String panelHeader = "CASES NOT SIGNED !";
-        final Map<String, MenuBar.Command> panelCommands = new HashMap<>();
+        final Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
 
-        panelCommands.put("1. Last Three Months Period", getCommand(panelHeader, 1, panelCommands, -3));
-        panelCommands.put("2. Last Six Months Period", getCommand(panelHeader, 1, panelCommands, -6));
-        panelCommands.put("3. Last Year Period", getCommand(panelHeader, 1, panelCommands, -12));
+        panelCommands.put("Last Three Months Period", getCommand(panelHeader, 1, panelCommands, -3));
+        panelCommands.put("Last Six Months Period", getCommand(panelHeader, 1, panelCommands, -6));
+        panelCommands.put("Last Year Period", getCommand(panelHeader, 1, panelCommands, -12));
 
         return createPanelComponent(panelHeader,
                 getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()),
@@ -175,6 +176,30 @@ public class View_CRM extends View_Dashboard {
 
                 if (!L.isEmpty()) {
                     Tree_SalesmanSales tss = new Tree_SalesmanSales("", S, from, to, formAllowed);
+                    LP.add(new Panel(S.toString(), tss));
+                }
+            }
+
+        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+        }
+
+        return LP;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Advanced Sell Search">
+    private List<Panel> getAdvancedSearchSell(CustomSearchData csd) {
+        List<Panel> LP = new ArrayList();
+        List<Salesman> LS = csd.getSalesman() == null
+                ? DS.getSalesmanController().getAll() : Arrays.asList(csd.getSalesman());
+
+        try {
+            for (Salesman S : LS) {
+
+                List<RelSALE> L = DS.getSearchController().getAllSales(csd);
+
+                if (!L.isEmpty()) {
+                    Tree_SalesmanSales tss = new Tree_SalesmanSales("", S, csd.getStartDate(), csd.getEndDate(), formAllowed);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }

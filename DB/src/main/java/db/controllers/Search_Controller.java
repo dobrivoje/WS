@@ -27,17 +27,17 @@ public class Search_Controller implements ISearchController<CustomSearchData> {
 
     @Override
     public List<RelSALE> getAllSales(CustomSearchData csd) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dbh.getAllSales(csd);
     }
 
     @Override
     public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dbh.getAllCrmCases(csd);
     }
 
     @Override
     public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dbh.getAllCrmProcesses(csd);
     }
 
 }
