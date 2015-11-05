@@ -15,8 +15,7 @@ public class Dates {
     private Date to;
 
     /**
-     * pozivanje ovog konstruktora postavlja interval datuma : <br>
-     * od 1. dana prethodnog meseca do današnjeg datuma.
+     * Default is interval of the 1st day of the last month to this day.
      */
     public Dates() {
         this(-1);
@@ -40,7 +39,13 @@ public class Dates {
 
     /**
      *
-     * @param months from months back/forth, to the current date
+     * @param months No. of months back/forth, to the current date. <br>
+     * <p>
+     * Positive value makes up an interval from today <br>
+     * to the last day of the no. of months onward. <br>
+     * <p>
+     * Negative value makes up an interval <br>
+     * from no. of months backward to this date.
      */
     public Dates(int months) {
         setMonthsBF(months);
@@ -48,8 +53,13 @@ public class Dates {
 
     /**
      *
-     * @param months from months back/forth, to the current date Pozitivna
-     * vrednost pravi interval od danas do posl. dana za broj meseci unapred.
+     * @param months No. of months back/forth, to the current date. <br>
+     * <p>
+     * Positive value makes up an interval from today <br>
+     * to the last day of the no. of months onward. <br>
+     * <p>
+     * Negative value makes up an interval <br>
+     * from no. of months backward to this date.
      */
     public synchronized void setMonthsBackForth(int months) {
         setMonthsBF(months);

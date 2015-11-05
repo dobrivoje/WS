@@ -9,9 +9,11 @@ import db.DBHandler;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.RelSALE;
+import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
 import db.interfaces.ISearchController;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,6 +40,11 @@ public class Search_Controller implements ISearchController<CustomSearchData> {
     @Override
     public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
         return dbh.getAllCrmProcesses(csd);
+    }
+
+    @Override
+    public Map<Salesman, List<RelSALE>> getAllSalesrepSales(CustomSearchData csd) {
+        return dbh.getAllSalesrepSales(csd);
     }
 
 }

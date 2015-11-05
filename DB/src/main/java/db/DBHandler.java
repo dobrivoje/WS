@@ -38,7 +38,10 @@ import db.ent.RelSALE;
 import db.ent.custom.CustomSearchData;
 import enums.ISUserType;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.Query;
 import org.superb.apps.utilities.datum.Dates;
@@ -2111,5 +2114,23 @@ public class DBHandler {
             return null;
         }
     }
-    //</editor-fold>
+
+    public Map<Salesman, List<RelSALE>> getAllSalesrepSales(CustomSearchData csd) {
+        Map<Salesman, List<RelSALE>> MSS = new HashMap<>();
+
+        for (RelSALE s : getAllSales(csd)) {
+            Salesman salesRep = s.getFK_IDCA().getFK_IDRSC().getFK_IDS();
+
+            if (MSS.containsKey(salesRep)) {
+                List<RelSALE> LRS = new ArrayList<>(MSS.get(salesRep));
+                LRS.add(s);
+                MSS.put(salesRep, LRS);
+            } else {
+                MSS.put(salesRep, Arrays.asList(s));
+            }
+        }
+
+        return MSS;
+    }
+//</editor-fold>
 }

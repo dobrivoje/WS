@@ -17,7 +17,8 @@ import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.RelSALE;
 import db.ent.Salesman;
-import java.util.Date;
+import db.ent.custom.CustomSearchData;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
@@ -29,15 +30,18 @@ import static ws.MyUI.DS;
  *
  * @author root
  */
-public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
+public class Tree_SalesrepAdvSales extends CustomObjectTree<CustomSearchData> {
 
     private Salesman salesman;
     private Form_CRUD2 crudForm;
     private String imageLocation;
 
-    public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
+    public Tree_SalesrepAdvSales(String caption, CustomSearchData csd, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, DS.getCRMController().getCRM_Salesrep_Sales_Cases(salesman, dateFrom, dateTo), dateFrom, dateTo);
+
+        super(caption,
+                Arrays.asList(DS.getSearchController().getAllSalesrepSales(csd).keySet().toArray())
+        );
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {
@@ -63,11 +67,11 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                         }
                         //</editor-fold>
 
-                        //<editor-fold defaultstate="collapsed" desc="CrmCase">
-                        if (event.getItemId() instanceof CrmCase) {
+                        //<editor-fold defaultstate="collapsed" desc="Salesrep">
+                        if (event.getItemId() instanceof Salesman) {
 
                             try {
-                                this.salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
+                                this.salesman = (Salesman) event.getItemId();
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
                                 crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
@@ -80,8 +84,8 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
-                        for (RelSALE rs : DS.getCRMController().getCRM_Sales(salesman, this.dateFrom, this.dateTo)) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
+                        for (RelSALE rs : DS.getSearchController().getAllSales(csd)) {
+                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + rs.getFK_IDCA().getFK_IDRSC().getFK_IDS().toString(), rs.getFK_IDCA());
                             propTrees.add(csct);
 
                             propPanel.addComponent(csct);
@@ -116,10 +120,12 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         });
         //</editor-fold>
     }
-    
+
     @Override
-    protected void createSubNodes(CrmCase cc) {
-        createNodeItems(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
+    protected void createSubNodes(CustomSearchData csd) {
+        createNodeItems(csd,
+                Arrays.asList(DS.getSearchController().getAllSalesrepSales(csd).values().toArray())
+        );
     }
 
 }

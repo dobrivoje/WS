@@ -58,7 +58,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
             @NamedQuery(name = "CrmProcess.CRMCaseStatuses",
                     query = "SELECT DISTINCT c.FK_IDCS FROM CrmProcess c WHERE c.FK_IDCA = :CRMCASE")
-
+                
         }
 )
 

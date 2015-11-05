@@ -4,6 +4,7 @@ import db.ent.custom.CustomSearchData;
 import Dialogs.Form_CustomSearch;
 import Dialogs.SelectorDialog;
 import Trees.CRM.SALES.Tree_SalesmanSales;
+import Trees.CRM.SALES.Tree_SalesrepAdvSales;
 import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.Tree_SalesmanCRMCases;
 import Views.View_Dashboard;
@@ -17,7 +18,6 @@ import db.ent.Customer;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -134,7 +134,7 @@ public class View_CRM extends View_Dashboard {
                 updateUIPanel(0,
                         createPanelComponent(
                                 panelHeader,
-                                getAdvancedSearchSell(CSD),
+                                getAdvancedSearchSales(CSD),
                                 formAllowed,
                                 panelCommands)
                 );
@@ -188,19 +188,15 @@ public class View_CRM extends View_Dashboard {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Advanced Sell Search">
-    private List<Panel> getAdvancedSearchSell(CustomSearchData csd) {
+    private List<Panel> getAdvancedSearchSales(CustomSearchData csd) {
         List<Panel> LP = new ArrayList();
-        List<Salesman> LS = csd.getSalesman() == null
-                ? DS.getSalesmanController().getAll() : Arrays.asList(csd.getSalesman());
 
         try {
-            for (Salesman S : LS) {
+            for (Map.Entry<Salesman, List<RelSALE>> RS : DS.getSearchController().getAllSalesrepSales(csd).entrySet()) {
 
-                List<RelSALE> L = DS.getSearchController().getAllSales(csd);
-
-                if (!L.isEmpty()) {
-                    Tree_SalesmanSales tss = new Tree_SalesmanSales("", S, csd.getStartDate(), csd.getEndDate(), formAllowed);
-                    LP.add(new Panel(S.toString(), tss));
+                if (!RS.getValue().isEmpty()) {
+                    Tree_SalesrepAdvSales tss = new Tree_SalesrepAdvSales("", csd, formAllowed);
+                    LP.add(new Panel(RS.toString(), tss));
                 }
             }
 

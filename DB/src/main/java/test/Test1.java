@@ -15,11 +15,7 @@ import db.ent.custom.CustomSearchData;
 import db.interfaces.ICRMController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ISalesmanController;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import org.superb.apps.utilities.datum.Dates;
 
 public class Test1 {
@@ -134,20 +130,6 @@ public class Test1 {
             System.err.println(
                     c.toString() + " - " + c.getFK_IDRSC().getFK_IDS()
             );
-        }
-
-        Map<String, Integer> M = new LinkedHashMap<>();
-
-        M.put("Last Two Month Sales", 2);
-        M.put("Last Three Month Sales", 3);
-        M.put("Last Month Sale", 1);
-
-        for (Map.Entry<String, Integer> entrySet : M.entrySet()) {
-            String key = entrySet.getKey();
-            Integer value = entrySet.getValue();
-
-            System.err.println(key + "-" + value);
-
         }
     }
 }

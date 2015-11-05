@@ -92,7 +92,6 @@ public class BussinesLine implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof BussinesLine)) {
             return false;
         }
@@ -111,6 +110,10 @@ public class BussinesLine implements Serializable {
 
     @Override
     public String toString() {
-        return "db.BussinesLine[ idbl=" + idbl + " ]";
+        try {
+            return getName();
+        } catch (Exception e) {
+            return "BL N/A !";
+        }
     }
 }

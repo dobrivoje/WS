@@ -8,7 +8,9 @@ package db.interfaces;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.RelSALE;
+import db.ent.Salesman;
 import java.util.List;
+import java.util.Map;
 
 public interface ISearchController<T> {
 
@@ -18,4 +20,5 @@ public interface ISearchController<T> {
 
     List<CrmProcess> getAllCrmProcesses(T t);
 
+    Map<Salesman, List<RelSALE>> getAllSalesrepSales(T t);
 }

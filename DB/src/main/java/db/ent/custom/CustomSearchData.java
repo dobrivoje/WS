@@ -46,7 +46,7 @@ public class CustomSearchData implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="constructors">
     public CustomSearchData() {
         Dates d = new Dates();
-        d.setMonthsBackForth(-12);
+        d.setMonthsBackForth(-1);
 
         startDate = startDate == null ? d.getFrom() : startDate;
         endDate = endDate == null ? new Date() : endDate;
