@@ -37,7 +37,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     private final DateField endDate = new DateField("Date to");
 
     @PropertyId("salesman")
-    private final ComboBox salesman = new ComboBox("Salesrep",
+    private final ComboBox salesrep = new ComboBox("Salesrep",
             new BeanItemContainer(Salesman.class, DS.getSalesmanController().getAll()));
 
     @PropertyId("customer")
@@ -49,7 +49,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
             new BeanItemContainer(Product.class, DS.getProductController().getAll()));
 
     @PropertyId("quantity")
-    private final TextField quantity = new TextField("Quantity");
+    private final TextField quantity = new TextField("Quantity", "122000");
 
     @PropertyId("moneyAmount")
     private final TextField moneyAmount = new TextField("Amount");
@@ -67,13 +67,13 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
 
-        initFields();
-        updateDynamicFields();
-
         CustomSearchData cc = new CustomSearchData();
 
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();
+
+        initFields();
+        updateDynamicFields();
 
         clickListener = (Button.ClickEvent event) -> {
             setBeanFromFields(beanItem.getBean());
@@ -90,7 +90,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     protected final void setBeanFromFields(CustomSearchData csd) {
         csd.setStartDate(startDate.getValue());
         csd.setEndDate(endDate.getValue());
-        csd.setSalesman((Salesman) salesman.getValue());
+        csd.setSalesman((Salesman) salesrep.getValue());
         csd.setCustomer((Customer) customer.getValue());
         csd.setProduct((Product) product.getValue());
 
@@ -109,35 +109,34 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     }
 
     @Override
-    public final void setFieldsFromBean(CustomSearchData cc) {
-        startDate.setValue(cc.getStartDate());
-        endDate.setValue(cc.getEndDate());
-        salesman.setValue(cc.getSalesman());
-        customer.setValue(cc.getCustomer());
-        product.setValue(cc.getProduct());
+    public final void setFieldsFromBean(CustomSearchData csd) {
+        startDate.setValue(csd.getStartDate());
+        endDate.setValue(csd.getEndDate());
+        salesrep.setValue(csd.getSalesman());
+        customer.setValue(csd.getCustomer());
+        product.setValue(csd.getProduct());
 
         try {
-            quantity.setValue(Double.toString(cc.getQuantity()));
+            quantity.setValue(Double.toString(csd.getQuantity()));
         } catch (Exception e) {
         }
 
         try {
-            moneyAmount.setValue(Double.toString(cc.getMoneyAmount()));
+            moneyAmount.setValue(Double.toString(csd.getMoneyAmount()));
         } catch (Exception e) {
         }
 
-        caseFinished.setValue(cc.getCaseFinished());
-        saleAgreeded.setValue(cc.getSaleAgreeded());
+        caseFinished.setValue(csd.getCaseFinished());
+        saleAgreeded.setValue(csd.getSaleAgreeded());
     }
 
     @Override
     protected final void initFields() {
-        salesman.focus();
+        salesrep.focus();
         setRequiredFields();
 
         // quantity.setConverter(Integer.class);
         // moneyAmount.setConverter(Integer.class);
-        
         quantity.setEnabled(false);
         moneyAmount.setEnabled(false);
         caseFinished.setEnabled(false);

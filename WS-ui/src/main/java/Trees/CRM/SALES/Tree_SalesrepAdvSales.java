@@ -5,7 +5,6 @@
  */
 package Trees.CRM.SALES;
 
-import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
@@ -14,34 +13,29 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
-import db.ent.CrmCase;
 import db.ent.RelSALE;
 import db.ent.Salesman;
-import db.ent.custom.CustomSearchData;
-import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import ws.MyUI;
-import static ws.MyUI.DS;
 
 /**
  *
  * @author root
  */
-public class Tree_SalesrepAdvSales extends CustomObjectTree<CustomSearchData> {
+public class Tree_SalesrepAdvSales extends CustomObjectTree<Salesman> {
 
     private Salesman salesman;
     private Form_CRUD2 crudForm;
     private String imageLocation;
 
-    public Tree_SalesrepAdvSales(String caption, CustomSearchData csd, boolean formAllowed)
+    public Tree_SalesrepAdvSales(String caption, Salesman salesrep, List<RelSALE> salesrepSales, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
 
-        super(caption,
-                Arrays.asList(DS.getSearchController().getAllSalesrepSales(csd).keySet().toArray())
-        );
+        super(caption, salesrep, salesrepSales);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {
@@ -51,7 +45,7 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<CustomSearchData> {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
-                        //<editor-fold defaultstate="collapsed" desc="RelSale">
+                        //<editor-fold defaultstate="collapsed" desc="RelSALE">
                         if (event.getItemId() instanceof RelSALE) {
 
                             try {
@@ -67,25 +61,10 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<CustomSearchData> {
                         }
                         //</editor-fold>
 
-                        //<editor-fold defaultstate="collapsed" desc="Salesrep">
-                        if (event.getItemId() instanceof Salesman) {
-
-                            try {
-                                this.salesman = (Salesman) event.getItemId();
-
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
-
-                                winFormCaption = "Existing CRM Case";
-                                imageLocation = "img/crm/crmCase.png";
-                            } catch (NullPointerException | IllegalArgumentException ex) {
-                            }
-                        }
-                        //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
-                        for (RelSALE rs : DS.getSearchController().getAllSales(csd)) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + rs.getFK_IDCA().getFK_IDRSC().getFK_IDS().toString(), rs.getFK_IDCA());
+                        for (Object rs : this.rootNodeSubList) {
+                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + ((RelSALE) rs).getFK_IDCA().getFK_IDRSC().getFK_IDS().toString(), ((RelSALE) rs).getFK_IDCA());
                             propTrees.add(csct);
 
                             propPanel.addComponent(csct);
@@ -122,10 +101,7 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<CustomSearchData> {
     }
 
     @Override
-    protected void createSubNodes(CustomSearchData csd) {
-        createNodeItems(csd,
-                Arrays.asList(DS.getSearchController().getAllSalesrepSales(csd).values().toArray())
-        );
+    protected void createSubNodes(Salesman s) {
     }
 
 }

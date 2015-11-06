@@ -29,7 +29,7 @@ public class CustomTree<T> extends Tree {
     protected boolean readOnly = true;
 
     /**
-     * <b>Lista počvorova ovog stabla</b>
+     * <b>elements</b> - List of the root nodes elements for this Custom tree.
      */
     protected List<T> elements;
 
@@ -47,10 +47,10 @@ public class CustomTree<T> extends Tree {
     }
 
     /**
-     * Kreiraj stablo sa čvorovima iz liste.
+     * Custom tree creation with treeItems as root nodes list.
      *
-     * @param caption Naziv stabla
-     * @param treeItems Lista čvorova
+     * @param caption Tree caption
+     * @param treeItems root nodes list
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
     public CustomTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
@@ -70,13 +70,11 @@ public class CustomTree<T> extends Tree {
 
     /**
      * <p>
-     * Kreiraj stablo sa čvorovima iz bean container-a.</p>
-     * Ova opcija je zgodna kod automatskog ažuriranja podataka, jer kad radimo
-     * sa kontejnerom, sve izmene na kontejneru su odmah vidljive i u UI
-     * komponenti.
+     * Create this tree with nodes from the supplied bean container.</p>
+     * Very useful in the cases where real-time updates are needed in the UI.
      *
      * @param caption
-     * @param container BeanContainer za klasu koju pratimo.
+     * @param container BeanContainer
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
     public CustomTree(String caption, BeanItemContainer<T> container) throws CustomTreeNodesEmptyException, NullPointerException {
@@ -96,16 +94,16 @@ public class CustomTree<T> extends Tree {
     }
 
     /**
-     * Kreiraj podčvorove iz liste za čvor "t" tipa T.
+     * <b>Root nodes sub-nodes creation.</b>
      *
-     * @param item Čvor
-     * @param childItems Lista podčvorova
+     * @param rootNode root node.
+     * @param rootNodeChildItemsList List of the sub nodes for the root node.
      */
-    protected void setNodeItems(Object item, List childItems) {
-        for (Object childItem : childItems) {
-            if (this.containsId(item)) {
+    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList) {
+        for (Object childItem : rootNodeChildItemsList) {
+            if (this.containsId(rootNode)) {
                 addItem(childItem);
-                setParent(childItem, item);
+                setParent(childItem, rootNode);
                 setChildrenAllowed(childItem, false);
             }
         }

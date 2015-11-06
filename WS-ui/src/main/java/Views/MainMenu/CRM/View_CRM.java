@@ -50,8 +50,8 @@ public class View_CRM extends View_Dashboard {
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
-                // listom ispod, kontroliĹˇemo not null vrednosti,
-                // da bi se stablo kreiralo, inaÄŤe zbog null, stablo se neÄ‡e kreirati.
+                // listom ispod, kontrolišemo not null vrednosti,
+                // da bi se stablo kreiralo, inaÄŤe zbog null, stablo se neće kreirati.
                 List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
                 if (!L.isEmpty()) {
                     Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formAllowed);
@@ -144,7 +144,8 @@ public class View_CRM extends View_Dashboard {
         });
         //</editor-fold>
 
-        return createPanelComponent(panelHeader,
+        return createPanelComponent(
+                panelHeader,
                 getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
                 formAllowed, panelCommands
         );
@@ -195,7 +196,7 @@ public class View_CRM extends View_Dashboard {
             for (Map.Entry<Salesman, List<RelSALE>> RS : DS.getSearchController().getAllSalesrepSales(csd).entrySet()) {
 
                 if (!RS.getValue().isEmpty()) {
-                    Tree_SalesrepAdvSales tss = new Tree_SalesrepAdvSales("", csd, formAllowed);
+                    Tree_SalesrepAdvSales tss = new Tree_SalesrepAdvSales("", RS.getKey(), RS.getValue(), formAllowed);
                     LP.add(new Panel(RS.toString(), tss));
                 }
             }

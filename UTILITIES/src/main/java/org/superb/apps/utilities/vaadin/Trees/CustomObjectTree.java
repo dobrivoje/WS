@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.superb.apps.utilities.vaadin.Trees;
 
 import db.Exceptions.CustomTreeNodesEmptyException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  * <p>
- * CustomDateTree klasa kao čvorove ima objekte tipa T.</p>
- * Za svaki čvor, postoji lista.
+ * <b>CustomDateTree</b> class has root nodes of the type T.</p>
+ * For every root node, there is a list with it's sub-nodes.
  *
  * @param <T>
  */
@@ -22,14 +18,32 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     protected Date dateFrom;
     protected Date dateTo;
     protected boolean caseFinished;
+    
+    protected List rootNodeSubList;
 
-    public CustomObjectTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, treeItems);
+    public CustomObjectTree(String caption, List rootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, rootNodes);
         init();
     }
 
-    public CustomObjectTree(String caption, List treeItems, Date dateFrom, Date dateTo) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, treeItems);
+    /**
+     * Create a tree with root node and list of its subnodes.
+     *
+     * @param caption
+     * @param rootNode
+     * @param rootNodeSubList
+     * @throws CustomTreeNodesEmptyException
+     * @throws NullPointerException
+     */
+    public CustomObjectTree(String caption, T rootNode, List rootNodeSubList) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, Arrays.asList(rootNode));
+        super.setNodeItems(rootNode, rootNodeSubList);
+        
+        this.rootNodeSubList = rootNodeSubList;
+    }
+
+    public CustomObjectTree(String caption, List rootNodes, Date dateFrom, Date dateTo) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, rootNodes);
 
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -37,8 +51,8 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
         init();
     }
 
-    public CustomObjectTree(String caption, List treeItems, boolean caseFinished) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, treeItems);
+    public CustomObjectTree(String caption, List rootNodes, boolean caseFinished) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, rootNodes);
 
         this.caseFinished = caseFinished;
 
@@ -58,8 +72,8 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     //<editor-fold defaultstate="collapsed" desc="createSubNodes">
     /**
      * <p>
-     * createSubNodes metod, se koristi u init metodu </p>
-     * kako bi se ispitao svaki čvor "t"
+     * <b>createSubNodes</b> Dynamically create child nodes.</p>
+     * Used in the init() method, in order to check each "t" root node.
      *
      *
      * @param t
@@ -70,10 +84,11 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     //<editor-fold defaultstate="collapsed" desc="createNodeItems">
     /**
      * <p>
-     * Kreiraj stablo sa podčvorovima za čvor "t" tipa T</p>
+     * Create this tree with root node "t" of the type T, with it's sub-nodes
+     * list "subList".</p>
      *
-     * @param t Čvor
-     * @param subList Lista podčvorova čvora "t"
+     * @param t root node.
+     * @param subList root's nodes sub-list.
      */
     protected void createNodeItems(T t, List subList) {
         super.setNodeItems(t, subList);
