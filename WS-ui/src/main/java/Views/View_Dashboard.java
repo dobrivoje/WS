@@ -165,7 +165,7 @@ public abstract class View_Dashboard extends Panel implements View {
         if (panelCommands == null) {
             panelCommands = new HashMap<>();
 
-            panelCommands.put("Last two months period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            panelCommands.put("Last Two Months Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
                 dateInterval.setMonthsBackForth(-1);
             });
 

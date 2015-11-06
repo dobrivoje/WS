@@ -27,7 +27,7 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
     }
 
     /**
-     * Create a tree with root node and list of its subnodes.
+     * Create a tree with root node and list of its sub-nodes.
      *
      * @param caption
      * @param rootNode

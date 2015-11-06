@@ -8,7 +8,6 @@ package Trees.CRM.SALES;
 import Forms.CRM.Form_CRMSell;
 import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
-import Trees.CRM.Tree_CustomerCRMCases;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -16,8 +15,6 @@ import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import ws.MyUI;
@@ -45,6 +42,7 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<Salesman> {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
+
                         //<editor-fold defaultstate="collapsed" desc="RelSALE">
                         if (event.getItemId() instanceof RelSALE) {
 
@@ -60,7 +58,6 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<Salesman> {
                             }
                         }
                         //</editor-fold>
-
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
                         for (Object rs : this.rootNodeSubList) {
@@ -94,7 +91,7 @@ public class Tree_SalesrepAdvSales extends CustomObjectTree<Salesman> {
                 }
 
             } catch (NullPointerException | CustomTreeNodesEmptyException ex) {
-                Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
+                // Logger.getLogger(Tree_SalesrepAdvSales.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         //</editor-fold>

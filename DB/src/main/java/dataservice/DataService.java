@@ -21,7 +21,7 @@ import db.controllers.Salesman_Controller;
 import db.controllers.InfSysUser_Controller;
 import db.controllers.LOG_Controller;
 import db.controllers.Product_Controller;
-import db.controllers.Search_Controller;
+import db.controllers.AdvancedSearch_Controller;
 import db.ent.custom.CustomSearchData;
 import db.interfaces.IBLController;
 import db.interfaces.ICBTController;
@@ -39,7 +39,7 @@ import db.interfaces.ISalesmanController;
 import db.interfaces.IInfSysUserController;
 import db.interfaces.ILOGController;
 import db.interfaces.IPRODUCTController;
-import db.interfaces.ISearchController;
+import db.interfaces.IAdvancedSearchController;
 import javax.persistence.EntityManager;
 
 /**
@@ -82,7 +82,7 @@ public class DataService {
     private final ILOGController iLogController = new LOG_Controller(DBH);
     private final IPRODUCTController iPRODUCTController = new Product_Controller(DBH);
     private final IBLController iBLC = new BLController(DBH);
-    private final ISearchController<CustomSearchData> iSC = new Search_Controller(DBH);
+    private final IAdvancedSearchController<CustomSearchData> iSC = new AdvancedSearch_Controller(DBH);
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Get Interfaces">
@@ -150,7 +150,7 @@ public class DataService {
         return iBLC;
     }
 
-    public ISearchController<CustomSearchData> getSearchController() {
+    public IAdvancedSearchController<CustomSearchData> getSearchController() {
         return iSC;
     }
 

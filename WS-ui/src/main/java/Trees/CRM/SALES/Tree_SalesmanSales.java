@@ -111,7 +111,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                 }
 
             } catch (NullPointerException | CustomTreeNodesEmptyException ex) {
-                Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tree_SalesmanSales.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         //</editor-fold>

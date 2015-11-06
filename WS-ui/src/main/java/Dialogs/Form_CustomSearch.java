@@ -61,6 +61,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     private final CheckBox saleAgreeded = new CheckBox("Sale Agreed ?");
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Konstruktori">
     public Form_CustomSearch() {
         super(new BeanFieldGroup(CustomSearchData.class));
 
@@ -72,7 +73,6 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();
 
-        initFields();
         updateDynamicFields();
 
         clickListener = (Button.ClickEvent event) -> {
@@ -86,6 +86,77 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         addBeansToForm();
     }
 
+    /**
+     * Forma sa vizuelnom reprezentacijom polja, regulisana parametrom.
+     *
+     * @param options Predstavlja bit reprezentaciju polja na formi.<br>
+     * Ukoliko je 1 na mestu za to polje, polje se pojavljuje na formi.<br>
+     * Redosled polja je sleva na desno, počevši od polja kako su raspoređeni na
+     * formi, dakle, prvo je "startDate", zatim "endDate", pa "salesrep", itd.
+     * <p>
+     * Primer : options = 0b111100001, uključuje prva četiri, i poslednje polje
+     * na formi, dakle start, end, salesman, customer, i saleAgreed.
+     */
+    public Form_CustomSearch(int options) {
+        this();
+
+        fieldGroup.getFields().stream().forEach((c) -> {
+            c.setEnabled(false);
+        });
+
+        int mask = (int) Math.pow(2, fieldGroup.getFields().size());
+
+        //<editor-fold defaultstate="collapsed" desc="for petlja za ispitivanje">
+        for (int i = 0; i < 8; i++) {
+
+            switch (options & mask) {
+                case 0b100000000:
+                    // startDate.setVisible(true);
+                    startDate.setEnabled(true);
+                    break;
+                case 0b10000000:
+                    // endDate.setVisible(true);
+                    endDate.setEnabled(true);
+                    break;
+                case 0b1000000:
+                    // salesrep.setVisible(true);
+                    salesrep.setEnabled(true);
+                    break;
+                case 0b100000:
+                    // customer.setVisible(true);
+                    customer.setEnabled(true);
+                    break;
+                case 0b10000:
+                    // product.setVisible(true);
+                    product.setEnabled(true);
+                    break;
+                case 0b1000:
+                    // quantity.setVisible(true);
+                    quantity.setEnabled(true);
+                    break;
+                case 0b100:
+                    // moneyAmount.setVisible(true);
+                    moneyAmount.setEnabled(true);
+                    break;
+                case 0b10:
+                    // caseFinished.setVisible(true);
+                    caseFinished.setEnabled(true);
+                    break;
+                case 0b1:
+                    // saleAgreeded.setVisible(true);
+                    saleAgreeded.setEnabled(true);
+                    break;
+                default:
+            }
+
+            mask >>= 1;
+        }
+        //</editor-fold>
+
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="overrided metode...">
     @Override
     protected final void setBeanFromFields(CustomSearchData csd) {
         csd.setStartDate(startDate.getValue());
@@ -162,4 +233,6 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
             );
         });
     }
+    //</editor-fold>
+
 }

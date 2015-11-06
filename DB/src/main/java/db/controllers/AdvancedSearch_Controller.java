@@ -11,7 +11,7 @@ import db.ent.CrmProcess;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
-import db.interfaces.ISearchController;
+import db.interfaces.IAdvancedSearchController;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +19,12 @@ import java.util.Map;
  *
  * @author root
  */
-public class Search_Controller implements ISearchController<CustomSearchData> {
+public class AdvancedSearch_Controller implements IAdvancedSearchController<CustomSearchData> {
 
     private static DBHandler dbh;
 
-    public Search_Controller(DBHandler dbh) {
-        Search_Controller.dbh = dbh;
+    public AdvancedSearch_Controller(DBHandler dbh) {
+        AdvancedSearch_Controller.dbh = dbh;
     }
 
     @Override

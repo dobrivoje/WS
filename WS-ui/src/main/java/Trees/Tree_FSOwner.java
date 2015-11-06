@@ -81,7 +81,7 @@ public class Tree_FSOwner extends CustomDateTree<Owner> {
                 }
 
             } catch (NullPointerException ex) {
-                Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tree_FSOwner.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         //</editor-fold>

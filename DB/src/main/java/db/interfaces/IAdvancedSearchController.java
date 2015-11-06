@@ -12,7 +12,7 @@ import db.ent.Salesman;
 import java.util.List;
 import java.util.Map;
 
-public interface ISearchController<T> {
+public interface IAdvancedSearchController<T> {
 
     List<RelSALE> getAllSales(T t);
 
@@ -21,4 +21,5 @@ public interface ISearchController<T> {
     List<CrmProcess> getAllCrmProcesses(T t);
 
     Map<Salesman, List<RelSALE>> getAllSalesrepSales(T t);
+    
 }

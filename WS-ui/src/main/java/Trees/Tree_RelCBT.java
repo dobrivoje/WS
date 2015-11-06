@@ -40,7 +40,8 @@ public class Tree_RelCBT extends CustomDateTree<RelCBType> {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
-                        //<editor-fold defaultstate="collapsed" desc="Fuelstation">
+
+                        //<editor-fold defaultstate="collapsed" desc="RelCBType">
                         if (event.getItemId() instanceof RelCBType) {
 
                             try {
@@ -51,27 +52,28 @@ public class Tree_RelCBT extends CustomDateTree<RelCBType> {
 
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
-                            //</editor-fold>
-
-                            //<editor-fold defaultstate="collapsed" desc="Open form">
-                            propTrees.stream().forEach((ct) -> {
-                                ((Tree_CRMSingleCase) ct).refreshVisualContainer();
-                            });
-
-                            winFormPropPanel = new Panel(propPanel.getComponentCount() > 0
-                                    ? "Customer Bussines Types" : "No Customer Bussines Type.", propPanel);
-
-                            getUI().addWindow(
-                                    new WindowFormProp(
-                                            winFormCaption,
-                                            false,
-                                            crudForm.getClickListener(),
-                                            crudForm,
-                                            winFormPropPanel
-                                    )
-                            );
                         }
                         //</editor-fold>
+
+                        //<editor-fold defaultstate="collapsed" desc="Open form">
+                        propTrees.stream().forEach((ct) -> {
+                            ((Tree_CRMSingleCase) ct).refreshVisualContainer();
+                        });
+
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0
+                                ? "Customer Bussines Types" : "No Customer Bussines Type.", propPanel);
+
+                        getUI().addWindow(
+                                new WindowFormProp(
+                                        winFormCaption,
+                                        false,
+                                        crudForm.getClickListener(),
+                                        crudForm,
+                                        winFormPropPanel
+                                )
+                        );
+                        //</editor-fold>
+
                     } else {
                         Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
                                 Notification.Type.ERROR_MESSAGE);
@@ -79,7 +81,7 @@ public class Tree_RelCBT extends CustomDateTree<RelCBType> {
                 }
 
             } catch (NullPointerException ex) {
-                Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
+                // Logger.getLogger(Tree_CustomerCRMCases.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
