@@ -5,12 +5,10 @@
  */
 package Trees;
 
-import Forms.Form_CRUD2;
 import Forms.FSM.Form_FSOwner;
 import ImageGallery.CustomerFuelStationsGallery;
 import ImageGallery.IDocumentGallery;
 import Trees.CRM.Tree_CRMSingleCase;
-import Trees.CRM.Tree_CustomerCRMCases;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -30,7 +28,6 @@ import static ws.MyUI.DS;
  */
 public class Tree_FSOwner extends CustomDateTree<Owner> {
 
-    private Form_CRUD2 crudForm;
     private Owner owner;
 
     private IDocumentGallery IG;

@@ -6,7 +6,6 @@
 package Trees.CRM.SALES;
 
 import Forms.CRM.Form_CRMSell;
-import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
@@ -26,7 +25,6 @@ import ws.MyUI;
 public class Tree_SalesrepAdvSales extends CustomObjectTree<Salesman> {
 
     private Salesman salesman;
-    private Form_CRUD2 crudForm;
     private String imageLocation;
 
     public Tree_SalesrepAdvSales(String caption, Salesman salesrep, List<RelSALE> salesrepSales, boolean formAllowed)

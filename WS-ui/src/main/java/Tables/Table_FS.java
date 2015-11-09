@@ -7,7 +7,7 @@ package Tables;
 
 import ImageGallery.IDocumentGallery;
 import ImageGallery.CustomerFuelStationsGallery;
-import Forms.Form_CRUD2;
+import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import Forms.FSM.Form_FS;
 import Forms.FSM.Form_FSOwner;
 import com.vaadin.data.util.BeanItemContainer;

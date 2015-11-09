@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Trees.CRM;
 
 import com.vaadin.event.ItemClickEvent;
@@ -37,7 +32,7 @@ public class Tree_CRMSingleCase extends CustomObjectTree<CrmCase> {
     @Override
     protected void createSubNodes(CrmCase c) {
         // if (!c.getFinished()) {
-        createNodeItems(c, DS.getCRMController().getCRM_Processes(c));
+        createSingleRootChildNodes(c, DS.getCRMController().getCRM_Processes(c));
         //}
     }
 }

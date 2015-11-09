@@ -1,4 +1,4 @@
-package Forms;
+package org.superb.apps.utilities.vaadin.Forms;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;

@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries(
         {
             @NamedQuery(name = "CrmCase.findAll", query = "SELECT c FROM CrmCase c"),
-
+            
             @NamedQuery(name = "CrmCase.AllActiveCases", query = "SELECT c FROM CrmCase c WHERE c.finished = :Finished"),
 
             @NamedQuery(name = "CrmCase.findByIdca", query = "SELECT c FROM CrmCase c WHERE c.idca = :idca"),
@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
             @NamedQuery(name = "CrmCase.findByCustomer",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDC = :IDC AND c.finished = :Finished ORDER BY c.idca DESC"),
-
+            
             @NamedQuery(name = "CrmCase.findBySalesman",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :FK_IDS AND c.finished = :finished ORDER BY c.idca DESC"),
 
@@ -68,7 +68,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
             @NamedQuery(name = "CrmCase.SaleAgreededCases",
                     query = "SELECT c FROM CrmCase c WHERE c.finished = :finished AND c.saleAgreeded = :saleAgreeded AND c.startDate >= :startDate AND c.endDate <= :endDate"),
-
+            
             @NamedQuery(name = "CrmCase.Salesrep_Cases",
                     query = "SELECT c FROM CrmCase c WHERE c.FK_IDRSC.FK_IDS = :IDS "
                     + "AND c.finished = :finished AND c.saleAgreeded = :saleAgreeded "

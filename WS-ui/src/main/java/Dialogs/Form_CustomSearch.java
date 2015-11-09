@@ -6,7 +6,7 @@
 package Dialogs;
 
 import db.ent.custom.CustomSearchData;
-import Forms.Form_CRUD2;
+import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;

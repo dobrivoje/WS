@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.Query;
@@ -2002,13 +2003,58 @@ public class DBHandler {
     }
 
     public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
+        Query query;
+
+        String Q = "SELECT c FROM CrmCase c WHERE c.startDate >= :dateFrom AND c.endDate <= :dateTo ";
+
+        try {
+
+            if (csd.getCustomer() != null) {
+                Q += " AND c.FK_IDRSC.FK_IDC = :IDC ";
+            }
+
+            if (csd.getSalesman() != null) {
+                Q += " AND c.FK_IDRSC.FK_IDS = :IDS ";
+            }
+
+            if (csd.getCaseFinished() != null) {
+                Q += " AND c.finished = :finished ";
+            }
+
+            if (csd.getSaleAgreeded() != null) {
+                Q += " AND c.saleAgreeded = :saleAgreeded";
+            }
+
+            query = getEm().createQuery(Q)
+                    .setParameter("dateFrom", csd.getStartDate())
+                    .setParameter("dateTo", csd.getEndDate());
+
+            if (csd.getCustomer() != null) {
+                query.setParameter("IDC", csd.getCustomer());
+            }
+
+            if (csd.getSalesman() != null) {
+                query.setParameter("IDS", csd.getSalesman());
+            }
+            
+            query.setParameter("finished", csd.getCaseFinished());
+            query.setParameter("saleAgreeded", csd.getSaleAgreeded());
+
+            return query.getResultList();
+            
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
         Date from, to;
         Query query;
 
         from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
         to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
 
-        String Q = "SELECT DISTINCT p.FK_IDCA from CrmProcess p WHERE p.FK_IDCA.startDate >= :dateFrom AND p.FK_IDCA.endDate <= :dateTo ";
+        String Q = "SELECT p from CrmProcess p WHERE p.actionDate BETWEEN :dateFrom AND :dateTo ";
 
         try {
 
@@ -2058,79 +2104,44 @@ public class DBHandler {
         }
     }
 
-    public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
-        Date from, to;
-        Query query;
-
-        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
-        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
-
-        String Q = "SELECT p from CrmProcess p WHERE p.actionDate BETWEEN :dateFrom AND :dateTo ";
-
-        try {
-
-            if (csd.getCustomer() != null) {
-                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
-            }
-
-            if (csd.getSalesman() != null) {
-                Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
-            }
-
-            if (csd.getProduct() != null) {
-                Q += " AND p.FK_IDP = :IDP ";
-            }
-
-            if (csd.getCaseFinished() != null) {
-                Q += " AND S.FK_IDCA.finished = :finished ";
-            }
-
-            if (csd.getSaleAgreeded() != null) {
-                Q += " AND S.FK_IDCA.saleAgreeded = :saleAgreeded";
-            }
-
-            query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to);
-
-            if (csd.getCustomer() != null) {
-                query.setParameter("IDC", csd.getCustomer());
-            }
-            if (csd.getSalesman() != null) {
-                query.setParameter("IDS", csd.getSalesman());
-            }
-            if (csd.getProduct() != null) {
-                query.setParameter("IDP", csd.getProduct());
-            }
-            if (csd.getCaseFinished() != null) {
-                query.setParameter("finished", csd.getCaseFinished());
-            }
-            if (csd.getSaleAgreeded() != null) {
-                query.setParameter("saleAgreeded", csd.getSaleAgreeded());
-            }
-
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public Map<Salesman, List<RelSALE>> getAllSalesrepSales(CustomSearchData csd) {
         Map<Salesman, List<RelSALE>> MSS = new HashMap<>();
+        List<RelSALE> LRS;
 
         for (RelSALE s : getAllSales(csd)) {
             Salesman salesRep = s.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
             if (MSS.containsKey(salesRep)) {
-                List<RelSALE> LRS = new ArrayList<>(MSS.get(salesRep));
+                LRS = new ArrayList<>(MSS.get(salesRep));
                 LRS.add(s);
-                MSS.put(salesRep, LRS);
             } else {
-                MSS.put(salesRep, Arrays.asList(s));
+                LRS = Arrays.asList(s);
             }
+
+            MSS.put(salesRep, LRS);
+
         }
 
         return MSS;
     }
-//</editor-fold>
+
+    public Map<CrmCase, List<CrmProcess>> getCRMProcesses(CustomSearchData csd) {
+        Map<CrmCase, List<CrmProcess>> M = new LinkedHashMap<>();
+        List<CrmProcess> LP = null;
+
+        for (CrmCase c : getAllCrmCases(csd)) {
+            if (M.containsKey(c)) {
+                if (!(getCRMProcesses(c)).isEmpty()) {
+                    LP = new ArrayList<>(M.get(c));
+                    LP.add((CrmProcess) getCRMProcesses(c));
+                }
+            }
+
+            M.put(c, LP);
+        }
+
+        return M;
+    }
+
+    //</editor-fold>
 }

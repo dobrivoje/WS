@@ -12,6 +12,8 @@ import com.vaadin.ui.VerticalLayout;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.ArrayList;
 import java.util.List;
+import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_NORM;
+import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_WIDTH_DEFAULT_NORM;
 
 /**
  *
@@ -26,6 +28,16 @@ public class CustomTree<T> extends Tree {
     protected String winFormCaption;
     protected Panel winFormPropPanel;
 
+    /**
+     * Parameter to regulate Window carrier height.
+     */
+    protected int winFormHeight;
+
+    /**
+     * Parameter to regulate Window carrier width.
+     */
+    protected int winFormWidth;
+
     protected boolean readOnly = true;
 
     /**
@@ -36,6 +48,9 @@ public class CustomTree<T> extends Tree {
     private void init(String caption) {
         setCaption(caption);
         elements = new ArrayList();
+
+        winFormHeight = WINDOW_HEIGHT_DEFAULT_NORM;
+        winFormWidth = WINDOW_WIDTH_DEFAULT_NORM;
 
         propPanel = new VerticalLayout();
         propPanel.setMargin(true);

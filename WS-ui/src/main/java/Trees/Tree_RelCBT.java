@@ -1,22 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Trees;
 
 import Forms.CDM.Form_RELCBT;
-import Forms.Form_CRUD2;
 import Trees.CRM.Tree_CRMSingleCase;
-import Trees.CRM.Tree_CustomerCRMCases;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.RelCBType;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
 import static ws.MyUI.DS;
@@ -27,7 +18,6 @@ import static ws.MyUI.DS;
  */
 public class Tree_RelCBT extends CustomDateTree<RelCBType> {
 
-    private Form_CRUD2 crudForm;
     private RelCBType rcbt;
 
     public Tree_RelCBT(String caption, Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {

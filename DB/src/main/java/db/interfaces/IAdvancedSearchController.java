@@ -22,4 +22,6 @@ public interface IAdvancedSearchController<T> {
 
     Map<Salesman, List<RelSALE>> getAllSalesrepSales(T t);
     
+    Map<CrmCase, List<CrmProcess>> getCRMProcesses(T t);
+    
 }

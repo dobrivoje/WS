@@ -1,6 +1,6 @@
 package Forms.CDM;
 
-import Forms.Form_CRUD2;
+import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;

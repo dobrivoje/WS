@@ -5,8 +5,8 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import Forms.Form_CRUD;
-import Forms.IFormNotification;
+import org.superb.apps.utilities.vaadin.Forms.Form_CRUD;
+import org.superb.apps.utilities.vaadin.Forms.IFormNotification;
 import db.ent.Customer;
 import static ws.MyUI.DS;
 

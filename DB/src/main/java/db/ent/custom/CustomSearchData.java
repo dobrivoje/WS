@@ -140,7 +140,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Boolean getCaseFinished() {
-        return caseFinished;
+        return caseFinished == null ? false : caseFinished;
     }
 
     public void setCaseFinished(Boolean caseFinished) {

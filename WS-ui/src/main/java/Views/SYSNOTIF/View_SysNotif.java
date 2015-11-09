@@ -54,7 +54,11 @@ public class View_SysNotif extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="My Active CRM Cases">
         try {
-            Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formEditAllowed);
+            Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
+                    "",
+                    DS.getCRMController().getCRM_Cases(S, false),
+                    formEditAllowed
+            );
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -105,7 +109,10 @@ public class View_SysNotif extends View_Dashboard {
         try {
 
             for (Salesman S1 : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S1, true, false, formAllowed);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("",
+                        DS.getCRMController().getCRM_CasesStats(S1, true, false),
+                        formAllowed
+                );
 
                 subPanels.add(new Panel(S1.toString(), csct));
             }
@@ -132,7 +139,11 @@ public class View_SysNotif extends View_Dashboard {
         try {
 
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", BLS, formAllowed);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
+                        "",
+                        DS.getCRMController().getCRM_Cases(BLS, false),
+                        formAllowed
+                );
                 subPanels.add(new Panel(BLS.toString(), csct));
             }
 

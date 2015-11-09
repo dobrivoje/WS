@@ -1,4 +1,4 @@
-package Forms;
+package org.superb.apps.utilities.vaadin.Forms;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
@@ -10,10 +10,11 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import java.util.Date;
+import org.dobrivoje.utils.date.formats.DateFormat;
 import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
-import static ws.MyUI.APP_DATE_FORMAT;
 
 public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T> {
+    public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     protected FieldGroup fieldGroup;
     protected BeanItem<T> beanItem;

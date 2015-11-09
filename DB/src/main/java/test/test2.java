@@ -2,6 +2,8 @@ package test;
 
 import dataservice.DataService;
 import db.DBHandler;
+import db.ent.CrmCase;
+import db.ent.CrmProcess;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
@@ -55,5 +57,68 @@ public class test2 {
         System.err.println("test3 : getAllSales from :" + d.getFrom() + "-" + d.getTo());
         System.err.println("Salesrep(s) : " + DS.getSearchController().getAllSalesrepSales(csd).keySet());
         System.err.println("Salesrep(s) sale(s) : " + DS.getSearchController().getAllSalesrepSales(csd).values());
+
+        System.err.println("_______________________________________________________________");
+        System.err.println("");
+        System.err.println("test4");
+        System.err.println("");
+
+        CustomSearchData csd1 = new CustomSearchData();
+        d.setFrom(1, 1, 2015);
+        d.setTo(11, 11, 2015);
+
+        csd1.setStartDate(d.getFrom());
+        csd1.setEndDate(d.getTo());
+
+        csd1.setCaseFinished(true);
+        csd1.setSaleAgreeded(false);
+
+        System.err.println("test 4.1 : " + DBHandler.getDefault().getCRMProcesses(csd1).toString());
+
+        for (Map.Entry<CrmCase, List<CrmProcess>> entrySet : DS.getSearchController().getCRMProcesses(csd1).entrySet()) {
+            CrmCase key = entrySet.getKey();
+            List<CrmProcess> value = entrySet.getValue();
+
+            System.err.println("---------------------------");
+            System.err.println(key);
+            System.err.println(value);
+        }
+
+        System.err.println("_______________________________________________________________");
+        System.err.println("");
+        System.err.println("test5");
+        System.err.println("");
+
+        csd1.setCaseFinished(false);
+        csd1.setSaleAgreeded(false);
+
+        for (Salesman s : DS.getSalesmanController().getAll()) {
+            csd1.setSalesman(s);
+
+            if (!DS.getCRMController().getCRM_Cases(s, false).isEmpty()) {
+
+                for (Map.Entry<CrmCase, List<CrmProcess>> entrySet : DS.getSearchController().getCRMProcesses(csd1).entrySet()) {
+                    CrmCase key = entrySet.getKey();
+                    List<CrmProcess> value = entrySet.getValue();
+
+                    System.err.println("---------------------------");
+                    System.err.println(key);
+                    System.err.println(value);
+                }
+                
+                System.err.println("|_____" + s);
+            }
+        }
+        
+        System.err.println("_______________________________________________________________");
+        System.err.println("");
+        System.err.println("test6");
+        System.err.println("");
+
+        CustomSearchData csd2 = new CustomSearchData();
+        csd2.setCaseFinished(false);
+        csd2.setSaleAgreeded(false);
+        
+        System.err.println(DS.getSearchController().getAllCrmCases(csd2));
     }
 }

@@ -48,16 +48,33 @@ public class View_CRM extends View_Dashboard {
     //<editor-fold defaultstate="collapsed" desc="Custom Panels,...">
     private Component activeCasesBySalesmanPanel() {
         try {
+            CustomSearchData csd = new CustomSearchData();
+            csd.setCaseFinished(false);
+            csd.setSaleAgreeded(false);
+
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
                 // listom ispod, kontrolišemo not null vrednosti
                 // da bi se stablo kreiralo, 
                 // inače ako postoji null, stablo se neće kreirati.
+                
+                
                 List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
+
                 if (!L.isEmpty()) {
-                    Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", S, formAllowed);
+                    Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", L, formAllowed);
                     subPanels.add(new Panel(S.toString(), csct));
                 }
+
+                /*
+                 csd.setSalesman(S);
+                 Map<CrmCase, List<Object>> LC = DS.getSearchController().getCRMProcesses(csd);
+
+                 if (!LC.isEmpty()) {
+                 Tree_SalesmanCRMCases2 csct = new Tree_SalesmanCRMCases2("", LC, formAllowed);
+                 subPanels.add(new Panel(S.toString(), csct));
+                 }
+                 */
             }
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -193,10 +210,10 @@ public class View_CRM extends View_Dashboard {
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
-                List<RelSALE> L = DS.getCRMController().getCRM_Sales(S, from, to);
+                List<CrmCase> L = DS.getCRMController().getCRM_Salesrep_Sales_Cases(S, from, to);
 
                 if (!L.isEmpty()) {
-                    Tree_SalesmanSales tss = new Tree_SalesmanSales("", S, from, to, formAllowed);
+                    Tree_SalesmanSales tss = new Tree_SalesmanSales("", L, from, to, formAllowed);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }
@@ -245,7 +262,7 @@ public class View_CRM extends View_Dashboard {
                 List<CrmCase> L = DS.getCRMController().getCRM_CasesStats(S, true, false, from, to);
 
                 if (!L.isEmpty()) {
-                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", S, true, false, formAllowed, from, to);
+                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", L, formAllowed, from, to);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }

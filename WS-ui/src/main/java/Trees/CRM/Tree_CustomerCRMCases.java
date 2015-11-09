@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Trees.CRM;
 
 import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMProcess;
-import Forms.Form_CRUD2;
 import static Menu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
@@ -20,6 +14,7 @@ import db.ent.Salesman;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import ws.MyUI;
 import static ws.MyUI.DS;
@@ -30,7 +25,6 @@ import static ws.MyUI.DS;
  */
 public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
 
-    private Form_CRUD2 crudForm;
     private Salesman salesman;
 
     public Tree_CustomerCRMCases(String caption, final Customer customer, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
@@ -99,9 +93,15 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
 
                         if (readOnly) {
+                            if (crudForm instanceof Form_CRMProcess) {
+                                // Make window bigger in height to accomodate all form fields.
+                                winFormHeight = WINDOW_HEIGHT_DEFAULT_BIG;
+                            }
+
                             getUI().addWindow(
                                     new WindowFormProp(
                                             winFormCaption,
+                                            winFormHeight, winFormWidth,
                                             false,
                                             readOnly,
                                             crudForm,
@@ -136,7 +136,7 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
     @Override
     protected void createSubNodes(CrmCase c) {
         if (!c.getFinished()) {
-            createNodeItems(c, DS.getCRMController().getCRM_Processes(c));
+            createSingleRootChildNodes(c, DS.getCRMController().getCRM_Processes(c));
         }
     }
 }

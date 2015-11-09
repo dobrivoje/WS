@@ -47,4 +47,9 @@ public class AdvancedSearch_Controller implements IAdvancedSearchController<Cust
         return dbh.getAllSalesrepSales(csd);
     }
 
+    @Override
+    public Map<CrmCase, List<CrmProcess>> getCRMProcesses(CustomSearchData csd) {
+        return dbh.getCRMProcesses(csd);
+    }
+
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.superb.apps.utilities.vaadin.MyWindows;
 
 import com.vaadin.server.Sizeable.Unit;
@@ -24,6 +19,11 @@ import com.vaadin.ui.themes.ValoTheme;
 public class WindowFormProp extends Window {
 
     protected final VerticalLayout content = new VerticalLayout();
+    public static int WINDOW_HEIGHT_DEFAULT_BIG = 84;
+    public static int WINDOW_HEIGHT_DEFAULT_NORM = 74;
+    public static int WINDOW_WIDTH_DEFAULT_NORM = 64;
+
+    protected int windowHeight, windowWidth;
 
     protected Button.ClickListener externalButtonClickListener;
 
@@ -45,6 +45,21 @@ public class WindowFormProp extends Window {
      * @param components Right layout (form) part components
      */
     public WindowFormProp(String caption, boolean bigForm, String actionButtonCaption, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
+        this(caption, WINDOW_HEIGHT_DEFAULT_NORM, WINDOW_WIDTH_DEFAULT_NORM, bigForm, actionButtonCaption, externalButtonClickListener, layout, components);
+    }
+
+    /**
+     *
+     * @param caption
+     * @param height
+     * @param width
+     * @param bigForm
+     * @param actionButtonCaption
+     * @param externalButtonClickListener
+     * @param layout
+     * @param components
+     */
+    public WindowFormProp(String caption, int height, int width, boolean bigForm, String actionButtonCaption, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
@@ -104,7 +119,10 @@ public class WindowFormProp extends Window {
 
         content.setExpandRatio(HSP, 1);
 
-        setWindowSize();
+        windowHeight = height;
+        windowWidth = width;
+
+        setWindowSize(height, width);
         center();
         setContent(content);
     }
@@ -137,8 +155,35 @@ public class WindowFormProp extends Window {
         actionButton.setVisible(!readOnly);
     }
 
-    private void setWindowSize() {
-        setHeight(73, Unit.PERCENTAGE);
-        setWidth(64, Unit.PERCENTAGE);
+    /**
+     *
+     * @param caption
+     * @param height
+     * @param width
+     * @param bigForm
+     * @param readOnly
+     * @param layout
+     * @param components
+     */
+    public WindowFormProp(String caption, int height, int width, boolean bigForm, boolean readOnly, Layout layout, Component... components) {
+        this(caption, bigForm, null, layout, components);
+        setWindowSize(height, width);
+
+        actionButton.setVisible(!readOnly);
+    }
+
+    /**
+     * Set the window size.<br>
+     * Units are in percents.
+     *
+     * @param height
+     * @param width
+     */
+    private void setWindowSize(int height, int width) {
+        windowHeight = height;
+        windowWidth = width;
+
+        setHeight(height, Unit.PERCENTAGE);
+        setWidth(width, Unit.PERCENTAGE);
     }
 }

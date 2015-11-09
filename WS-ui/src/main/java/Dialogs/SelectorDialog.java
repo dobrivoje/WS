@@ -5,7 +5,7 @@
  */
 package Dialogs;
 
-import Forms.Form_CRUD2;
+import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import com.vaadin.ui.Button;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 
