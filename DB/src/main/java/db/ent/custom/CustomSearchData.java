@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.superb.apps.utilities.datum.Dates;
 
 public class CustomSearchData implements Serializable {
 
@@ -45,14 +44,14 @@ public class CustomSearchData implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
     public CustomSearchData() {
-        Dates d = new Dates();
-        d.setMonthsBackForth(-1);
+        // Dates d = new Dates();
+        // d.setMonthsBackForth(-1);
 
-        startDate = startDate == null ? d.getFrom() : startDate;
-        endDate = endDate == null ? new Date() : endDate;
+        //startDate = startDate == null ? d.getFrom() : startDate;
+        //endDate = endDate == null ? new Date() : endDate;
 
-        caseFinished = true;
-        saleAgreeded = true;
+        //caseFinished = true;
+        //saleAgreeded = true;
     }
 
     public CustomSearchData(CustomSearchData newCustomSearchData) {
@@ -124,7 +123,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Double getQuantity() {
-        return quantity == null ? 0 : quantity;
+        return quantity;
     }
 
     public void setQuantity(Double quantity) {
@@ -140,7 +139,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Boolean getCaseFinished() {
-        return caseFinished == null ? false : caseFinished;
+        return caseFinished;
     }
 
     public void setCaseFinished(Boolean caseFinished) {
@@ -156,7 +155,7 @@ public class CustomSearchData implements Serializable {
     }
 
     public Boolean getSaleAgreeded() {
-        return saleAgreeded == null ? false : saleAgreeded;
+        return saleAgreeded;
     }
 
     public void setSaleAgreeded(Boolean saleAgreeded) {

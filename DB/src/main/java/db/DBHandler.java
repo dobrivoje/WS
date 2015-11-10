@@ -2004,10 +2004,18 @@ public class DBHandler {
 
     public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
         Query query;
-
-        String Q = "SELECT c FROM CrmCase c WHERE c.startDate >= :dateFrom AND c.endDate <= :dateTo ";
+        String Q = "SELECT c FROM CrmCase c WHERE 1=1";
 
         try {
+
+            //<editor-fold defaultstate="collapsed" desc="check parameters">
+            if (csd.getStartDate() != null) {
+                Q += " AND c.startDate >= :startDate ";
+            }
+
+            if (csd.getEndDate() != null) {
+                Q += " AND c.endDate <= :endDate ";
+            }
 
             if (csd.getCustomer() != null) {
                 Q += " AND c.FK_IDRSC.FK_IDC = :IDC ";
@@ -2022,12 +2030,20 @@ public class DBHandler {
             }
 
             if (csd.getSaleAgreeded() != null) {
-                Q += " AND c.saleAgreeded = :saleAgreeded";
+                Q += " AND c.saleAgreeded = :saleAgreeded ";
+            }
+            //</editor-fold>
+
+            query = getEm().createQuery(Q);
+
+            //<editor-fold defaultstate="collapsed" desc="setup parameters">
+            if (csd.getStartDate() != null) {
+                query.setParameter("startDate", csd.getStartDate());
             }
 
-            query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", csd.getStartDate())
-                    .setParameter("dateTo", csd.getEndDate());
+            if (csd.getEndDate() != null) {
+                query.setParameter("endDate", csd.getEndDate());
+            }
 
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
@@ -2036,12 +2052,17 @@ public class DBHandler {
             if (csd.getSalesman() != null) {
                 query.setParameter("IDS", csd.getSalesman());
             }
-            
-            query.setParameter("finished", csd.getCaseFinished());
-            query.setParameter("saleAgreeded", csd.getSaleAgreeded());
+
+            if (csd.getCaseFinished() != null) {
+                query.setParameter("finished", csd.getCaseFinished());
+            }
+
+            if (csd.getSaleAgreeded() != null) {
+                query.setParameter("saleAgreeded", csd.getSaleAgreeded());
+            }
+            //</editor-fold>
 
             return query.getResultList();
-            
         } catch (Exception ex) {
             return null;
         }
@@ -2079,8 +2100,8 @@ public class DBHandler {
             }
 
             query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to);
+                    .setParameter("dateFrom", from == null ? new Date(0) : csd.getStartDate())
+                    .setParameter("dateTo", to == null ? new Date() : csd.getEndDate());
 
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
@@ -2142,6 +2163,5 @@ public class DBHandler {
 
         return M;
     }
-
     //</editor-fold>
 }

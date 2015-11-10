@@ -105,20 +105,24 @@ public class test2 {
                     System.err.println(key);
                     System.err.println(value);
                 }
-                
+
                 System.err.println("|_____" + s);
             }
         }
-        
+
         System.err.println("_______________________________________________________________");
         System.err.println("");
         System.err.println("test6");
         System.err.println("");
 
         CustomSearchData csd2 = new CustomSearchData();
-        csd2.setCaseFinished(false);
-        csd2.setSaleAgreeded(false);
-        
-        System.err.println(DS.getSearchController().getAllCrmCases(csd2));
+        d.setFrom(1, 4, 2015);
+        d.setTo(31, 8, 2015);
+        csd2.setStartDate(d.getFrom());
+        csd2.setEndDate(d.getTo());
+
+        for (CrmCase cc : DS.getSearchController().getAllCrmCases(csd2)) {
+            System.err.println(cc.toString());
+        }
     }
 }
