@@ -76,6 +76,10 @@ public class Salesman implements Serializable {
         this("", "", "", false, null, null, new BussinesLine());
     }
 
+    public Salesman(Salesman s) {
+        this(s.name, s.surname, s.position, s.active, s.dateFrom, s.dateTo, s.fkIdbl);
+    }
+
     public Salesman(String name, String surname, String position, Boolean active, String dateFrom, String dateTo, BussinesLine bussinesLine) {
         this.name = name;
         this.surname = surname;

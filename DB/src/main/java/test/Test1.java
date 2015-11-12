@@ -110,26 +110,11 @@ public class Test1 {
         System.err.println("------------------------");
         System.err.println("test5 : getAllSales for product : " + csd3.getProduct());
 
-        for (RelSALE s : DS.getSearchController().getAllSales(csd3)) {
+        for (RelSALE s : DS.getSearchController().getSales(csd3)) {
             System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
         }
 
         System.err.println("------------------------------------------------------------------------");
         System.err.println("------------------------------------------------------------------------");
-
-        Dates d1 = new Dates();
-        d1.setFrom(1, 1, 2015);
-        d1.setTo(1, 7, 2015);
-        CustomSearchData c4 = new CustomSearchData();
-        c4.setStartDate(d1.getFrom());
-        c4.setEndDate(d1.getTo());
-        System.err.println("------------------------");
-        System.err.println("test6 : getAllCRMCases : " + d1.getFrom() + "-" + d1.getTo());
-
-        for (CrmCase c : DS.getSearchController().getAllCrmCases(c4)) {
-            System.err.println(
-                    c.toString() + " - " + c.getFK_IDRSC().getFK_IDS()
-            );
-        }
     }
 }

@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.Query;
@@ -1973,6 +1972,10 @@ public class DBHandler {
             if (csd.getCustomer() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
             }
+            
+            if (csd.getCustomer() != null) {
+                Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
+            }
 
             if (csd.getSalesman() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
@@ -2002,7 +2005,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
+    public List<CrmCase> getCRMCases(CustomSearchData csd) {
         Query query;
         String Q = "SELECT c FROM CrmCase c WHERE 1=1";
 
@@ -2062,7 +2065,14 @@ public class DBHandler {
             }
             //</editor-fold>
 
-            return query.getResultList();
+            List<CrmCase> L = new ArrayList<>();
+
+            for (CrmCase c : (List<CrmCase>)query.getResultList()) {
+                c.setCrmProcessList(getCRMProcesses(c));
+                L.add(c);
+            }
+
+            return L;
         } catch (Exception ex) {
             return null;
         }
@@ -2144,24 +2154,6 @@ public class DBHandler {
         }
 
         return MSS;
-    }
-
-    public Map<CrmCase, List<CrmProcess>> getCRMProcesses(CustomSearchData csd) {
-        Map<CrmCase, List<CrmProcess>> M = new LinkedHashMap<>();
-        List<CrmProcess> LP = null;
-
-        for (CrmCase c : getAllCrmCases(csd)) {
-            if (M.containsKey(c)) {
-                if (!(getCRMProcesses(c)).isEmpty()) {
-                    LP = new ArrayList<>(M.get(c));
-                    LP.add((CrmProcess) getCRMProcesses(c));
-                }
-            }
-
-            M.put(c, LP);
-        }
-
-        return M;
     }
     //</editor-fold>
 }

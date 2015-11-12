@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
+import org.superb.apps.utilities.datum.Dates;
 import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 import ws.MyUI;
 import static ws.MyUI.DS;
@@ -36,9 +37,11 @@ public class View_CRM extends View_Dashboard {
 
         dynamicPanels.add(0, salesCasesPanel());
         dynamicPanels.add(1, notRelizedCasesPanel());
+        // dynamicPanels.add(2, activeCasesBySalesmanPanel1());
 
         buildContentWithComponents(
                 activeCasesBySalesmanPanel(),
+                // dynamicPanels.get(2),
                 activeCasesByCustomerPanel(),
                 dynamicPanels.get(0),
                 dynamicPanels.get(1)
@@ -53,33 +56,106 @@ public class View_CRM extends View_Dashboard {
             csd.setSaleAgreeded(false);
 
             for (Salesman S : DS.getSalesmanController().getAll()) {
-
-                // listom ispod, kontrolišemo not null vrednosti
-                // da bi se stablo kreiralo, 
-                // inače ako postoji null, stablo se neće kreirati.
-                
-                
-                List<CrmCase> L = DS.getCRMController().getCRM_Cases(S, false);
+                csd.setSalesman(S);
+                List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
 
                 if (!L.isEmpty()) {
                     Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", L, formAllowed);
                     subPanels.add(new Panel(S.toString(), csct));
                 }
-
-                /*
-                 csd.setSalesman(S);
-                 Map<CrmCase, List<Object>> LC = DS.getSearchController().getCRMProcesses(csd);
-
-                 if (!LC.isEmpty()) {
-                 Tree_SalesmanCRMCases2 csct = new Tree_SalesmanCRMCases2("", LC, formAllowed);
-                 subPanels.add(new Panel(S.toString(), csct));
-                 }
-                 */
             }
+
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
         return createPanelComponent("Active Salesrep CRM Cases", subPanels, formAllowed);
+    }
+
+    private Component activeCasesBySalesmanPanel1() {
+        final String panelHeader = "Active Salesrep CRM Cases";
+        final Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
+
+        CustomSearchData csd = new CustomSearchData();
+        Dates d = new Dates();
+
+        //<editor-fold defaultstate="collapsed" desc="Last Month Salesrep Cases">
+        panelCommands.put("Last Month Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            csd.setStartDate(d.getFrom());
+            csd.setEndDate(d.getTo());
+
+            updateUIPanel(2,
+                    createPanelComponent(
+                            panelHeader,
+                            getAdvancedSearchSalesrepCases(csd),
+                            formAllowed,
+                            panelCommands)
+            );
+        });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Last Two Months Salesrep Cases">
+        panelCommands.put("Last Two Months Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            d.setMonthsBackForth(-1);
+            csd.setStartDate(d.getFrom());
+            csd.setEndDate(d.getTo());
+
+            updateUIPanel(2,
+                    createPanelComponent(
+                            panelHeader,
+                            getAdvancedSearchSalesrepCases(csd),
+                            formAllowed,
+                            panelCommands)
+            );
+        });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Last Three Months Salesrep Cases">
+        panelCommands.put("Last Three Months Period", (MenuBar.Command) new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                d.setMonthsBackForth(-2);
+                csd.setStartDate(d.getFrom());
+                csd.setEndDate(d.getTo());
+
+                updateUIPanel(2,
+                        createPanelComponent(
+                                panelHeader,
+                                getAdvancedSearchSalesrepCases(csd),
+                                formAllowed,
+                                panelCommands)
+                );
+            }
+        });
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Advanced Search Dialog">
+        panelCommands.put("Advanced Search Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
+            CustomSearchData csd2 = new CustomSearchData();
+            csd2.setCaseFinished(false);
+            csd2.setSaleAgreeded(false);
+            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000, csd2);
+
+            SelectorDialog SD = new SelectorDialog(FCS);
+
+            FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
+                updateUIPanel(2,
+                        createPanelComponent(
+                                panelHeader,
+                                getAdvancedSearchSalesrepCases(CSD),
+                                formAllowed,
+                                panelCommands)
+                );
+            });
+
+            getUI().addWindow(SD);
+        });
+        //</editor-fold>
+
+        return createPanelComponent(
+                panelHeader,
+                getAdvancedSearchSalesrepCases(csd),
+                formAllowed, panelCommands
+        );
     }
 
     private Component activeCasesByCustomerPanel() {
@@ -145,7 +221,11 @@ public class View_CRM extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="Advanced Search Dialog">
         panelCommands.put("Advanced Search Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
-            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000);
+            CustomSearchData csd = new CustomSearchData();
+            csd.setCaseFinished(true);
+            csd.setSaleAgreeded(true);
+            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000, csd);
+
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
@@ -179,7 +259,11 @@ public class View_CRM extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="Advanced Search Dialog">
         panelCommands.put("Advanced Search Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
-            Form_CustomSearch FCS = new Form_CustomSearch(0b111110011);
+            CustomSearchData csd = new CustomSearchData();
+            csd.setCaseFinished(true);
+            csd.setSaleAgreeded(false);
+
+            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000, csd);
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
@@ -230,7 +314,7 @@ public class View_CRM extends View_Dashboard {
         List<Panel> LP = new ArrayList();
 
         try {
-            for (Map.Entry<Salesman, List<RelSALE>> RS : DS.getSearchController().getAllSalesrepSales(csd).entrySet()) {
+            for (Map.Entry<Salesman, List<RelSALE>> RS : DS.getSearchController().getSalesrepSales(csd).entrySet()) {
 
                 if (!RS.getValue().isEmpty()) {
                     Tree_SalesrepAdvSales tss = new Tree_SalesrepAdvSales("", RS.getKey(), RS.getValue(), formAllowed);
@@ -289,4 +373,25 @@ public class View_CRM extends View_Dashboard {
         };
     }
     //</editor-fold>
+
+    private List<Panel> getAdvancedSearchSalesrepCases(CustomSearchData csd) {
+        List<Panel> LP = new ArrayList();
+
+        try {
+
+            for (Salesman S : DS.getSalesmanController().getAll()) {
+                csd.setSalesman(S);
+                List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
+
+                if (!L.isEmpty()) {
+                    Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", L, formAllowed);
+                    subPanels.add(new Panel(S.toString(), csct));
+                }
+            }
+
+        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+        }
+
+        return LP;
+    }
 }

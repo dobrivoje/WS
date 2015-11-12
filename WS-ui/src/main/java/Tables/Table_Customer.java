@@ -47,7 +47,7 @@ public class Table_Customer extends Table_GEN<Customer> {
 
     private static final Action ACTION_CUSTOMER_UPDATE = new Action("Customer Data Update");
     private static final Action ACTION_CUSTOMER_BUSSINES_TYPE = new Action("Customer Bussines Type");
-    private static final Action ACTION_CRM_ACTIVE_PROCESSES = new Action("Active Customer CRM Processes");
+    private static final Action ACTION_CRM_ACTIVE_PROCESSES = new Action("CRM Activities");
     private static final Action ACTION_CRM_NEW_CASE = new Action("New Customer CRM Case");
 
     private Action.Handler actionHandler;
@@ -285,8 +285,9 @@ public class Table_Customer extends Table_GEN<Customer> {
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_ACTIVE_PROCESSES">
                 if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
                     Customer c = (Customer) source.getValue();
-                    if (DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
-                        Notification.show("Warning", "No CRM processes \nfor this customer !", Notification.Type.ERROR_MESSAGE);
+                    if (DS.getCRMController().getCRM_Processes(c, false, null, null) == null
+                            || DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
+                        Notification.show("Warning", "No CRM activity \nfor this customer !", Notification.Type.ERROR_MESSAGE);
                     }
                 }
                 //</editor-fold>

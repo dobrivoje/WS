@@ -28,28 +28,23 @@ public class AdvancedSearch_Controller implements IAdvancedSearchController<Cust
     }
 
     @Override
-    public List<RelSALE> getAllSales(CustomSearchData csd) {
+    public List<RelSALE> getSales(CustomSearchData csd) {
         return dbh.getAllSales(csd);
     }
 
     @Override
-    public List<CrmCase> getAllCrmCases(CustomSearchData csd) {
-        return dbh.getAllCrmCases(csd);
-    }
-
-    @Override
-    public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
+    public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
         return dbh.getAllCrmProcesses(csd);
     }
 
     @Override
-    public Map<Salesman, List<RelSALE>> getAllSalesrepSales(CustomSearchData csd) {
+    public Map<Salesman, List<RelSALE>> getSalesrepSales(CustomSearchData csd) {
         return dbh.getAllSalesrepSales(csd);
     }
 
     @Override
-    public Map<CrmCase, List<CrmProcess>> getCRMProcesses(CustomSearchData csd) {
-        return dbh.getCRMProcesses(csd);
+    public List<CrmCase> getCRMCases(CustomSearchData csd) {
+        return dbh.getCRMCases(csd);
     }
 
 }

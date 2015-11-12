@@ -1,6 +1,7 @@
 package db.ent.custom;
 
 import db.ent.Customer;
+import db.ent.CustomerBussinesType;
 import db.ent.Product;
 import db.ent.Salesman;
 import java.io.Serializable;
@@ -27,6 +28,8 @@ public class CustomSearchData implements Serializable {
     @Column(name = "EndDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
+    @Column(name = "CustomerBussinesType")
+    private CustomerBussinesType customerBussinesType;
     @Column(name = "Salesman")
     private Salesman salesman;
     @Column(name = "Customer")
@@ -49,7 +52,6 @@ public class CustomSearchData implements Serializable {
 
         //startDate = startDate == null ? d.getFrom() : startDate;
         //endDate = endDate == null ? new Date() : endDate;
-
         //caseFinished = true;
         //saleAgreeded = true;
     }
@@ -57,6 +59,7 @@ public class CustomSearchData implements Serializable {
     public CustomSearchData(CustomSearchData newCustomSearchData) {
         this(newCustomSearchData.getStartDate(),
                 newCustomSearchData.getEndDate(),
+                newCustomSearchData.getCustomerBussinesType(),
                 newCustomSearchData.getSalesman(),
                 newCustomSearchData.getCustomer(),
                 newCustomSearchData.getProduct(),
@@ -67,17 +70,27 @@ public class CustomSearchData implements Serializable {
         );
     }
 
-    public CustomSearchData(Date startDate, Date endDate, Salesman salesman, Customer customer,
+    public CustomSearchData(Date startDate, Date endDate, CustomerBussinesType cbt, Salesman salesman, Customer customer,
+            Product product, double quantity, double moneyAmount, boolean caseFinished, boolean saleAgreeded) {
+        setUp(startDate, endDate, salesman, cbt, customer, product, quantity, moneyAmount, true, true);
+    }
+
+    public final void setUp(Date startDate, Date endDate, Salesman salesman, CustomerBussinesType cbt, Customer customer,
             Product product, double quantity, double moneyAmount, boolean caseFinished, boolean saleAgreeded) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.salesman = salesman;
+        this.customerBussinesType = cbt;
         this.customer = customer;
         this.product = product;
         this.quantity = quantity;
         this.moneyAmount = moneyAmount;
         this.caseFinished = caseFinished;
         this.saleAgreeded = saleAgreeded;
+    }
+
+    public final void setUp(CustomSearchData csd) {
+        setUp(csd.getStartDate(), csd.getEndDate(), csd.getSalesman(), csd.getCustomerBussinesType(), csd.getCustomer(), csd.getProduct(), csd.getQuantity(), csd.getMoneyAmount(), csd.getCaseFinished(), csd.getSaleAgreeded());
     }
     //</editor-fold>
 
@@ -112,6 +125,14 @@ public class CustomSearchData implements Serializable {
 
     public void setSalesman(Salesman salesman) {
         this.salesman = salesman;
+    }
+
+    public CustomerBussinesType getCustomerBussinesType() {
+        return customerBussinesType;
+    }
+
+    public void setCustomerBussinesType(CustomerBussinesType cbt) {
+        this.customerBussinesType = cbt;
     }
 
     public Customer getCustomer() {
@@ -210,6 +231,16 @@ public class CustomSearchData implements Serializable {
             }
         } catch (Exception e) {
             s += "[no salesman], ";
+        }
+
+        try {
+            if (!getCustomerBussinesType().toString().trim().isEmpty()) {
+                s += "[" + getCustomerBussinesType().toString() + "], ";
+            } else {
+                s += "[no customer bussines type], ";
+            }
+        } catch (Exception e) {
+            s += "[no customer bussines type], ";
         }
 
         try {

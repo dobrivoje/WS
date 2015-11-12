@@ -14,14 +14,37 @@ import java.util.Map;
 
 public interface IAdvancedSearchController<T> {
 
-    List<RelSALE> getAllSales(T t);
+    /**
+     * <b>getSales</b> metod vraća sve prodaje za kriterijum pretrage.
+     *
+     * @param criteria
+     * @return
+     */
+    List<RelSALE> getSales(T criteria);
 
-    List<CrmCase> getAllCrmCases(T t);
+    /**
+     * <b>getCRMCases</b> metod vraća CRM Case, i sve CRM Procese u tom Case-u.
+     *
+     * @param criteria
+     * @return
+     */
+    List<CrmCase> getCRMCases(T criteria);
 
-    List<CrmProcess> getAllCrmProcesses(T t);
+    /**
+     * <b>getCRMProcesses</b> metod vraća CRM procese za kriterijum pretrage.
+     *
+     * @param criteria
+     * @return
+     */
+    List<CrmProcess> getCRMProcesses(T criteria);
 
-    Map<Salesman, List<RelSALE>> getAllSalesrepSales(T t);
-    
-    Map<CrmCase, List<CrmProcess>> getCRMProcesses(T t);
-    
+    /**
+     * <b>getSalesrepSales</b> metod vraća sve prodaje prodavca za kriterijum
+     * pretrage.
+     *
+     * @param criteria
+     * @return
+     */
+    Map<Salesman, List<RelSALE>> getSalesrepSales(T criteria);
+
 }

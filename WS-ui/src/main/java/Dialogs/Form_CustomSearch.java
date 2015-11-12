@@ -29,6 +29,8 @@ import static ws.MyUI.DS;
  */
 public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
+    private CustomSearchData cc;
+
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     @PropertyId("startDate")
     private final DateField startDate = new DateField("Date from");
@@ -49,7 +51,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
             new BeanItemContainer(Product.class, DS.getProductController().getAll()));
 
     @PropertyId("quantity")
-    private final TextField quantity = new TextField("Quantity", "122000");
+    private final TextField quantity = new TextField("Quantity");
 
     @PropertyId("moneyAmount")
     private final TextField moneyAmount = new TextField("Amount");
@@ -63,12 +65,20 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktori">
     public Form_CustomSearch() {
+        this(null);
+    }
+
+    public Form_CustomSearch(CustomSearchData csd) {
         super(new BeanFieldGroup(CustomSearchData.class));
+
+        try {
+            cc = csd;
+        } catch (Exception e) {
+            cc = new CustomSearchData();
+        }
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
-
-        CustomSearchData cc = new CustomSearchData();
 
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CustomSearchData>) fieldGroup.getItemDataSource();
@@ -90,7 +100,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
      * Forma sa vizuelnom reprezentacijom polja, regulisana parametrom.
      *
      * @param options Predstavlja bit reprezentaciju polja na formi.<br>
-     * Ukoliko je 1 na mestu za to polje, polje se pojavljuje na formi.<br>
+     * Ukoliko je 1 na mestu za to polje, polje je otključano na formi.<br>
      * Redosled polja je sleva na desno, počevši od polja kako su raspoređeni na
      * formi, dakle, prvo je "startDate", zatim "endDate", pa "salesrep", itd.
      * <p>
@@ -98,16 +108,21 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
      * na formi, dakle start, end, salesman, customer, i saleAgreed.
      */
     public Form_CustomSearch(int options) {
-        this();
+        this(options, null);
+    }
+
+    public Form_CustomSearch(int options, CustomSearchData csd) {
+        this(csd);
 
         fieldGroup.getFields().stream().forEach((c) -> {
             c.setEnabled(false);
         });
 
-        int mask = (int) Math.pow(2, fieldGroup.getFields().size());
+        int fgs = fieldGroup.getFields().size();
+        int mask = (int) Math.pow(2, fgs);
 
         //<editor-fold defaultstate="collapsed" desc="for petlja za ispitivanje">
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < fgs; i++) {
 
             switch (options & mask) {
                 case 0b100000000:
@@ -208,29 +223,24 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
         // quantity.setConverter(Integer.class);
         // moneyAmount.setConverter(Integer.class);
-        quantity.setEnabled(false);
-        moneyAmount.setEnabled(false);
-        caseFinished.setEnabled(false);
-        saleAgreeded.setEnabled(false);
     }
 
     @Override
     protected void setRequiredFields() {
         caseFinished.setEnabled(true);
-        saleAgreeded.setEnabled(caseFinished.getValue() == null ? false : caseFinished.getValue());
+        saleAgreeded.setEnabled(
+                caseFinished.getValue() == null || !caseFinished.getValue()
+                        ? false : caseFinished.getValue());
     }
 
     @Override
     protected final void updateDynamicFields() {
         caseFinished.addValueChangeListener((Property.ValueChangeEvent event) -> {
-            saleAgreeded.setEnabled(caseFinished.getValue() == null
-                    ? false : caseFinished.getValue()
-            );
+            saleAgreeded.setEnabled(caseFinished.getValue());
 
-            saleAgreeded.setValue(
-                    caseFinished.getValue() == null || caseFinished.getValue() == false
-                            ? false : saleAgreeded.getValue()
-            );
+            if (!caseFinished.getValue()) {
+                saleAgreeded.setValue(false);
+            }
         });
     }
     //</editor-fold>
