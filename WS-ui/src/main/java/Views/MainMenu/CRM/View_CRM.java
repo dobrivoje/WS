@@ -171,17 +171,20 @@ public class View_CRM extends View_Dashboard {
     }
 
     private Component salesCasesPanel() {
-        final String panelHeader = "REALIZED SALES";
-        final Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
+        String panelHeader = "REALIZED SALES";
+        Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
+        List<Panel> panels = new ArrayList();
 
         //<editor-fold defaultstate="collapsed" desc="Last Months Sales">
         panelCommands.put("Last Month Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(0);
 
+            panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+
             updateUIPanel(0,
                     createPanelComponent(
                             panelHeader,
-                            getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                            panels,
                             formAllowed,
                             panelCommands)
             );
@@ -192,10 +195,12 @@ public class View_CRM extends View_Dashboard {
         panelCommands.put("Last Two Months Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
 
+            panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+
             updateUIPanel(0,
                     createPanelComponent(
                             panelHeader,
-                            getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                            panels,
                             formAllowed,
                             panelCommands)
             );
@@ -208,10 +213,12 @@ public class View_CRM extends View_Dashboard {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setMonthsBackForth(-2);
 
+                panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+
                 updateUIPanel(0,
                         createPanelComponent(
                                 panelHeader,
-                                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                                panels,
                                 formAllowed,
                                 panelCommands)
                 );
@@ -229,10 +236,13 @@ public class View_CRM extends View_Dashboard {
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
+
+                panels.addAll(getAdvancedSearchSales(CSD));
+
                 updateUIPanel(0,
                         createPanelComponent(
                                 panelHeader,
-                                getAdvancedSearchSales(CSD),
+                                panels,
                                 formAllowed,
                                 panelCommands)
                 );
@@ -244,18 +254,54 @@ public class View_CRM extends View_Dashboard {
 
         return createPanelComponent(
                 panelHeader,
-                getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()),
+                panels,
                 formAllowed, panelCommands
         );
     }
 
     private Component notRelizedCasesPanel() {
-        final String panelHeader = "CASES NOT SIGNED !";
-        final Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
+        String panelHeader = "CASES NOT SIGNED !";
+        Map<String, MenuBar.Command> panelCommands = new LinkedHashMap<>();
+        List<Panel> panels = new ArrayList();
 
-        panelCommands.put("Last Three Months Period", getCommand(panelHeader, 1, panelCommands, -2));
-        panelCommands.put("Last Six Months Period", getCommand(panelHeader, 1, panelCommands, -5));
-        panelCommands.put("Last Year Period", getCommand(panelHeader, 1, panelCommands, -11));
+        panelCommands.put("Last Three Months Period", (Command) (MenuBar.MenuItem selectedItem) -> {
+            dateInterval.setMonthsBackForth(-2);
+            panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+            updateUIPanel(1,
+                    createPanelComponent(
+                            panelHeader,
+                            panels,
+                            formAllowed,
+                            panelCommands)
+            );
+        });
+
+        panelCommands.put("Last Six Months Period",
+                (Command) (MenuBar.MenuItem selectedItem) -> {
+                    dateInterval.setMonthsBackForth(-5);
+                    panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+                    updateUIPanel(1,
+                            createPanelComponent(
+                                    panelHeader,
+                                    panels,
+                                    formAllowed,
+                                    panelCommands)
+                    );
+                }
+        );
+        panelCommands.put("Last Year Period",
+                (Command) (MenuBar.MenuItem selectedItem) -> {
+                    dateInterval.setMonthsBackForth(-11);
+                    panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+                    updateUIPanel(1,
+                            createPanelComponent(
+                                    panelHeader,
+                                    panels,
+                                    formAllowed,
+                                    panelCommands)
+                    );
+                }
+        );
 
         //<editor-fold defaultstate="collapsed" desc="Advanced Search Dialog">
         panelCommands.put("Advanced Search Features", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
@@ -267,10 +313,13 @@ public class View_CRM extends View_Dashboard {
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
+
+                panels.addAll(getNotSignedCases(CSD.getStartDate(), CSD.getEndDate()));
+
                 updateUIPanel(1,
                         createPanelComponent(
                                 panelHeader,
-                                getNotSignedCases(CSD.getStartDate(), CSD.getEndDate()),
+                                panels,
                                 formAllowed,
                                 panelCommands)
                 );
@@ -281,7 +330,7 @@ public class View_CRM extends View_Dashboard {
         //</editor-fold>
 
         return createPanelComponent(panelHeader,
-                getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()),
+                panels,
                 formAllowed, panelCommands
         );
     }
@@ -355,22 +404,6 @@ public class View_CRM extends View_Dashboard {
         }
 
         return LP;
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Panel Command">
-    private Command getCommand(String panelHeader, int panelIndex, Map<String, MenuBar.Command> panelCommands, int monthsBack) {
-        return (MenuBar.MenuItem selectedItem) -> {
-            dateInterval.setMonthsBackForth(monthsBack);
-
-            updateUIPanel(panelIndex,
-                    createPanelComponent(
-                            panelHeader,
-                            getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()),
-                            formAllowed,
-                            panelCommands)
-            );
-        };
     }
     //</editor-fold>
 

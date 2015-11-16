@@ -72,12 +72,9 @@ public class View_FS extends VerticalLayout implements View {
         addComponent(VL);
         //</editor-fold>
 
-        FS_Table.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Fuelstation fs = (Fuelstation) FS_Table.getValue();
-                openProperties(fs, true, false);
-            }
+        FS_Table.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            Fuelstation fs = (Fuelstation) FS_Table.getValue();
+            openProperties(fs, true, false);
         });
 
         // ubaciti getActionManager() kao parametar samo da bi se pokrenuo handler !
@@ -98,20 +95,17 @@ public class View_FS extends VerticalLayout implements View {
         filter.setInputPrompt("search fuel station...");
         ResetButtonForTextField.extend(filter);
         filter.setImmediate(true);
-        filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                FS_Table.setFilter(event.getText());
+        filter.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            FS_Table.setFilter(event.getText());
 
-                try {
-                    DS.getLOGController().addNew(
-                            new Date(),
-                            LOGS.DATA_SEARCH.toString(),
-                            "User : " + MyUI.get().getLoggedISUser().getUserName() + ", FS search: " + event.getText(),
-                            MyUI.get().getLoggedISUser());
-                } catch (Exception ex) {
-                    Logger.getLogger(View_FS.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                DS.getLOGController().addNew(
+                        new Date(),
+                        LOGS.DATA_SEARCH.toString(),
+                        "User : " + MyUI.get().getLoggedISUser().getUserName() + ", FS search: " + event.getText(),
+                        MyUI.get().getLoggedISUser());
+            } catch (Exception ex) {
+                Logger.getLogger(View_FS.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -120,43 +114,37 @@ public class View_FS extends VerticalLayout implements View {
         newFSPropButton.setWidth(170, Unit.PIXELS);
         newFSPropButton.setIcon(FontAwesome.ARCHIVE);
         newFSPropButton.focus();
-        newFSPropButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                Fuelstation f = (Fuelstation) FS_Table.getValue();
-                openProperties(f, false, true);
-            }
+        newFSPropButton.addClickListener((Button.ClickEvent event) -> {
+            Fuelstation f = (Fuelstation) FS_Table.getValue();
+            openProperties(f, false, true);
         });
 
         newFSOButton = new Button("New FS Owner");
         newFSOButton.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
         newFSOButton.setWidth(150, Unit.PIXELS);
         newFSOButton.setIcon(FontAwesome.BULLSEYE);
-        newFSOButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                Fuelstation f = (Fuelstation) FS_Table.getValue();
-                IDocumentGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
+        newFSOButton.addClickListener((Button.ClickEvent event) -> {
+            Fuelstation f = (Fuelstation) FS_Table.getValue();
+            IDocumentGallery IG = new CustomerFuelStationsGallery(UI.getCurrent().getUI(), null);
 
-                Form_FSOwner fof;
-                String msg;
+            Form_FSOwner fof;
+            String msg;
 
-                if (f != null) {
-                    fof = new Form_FSOwner(f, null, false);
-                    msg = "New Fuelstation Owner";
-                } else {
-                    fof = new Form_FSOwner(false);
-                    msg = FS_DATA_MANAG_NEW_FS_OWNER.toString();
-                }
-
-                getUI().addWindow(new WindowFormProp(
-                        msg,
-                        false,
-                        fof.getClickListener(),
-                        fof,
-                        IG.createMainDocument(IG.createDocument(f, 240, 240))
-                ));
+            if (f != null) {
+                fof = new Form_FSOwner(f, null, false);
+                msg = "New Fuelstation Owner";
+            } else {
+                fof = new Form_FSOwner(false);
+                msg = FS_DATA_MANAG_NEW_FS_OWNER.toString();
             }
+
+            getUI().addWindow(new WindowFormProp(
+                    msg,
+                    false,
+                    fof.getClickListener(),
+                    fof,
+                    IG.createMainDocument(IG.createDocument(f, 240, 240))
+            ));
         });
 
         HorizontalLayout topLayout = new HorizontalLayout();
@@ -171,7 +159,7 @@ public class View_FS extends VerticalLayout implements View {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="openProperties">
-    public void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
+    public final void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
         if (fs != null) {
             newFSPropButton.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_PROPERTY));
             HL.setSplitPosition(50, Unit.PERCENTAGE);

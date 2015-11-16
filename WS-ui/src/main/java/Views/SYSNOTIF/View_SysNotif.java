@@ -10,6 +10,7 @@ import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.BussinesLine;
 import db.ent.Customer;
 import db.ent.Salesman;
+import db.ent.custom.CustomSearchData;
 import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,8 @@ public class View_SysNotif extends View_Dashboard {
         List<Component> sectorManagerPanels = new ArrayList();
 
         try {
-
+            dateInterval.setMonthsBackForth(-1);
+            
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
                 Tree_SalesmanSales csct = new Tree_SalesmanSales("", BLS,
                         dateInterval.getFrom(), dateInterval.getTo(), formAllowed);
@@ -107,14 +109,16 @@ public class View_SysNotif extends View_Dashboard {
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
         try {
+            CustomSearchData csd2 = new CustomSearchData();
+            csd2.setCaseFinished(true);
+            csd2.setSaleAgreeded(true);
+            csd2.setMonthsBackForth(-1);
+            csd2.setBussinesLine(S.getFkIdbl());
 
-            for (Salesman S1 : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("",
-                        DS.getCRMController().getCRM_CasesStats(S1, true, false),
-                        formAllowed
-                );
-
-                subPanels.add(new Panel(S1.toString(), csct));
+            for (Salesman s : DS.getSearchController().getSalesreps(csd2)) {
+                csd2.setSalesman(s);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", DS.getSearchController().getCRMCases(csd2), formAllowed);
+                subPanels.add(new Panel(s.toString(), csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -124,10 +128,14 @@ public class View_SysNotif extends View_Dashboard {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
+            CustomSearchData csd3 = new CustomSearchData();
+            csd3.setCaseFinished(false);
+            csd3.setBussinesLine(S.getFkIdbl());
 
-            for (Customer CC : DS.getCRMController().getCRM_CustomerActiveCases(false, S.getFkIdbl())) {
-                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", CC, formAllowed);
-                subPanels.add(new Panel(CC.toString(), ccct));
+            for (Customer c : DS.getSearchController().getCustomers(csd3)) {
+                csd3.setCustomer(c);
+                Tree_CustomerCRMCases ccct = new Tree_CustomerCRMCases("", DS.getSearchController().getCRMCases(csd3), formAllowed);
+                subPanels.add(new Panel(c.toString(), ccct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -137,14 +145,14 @@ public class View_SysNotif extends View_Dashboard {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
+            CustomSearchData csd4 = new CustomSearchData();
+            csd4.setCaseFinished(false);
+            csd4.setBussinesLine(S.getFkIdbl());
 
-            for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
-                        "",
-                        DS.getCRMController().getCRM_Cases(BLS, false),
-                        formAllowed
-                );
-                subPanels.add(new Panel(BLS.toString(), csct));
+            for (Salesman s : DS.getSearchController().getSalesreps(csd4)) {
+                csd4.setSalesman(s);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", DS.getSearchController().getCRMCases(csd4), formAllowed);
+                subPanels.add(new Panel(s.toString(), csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

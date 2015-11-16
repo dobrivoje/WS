@@ -281,9 +281,9 @@ public class DBHandler {
     public List<Customer> getAllCustomersForBussinesType(CustomerBussinesType bussinesType) {
         List<Customer> customers = new ArrayList<>();
 
-        for (RelCBType rcb : bussinesType.getRelCBTypeList()) {
+        bussinesType.getRelCBTypeList().stream().forEach((rcb) -> {
             customers.add(rcb.getFkIdc());
-        }
+        });
 
         return customers;
     }
@@ -1958,7 +1958,7 @@ public class DBHandler {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Custom Search Data Queries">
-    public List<RelSALE> getAllSales(CustomSearchData csd) {
+    public List<RelSALE> getSales(CustomSearchData csd) {
         Date from, to;
         Query query;
 
@@ -1972,13 +1972,17 @@ public class DBHandler {
             if (csd.getCustomer() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
             }
-            
+
             if (csd.getCustomer() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
             }
 
             if (csd.getSalesman() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
+            }
+
+            if (csd.getBussinesLine() != null) {
+                Q += " AND S.FK_IDRSC.FK_IDS.fkIdbl = :IDBL ";
             }
 
             if (csd.getProduct() != null) {
@@ -1994,6 +1998,9 @@ public class DBHandler {
             }
             if (csd.getSalesman() != null) {
                 query.setParameter("IDS", csd.getSalesman());
+            }
+            if (csd.getBussinesLine()!= null) {
+                query.setParameter("IDBL", csd.getBussinesLine());
             }
             if (csd.getProduct() != null) {
                 query.setParameter("IDP", csd.getProduct());
@@ -2028,6 +2035,10 @@ public class DBHandler {
                 Q += " AND c.FK_IDRSC.FK_IDS = :IDS ";
             }
 
+            if (csd.getBussinesLine() != null) {
+                Q += " AND c.FK_IDRSC.FK_IDS.fkIdbl = :IDBL ";
+            }
+
             if (csd.getCaseFinished() != null) {
                 Q += " AND c.finished = :finished ";
             }
@@ -2056,6 +2067,10 @@ public class DBHandler {
                 query.setParameter("IDS", csd.getSalesman());
             }
 
+            if (csd.getBussinesLine()!= null) {
+                query.setParameter("IDBL", csd.getBussinesLine());
+            }
+
             if (csd.getCaseFinished() != null) {
                 query.setParameter("finished", csd.getCaseFinished());
             }
@@ -2067,7 +2082,7 @@ public class DBHandler {
 
             List<CrmCase> L = new ArrayList<>();
 
-            for (CrmCase c : (List<CrmCase>)query.getResultList()) {
+            for (CrmCase c : (List<CrmCase>) query.getResultList()) {
                 c.setCrmProcessList(getCRMProcesses(c));
                 L.add(c);
             }
@@ -2078,7 +2093,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmProcess> getAllCrmProcesses(CustomSearchData csd) {
+    public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
         Date from, to;
         Query query;
 
@@ -2135,11 +2150,11 @@ public class DBHandler {
         }
     }
 
-    public Map<Salesman, List<RelSALE>> getAllSalesrepSales(CustomSearchData csd) {
+    public Map<Salesman, List<RelSALE>> getSalesrepSales(CustomSearchData csd) {
         Map<Salesman, List<RelSALE>> MSS = new HashMap<>();
         List<RelSALE> LRS;
 
-        for (RelSALE s : getAllSales(csd)) {
+        for (RelSALE s : getSales(csd)) {
             Salesman salesRep = s.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
             if (MSS.containsKey(salesRep)) {
@@ -2155,5 +2170,26 @@ public class DBHandler {
 
         return MSS;
     }
+
+    public Set<Customer> getCustomers(CustomSearchData csd) {
+        Set<Customer> L = new HashSet<>();
+
+        getCRMCases(csd).stream().forEach((c) -> {
+            L.add(c.getFK_IDRSC().getFK_IDC());
+        });
+
+        return L;
+    }
+
+    public Set<Salesman> getSalesreps(CustomSearchData csd) {
+        Set<Salesman> L = new HashSet<>();
+
+        getCRMCases(csd).stream().forEach((c) -> {
+            L.add(c.getFK_IDRSC().getFK_IDS());
+        });
+
+        return L;
+    }
+
     //</editor-fold>
 }

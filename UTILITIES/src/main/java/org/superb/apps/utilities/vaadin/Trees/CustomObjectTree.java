@@ -40,9 +40,9 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
      */
     public CustomObjectTree(String caption, T rootNode, List rootNodeSubList) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, Arrays.asList(rootNode));
-        super.setNodeItems(rootNode, rootNodeSubList);
-
         this.rootNodeSubList = rootNodeSubList;
+
+        super.setNodeItems(rootNode, rootNodeSubList);
     }
 
     /**
@@ -76,13 +76,13 @@ public abstract class CustomObjectTree<T> extends CustomTree<T> implements IRefr
 
         init();
     }
-
+    
     //<editor-fold defaultstate="collapsed" desc="init">
     private void init() {
         if (!elements.isEmpty()) {
-            for (T e : elements) {
+            elements.stream().forEach((e) -> {
                 createSubNodes(e);
-            }
+            });
         }
     }
     //</editor-fold>

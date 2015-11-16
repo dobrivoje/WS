@@ -7,10 +7,13 @@ package db.interfaces;
 
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
+import db.ent.Customer;
 import db.ent.RelSALE;
 import db.ent.Salesman;
+import db.ent.custom.CustomSearchData;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IAdvancedSearchController<T> {
 
@@ -23,7 +26,8 @@ public interface IAdvancedSearchController<T> {
     List<RelSALE> getSales(T criteria);
 
     /**
-     * <b>getCRMCases</b> metod vraća CRM Case, i sve CRM Procese u tom Case-u.
+     * <b>getCRMCases</b> metod vraća CRM slučajeve sa svim CRM procesima za
+     * svaki CRM case.
      *
      * @param criteria
      * @return
@@ -46,5 +50,23 @@ public interface IAdvancedSearchController<T> {
      * @return
      */
     Map<Salesman, List<RelSALE>> getSalesrepSales(T criteria);
+
+    /**
+     * <b>getCustomers</b> metod vraća sve kupce <b>bez ponavljanja</b> iz CRM
+     * slučajeva za kriterijum pretrage.
+     *
+     * @param criteria
+     * @return
+     */
+    Set<Customer> getCustomers(CustomSearchData criteria);
+
+    /**
+     * <b>getSalesreps</b> metod vraća sve prodavce <b>bez ponavljanja</b> iz
+     * CRM slučajeva za kriterijum pretrage.
+     *
+     * @param criteria
+     * @return
+     */
+    Set<Salesman> getSalesreps(CustomSearchData criteria);
 
 }

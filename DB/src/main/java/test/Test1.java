@@ -70,7 +70,7 @@ public class Test1 {
         System.err.println("------------------------");
         System.err.println("test1 : getAllSales ");
 
-        for (RelSALE s : dbh.getAllSales(csd)) {
+        for (RelSALE s : dbh.getSales(csd)) {
             System.err.println(s
                     + ", " + s.getFK_IDCA().getDescription() + ", "
                     + s.getFK_IDCA().getFK_IDRSC().getFK_IDC() + ", "
@@ -83,7 +83,7 @@ public class Test1 {
         System.err.println("------------------------");
         System.err.println("test2 : getAllSales until 31.8.2015");
 
-        for (RelSALE s : dbh.getAllSales(csd)) {
+        for (RelSALE s : dbh.getSales(csd)) {
             System.err.println(s);
         }
 
@@ -92,7 +92,7 @@ public class Test1 {
         System.err.println("------------------------");
         System.err.println("test3 : getAllSales for salesman : " + csd1.getSalesman());
 
-        for (RelSALE s : dbh.getAllSales(csd1)) {
+        for (RelSALE s : dbh.getSales(csd1)) {
             System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
         }
 
@@ -101,7 +101,7 @@ public class Test1 {
         System.err.println("------------------------");
         System.err.println("test4 : getAllSales for customer : " + csd2.getCustomer());
 
-        for (RelSALE s : dbh.getAllSales(csd2)) {
+        for (RelSALE s : dbh.getSales(csd2)) {
             System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
         }
 
