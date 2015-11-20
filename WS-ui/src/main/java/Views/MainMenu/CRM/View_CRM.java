@@ -231,7 +231,7 @@ public class View_CRM extends View_Dashboard {
             CustomSearchData csd = new CustomSearchData();
             csd.setCaseFinished(true);
             csd.setSaleAgreeded(true);
-            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000, csd);
+            Form_CustomSearch FCS = new Form_CustomSearch(0b1111110000, csd);
 
             SelectorDialog SD = new SelectorDialog(FCS);
 
@@ -309,7 +309,7 @@ public class View_CRM extends View_Dashboard {
             csd.setCaseFinished(true);
             csd.setSaleAgreeded(false);
 
-            Form_CustomSearch FCS = new Form_CustomSearch(0b111110000, csd);
+            Form_CustomSearch FCS = new Form_CustomSearch(0b1111110000, csd);
             SelectorDialog SD = new SelectorDialog(FCS);
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
@@ -389,13 +389,16 @@ public class View_CRM extends View_Dashboard {
     private List<Panel> getNotSignedCases(Date from, Date to) {
         List<Panel> LP = new ArrayList();
 
+        Date f = from == null ? new Date(0) : from;
+        Date t = to == null ? new Date() : to;
+
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
 
-                List<CrmCase> L = DS.getCRMController().getCRM_CasesStats(S, true, false, from, to);
+                List<CrmCase> L = DS.getCRMController().getCRM_CasesStats(S, true, false, f, t);
 
                 if (!L.isEmpty()) {
-                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", L, formAllowed, from, to);
+                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", L, formAllowed, f, t);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }

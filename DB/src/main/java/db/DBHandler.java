@@ -1982,7 +1982,7 @@ public class DBHandler {
             }
 
             if (csd.getBussinesLine() != null) {
-                Q += " AND S.FK_IDRSC.FK_IDS.fkIdbl = :IDBL ";
+                Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDS.fkIdbl = :IDBL ";
             }
 
             if (csd.getProduct() != null) {

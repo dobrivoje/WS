@@ -18,6 +18,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
+import db.ent.BussinesLine;
 import db.ent.Customer;
 import db.ent.Product;
 import db.ent.Salesman;
@@ -37,6 +38,10 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
 
     @PropertyId("endDate")
     private final DateField endDate = new DateField("Date to");
+
+    @PropertyId("bussinesLine")
+    private final ComboBox bussinesLine = new ComboBox("Bussines Line",
+            new BeanItemContainer(BussinesLine.class, DS.getBLController().getAll()));
 
     @PropertyId("salesman")
     private final ComboBox salesrep = new ComboBox("Salesrep",
@@ -125,17 +130,21 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         for (int i = 0; i < fgs; i++) {
 
             switch (options & mask) {
-                case 0b100000000:
+                case 0b1000000000:
                     // startDate.setVisible(true);
                     startDate.setEnabled(true);
                     break;
-                case 0b10000000:
+                case 0b100000000:
                     // endDate.setVisible(true);
                     endDate.setEnabled(true);
                     break;
-                case 0b1000000:
+                case 0b10000000:
                     // salesrep.setVisible(true);
                     salesrep.setEnabled(true);
+                    break;
+                case 0b1000000:
+                    // salesrep.setVisible(true);
+                    bussinesLine.setEnabled(true);
                     break;
                 case 0b100000:
                     // customer.setVisible(true);
@@ -176,6 +185,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     protected final void setBeanFromFields(CustomSearchData csd) {
         csd.setStartDate(startDate.getValue());
         csd.setEndDate(endDate.getValue());
+        csd.setBussinesLine((BussinesLine) bussinesLine.getValue());
         csd.setSalesman((Salesman) salesrep.getValue());
         csd.setCustomer((Customer) customer.getValue());
         csd.setProduct((Product) product.getValue());
@@ -198,6 +208,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     public final void setFieldsFromBean(CustomSearchData csd) {
         startDate.setValue(csd.getStartDate());
         endDate.setValue(csd.getEndDate());
+        bussinesLine.setValue(csd.getBussinesLine());
         salesrep.setValue(csd.getSalesman());
         customer.setValue(csd.getCustomer());
         product.setValue(csd.getProduct());
@@ -242,6 +253,15 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
                 saleAgreeded.setValue(false);
             }
         });
+
+        bussinesLine.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            salesrep.clear();
+        });
+
+        salesrep.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            bussinesLine.clear();
+        });
+
     }
     //</editor-fold>
 
