@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class Form_Customer extends Form_CRUD2<Customer> {
 

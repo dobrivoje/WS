@@ -27,8 +27,8 @@ import org.dobrivoje.auth.roles.RolesPermissions;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import ws.MyUI;
-import static ws.MyUI.DS;
+import Main.MyUI;
+import static Main.MyUI.DS;
 
 /**
  *

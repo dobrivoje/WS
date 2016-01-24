@@ -7,7 +7,7 @@ import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import java.util.Arrays;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *
@@ -32,7 +32,7 @@ public class Tree_CRMSingleCase extends CustomObjectTree<CrmCase> {
     @Override
     protected void createSubNodes(CrmCase c) {
         // if (!c.getFinished()) {
-        createSingleRootChildNodes(c, DS.getCRMController().getCRM_Processes(c));
+       createChildNodesForTheRoot(c, DS.getCRMController().getCRM_Processes(c));
         //}
     }
 }

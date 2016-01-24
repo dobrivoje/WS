@@ -26,7 +26,7 @@ import db.interfaces.ISalesmanController;
 import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *

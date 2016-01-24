@@ -5,13 +5,12 @@
  */
 package test;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import org.dobrivoje.utils.date.formats.DateFormat;
 import org.superb.apps.utilities.datum.Dates;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class Test {
 
@@ -48,7 +47,6 @@ public class Test {
          System.err.println(hh.toLowerCase().endsWith("jpg"));
          */
         //</editor-fold>
-
         Dates d = new Dates();
         System.err.println("Test1 : toString() : ");
         System.err.println(d.toString());
@@ -86,5 +84,25 @@ public class Test {
         System.err.println("test : setMonthsBackForth(4)");
         System.err.println("od : " + d4.getFrom());
         System.err.println("do : " + d4.getTo());
+
+        Dates d5 = new Dates(-2, true);
+        System.err.println("test : Dates(-2,true)");
+        System.err.println("od : " + d5.getFrom());
+        System.err.println("do : " + d5.getTo());
+
+        System.err.println("od : " + d5.getFrom(DateFormat.DATE_FORMAT_SRB));
+        System.err.println("do : " + d5.getTo(DateFormat.DATE_FORMAT_SRB));
+
+        System.err.println("od : " + d5.getFrom(DateFormat.DATE_FORMAT_ENG));
+        System.err.println("do : " + d5.getTo(DateFormat.DATE_FORMAT_ENG));
+
+        System.err.println("od : " + d5.getFrom(DateFormat.DATETIME_FORMAT_SRB));
+        System.err.println("do : " + d5.getTo(DateFormat.DATETIME_FORMAT_SRB));
+
+        
+        System.err.println("od : " + d5.getFromStr());
+        System.err.println("do : " + d5.getToStr());
+
+        
     }
 }

@@ -7,7 +7,7 @@ package org.superb.apps.utilities.Enums;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public enum CustomerTableColumns {
 

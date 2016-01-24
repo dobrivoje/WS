@@ -9,7 +9,7 @@ import com.vaadin.data.Validator;
 
 /**
  *
- * @author dprtenjak
+ * @author Dobri
  */
 public class MyNumberValidator implements Validator {
 

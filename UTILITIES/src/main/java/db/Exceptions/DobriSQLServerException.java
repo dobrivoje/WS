@@ -9,7 +9,7 @@ import static db.Exceptions.SqlServerExceptionsCauses.ALREADY_EXISTS;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class DobriSQLServerException extends Exception {
 

@@ -19,7 +19,7 @@ import db.ent.Owner;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class Form_FSOwner extends Form_CRUD2<Owner> {
 

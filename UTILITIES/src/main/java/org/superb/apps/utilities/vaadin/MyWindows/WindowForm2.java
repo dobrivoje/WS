@@ -25,7 +25,7 @@ import static org.superb.apps.utilities.vaadin.MyWindows.ProfilePreferencesWindo
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class WindowForm2 extends Window {
 

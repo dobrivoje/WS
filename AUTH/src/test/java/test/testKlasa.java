@@ -15,7 +15,6 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.dobrivoje.auth.IAccessAuthControl;
 import org.dobrivoje.auth.IntermolADAccessControl;
-import org.dobrivoje.auth.ShiroAccessControl;
 import org.dobrivoje.auth.roles.RolesPermissions;
 
 /**
@@ -53,7 +52,7 @@ public class testKlasa {
             //intermolAD.login("intermol\\dprtenjak", "...");
             //intermolAD.login("root", "");
             //intermolAD.login("fs", "");
-            intermolAD.login("cu", "");
+            intermolAD.login("cum", "");
 
             System.err.println(intermolAD.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -119,14 +118,20 @@ public class testKlasa {
                 + intermolAD.isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY)
         );
 
-        System.err.println("\nĐŠPĆČČLDJHNMLČĐŠ");
-        System.err.println("\n  шш ЖЋЧ");
+        System.err.println("---- login ----");
+        System.err.println("user : " + intermolAD.getInfSysUserSession());
 
-        System.err.println("Session Username: " + intermolAD.getInfSysUserSession());
-        System.err.println("getLoggedUsers: " + intermolAD.getLoggedUsers());
-        System.err.println("getSession: " + intermolAD.getSubjectSessionID());
+        System.err.println("Session getInfSysUserSession: " + intermolAD.getInfSysUserSession());
+        System.err.println("no of logged-in users, getNoOfSessions: " + intermolAD.getNoOfSessions());
+        System.err.println("getSubjectSessionID: " + intermolAD.getSubjectSession().getId());
+        System.err.println("all getUsersSessions: " + intermolAD.getUsersSessions().toString());
 
+        System.err.println("---- logout ----");
         intermolAD.logout();
+        System.err.println("user : " + intermolAD.getInfSysUserSession());
+        System.err.println("no of logged-in users, getNoOfSessions: " + intermolAD.getNoOfSessions());
+        System.err.println("getSubjectSessionID: " + intermolAD.getSubjectSession().getId());
+        System.err.println("all getUsersSessions: " + intermolAD.getUsersSessions().toString());
 
         IAccessAuthControl intermolAD1 = new IntermolADAccessControl();
 
@@ -142,20 +147,19 @@ public class testKlasa {
             System.err.println("ExcessiveAttempts !");
         }
 
-        System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
-        System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());
-        System.err.println("getSession: " + intermolAD1.getSubjectSessionID());
-        System.err.println("intermolAD1.getAttributeKeys: " + intermolAD1.getSubjectSession().getAttributeKeys().toString());
-        System.err.println("intermolAD1.getId: " + intermolAD1.getSubjectSession().getId());
-
-        System.err.println("sve sesije : " + ShiroAccessControl.getUsersSessions());
+        System.err.println("Session getInfSysUserSession: " + intermolAD1.getInfSysUserSession());
+        System.err.println("Session getPrincipal: " + intermolAD1.getPrincipal());
+        System.err.println("Session getSubjectSession: " + intermolAD1.getSubjectSession());
+        System.err.println("Session getSubjectSessionID: " + intermolAD1.getSubjectSession().getId());
+        System.err.println("Session getUsersSessions: " + intermolAD1.getUsersSessions().toString());
 
         intermolAD1.logout();
         System.err.println("---- logout ----");
 
-        System.err.println("Session Username: " + intermolAD1.getInfSysUserSession());
-        System.err.println("getLoggedUsers: " + intermolAD1.getLoggedUsers());
-        System.err.println("getSession: " + intermolAD1.getSubjectSessionID());
-        System.err.println("auth: " + intermolAD1.authenticated());
+        System.err.println("Session getInfSysUserSession: " + intermolAD1.getInfSysUserSession());
+        System.err.println("Session getPrincipal: " + intermolAD1.getPrincipal());
+        System.err.println("Session getSubjectSession: " + intermolAD1.getSubjectSession());
+        System.err.println("Session getSubjectSessionID: " + intermolAD1.getSubjectSession().getId());
+        System.err.println("Session getUsersSessions: " + intermolAD1.getUsersSessions().toString());
     }
 }

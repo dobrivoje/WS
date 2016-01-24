@@ -5,7 +5,7 @@
  */
 package ImageGallery;
 
-import Layouts.Layout_InlineCSS;
+import org.superb.apps.utilities.vaadin.Views.Layout_InlineCSS;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
@@ -34,7 +34,7 @@ import org.superb.apps.utilities.os.OS;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.vaadin.dialogs.ConfirmDialog;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *
@@ -181,7 +181,7 @@ public class CustomerFuelStationsGallery extends ImageGallery<Fuelstation> {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 
-        final Window W = new MyWindow(VL_Root, caption, 0, 0);
+        final Window W = new MyWindow(caption, VL_Root, 0, 0);
         W.setModal(true);
         W.setStyleName(Reindeer.WINDOW_BLACK);
 

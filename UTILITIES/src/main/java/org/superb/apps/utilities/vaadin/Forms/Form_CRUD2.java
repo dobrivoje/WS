@@ -1,5 +1,6 @@
 package org.superb.apps.utilities.vaadin.Forms;
 
+import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.Sizeable;
@@ -14,6 +15,7 @@ import org.dobrivoje.utils.date.formats.DateFormat;
 import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
 
 public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T> {
+
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
 
     protected FieldGroup fieldGroup;
@@ -56,6 +58,11 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
         return clickListener;
     }
 
+    public void setBeanItem(Item item) {
+        fieldGroup.setItemDataSource(item);
+        beanItem = (BeanItem<T>) fieldGroup.getItemDataSource();
+    }
+
     //<editor-fold defaultstate="collapsed" desc="UpdateDataListener">
     public IUpdateData getUpdateDataListener() {
         return iUpdateDataListener;
@@ -81,11 +88,11 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
     /**
      * Postavi vrednost bean-a "t" sakupljanjem vrednosti iz polja na formi.
      *
-     * @param t
+     * @param item
      */
-    protected abstract void setBeanFromFields(T t);
+    protected abstract void setBeanFromFields(T item);
 
-    protected abstract void setFieldsFromBean(T t);
+    protected abstract void setFieldsFromBean(T item);
 
     protected final void setFormFieldsWidths(float width, Sizeable.Unit unit) {
         for (Component c : fieldGroup.getFields()) {
@@ -140,7 +147,8 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
     protected abstract void updateDynamicFields();
 
     @Override
-    public void update(T t) {
-        setFieldsFromBean(t);
+    public void update(T item) {
+        setFieldsFromBean(item);
     }
+
 }

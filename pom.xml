@@ -9,9 +9,9 @@
 	<name>WS - WS-parent</name>
 
 	<properties>
-		<vaadin.version>7.5.9</vaadin.version>
+		<vaadin.version>7.6.1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-		<jetty.plugin.version>9.3.5.v20151012</jetty.plugin.version>
+		<jetty.plugin.version>9.3.6.v20151106</jetty.plugin.version>
 		<project.source.version>1.8</project.source.version>
 		<project.target.version>1.8</project.target.version>
 		<project.encoding>UTF-8</project.encoding>

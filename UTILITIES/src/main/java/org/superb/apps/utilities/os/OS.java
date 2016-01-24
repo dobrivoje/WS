@@ -7,7 +7,7 @@ package org.superb.apps.utilities.os;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class OS {
 

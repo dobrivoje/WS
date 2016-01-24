@@ -21,8 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import ws.MyUI;
-import static ws.MyUI.DS;
+import Main.MyUI;
+import static Main.MyUI.DS;
 
 /**
  *
@@ -287,10 +287,10 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
          csd.setCaseFinished(true);
          csd.setSaleAgreeded(true);
          */
-        // createSingleRootChildNodes(cc, DS.getSearchController().getSales(csd));
-        // createSingleRootChildNodes(cc, cc.getCrmProcessList());
+        //createChildNodesForTheRoot(cc, DS.getSearchController().getSales(csd));
+        //createChildNodesForTheRoot(cc, cc.getCrmProcessList());
 
-        createSingleRootChildNodes(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
+        createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
     }
 
 }

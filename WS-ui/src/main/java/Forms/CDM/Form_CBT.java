@@ -6,7 +6,7 @@ import com.vaadin.ui.TextField;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.utilities.vaadin.Forms.IFormNotification;
 import db.ent.CustomerBussinesType;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class Form_CBT extends Form_CRUD<CustomerBussinesType> {
 

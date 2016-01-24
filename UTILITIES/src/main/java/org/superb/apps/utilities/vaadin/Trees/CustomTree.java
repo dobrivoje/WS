@@ -17,7 +17,7 @@ import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_W
 
 /**
  *
- * @author root
+ * @author Dobri
  * @param <T>
  */
 public class CustomTree<T> extends Tree {
@@ -40,6 +40,8 @@ public class CustomTree<T> extends Tree {
 
     protected boolean readOnly = true;
 
+    protected boolean expandRootNodes = false;
+
     /**
      * <b>elements</b> - List of the root nodes elements for this Custom tree.
      */
@@ -48,6 +50,10 @@ public class CustomTree<T> extends Tree {
     private void init(String caption) {
         setCaption(caption);
         elements = new ArrayList();
+
+        if (items.size() > 0) {
+            items.removeAllItems();
+        }
 
         winFormHeight = WINDOW_HEIGHT_DEFAULT_NORM;
         winFormWidth = WINDOW_WIDTH_DEFAULT_NORM;
@@ -61,26 +67,41 @@ public class CustomTree<T> extends Tree {
         init(caption);
     }
 
+    public CustomTree(String caption, boolean expandRootNodes) {
+        this.expandRootNodes = expandRootNodes;
+        init(caption);
+    }
+
     /**
      * Custom tree creation with treeItems as root nodes list.
      *
      * @param caption Tree caption
-     * @param treeItems root nodes list
+     * @param rootItems root nodes list
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
-    public CustomTree(String caption, List treeItems) throws CustomTreeNodesEmptyException, NullPointerException {
-        if (treeItems == null) {
+    public CustomTree(String caption, List rootItems) throws CustomTreeNodesEmptyException, NullPointerException {
+        this(caption, rootItems, false);
+    }
+
+    public CustomTree(String caption, List rootItems, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+        this.expandRootNodes = expandRootNodes;
+        createRoots(caption, rootItems);
+    }
+
+    protected final void createRoots(String caption, List rootItems) throws UnsupportedOperationException, CustomTreeNodesEmptyException, NullPointerException {
+        if (rootItems == null) {
             throw new NullPointerException();
         }
 
-        if (treeItems.isEmpty()) {
+        if (rootItems.isEmpty()) {
             throw new CustomTreeNodesEmptyException();
         }
 
         init(caption);
-        addItems(treeItems);
+        addItems(rootItems);
+
         elements.clear();
-        elements.addAll(treeItems.subList(0, treeItems.size()));
+        elements.addAll(rootItems.subList(0, rootItems.size()));
     }
 
     /**
@@ -97,15 +118,15 @@ public class CustomTree<T> extends Tree {
             throw new NullPointerException();
         }
 
-        if (container.size() > 0) {
-            init(caption);
-
-            setContainerDataSource(container);
-            elements.clear();
-            elements.addAll(container.getItemIds());
-        } else {
+        if (container.size() <= 0) {
             throw new CustomTreeNodesEmptyException();
         }
+
+        init(caption);
+        setContainerDataSource(container);
+
+        elements.clear();
+        elements.addAll(container.getItemIds());
     }
 
     /**
@@ -113,8 +134,9 @@ public class CustomTree<T> extends Tree {
      *
      * @param rootNode root node.
      * @param rootNodeChildItemsList List of the sub nodes for the root node.
+     * @param expandRootNodes
      */
-    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList) {
+    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList, boolean expandRootNodes) {
         for (Object childItem : rootNodeChildItemsList) {
             if (this.containsId(rootNode)) {
                 addItem(childItem);
@@ -122,5 +144,14 @@ public class CustomTree<T> extends Tree {
                 setChildrenAllowed(childItem, false);
             }
         }
+
+        if (expandRootNodes) {
+            expandItem(rootNode);
+        }
     }
+
+    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList) {
+        this.setNodeItems(false, rootNodeChildItemsList, readOnly);
+    }
+
 }

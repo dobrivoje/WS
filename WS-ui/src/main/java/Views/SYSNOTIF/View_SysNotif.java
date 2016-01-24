@@ -3,7 +3,7 @@ package Views.SYSNOTIF;
 import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.SALES.Tree_SalesmanSales;
 import Trees.CRM.Tree_SalesmanCRMCases;
-import Views.View_Dashboard;
+import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import db.Exceptions.CustomTreeNodesEmptyException;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
-import ws.MyUI;
-import static ws.MyUI.DS;
+import Main.MyUI;
+import static Main.MyUI.DS;
 
 public class View_SysNotif extends View_Dashboard {
 

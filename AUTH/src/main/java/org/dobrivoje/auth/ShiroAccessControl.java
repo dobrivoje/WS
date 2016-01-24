@@ -10,17 +10,15 @@ import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.Subject;
 
-public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
+public class ShiroAccessControl implements IAccessAuthControl {
 
     //<editor-fold defaultstate="collapsed" desc="Infrastructure">
     // atribut pod navodnicima je id sesije koja se odnosi na username ulogovanog korisnika
     // private static final String UN_SESSION_KEY = "UR8450-XC88xoiuf-iow889s-HG786hjgghH11H50HH8911-mNNmn558wuuuw768x8c7";
     private String UN_SESSION_KEY;
-    private static int loggedInUsers = 0;
     private static final Set<Serializable> usersSessions = new HashSet<>();
 
     private final Factory<SecurityManager> factory;
@@ -43,8 +41,8 @@ public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
             try {
                 subject.login(token);
 
-                subject.getSession().setAttribute(UN_SESSION_KEY = (String) getSubjectSessionID(), getPrincipal());
-                incLoggedUsers();
+                subject.getSession().setAttribute(UN_SESSION_KEY = (String) (subject.getSession().getId()), getPrincipal());
+                usersSessions.add(subject.getSession().getId());
 
                 return true;
 
@@ -59,9 +57,8 @@ public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
 
     @Override
     public synchronized void logout() {
-        decLoggedUsers();
-
         try {
+            usersSessions.remove(subject.getSession().getId());
             subject.logout();
         } catch (Exception e) {
         }
@@ -114,15 +111,6 @@ public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
             return new SimpleSession("");
         }
     }
-
-    @Override
-    public Serializable getSubjectSessionID() {
-        try {
-            return subject.getSession().getId();
-        } catch (Exception e) {
-            return "";
-        }
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Inf Sys users,...">
@@ -137,47 +125,17 @@ public class ShiroAccessControl implements IAccessAuthControl, SessionListener {
     }
 
     @Override
-    public synchronized int getLoggedUsers() {
-        return loggedInUsers;
+    public synchronized int getNoOfSessions() {
+        return usersSessions.size();
     }
 
     @Override
-    public synchronized void incLoggedUsers() {
-        if (!usersSessions.contains(getSubjectSessionID())) {
-            usersSessions.add(getSubjectSessionID());
-            loggedInUsers++;
-        }
-    }
-
-    @Override
-    public synchronized void decLoggedUsers() {
-        if (usersSessions.contains(getSubjectSessionID())) {
-            usersSessions.remove(getSubjectSessionID());
-        }
-
-        if (--loggedInUsers < 0) {
-            loggedInUsers = 0;
-        }
-
-    }
-    //</editor-fold>
-
-    public static Set<Serializable> getUsersSessions() {
+    public Set<Serializable> getUsersSessions() {
         return usersSessions;
     }
 
     @Override
-    public void onStart(Session sn) {
-        System.err.println("start sesije.");
+    public synchronized void removeUserSession() {
     }
-
-    @Override
-    public void onStop(Session sn) {
-        System.err.println("stop sesije.");
-    }
-
-    @Override
-    public void onExpiration(Session sn) {
-        System.err.println("sesija istekla.");
-    }
+    //</editor-fold>
 }

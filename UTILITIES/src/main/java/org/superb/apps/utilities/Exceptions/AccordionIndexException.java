@@ -7,7 +7,7 @@ package org.superb.apps.utilities.Exceptions;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class AccordionIndexException extends NullPointerException {
     

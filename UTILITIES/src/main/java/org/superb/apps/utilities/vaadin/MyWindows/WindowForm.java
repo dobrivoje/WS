@@ -18,7 +18,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class WindowForm extends Window {
 

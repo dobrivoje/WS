@@ -10,7 +10,7 @@ import db.ent.Customer;
 import db.ent.RelCBType;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *

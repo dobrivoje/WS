@@ -7,7 +7,7 @@ package db.Exceptions;
 
 /**
  *
- * @author dprtenjak
+ * @author Dobri
  */
 public enum SqlServerExceptionsCauses {
 

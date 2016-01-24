@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * @author dprtenjak
+ * @author Dobri
  */
 public class MyNumberWithNoGrouping extends StringToDoubleConverter {
 

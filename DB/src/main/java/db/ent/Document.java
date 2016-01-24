@@ -55,7 +55,7 @@ public class Document implements Serializable {
     @Column(name = "DocType")
     private String docType;
     @Column(name = "UploadDate")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date uploadDate;
     @OneToMany(mappedBy = "FK_DOCUMENT")
     private List<RelFSDocument> relFSImage;

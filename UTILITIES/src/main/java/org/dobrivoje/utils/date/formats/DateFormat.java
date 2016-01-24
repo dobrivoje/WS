@@ -7,7 +7,7 @@ package org.dobrivoje.utils.date.formats;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public enum DateFormat {
 

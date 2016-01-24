@@ -25,7 +25,7 @@ import org.superb.apps.utilities.vaadin.Tables.CustomTable;
 import Forms.CDM.Form_Customer;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class View_Console extends VerticalLayout implements View {
 

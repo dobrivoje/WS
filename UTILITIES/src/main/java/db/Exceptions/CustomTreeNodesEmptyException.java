@@ -7,7 +7,7 @@ package db.Exceptions;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class CustomTreeNodesEmptyException extends Exception {
 

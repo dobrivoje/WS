@@ -45,7 +45,7 @@ public class CustomSCTree<T> extends CustomTree<T> {
     public CustomSCTree(String caption, T t) {
         this(caption);
         addItem(t);
-        elements.add(t);
+        // elements.add(t);
     }
 
     /**

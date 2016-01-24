@@ -16,7 +16,7 @@ import db.ent.Salesman;
 import java.util.List;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import ws.MyUI;
+import Main.MyUI;
 
 /**
  *

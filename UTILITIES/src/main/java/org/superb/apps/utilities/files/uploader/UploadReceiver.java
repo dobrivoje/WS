@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class UploadReceiver implements Receiver, ProgressListener, StartedListener, FinishedListener, FailedListener {
 

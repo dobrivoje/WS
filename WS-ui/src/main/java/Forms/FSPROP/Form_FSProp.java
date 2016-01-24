@@ -20,7 +20,7 @@ import db.ent.Fuelstation;
 import db.ent.Owner;
 import java.util.Date;
 import static org.superb.apps.utilities.Enums.CrudOperations.BUTTON_CAPTION_SAVE;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class Form_FSProp extends Form_CRUD2<FsProp> {
 

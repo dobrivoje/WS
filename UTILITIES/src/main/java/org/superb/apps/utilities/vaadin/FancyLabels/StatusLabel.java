@@ -14,7 +14,7 @@ import org.superb.apps.utilities.Enums.Statuses;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class StatusLabel extends Label {
 

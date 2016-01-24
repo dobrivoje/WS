@@ -17,8 +17,8 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import ws.MyUI;
-import static ws.MyUI.DS;
+import Main.MyUI;
+import static Main.MyUI.DS;
 
 /**
  *
@@ -150,6 +150,6 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
     
     @Override
     protected void createSubNodes(Salesman s) {
-        createSingleRootChildNodes(s, DS.getCRMController().getCRM_Customers(s));
+       createChildNodesForTheRoot(s, DS.getCRMController().getCRM_Customers(s));
     }
 }

@@ -11,7 +11,6 @@ import com.vaadin.server.Sizeable;
 import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.Image;
 import org.vaadin.peter.contextmenu.ContextMenu;
-import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuOpenedListener.ComponentListener;
 
 /**
  *
@@ -31,11 +30,8 @@ public class MojImage extends Image {
         cm.addItem("Delete Image");
         cm.setAsContextMenuOf(this);
         // cm.setOpenAutomatically(false);
-        cm.addContextMenuComponentListener(new ComponentListener() {
-            @Override
-            public void onContextMenuOpenFromComponent(ContextMenu.ContextMenuOpenedOnComponentEvent event) {
-                //cm.open(event.getX(), event.getY());
-            }
+        cm.addContextMenuComponentListener((ContextMenu.ContextMenuOpenedOnComponentEvent event) -> {
+            //cm.open(event.getX(), event.getY());
         });
     }
 
@@ -47,12 +43,9 @@ public class MojImage extends Image {
 
     @Override
     public void addClickListener(MouseEvents.ClickListener listener) {
-        super.addClickListener(new MouseEvents.ClickListener() {
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                if (event.getButton().equals(MouseEventDetails.MouseButton.RIGHT)) {
-                    cm.open(event.getClientX(), event.getClientY());
-                }
+        super.addClickListener((MouseEvents.ClickEvent event) -> {
+            if (event.getButton().equals(MouseEventDetails.MouseButton.RIGHT)) {
+                cm.open(event.getClientX(), event.getClientY());
             }
         });
     }

@@ -8,7 +8,7 @@ package Tables;
 import Forms.CDM.Form_Customer;
 import Forms.CDM.Form_RELCBT;
 import Forms.CRM.Form_CRMCase;
-import static Menu.MenuDefinitions.CRM_MANAG_NEW_CASE;
+import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import Trees.Tree_RelCBT;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
@@ -36,8 +36,8 @@ import org.superb.apps.utilities.Enums.ViewModes;
 import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
 import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
-import ws.MyUI;
-import static ws.MyUI.DS;
+import Main.MyUI;
+import static Main.MyUI.DS;
 
 /**
  *

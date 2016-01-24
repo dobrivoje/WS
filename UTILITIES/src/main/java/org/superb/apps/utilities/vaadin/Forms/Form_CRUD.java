@@ -75,7 +75,7 @@ public abstract class Form_CRUD<T> extends FormLayout {
                         visualContainer.refreshVisualContainer();
                     }
                     
-                    Notification.show("Customer Updated.", Notification.Type.TRAY_NOTIFICATION);
+                    Notification.show("Item Updated.", Notification.Type.TRAY_NOTIFICATION);
                 } catch (Exception ex) {
                     Notification.show("Error", ex.toString(), Notification.Type.ERROR_MESSAGE);
                 }

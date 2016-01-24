@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.vaadin.MyWindows;
 
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
@@ -16,7 +17,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
- * @author root
+ * @author Dobri
  */
 public class MyWindow extends Window {
 
@@ -60,16 +61,20 @@ public class MyWindow extends Window {
         setContent(layout);
     }
 
-    public MyWindow(Layout layout, String caption, float height, float width) {
+    public MyWindow(String caption, Layout layout, float height, float width) {
+        this(caption, layout, height, width, Unit.PERCENTAGE);
+    }
+
+    public MyWindow(String caption, Layout layout, float height, float width, Sizeable.Unit unit) {
         this(layout);
         setCaption(caption);
 
         if (height != 0) {
-            setHeight(height, Unit.PIXELS);
+            setHeight(height, unit);
         }
 
         if (width != 0) {
-            setHeight(width, Unit.PIXELS);
+            setHeight(width, unit);
         }
     }
 

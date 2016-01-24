@@ -8,7 +8,7 @@ import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.superb.apps.utilities.vaadin.Forms.Form_CRUD;
 import org.superb.apps.utilities.vaadin.Forms.IFormNotification;
 import db.ent.Customer;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 public class Form_Customer_Test extends Form_CRUD<Customer> {
 

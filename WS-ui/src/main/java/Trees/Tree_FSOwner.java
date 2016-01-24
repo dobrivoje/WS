@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import org.superb.apps.utilities.vaadin.Trees.CustomDateTree;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *

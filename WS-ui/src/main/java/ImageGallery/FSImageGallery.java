@@ -5,11 +5,10 @@
  */
 package ImageGallery;
 
-import Layouts.Layout_InlineCSS;
+import org.superb.apps.utilities.vaadin.Views.Layout_InlineCSS;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -35,7 +34,7 @@ import org.superb.apps.utilities.os.OS;
 import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.vaadin.dialogs.ConfirmDialog;
-import static ws.MyUI.DS;
+import static Main.MyUI.DS;
 
 /**
  *
@@ -74,44 +73,40 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
         ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(fuelstation.getName()));
         final Upload imageUploader = new Upload(null, ur);
 
-        imageUploader.addFinishedListener(new Upload.FinishedListener() {
-            @Override
-            public void uploadFinished(Upload.FinishedEvent event) {
-                notif.setMsg(event.getFilename());
-
-                Document newDocument;
-                try {
-                    if (new File(absPath + event.getFilename()).length() < 1200L) {
-                        throw new Exception("File Size Too Small !");
-                    }
-
-                    if (event.getFilename().trim().isEmpty()) {
-                        throw new Exception("Nothing Selected !");
-                    }
-
-                    newDocument = DS.getDocumentController().addNewDocument(
-                            DS.getGalleryController().getDefaultImageGallery(),
-                            event.getFilename(),
-                            null,
-                            CharsAdapter.safeAdapt(fuelstation.getName()),
-                            new Date(),
-                            docType
-                    );
-
-                    int priority = DS.getDocumentController().getAllFSDocuments(fuelstation).size();
-                    DS.getDocumentController().addNewFSDocument(
-                            fuelstation, newDocument, new Date(), true, 1 + priority);
-
-                    refreshVisualContainer.refreshVisualContainer();
-
-                    Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error.", "File Upload Failed !\n"
-                            + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+        imageUploader.addFinishedListener((Upload.FinishedEvent event) -> {
+            notif.setMsg(event.getFilename());
+            
+            Document newDocument;
+            try {
+                if (new File(absPath + event.getFilename()).length() < 1200L) {
+                    throw new Exception("File Size Too Small !");
                 }
+                
+                if (event.getFilename().trim().isEmpty()) {
+                    throw new Exception("Nothing Selected !");
+                }
+                
+                newDocument = DS.getDocumentController().addNewDocument(
+                        DS.getGalleryController().getDefaultImageGallery(),
+                        event.getFilename(),
+                        null,
+                        CharsAdapter.safeAdapt(fuelstation.getName()),
+                        new Date(),
+                        docType
+                );
+                
+                int priority = DS.getDocumentController().getAllFSDocuments(fuelstation).size();
+                DS.getDocumentController().addNewFSDocument(
+                        fuelstation, newDocument, new Date(), true, 1 + priority);
+                
+                refreshVisualContainer.refreshVisualContainer();
+                
+                Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error.", "File Upload Failed !\n"
+                        + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
-        }
-        );
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
@@ -121,12 +116,9 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
             di.getImage().setHeight(40, Unit.PIXELS);
             di.getImage().setWidth(40, Unit.PIXELS);
 
-            di.getImage().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        openDocumentGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
-                    }
+            di.getImage().addClickListener((MouseEvents.ClickEvent event) -> {
+                if (event.isDoubleClick()) {
+                    openDocumentGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
                 }
             });
 
@@ -152,7 +144,7 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 
-        final Window W = new MyWindow(VL_Root, caption, 0, 0);
+        final Window W = new MyWindow(caption, VL_Root, 0, 0);
         W.setModal(true);
         W.setStyleName(Reindeer.WINDOW_BLACK);
 
