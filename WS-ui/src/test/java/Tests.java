@@ -9,7 +9,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class Tests {
 

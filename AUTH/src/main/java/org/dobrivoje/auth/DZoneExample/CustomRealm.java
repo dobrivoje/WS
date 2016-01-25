@@ -14,7 +14,7 @@ import org.apache.shiro.realm.AuthenticatingRealm;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class CustomRealm extends AuthenticatingRealm {
 

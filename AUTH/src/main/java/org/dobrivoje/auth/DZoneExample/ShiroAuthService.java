@@ -15,7 +15,7 @@ import org.apache.shiro.subject.Subject;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class ShiroAuthService {
 

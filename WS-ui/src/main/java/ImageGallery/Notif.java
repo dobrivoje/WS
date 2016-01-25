@@ -7,7 +7,7 @@ package ImageGallery;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class Notif {
 

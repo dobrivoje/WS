@@ -7,7 +7,7 @@ package test;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class test3 {
 

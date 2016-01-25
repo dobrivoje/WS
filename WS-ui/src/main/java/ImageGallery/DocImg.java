@@ -10,7 +10,7 @@ import db.ent.Document;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class DocImg {
 

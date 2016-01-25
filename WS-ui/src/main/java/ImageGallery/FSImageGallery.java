@@ -38,7 +38,7 @@ import static Main.MyUI.DS;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class FSImageGallery extends ImageGallery<Fuelstation> {
 
