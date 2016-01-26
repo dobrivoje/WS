@@ -22,18 +22,17 @@ public class AccessControlListener implements HttpSessionListener {
         shiroAuthObject = new IntermolADAccessControl();
         se.getSession().setAttribute(ServletOperations.SERVLET_CREATION.toString(), shiroAuthObject);
 
-        Logger.getLogger("test").log(Level.INFO, "Http Session {0} - Created.",
+        Logger.getLogger("test").log(Level.INFO, "WS App - Http Session {0} - Created.",
                 se.getSession().getId());
-        Logger.getLogger("test").log(Level.INFO, "Shiro Sessions : {0}", shiroAuthObject.getUsersSessions().toString());
+        Logger.getLogger("test").log(Level.INFO, "WS App - Shiro Sessions : {0}", shiroAuthObject.getUsersSessions().toString());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        Logger.getLogger("test").log(Level.INFO, "Session  - Destroyed.");
-        Logger.getLogger("test").log(Level.INFO, "Shiro Sessions : {0}", shiroAuthObject.getUsersSessions().toString());
+        Logger.getLogger("test").log(Level.INFO, "WS App - Session  - Destroyed.");
+        Logger.getLogger("test").log(Level.INFO, "WS App - Shiro Sessions : {0}", shiroAuthObject.getUsersSessions().toString());
 
         shiroAuthObject.logout();
-        shiroAuthObject = null;
     }
 
 }

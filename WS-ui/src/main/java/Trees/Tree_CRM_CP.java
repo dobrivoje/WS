@@ -26,9 +26,9 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
 
     private Salesman salesman;
 
-    public Tree_CRM_CP(String caption, Map<Object, List> treeModel, boolean formAllowed)
+    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, treeModel);
+        super("", treeModel);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
@@ -130,7 +130,7 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
             }
         });
         //</editor-fold>
-        
+
     }
 
 }

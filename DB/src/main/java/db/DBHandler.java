@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.Query;
@@ -1605,6 +1606,16 @@ public class DBHandler {
         }
     }
 
+    public Map<Object, List> getCRM_MD_CRM_Sales(List crmCases) {
+        Map<Object, List> cc = new LinkedHashMap<>();
+
+        for (Object c : crmCases) {
+            cc.put(c, getCRM_Sales((CrmCase) c));
+        }
+
+        return cc;
+    }
+
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
         Dates d = new Dates();
         Date from, to;
@@ -1999,7 +2010,7 @@ public class DBHandler {
             if (csd.getSalesman() != null) {
                 query.setParameter("IDS", csd.getSalesman());
             }
-            if (csd.getBussinesLine()!= null) {
+            if (csd.getBussinesLine() != null) {
                 query.setParameter("IDBL", csd.getBussinesLine());
             }
             if (csd.getProduct() != null) {
@@ -2067,7 +2078,7 @@ public class DBHandler {
                 query.setParameter("IDS", csd.getSalesman());
             }
 
-            if (csd.getBussinesLine()!= null) {
+            if (csd.getBussinesLine() != null) {
                 query.setParameter("IDBL", csd.getBussinesLine());
             }
 

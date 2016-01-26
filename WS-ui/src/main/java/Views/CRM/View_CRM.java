@@ -2,10 +2,10 @@ package Views.CRM;
 
 import Main.MyUI;
 import static Main.MyUI.DS;
+import Trees.CRM.SALES.Tree_MD_SalesmanSales;
 import db.ent.custom.CustomSearchData;
 import Uni.Dialogs.Form_CustomSearch;
 import Uni.Dialogs.SelectorDialog;
-import Trees.CRM.SALES.Tree_SalesmanSales;
 import Trees.CRM.SALES.Tree_SalesrepAdvSales;
 import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.CRM.Tree_SalesmanCRMCases;
@@ -43,7 +43,6 @@ public class View_CRM extends View_Dashboard {
 
         buildContentWithComponents(
                 activeCasesBySalesmanPanel(),
-                // dynamicPanels.get(2),
                 activeCasesByCustomerPanel(),
                 dynamicPanels.get(0),
                 dynamicPanels.get(1)
@@ -59,20 +58,14 @@ public class View_CRM extends View_Dashboard {
 
             for (Salesman S : DS.getSalesmanController().getAll()) {
                 csd.setSalesman(S);
-                List<CrmCase> salesRepCRMCases = DS.getSearchController().getCRMCases(csd);
+                List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
 
-                /*
-                 if (!salesRepCRMCases.isEmpty()) {
-                 Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases("", salesRepCRMCases, formAllowed);
-                 subPanels.add(new Panel(S.toString(), csct));
-                 }
-                 */
-                if (!salesRepCRMCases.isEmpty()) {
-                    for (CrmCase cc : salesRepCRMCases) {
+                if (!L.isEmpty()) {
+                    for (CrmCase cc : L) {
                         Map<Object, List> SR_Cases = new HashMap<>();
                         SR_Cases.put(cc, DS.getCRMController().getCRM_Processes(cc));
 
-                        Tree_CRM_CP csct = new Tree_CRM_CP("", SR_Cases, formAllowed);
+                        Tree_CRM_CP csct = new Tree_CRM_CP(SR_Cases, formAllowed);
                         subPanels.add(new Panel(S.toString(), csct));
                     }
                 }
@@ -193,7 +186,11 @@ public class View_CRM extends View_Dashboard {
         panelCommands.put("Last Month Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(0);
 
-            panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+            CustomSearchData csd = new CustomSearchData();
+            csd.setStartDate(dateInterval.getFrom());
+            csd.setEndDate(dateInterval.getTo());
+
+            panels.addAll(getSalesForPeriod(csd));
 
             updateUIPanel(0,
                     createPanelComponent(
@@ -209,7 +206,11 @@ public class View_CRM extends View_Dashboard {
         panelCommands.put("Last Two Months Period", (MenuBar.Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-1);
 
-            panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+            CustomSearchData csd = new CustomSearchData();
+            csd.setStartDate(dateInterval.getFrom());
+            csd.setEndDate(dateInterval.getTo());
+
+            panels.addAll(getSalesForPeriod(csd));
 
             updateUIPanel(0,
                     createPanelComponent(
@@ -227,7 +228,11 @@ public class View_CRM extends View_Dashboard {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 dateInterval.setMonthsBackForth(-2);
 
-                panels.addAll(getSalesForPeriod(dateInterval.getFrom(), dateInterval.getTo()));
+                CustomSearchData csd = new CustomSearchData();
+                csd.setStartDate(dateInterval.getFrom());
+                csd.setEndDate(dateInterval.getTo());
+
+                panels.addAll(getSalesForPeriod(csd));
 
                 updateUIPanel(0,
                         createPanelComponent(
@@ -251,7 +256,7 @@ public class View_CRM extends View_Dashboard {
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
 
-                panels.addAll(getAdvancedSearchSales(CSD));
+                panels.addAll(getSalesForPeriod(CSD));
 
                 updateUIPanel(0,
                         createPanelComponent(
@@ -280,7 +285,12 @@ public class View_CRM extends View_Dashboard {
 
         panelCommands.put("Last Three Months Period", (Command) (MenuBar.MenuItem selectedItem) -> {
             dateInterval.setMonthsBackForth(-2);
-            panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+
+            CustomSearchData csd = new CustomSearchData();
+            csd.setStartDate(dateInterval.getFrom());
+            csd.setEndDate(dateInterval.getTo());
+
+            panels.addAll(getNotSignedCases(csd));
             updateUIPanel(1,
                     createPanelComponent(
                             panelHeader,
@@ -293,7 +303,12 @@ public class View_CRM extends View_Dashboard {
         panelCommands.put("Last Six Months Period",
                 (Command) (MenuBar.MenuItem selectedItem) -> {
                     dateInterval.setMonthsBackForth(-5);
-                    panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+
+                    CustomSearchData csd = new CustomSearchData();
+                    csd.setStartDate(dateInterval.getFrom());
+                    csd.setEndDate(dateInterval.getTo());
+
+                    panels.addAll(getNotSignedCases(csd));
                     updateUIPanel(1,
                             createPanelComponent(
                                     panelHeader,
@@ -306,7 +321,12 @@ public class View_CRM extends View_Dashboard {
         panelCommands.put("Last Year Period",
                 (Command) (MenuBar.MenuItem selectedItem) -> {
                     dateInterval.setMonthsBackForth(-11);
-                    panels.addAll(getNotSignedCases(dateInterval.getFrom(), dateInterval.getTo()));
+
+                    CustomSearchData csd = new CustomSearchData();
+                    csd.setStartDate(dateInterval.getFrom());
+                    csd.setEndDate(dateInterval.getTo());
+
+                    panels.addAll(getNotSignedCases(csd));
                     updateUIPanel(1,
                             createPanelComponent(
                                     panelHeader,
@@ -328,7 +348,7 @@ public class View_CRM extends View_Dashboard {
 
             FCS.setUpdateDataListener((IUpdateData<CustomSearchData>) (CustomSearchData CSD) -> {
 
-                panels.addAll(getNotSignedCases(CSD.getStartDate(), CSD.getEndDate()));
+                panels.addAll(getNotSignedCases(CSD));
 
                 updateUIPanel(1,
                         createPanelComponent(
@@ -351,18 +371,17 @@ public class View_CRM extends View_Dashboard {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="getSalesForPeriod">
-    private List<Panel> getSalesForPeriod(Date from, Date to) {
+    private List<Panel> getSalesForPeriod(CustomSearchData csd) {
         List<Panel> LP = new ArrayList();
 
         try {
-            for (Salesman S : DS.getSalesmanController().getAll()) {
+            for (Salesman s : DS.getSalesmanController().getAll()) {
 
-                List<CrmCase> L = DS.getCRMController().getCRM_Salesrep_Sales_Cases(S, from, to);
+                // if (!DS.getCRMController().getCRM_MD_CRM_Sales(s, from, to).isEmpty()) {
+                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(csd, formAllowed);
+                LP.add(new Panel(s.toString(), tss));
+                //}
 
-                if (!L.isEmpty()) {
-                    Tree_SalesmanSales tss = new Tree_SalesmanSales("", L, from, to, formAllowed);
-                    LP.add(new Panel(S.toString(), tss));
-                }
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -400,11 +419,11 @@ public class View_CRM extends View_Dashboard {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="getNotSignedCases">
-    private List<Panel> getNotSignedCases(Date from, Date to) {
+    private List<Panel> getNotSignedCases(CustomSearchData csd) {
         List<Panel> LP = new ArrayList();
 
-        Date f = from == null ? new Date(0) : from;
-        Date t = to == null ? new Date() : to;
+        Date f = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+        Date t = csd.getEndDate() == null ? new Date() : csd.getEndDate();
 
         try {
             for (Salesman S : DS.getSalesmanController().getAll()) {
@@ -412,7 +431,7 @@ public class View_CRM extends View_Dashboard {
                 List<CrmCase> L = DS.getCRMController().getCRM_CasesStats(S, true, false, f, t);
 
                 if (!L.isEmpty()) {
-                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", L, formAllowed, f, t);
+                    Tree_SalesmanCRMCases tss = new Tree_SalesmanCRMCases("", L, formAllowed);
                     LP.add(new Panel(S.toString(), tss));
                 }
             }

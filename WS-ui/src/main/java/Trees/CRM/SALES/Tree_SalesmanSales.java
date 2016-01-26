@@ -290,7 +290,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //createChildNodesForTheRoot(cc, DS.getSearchController().getSales(csd));
         //createChildNodesForTheRoot(cc, cc.getCrmProcessList());
 
-        createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Sales(cc, dateFrom, dateTo));
+        createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Sales(cc));
     }
 
 }

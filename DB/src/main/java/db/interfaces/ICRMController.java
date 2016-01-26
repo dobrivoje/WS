@@ -15,6 +15,7 @@ import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -55,6 +56,26 @@ public interface ICRMController {
      * @return
      */
     List<RelSALE> getCRM_Sales(CrmCase crmCase, Date dateFrom, Date dateTo);
+
+    /**
+     * Za posmatrani CRM case vrati sve prodaje.<br>
+     * Master/detail.
+     *
+     * @param crmCase
+     * @return
+     */
+    List<RelSALE> getCRM_Sales(CrmCase crmCase);
+
+    /**
+     * Za posmatrani CRM case vrati sve prodaje.<br>
+     * Master/detail.
+     *
+     * @param salesRep
+     * @param salesFrom
+     * @param SalesTo
+     * @return
+     */
+    Map<Object, List> getCRM_MD_CRM_Sales(Salesman salesRep, Date salesFrom, Date SalesTo);
 
     /**
      * Ako su oba datuma null, onda se traži prodaja <br>

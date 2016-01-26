@@ -13,7 +13,7 @@ import db.ent.Gallery;
  */
 public interface IGalleryController extends CRUDInterface<Gallery> {
 
-    public Gallery getDefaultImageGallery();
+    Gallery getDefaultImageGallery();
 
     void addNew(String galleryName, String storeLocation) throws Exception;
 
