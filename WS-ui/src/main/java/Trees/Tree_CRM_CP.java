@@ -28,7 +28,13 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
 
     public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super("", treeModel);
+        this(treeModel, formAllowed, false);
+
+    }
+
+    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes)
+            throws CustomTreeNodesEmptyException, NullPointerException {
+        super("", treeModel, expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {

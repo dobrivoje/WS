@@ -25,9 +25,14 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
     private Salesman salesman;
 
-    public Tree_SalesmanCRMCases(String caption, List rootNodes, boolean formAllowed)
+    public Tree_SalesmanCRMCases(List rootNodes, boolean formAllowed)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, rootNodes);
+        this(rootNodes, formAllowed, false);
+    }
+
+    public Tree_SalesmanCRMCases(List rootNodes, boolean formAllowed, boolean expandRootNodes)
+            throws CustomTreeNodesEmptyException, NullPointerException {
+        super("", rootNodes, expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
@@ -61,7 +66,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
-                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases("",
+                                Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases(
                                         DS.getCRMController().getCRM_Cases(salesman, false),
                                         formAllowed
                                 );

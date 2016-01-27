@@ -29,6 +29,8 @@ public class Tree_MasterDetail extends Tree {
 
     protected Map<Object, List> treeModel;
 
+    protected boolean expandRootNodes;
+
     /**
      * Parameter to regulate Window carrier height.
      */
@@ -46,6 +48,8 @@ public class Tree_MasterDetail extends Tree {
     private void init(String caption) {
         clear();
         setCaption(caption);
+
+        expandRootNodes = false;
 
         winFormHeight = WINDOW_HEIGHT_DEFAULT_NORM;
         winFormWidth = WINDOW_WIDTH_DEFAULT_NORM;
@@ -67,12 +71,26 @@ public class Tree_MasterDetail extends Tree {
      * @throws db.Exceptions.CustomTreeNodesEmptyException
      */
     public Tree_MasterDetail(String caption, Map<Object, List> treeModel) throws CustomTreeNodesEmptyException, NullPointerException {
+        this(caption, treeModel, false);
+    }
+
+    /**
+     *
+     * @param caption
+     * @param treeModel
+     * @param expandRootNodes
+     * @throws CustomTreeNodesEmptyException
+     * @throws NullPointerException
+     */
+    public Tree_MasterDetail(String caption, Map<Object, List> treeModel, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
         init(caption);
 
         this.treeModel = new HashMap<>(treeModel);
 
         addItems(treeModel.keySet());
-        createMasterDetail(treeModel);
+        createMasterDetail(treeModel, expandRootNodes);
+
+        this.expandRootNodes = expandRootNodes;
     }
 
     /**
@@ -80,8 +98,9 @@ public class Tree_MasterDetail extends Tree {
      *
      * @param rootNode root node.
      * @param rootNodeChildItemsList List of the sub nodes for the root node.
+     * @param expandRootNodes
      */
-    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList) {
+    protected void setNodeItems(Object rootNode, List rootNodeChildItemsList, boolean expandRootNodes) {
         for (Object childItem : rootNodeChildItemsList) {
             if (this.containsId(rootNode)) {
                 addItem(childItem);
@@ -89,15 +108,22 @@ public class Tree_MasterDetail extends Tree {
                 setChildrenAllowed(childItem, false);
             }
         }
+
+        if (expandRootNodes) {
+            this.expandRootNodes = expandRootNodes;
+            
+            expandItem(rootNode);
+        }
     }
 
     /**
      *
      * @param treeModel Data model for the tree.
+     * @param expandRootNodes
      */
-    protected final void createMasterDetail(Map<Object, List> treeModel) {
+    protected final void createMasterDetail(Map<Object, List> treeModel, boolean expandRootNodes) {
         treeModel.entrySet().stream().forEach((ES) -> {
-            this.setNodeItems(ES.getKey(), ES.getValue());
+            this.setNodeItems(ES.getKey(), ES.getValue(), expandRootNodes);
         });
     }
 
