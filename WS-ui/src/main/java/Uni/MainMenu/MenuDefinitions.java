@@ -17,6 +17,9 @@ public enum MenuDefinitions {
     //
     // Main menu options
     //
+//
+    // Main menu options
+    //
     SYS_NOTIF_BOARD("System Notifications Board"),
     CUST_DATA_MANAG("Customers Management"),
     CUST_CRM_MANAG("CRM Management"),
@@ -42,9 +45,9 @@ public enum MenuDefinitions {
     CRM_MANAG_NEW_SALESMAN_CUST_REL("New Salesrep Customer Relationship"),
     CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
     //
-    FS_DATA_MANAG_SEARCH_ENGINE("FS Search Engine"),
     FS_DATA_MANAG_NEW_FS("New FS"),
     FS_DATA_MANAG_NEW_FS_OWNER("New FS Owner"),
+    FS_DATA_MANAG_PROPERTIES("FS Properties"),
     FS_DATA_MANAG_DOCS("FS Documents");
 
     private final String menuItem;
@@ -101,9 +104,9 @@ public enum MenuDefinitions {
 
     public static List<MenuDefinitions> get_FS_SubItems() {
         return Arrays.asList(
-                FS_DATA_MANAG_SEARCH_ENGINE,
                 FS_DATA_MANAG_NEW_FS,
                 FS_DATA_MANAG_NEW_FS_OWNER,
+                FS_DATA_MANAG_PROPERTIES,
                 FS_DATA_MANAG_DOCS
         );
     }

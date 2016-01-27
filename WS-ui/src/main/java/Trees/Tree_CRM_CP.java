@@ -24,22 +24,19 @@ import static Main.MyUI.DS;
  */
 public class Tree_CRM_CP extends Tree_MasterDetail {
 
-    private Salesman salesman;
-
-    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed)
-            throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         this(treeModel, formAllowed, false);
-
     }
 
-    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes)
-            throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
         super("", treeModel, expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
             propTrees.clear();
             propPanel.removeAllComponents();
+
+            Salesman salesman = new Salesman();
 
             try {
                 if (event.isDoubleClick()) {
@@ -48,9 +45,9 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
                         if (event.getItemId() instanceof CrmCase) {
                             try {
                                 CrmCase crmCase = (CrmCase) event.getItemId();
-                                this.salesman = crmCase.getFK_IDRSC().getFK_IDS();
+                                salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
+                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
 
                                 crudForm = new Form_CRMCase(crmCase, null, false, readOnly);
 
@@ -64,9 +61,9 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
                                 CrmProcess crmProcess = (CrmProcess) event.getItemId();
-                                this.salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
+                                salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
+                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
 
                                 Tree_CRMSingleCase cc = new Tree_CRMSingleCase("", crmProcess.getFK_IDCA());
                                 crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);
@@ -82,9 +79,9 @@ public class Tree_CRM_CP extends Tree_MasterDetail {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);

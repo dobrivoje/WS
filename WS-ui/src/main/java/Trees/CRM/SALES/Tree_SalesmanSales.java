@@ -33,8 +33,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
     private Salesman salesman;
     private String imageLocation;
 
-    public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed)
-            throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_SalesmanSales(String caption, Salesman salesman, Date dateFrom, Date dateTo, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, DS.getCRMController().getCRM_Salesrep_Sales_Cases(salesman, dateFrom, dateTo), dateFrom, dateTo);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
@@ -115,8 +114,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
-    public Tree_SalesmanSales(String caption, List crmCases, Date dateFrom, Date dateTo, boolean formAllowed)
-            throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_SalesmanSales(String caption, List crmCases, Date dateFrom, Date dateTo, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         super(caption, crmCases, dateFrom, dateTo);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
@@ -197,9 +195,8 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
         //</editor-fold>
     }
 
-    public Tree_SalesmanSales(String caption, List crmCases, boolean formAllowed)
-            throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, crmCases);
+    public Tree_SalesmanSales(List crmCases, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+        super("", crmCases);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {

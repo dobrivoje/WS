@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  *
- * @author dprtenjak
+ * @author root
  */
 public class PropertyAccordion extends Accordion {
 

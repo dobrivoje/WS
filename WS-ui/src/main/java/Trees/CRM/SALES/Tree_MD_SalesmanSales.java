@@ -16,10 +16,10 @@ import db.ent.custom.CustomSearchData;
  */
 public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
 
-    public Tree_MD_SalesmanSales(CustomSearchData csd, boolean formAllowed)
+    public Tree_MD_SalesmanSales(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes)
             throws CustomTreeNodesEmptyException, NullPointerException {
 
-        super("", DS.getCRMController().getCRM_MD_CRM_Sales(csd.getSalesman(), csd.getStartDate(), csd.getEndDate()));
+        super("", DS.getCRMController().getCRM_MD_CRM_SalesrepSales(csd), expandRootNodes);
 
     }
 

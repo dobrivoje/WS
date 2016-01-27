@@ -14,11 +14,11 @@ import db.ent.Customer;
 import db.ent.RelSALE;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
+import db.ent.custom.CustomSearchData;
 import db.interfaces.ICRMController;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import static test.test4.DS;
 
 /**
  *
@@ -27,6 +27,9 @@ import static test.test4.DS;
 public class CRM_Controller implements ICRMController {
 
     private static DBHandler dbh;
+
+    private Date dateFrom;
+    private Date dateTo;
 
     public CRM_Controller(DBHandler dbh) {
         CRM_Controller.dbh = dbh;
@@ -229,8 +232,20 @@ public class CRM_Controller implements ICRMController {
     }
 
     @Override
-    public Map<Object, List> getCRM_MD_CRM_Sales(Salesman salesRep, Date salesFrom, Date SalesTo) {
-        return dbh.getCRM_MD_CRM_Sales(DS.getCRMController().getCRM_Salesrep_Sales_Cases(salesRep, salesFrom, SalesTo));
+    public Map<Object, List> getCRM_MD_CRM_Sales(Salesman salesRep, Date salesFrom, Date salesTo) {
+        return dbh.getCRM_MD_CRM_Sales(
+                getCRM_Salesrep_Sales_Cases(salesRep, salesFrom, salesTo)
+        );
+    }
+
+    @Override
+    public Map<Object, List> getCRM_MD_CRM_Sales(CustomSearchData csd) {
+        return dbh.getCRM_MD_Sales(csd);
+    }
+
+    @Override
+    public Map<Object, List> getCRM_MD_CRM_SalesrepSales(CustomSearchData csd) {
+        return dbh.getCRM_MD_SalesrepSales(csd);
     }
 
     @Override

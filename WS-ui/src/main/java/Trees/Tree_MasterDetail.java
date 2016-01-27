@@ -5,7 +5,6 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
@@ -26,8 +25,6 @@ public class Tree_MasterDetail extends Tree {
     protected Panel winFormPropPanel;
 
     protected Form_CRUD2 crudForm;
-
-    protected Map<Object, List> treeModel;
 
     protected boolean expandRootNodes;
 
@@ -85,12 +82,10 @@ public class Tree_MasterDetail extends Tree {
     public Tree_MasterDetail(String caption, Map<Object, List> treeModel, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
         init(caption);
 
-        this.treeModel = new HashMap<>(treeModel);
+        this.expandRootNodes = expandRootNodes;
 
         addItems(treeModel.keySet());
         createMasterDetail(treeModel, expandRootNodes);
-
-        this.expandRootNodes = expandRootNodes;
     }
 
     /**
@@ -111,7 +106,7 @@ public class Tree_MasterDetail extends Tree {
 
         if (expandRootNodes) {
             this.expandRootNodes = expandRootNodes;
-            
+
             expandItem(rootNode);
         }
     }

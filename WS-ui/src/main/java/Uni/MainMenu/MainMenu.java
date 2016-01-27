@@ -35,7 +35,7 @@ import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_CUST_DOCS;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_NEW_CBT;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG;
-import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_SEARCH_ENGINE;
+import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_PROPERTIES;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_DOCS;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_NEW_FS;
 import static Uni.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD;
@@ -242,12 +242,12 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
         customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
         
-        customersTree.setParent(FS_DATA_MANAG_SEARCH_ENGINE, FS_DATA_MANAG);
+        customersTree.setParent(FS_DATA_MANAG_PROPERTIES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_DOCS, FS_DATA_MANAG);
         
-        customersTree.setChildrenAllowed(FS_DATA_MANAG_SEARCH_ENGINE, false);
+        customersTree.setChildrenAllowed(FS_DATA_MANAG_PROPERTIES, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS_OWNER, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_DOCS, false);
@@ -426,7 +426,7 @@ public class MainMenu extends CssLayout {
                             Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    case FS_DATA_MANAG_SEARCH_ENGINE:
+                    case FS_DATA_MANAG_PROPERTIES:
                         navigator.navigateTo(View_FS.class.getSimpleName());
                         break;
                 }

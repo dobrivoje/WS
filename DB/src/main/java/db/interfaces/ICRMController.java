@@ -13,6 +13,7 @@ import db.ent.Customer;
 import db.ent.RelSALE;
 import db.ent.RelSALESMANCUST;
 import db.ent.Salesman;
+import db.ent.custom.CustomSearchData;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public interface ICRMController {
     List<RelSALE> getCRM_Sales(CrmCase crmCase);
 
     /**
-     * Za posmatrani CRM case vrati sve prodaje.<br>
+     * Stablo CRM case-ova sa svim prodajama za svaki CRM case.<br>
      * Master/detail.
      *
      * @param salesRep
@@ -76,6 +77,10 @@ public interface ICRMController {
      * @return
      */
     Map<Object, List> getCRM_MD_CRM_Sales(Salesman salesRep, Date salesFrom, Date SalesTo);
+
+    Map<Object, List> getCRM_MD_CRM_Sales(CustomSearchData csd);
+
+    Map<Object, List> getCRM_MD_CRM_SalesrepSales(CustomSearchData csd);
 
     /**
      * Ako su oba datuma null, onda se traži prodaja <br>

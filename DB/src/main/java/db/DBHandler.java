@@ -44,6 +44,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Query;
 import org.superb.apps.utilities.datum.Dates;
 
@@ -1386,16 +1388,18 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_CasesStats(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
 
         try {
             return getEm().createNamedQuery("CrmCase.SaleAgreededCases")
-                    .setParameter("startDate", from)
-                    .setParameter("endDate", to)
+                    .setParameter("startDate", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("endDate", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("finished", finished)
                     .setParameter("saleAgreeded", saleAgreeded)
                     .getResultList();
@@ -1405,17 +1409,19 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_CasesStats(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
 
         try {
             return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
                     .setParameter("IDS", salesman)
-                    .setParameter("startDate", from)
-                    .setParameter("endDate", to)
+                    .setParameter("startDate", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("endDate", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("finished", finished)
                     .setParameter("saleAgreeded", saleAgreeded)
                     .getResultList();
@@ -1470,17 +1476,19 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded, int ammount) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
 
         try {
             return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
                     .setParameter("IDS", salesman)
-                    .setParameter("startDate", from)
-                    .setParameter("endDate", to)
+                    .setParameter("startDate", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("endDate", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("ammount", ammount)
                     .setParameter("finished", finished)
                     .setParameter("saleAgreeded", saleAgreeded)
@@ -1578,17 +1586,19 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
 
         try {
             return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForPeriod")
                     .setParameter("FK_IDCA", c)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
+                    .setParameter("dateFrom", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("dateTo", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("ammount", 0)
                     .getResultList();
         } catch (Exception ex) {
@@ -1617,17 +1627,19 @@ public class DBHandler {
     }
 
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
 
         try {
             return getEm().createNamedQuery("RelSALE.Salesman_Sales_In_Period")
                     .setParameter("IDS", s)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
+                    .setParameter("dateFrom", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("dateTo", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("ammount", 0)
                     .getResultList();
         } catch (Exception ex) {
@@ -1636,17 +1648,21 @@ public class DBHandler {
     }
 
     public List<CrmCase> CRM_Salesrep_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        Dates d = new Dates();
-        Date from, to;
+        /*
+         Dates d = new Dates();
+         Date from, to;
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
+         */
+
+        Logger.getLogger("test datuma").log(Level.INFO, "from : {0}, to : {1}", new Object[]{checkDates(dateFrom, dateTo).get(0), checkDates(dateFrom, dateTo).get(1)});
 
         try {
             return getEm().createNamedQuery("RelSALE.CRM_Salesrep_Sales_Cases")
                     .setParameter("IDS", s)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
+                    .setParameter("dateFrom", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("dateTo", checkDates(dateFrom, dateTo).get(1))
                     .setParameter("ammount", 0)
                     .getResultList();
         } catch (Exception ex) {
@@ -1655,27 +1671,57 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Sales_Cases(Date dateFrom, Date dateTo) {
-        Date from, to;
+        /*
+         Date from, to;
 
-        Dates d = new Dates();
+         Dates d = new Dates();
 
-        from = dateFrom == null ? d.getFrom() : dateFrom;
-        to = dateTo == null ? d.getTo() : dateTo;
+         from = dateFrom == null ? d.getFrom() : dateFrom;
+         to = dateTo == null ? d.getTo() : dateTo;
 
-        if (from.after(to)) {
-            Date z = from;
-            from = to;
-            to = z;
-        }
+         if (from.after(to)) {
+         Date z = from;
+         from = to;
+         to = z;
+         }
+         */
 
         try {
             return getEm().createNamedQuery("RelSALE.CRM_Sales_Cases")
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to)
+                    .setParameter("dateFrom", checkDates(dateFrom, dateTo).get(0))
+                    .setParameter("dateTo", checkDates(dateFrom, dateTo).get(1))
                     .getResultList();
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public Map<Object, List> getCRM_MD_Sales(CustomSearchData csd) {
+        Map<Object, List> M = new LinkedHashMap<>();
+
+        for (RelSALE rs : getSales(csd)) {
+            CrmCase CC = rs.getFK_IDCA();
+
+            if (!M.containsKey(CC)) {
+                M.put(CC, Arrays.asList(rs));
+            } else {
+                List L = new ArrayList(M.get(CC));
+
+                L.add(rs);
+
+                M.put(CC, L);
+            }
+        }
+
+        return M;
+    }
+
+    public Map<Object, List> getCRM_MD_SalesrepSales(CustomSearchData csd) {
+        Map<Object, List> M = new LinkedHashMap<>();
+
+        M.put(getSales(csd).get(0).getFK_IDCA().getFK_IDRSC().getFK_IDS(), getSales(csd));
+
+        return M;
     }
     //</editor-fold>
 
@@ -1691,9 +1737,9 @@ public class DBHandler {
         }
     }
     //</editor-fold>
-    //</editor-fold>
-    //</editor-fold>
 
+    //</editor-fold>
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="USER">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<InfSysUser> getAllUsers() {
@@ -1970,12 +2016,14 @@ public class DBHandler {
 
     //<editor-fold defaultstate="collapsed" desc="Custom Search Data Queries">
     public List<RelSALE> getSales(CustomSearchData csd) {
-        Date from, to;
         Query query;
 
-        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
-        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
-
+        /*
+         Date from, to;
+        
+         from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+         to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
+         */
         String Q = "SELECT S from RelSALE S WHERE S.sellDate BETWEEN :dateFrom AND :dateTo ";
 
         try {
@@ -2000,9 +2048,11 @@ public class DBHandler {
                 Q += " AND S.FK_IDP = :IDP ";
             }
 
+            Q += " ORDER BY S.sellDate ASC";
+
             query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", from)
-                    .setParameter("dateTo", to);
+                    .setParameter("dateFrom", checkDates(csd.getStartDate(), csd.getEndDate()).get(0))
+                    .setParameter("dateTo", checkDates(csd.getStartDate(), csd.getEndDate()).get(1));
 
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
@@ -2057,6 +2107,8 @@ public class DBHandler {
             if (csd.getSaleAgreeded() != null) {
                 Q += " AND c.saleAgreeded = :saleAgreeded ";
             }
+
+            Q += " ORDER BY c.startDate ASC";
             //</editor-fold>
 
             query = getEm().createQuery(Q);
@@ -2105,12 +2157,14 @@ public class DBHandler {
     }
 
     public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
-        Date from, to;
         Query query;
 
-        from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
-        to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
-
+        /*
+         Date from, to;
+        
+         from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
+         to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
+         */
         String Q = "SELECT p from CrmProcess p WHERE p.actionDate BETWEEN :dateFrom AND :dateTo ";
 
         try {
@@ -2135,9 +2189,11 @@ public class DBHandler {
                 Q += " AND p.FK_IDCA.saleAgreeded = :saleAgreeded";
             }
 
+            Q += " ORDER BY p.actionDate ASC";
+
             query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", from == null ? new Date(0) : csd.getStartDate())
-                    .setParameter("dateTo", to == null ? new Date() : csd.getEndDate());
+                    .setParameter("dateFrom", checkDates(csd.getStartDate(), csd.getEndDate()).get(0))
+                    .setParameter("dateTo", checkDates(csd.getStartDate(), csd.getEndDate()).get(1));
 
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
@@ -2201,6 +2257,22 @@ public class DBHandler {
 
         return L;
     }
-
     //</editor-fold>
+
+    public synchronized List<Date> checkDates(Date dateFrom, Date dateTo) {
+        Dates d = new Dates();
+
+        Date from, to;
+
+        from = dateFrom == null ? d.getFrom() : dateFrom;
+        to = dateTo == null ? d.getTo() : dateTo;
+
+        if (from.after(to)) {
+            Date z = from;
+            from = to;
+            to = z;
+        }
+
+        return Arrays.asList(from, to);
+    }
 }

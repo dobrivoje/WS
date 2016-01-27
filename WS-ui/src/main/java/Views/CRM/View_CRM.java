@@ -2,7 +2,7 @@ package Views.CRM;
 
 import Main.MyUI;
 import static Main.MyUI.DS;
-import Trees.CRM.SALES.Tree_MD_SalesmanSales;
+import Trees.CRM.SALES.Tree_SalesmanSales;
 import db.ent.custom.CustomSearchData;
 import Uni.Dialogs.Form_CustomSearch;
 import Uni.Dialogs.SelectorDialog;
@@ -285,17 +285,28 @@ public class View_CRM extends View_Dashboard {
     private List<Panel> getSalesForPeriod(CustomSearchData csd) {
         List<Panel> LP = new ArrayList();
 
-        try {
-            for (Salesman s : DS.getSalesmanController().getAll()) {
+        Map<Salesman, List<CrmCase>> CCS = new LinkedHashMap<>();
 
-                // if (!DS.getCRMController().getCRM_MD_CRM_Sales(s, from, to).isEmpty()) {
-                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(csd, formAllowed);
-                LP.add(new Panel(s.toString(), tss));
-                //}
+        for (Map.Entry<Object, List> entrySet : DS.getCRMController().getCRM_MD_CRM_Sales(csd).entrySet()) {
+            CrmCase CC = (CrmCase) entrySet.getKey();
+            Salesman SS = CC.getFK_IDRSC().getFK_IDS();
 
+            if (!CCS.containsKey(SS)) {
+                CCS.put(SS, new ArrayList<>());
+            } else {
+                List<CrmCase> L = new ArrayList<>(CCS.get(SS));
+                L.add(CC);
+
+                CCS.put(SS, L);
             }
+        }
 
-        } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+        for (Map.Entry<Salesman, List<CrmCase>> E : CCS.entrySet()) {
+            try {
+                Tree_SalesmanSales tss = new Tree_SalesmanSales(E.getValue(), formAllowed);
+                LP.add(new Panel(E.getKey().toString(), tss));
+            } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
+            }
         }
 
         return LP;
