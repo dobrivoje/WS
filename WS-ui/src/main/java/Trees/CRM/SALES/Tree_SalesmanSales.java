@@ -28,6 +28,9 @@ import db.ent.custom.CustomSearchData;
 public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
     private Salesman salesman;
+    private CrmCase crmCase;
+    private RelSALE relSale;
+
     private String imageLocation;
 
     public Tree_SalesmanSales(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
@@ -43,74 +46,65 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
             propTrees.clear();
             propPanel.removeAllComponents();
 
-            try {
-                if (event.isDoubleClick()) {
-                    if (formAllowed) {
-                        //<editor-fold defaultstate="collapsed" desc="RelSale">
-                        if (event.getItemId() instanceof RelSALE) {
+            if (event.isDoubleClick()) {
+                if (formAllowed) {
+                    //<editor-fold defaultstate="collapsed" desc="RelSale">
+                    if (event.getItemId() instanceof RelSALE) {
 
-                            try {
-                                this.salesman = ((RelSALE) event.getItemId()).getFK_IDCA().getFK_IDRSC().getFK_IDS();
+                        relSale = (RelSALE) event.getItemId();
+                        crmCase = relSale.getFK_IDCA();
+                        salesman = relSale.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMSell((RelSALE) event.getItemId(), readOnly);
-
-                                winFormCaption = "Existing Sale Case";
-                                imageLocation = "img/crm/sell.png";
-                            } catch (NullPointerException | IllegalArgumentException ex) {
-                            }
+                        try {
+                            readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+                            winFormCaption = "Existing Sell Case";
+                            imageLocation = "img/crm/sell.png";
+                            crudForm = new Form_CRMSell(relSale, readOnly);
+                        } catch (NullPointerException | IllegalArgumentException ex) {
                         }
-                        //</editor-fold>
-
-                        //<editor-fold defaultstate="collapsed" desc="CrmCase">
-                        if (event.getItemId() instanceof CrmCase) {
-
-                            try {
-                                this.salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
-
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
-
-                                winFormCaption = "Existing CRM Case";
-                                imageLocation = "img/crm/crmCase.png";
-                            } catch (NullPointerException | IllegalArgumentException ex) {
-                            }
-                        }
-                        //</editor-fold>
-
-                        //<editor-fold defaultstate="collapsed" desc="Open form">
-                        for (RelSALE rs : DS.getCRMController().getCRM_Sales(salesman, this.dateFrom, this.dateTo)) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
-                            propTrees.add(csct);
-
-                            propPanel.addComponent(csct);
-                        }
-
-                        propTrees.stream().forEach((ct) -> {
-                            ((Tree_CRMSingleCase) ct).refreshVisualContainer();
-                        });
-
-                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
-
-                        getUI().addWindow(
-                                new WindowForm3(
-                                        winFormCaption,
-                                        crudForm,
-                                        imageLocation,
-                                        crudForm.getClickListener(),
-                                        236, 196, readOnly
-                                )
-                        );
-                        //</editor-fold>
-
-                    } else {
-                        Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
-                                Notification.Type.ERROR_MESSAGE);
                     }
-                }
+                        //</editor-fold>
 
-            } catch (NullPointerException | CustomTreeNodesEmptyException ex) {
+                    //<editor-fold defaultstate="collapsed" desc="CrmCase">
+                    if (event.getItemId() instanceof CrmCase) {
+                        try {
+                            salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
+
+                            readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+
+                            winFormCaption = "Existing CRM Case";
+                            imageLocation = "img/crm/crmCase.png";
+
+                            crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
+                        } catch (NullPointerException | IllegalArgumentException ex) {
+                        }
+                    }
+                        //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="Open form">
+                    propTrees.stream().forEach((ct) -> {
+                        ((Tree_CRMSingleCase) ct).refreshVisualContainer();
+                    });
+
+                    winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
+
+                    getUI().addWindow(
+                            new WindowForm3(
+                                    winFormCaption,
+                                    crudForm,
+                                    imageLocation,
+                                    crudForm.getClickListener(),
+                                    236, 196, readOnly
+                            )
+                    );
+                    //</editor-fold>
+                } else {
+                    Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
+                            Notification.Type.ERROR_MESSAGE);
+                }
+                //</editor-fold>
             }
+
         });
         //</editor-fold>
     }

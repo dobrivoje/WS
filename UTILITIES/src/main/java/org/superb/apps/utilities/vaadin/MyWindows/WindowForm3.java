@@ -45,9 +45,9 @@ public class WindowForm3 extends Window {
 
     public WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, boolean imageDefaultSize) {
         if (imageDefaultSize) {
-            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, 150, -1);
+            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, 150, -1, null);
         } else {
-            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, -1, -1);
+            init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, -1, -1, null);
         }
     }
 
@@ -63,7 +63,7 @@ public class WindowForm3 extends Window {
      * @param imgHeight Left image height
      */
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
-        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight);
+        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight, null);
     }
 
     /**
@@ -79,7 +79,12 @@ public class WindowForm3 extends Window {
      * @param readOnly If true, prevent adding action button on the form
      */
     public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
-        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight);
+        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight, null);
+        actionButton.setVisible(!readOnly);
+    }
+
+    public WindowForm3(String caption, Layout formLayout, String imageLocation, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly, String buttonStyle, Button... additionalFooterButtons) {
+        init(caption, formLayout, imageLocation, "Save", externalButtonClickListener, imgWidth, imgHeight, buttonStyle, additionalFooterButtons);
         actionButton.setVisible(!readOnly);
     }
 
@@ -97,21 +102,27 @@ public class WindowForm3 extends Window {
      * @param readOnly If true, prevent adding action button on the form
      */
     public WindowForm3(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
-        init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imgWidth, imgHeight);
-        actionButton.setVisible(!readOnly);
+        init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imgWidth, imgHeight, null);
+
+        if (actionButton != null) {
+            actionButton.setVisible(!readOnly);
+        }
     }
 
-    private void init(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight) {
+    private void init(String caption, Layout formLayout, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, String buttonStyle, Button... additionalFooterButtons) {
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
 
         setModal(true);
-        setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
+        addCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
         setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
-        actionButton = new Button(actionButtonCaption);
+        if (actionButtonCaption != null && !actionButtonCaption.isEmpty()) {
+            actionButton = new Button(actionButtonCaption);
+        }
+
         closeButton = new Button("Close");
 
         content.setSizeFull();
@@ -126,7 +137,7 @@ public class WindowForm3 extends Window {
         content.setExpandRatio(detailsWrapper, 1f);
 
         detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation, imgWidth, imgHeight));
-        content.addComponent(buildFooter(externalButtonClickListener));
+        content.addComponent(buildFooter(externalButtonClickListener, buttonStyle, additionalFooterButtons));
     }
     //</editor-fold>
 
@@ -176,7 +187,7 @@ public class WindowForm3 extends Window {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Footer">
-    private Component buildFooter(Button.ClickListener externalButtonClickListener) {
+    private Component buildFooter(Button.ClickListener externalButtonClickListener, String buttonStyle, Button... additionalFooterButons) {
         HorizontalLayout footerLayout = new HorizontalLayout();
 
         footerLayout.setSpacing(true);
@@ -193,8 +204,22 @@ public class WindowForm3 extends Window {
 
         actionButton.setWidth(150, Unit.PIXELS);
 
+        if (additionalFooterButons != null) {
+            for (Button addButton : additionalFooterButons) {
+                addButton.setWidth(150, Unit.PIXELS);
+                if (buttonStyle != null) {
+                    addButton.addStyleName(buttonStyle);
+                }
+            }
+        }
+
         if (externalButtonClickListener != null) {
             actionButton.addClickListener(externalButtonClickListener);
+        }
+
+        // dodaj opcione dugmiće pre dugmića sa ovog prozora..
+        if (additionalFooterButons != null) {
+            footerLayout.addComponents(additionalFooterButons);
         }
 
         footerLayout.addComponent(actionButton);
@@ -202,11 +227,17 @@ public class WindowForm3 extends Window {
 
         footerLayout.setExpandRatio(actionButton, 1.0f);
 
+        if (additionalFooterButons != null) {
+            for (Button b : additionalFooterButons) {
+                footerLayout.setComponentAlignment(b, Alignment.MIDDLE_RIGHT);
+                footerLayout.setExpandRatio(b, 1.0f);
+            }
+        }
+
         footerLayout.setComponentAlignment(actionButton, Alignment.MIDDLE_RIGHT);
         footerLayout.setComponentAlignment(closeButton, Alignment.MIDDLE_RIGHT);
 
         return footerLayout;
     }
     //</editor-fold>
-
 }

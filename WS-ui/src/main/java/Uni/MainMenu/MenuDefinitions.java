@@ -6,6 +6,7 @@
 package Uni.MainMenu;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,23 +32,23 @@ public enum MenuDefinitions {
     SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST("Customer Blacklist"),
     SYS_NOTIF_BOARD_LICENCES_OVERDUE("Licences Overdue"),
     //
-    CUST_DATA_MANAG_SEARCH_ENGINE("Customer Search Engine"),
+    CUST_DATA_MANAG_SEARCH_ENGINE("Existing Customers"),
     CUST_DATA_MANAG_NEW_CUST("New Customer"),
-    CUST_DATA_MANAG_NEW_CBT("New CBT"),
-    CUST_DATA_MANAG_CBT_LIST("Customer Bussines Type List"),
+    CUST_DATA_MANAG_NEW_CBT("New Bussines Type"),
+    CUST_DATA_MANAG_CBT_LIST("Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
     SALE_NEW("New Sell Case"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Activity"),
-    CRM_MANAG_EXISTING_PROCESS("Existing CRM Activity Action"),
-    CRM_MANAG_NEW_SALESMAN_CUST_REL("New Salesrep Customer Relationship"),
-    CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing SC Relationship"),
+    CRM_MANAG_EXISTING_PROCESS("Existing CRM Action"),
+    CRM_MANAG_NEW_SALESMAN_CUST_REL("New CRM Relationship"),
+    CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing Relationship"),
     //
     FS_DATA_MANAG_NEW_FS("New FS"),
     FS_DATA_MANAG_NEW_FS_OWNER("New FS Owner"),
-    FS_DATA_MANAG_PROPERTIES("FS Properties"),
+    FS_DATA_MANAG_PROPERTIES("Existing FSs"),
     FS_DATA_MANAG_DOCS("FS Documents");
 
     private final String menuItem;
@@ -103,11 +104,13 @@ public enum MenuDefinitions {
     }
 
     public static List<MenuDefinitions> get_FS_SubItems() {
-        return Arrays.asList(
-                FS_DATA_MANAG_NEW_FS,
-                FS_DATA_MANAG_NEW_FS_OWNER,
-                FS_DATA_MANAG_PROPERTIES,
-                FS_DATA_MANAG_DOCS
+        return new LinkedList<>(
+                Arrays.asList(
+                        FS_DATA_MANAG_NEW_FS,
+                        FS_DATA_MANAG_NEW_FS_OWNER,
+                        FS_DATA_MANAG_PROPERTIES,
+                        FS_DATA_MANAG_DOCS
+                )
         );
     }
 }

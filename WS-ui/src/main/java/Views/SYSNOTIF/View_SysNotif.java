@@ -18,6 +18,7 @@ import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superb.apps.utilities.datum.Dates;
 
 public class View_SysNotif extends View_Dashboard {
 
@@ -70,10 +71,14 @@ public class View_SysNotif extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="My Realised Sales">
         try {
+            Dates d = new Dates(-11);
+            
             CustomSearchData csd = new CustomSearchData();
             csd.setSalesman(S);
+            csd.setStartDate(d.getFrom());
+            csd.setEndDate(d.getTo());
 
-            Tree_SalesmanSales csct = new Tree_SalesmanSales(csd, formEditAllowed, false);
+            Tree_SalesmanSales csct = new Tree_SalesmanSales(csd, formEditAllowed, true);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }

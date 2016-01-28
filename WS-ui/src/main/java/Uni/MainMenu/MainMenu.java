@@ -242,9 +242,9 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
         customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
         
-        customersTree.setParent(FS_DATA_MANAG_PROPERTIES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
+        customersTree.setParent(FS_DATA_MANAG_PROPERTIES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_DOCS, FS_DATA_MANAG);
         
         customersTree.setChildrenAllowed(FS_DATA_MANAG_PROPERTIES, false);

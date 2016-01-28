@@ -5,6 +5,7 @@
  */
 package Trees.CRM.SALES;
 
+import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Main.MyUI;
 import static Main.MyUI.DS;
@@ -12,8 +13,11 @@ import Trees.CRM.Tree_CRMSingleCase;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import Trees.Tree_MasterDetail;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.themes.ValoTheme;
+import db.ent.CrmCase;
 import db.ent.RelSALE;
 import db.ent.Salesman;
 import java.util.List;
@@ -27,6 +31,9 @@ import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
 
     private Salesman salesman;
+    private RelSALE relSale;
+    private CrmCase crmCase;
+
     private String imageLocation;
 
     public Tree_MD_SalesmanSales(Map<Object, List> salesRepSales, boolean formAllowed, boolean expandRootNodes)
@@ -46,18 +53,20 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                         if (event.getItemId() instanceof RelSALE) {
 
                             try {
-                                this.salesman = ((RelSALE) event.getItemId()).getFK_IDCA().getFK_IDRSC().getFK_IDS();
+                                relSale = (RelSALE) event.getItemId();
+                                crmCase = relSale.getFK_IDCA();
+                                salesman = relSale.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
-                                readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMSell((RelSALE) event.getItemId(), readOnly);
-
-                                winFormCaption = "Existing Sale Case";
+                                winFormCaption = "Existing Sell Case";
                                 imageLocation = "img/crm/sell.png";
+
+                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+                                crudForm = new Form_CRMSell(relSale, readOnly);
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
 
                             //<editor-fold defaultstate="collapsed" desc="Open form">
-                            for (RelSALE rs : DS.getCRMController().getCRM_Sales(((RelSALE) event.getItemId()).getFK_IDCA())) {
+                            for (RelSALE rs : DS.getCRMController().getCRM_Sales(relSale.getFK_IDCA())) {
                                 Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
                                 propTrees.add(csct);
 
@@ -76,7 +85,20 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                             crudForm,
                                             imageLocation,
                                             crudForm.getClickListener(),
-                                            236, 196, readOnly
+                                            236, 196, readOnly, ValoTheme.BUTTON_FRIENDLY,
+                                            new Button("Sell's CRM Case", (Button.ClickEvent event1) -> {
+                                                Form_CRMCase f = new Form_CRMCase(crmCase, null, false, readOnly);
+                                                
+                                                getUI().addWindow(
+                                                        new WindowForm3(
+                                                                "CRM Case",
+                                                                f,
+                                                                "img/crm/crmCase.png",
+                                                                f.getClickListener(),
+                                                                236, 196, readOnly
+                                                        )
+                                                );
+                                            })
                                     )
                             );
                             //</editor-fold>

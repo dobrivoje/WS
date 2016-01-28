@@ -114,30 +114,27 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         fieldGroup.setItemDataSource(new BeanItem(cc));
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
 
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
-
-                try {
-                    fieldGroup.commit();
-
-                    CRM_Controller.updateCRM_Case(beanItem.getBean());
-
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
-
-                    Notification n = new Notification("Existing CRM Case Updated.", Notification.Type.TRAY_NOTIFICATION);
-
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-
-                } catch (FieldGroup.CommitException ce) {
-                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+        clickListener = (Button.ClickEvent event) -> {
+            setBeanFromFields(beanItem.getBean());
+            
+            try {
+                fieldGroup.commit();
+                
+                CRM_Controller.updateCRM_Case(beanItem.getBean());
+                
+                if (visualContainer != null) {
+                    visualContainer.refreshVisualContainer();
                 }
+                
+                Notification n = new Notification("Existing CRM Case Updated.", Notification.Type.TRAY_NOTIFICATION);
+                
+                n.setDelayMsec(500);
+                n.show(getUI().getPage());
+                
+            } catch (FieldGroup.CommitException ce) {
+                Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         };
 

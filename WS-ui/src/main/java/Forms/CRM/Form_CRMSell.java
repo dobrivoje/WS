@@ -54,6 +54,8 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
 
     @PropertyId("paymentMethod")
     private final TextField paymentMethod = new TextField("Payment Method");
+
+    private final Button sellCrmCaseButton = new Button("Sell CRM Case");
     //</editor-fold>
 
     public Form_CRMSell() {
@@ -93,28 +95,25 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
 
         btnCaption = BUTTON_CAPTION_SAVE.toString();
 
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+        clickListener = (Button.ClickEvent event) -> {
+            setBeanFromFields(beanItem.getBean());
 
-                try {
-                    fieldGroup.commit();
+            try {
+                fieldGroup.commit();
 
-                    if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
-                        throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
-                    }
-
-                    CRM_Controller.addNewSale(beanItem.getBean());
-
-                    Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-                } catch (FieldGroup.CommitException ce) {
-                    Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                if (amount.getValue().isEmpty() || Double.parseDouble(amount.getValue()) <= 0) {
+                    throw new Exception("Amount Must Not Be Empty, Or Less Than Zero.");
                 }
+
+                CRM_Controller.addNewSale(beanItem.getBean());
+
+                Notification n = new Notification("New Sale Added.", Notification.Type.TRAY_NOTIFICATION);
+                n.setDelayMsec(500);
+                n.show(getUI().getPage());
+            } catch (FieldGroup.CommitException ce) {
+                Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         };
 
@@ -182,12 +181,13 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
                 try {
                     Salesman s = (Salesman) salesman.getValue();
 
-                    crmCase.setContainerDataSource(
-                            new BeanItemContainer(
-                                    CrmCase.class,
-                                    CRM_Controller.getCRM_CasesStats(s, true, true)
-                            )
-                    );
+                    crmCase
+                            .setContainerDataSource(
+                                    new BeanItemContainer(
+                                            CrmCase.class,
+                                            CRM_Controller.getCRM_CasesStats(s, true, true)
+                                    )
+                            );
 
                     product.setContainerDataSource(
                             new BeanItemContainer(Product.class,
