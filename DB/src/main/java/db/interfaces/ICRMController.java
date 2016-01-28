@@ -69,7 +69,7 @@ public interface ICRMController {
 
     /**
      * Stablo CRM case-ova sa svim prodajama za svaki CRM case.<br>
-     * Master/detail.
+     * Master/detail -> crm case : sales
      *
      * @param salesRep
      * @param salesFrom
@@ -78,8 +78,22 @@ public interface ICRMController {
      */
     Map<Object, List> getCRM_MD_CRM_Sales(Salesman salesRep, Date salesFrom, Date SalesTo);
 
+    /**
+     * Stablo CRM case-ova sa svim prodajama za svaki CRM case.<br>
+     * Master/detail -> crm case : sales
+     *
+     * @param csd
+     * @return
+     */
     Map<Object, List> getCRM_MD_CRM_Sales(CustomSearchData csd);
 
+    /**
+     * Stablo CRM case-ova sa svim prodajama za svakog prodavca.<br>
+     * Master/detail -> salesrep : sales
+     *
+     * @param csd
+     * @return
+     */
     Map<Object, List> getCRM_MD_CRM_SalesrepSales(CustomSearchData csd);
 
     /**

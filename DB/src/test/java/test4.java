@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
 
 import dataservice.DataService;
 import db.DBHandler;
 import db.ent.RelSALE;
+import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +26,7 @@ public class test4 {
         d.setFrom(1, 6, 2015);
         d.setTo(31, 8, 2015);
 
+        //<editor-fold defaultstate="collapsed" desc="test case 1">
         /*
          for (Salesman s : DS.getSalesmanController().getAll()) {
          Set setCRMCases = DS.getCRMController().getCRM_MD_CRM_Sales(s, d.getFrom(), d.getTo()).keySet();
@@ -49,6 +50,7 @@ public class test4 {
          }
          }
          */
+        //</editor-fold>
         Date df = null, dt = null;
 
         dbh.checkDates(df, dt);
@@ -67,21 +69,40 @@ public class test4 {
         csd.setEndDate(dd.getTo());
         csd.setSalesman(DS.getSalesmanController().getByID(3L));
 
-        System.err.println("salesman : " + csd.getSalesman());
-        for (RelSALE s : dbh.getSales(csd)) {
-            System.err.println("sales : " + s + ", sell date : " + s.getSellDate());
+        //<editor-fold defaultstate="collapsed" desc="test case 2">
+        /*
+         System.err.println("salesman : " + csd.getSalesman());
+         for (RelSALE s : dbh.getSales(csd)) {
+         System.err.println("sales : " + s + ", sell date : " + s.getSellDate());
+         }
+        
+         System.err.println("test 2 - getCRM_Sales(CustomSearchData csd) - salesman : " + csd.getSalesman());
+         for (Map.Entry<Object, List> e : dbh.getCRM_MD_Sales(csd).entrySet()) {
+         System.err.println("case : " + e.getKey());
+         System.err.println("sales : " + e.getValue());
+         }
+        
+         System.err.println("test 3 - getCRM_MD_CRM_SalesrepSales(CustomSearchData csd) - salesman : " + csd.getSalesman());
+         for (Map.Entry<Object, List> e1 : dbh.getCRM_MD_SalesrepSales(csd).entrySet()) {
+         System.err.println("salesrep : " + e1.getKey());
+         System.err.println("sales : " + e1.getValue());
+         }
+         */
+        //</editor-fold>
+        System.err.println("test 4 - getCRM_MD_CRM_SalesrepSales(CustomSearchData csd) - salesman : " + csd.getSalesman());
+        for (Map.Entry<Salesman, List<RelSALE>> E : DS.getSearchController().getSalesrepSales(csd).entrySet()) {
+            System.err.println("salesrep : " + E.getKey());
+            System.err.println("sales : " + E.getValue());
         }
 
-        System.err.println("test 2 - getCRM_Sales(CustomSearchData csd) - salesman : " + csd.getSalesman());
-        for (Map.Entry<Object, List> e : dbh.getCRM_MD_Sales(csd).entrySet()) {
-            System.err.println("case : " + e.getKey());
-            System.err.println("sales : " + e.getValue());
-        }
-
-        System.err.println("test 3 - getCRM_MD_CRM_SalesrepSales(CustomSearchData csd) - salesman : " + csd.getSalesman());
-        for (Map.Entry<Object, List> e1 : dbh.getCRM_MD_SalesrepSales(csd).entrySet()) {
-            System.err.println("salesrep : " + e1.getKey());
-            System.err.println("sales : " + e1.getValue());
+        CustomSearchData csd1 = new CustomSearchData();
+        csd1.setStartDate(1, 8, 2015);
+        csd1.setEndDate(31, 8, 2015);
+        csd1.setBussinesLine(DS.getBLController().getByID(1L));
+        System.err.println("test 5 - List<RelSALE> getSales(CustomSearchData csd) : ");
+        for (RelSALE r : dbh.getSales(csd1)) {
+            System.err.println(r.getFK_IDCA().getFK_IDRSC().getFK_IDS());
+            System.err.println(r);
         }
 
     }

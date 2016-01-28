@@ -22,13 +22,13 @@ import static Main.MyUI.DS;
  *
  * @author root
  */
-public class Tree_CRM_CP extends Tree_MasterDetail {
+public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
 
-    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_MD_CrmCaseProcesses(Map<Object, List> treeModel, boolean formAllowed) throws CustomTreeNodesEmptyException, NullPointerException {
         this(treeModel, formAllowed, false);
     }
 
-    public Tree_CRM_CP(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+    public Tree_MD_CrmCaseProcesses(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
         super("", treeModel, expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">

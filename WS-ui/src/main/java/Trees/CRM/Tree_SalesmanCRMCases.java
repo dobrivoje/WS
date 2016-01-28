@@ -16,6 +16,7 @@ import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_H
 import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import db.ent.custom.CustomSearchData;
 
 /**
  *
@@ -25,14 +26,15 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
     private Salesman salesman;
 
-    public Tree_SalesmanCRMCases(List rootNodes, boolean formAllowed)
+    public Tree_SalesmanCRMCases(List rootNodes)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        this(rootNodes, formAllowed, false);
+        super(rootNodes, false);
     }
 
-    public Tree_SalesmanCRMCases(List rootNodes, boolean formAllowed, boolean expandRootNodes)
+    public Tree_SalesmanCRMCases(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes)
             throws CustomTreeNodesEmptyException, NullPointerException {
-        super("", rootNodes, expandRootNodes);
+
+        super("", DS.getCRMController().getCRM_CasesStats(csd.getSalesman(), true, false, csd.getStartDate(), csd.getEndDate()), expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
@@ -67,8 +69,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                                 readOnly = !this.salesman.equals(MyUI.get().getLoggedSalesman());
 
                                 Tree_SalesmanCRMCases cc = new Tree_SalesmanCRMCases(
-                                        DS.getCRMController().getCRM_Cases(salesman, false),
-                                        formAllowed
+                                        DS.getCRMController().getCRM_Cases(salesman, false)
                                 );
                                 crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);
 

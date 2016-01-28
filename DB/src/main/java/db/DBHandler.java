@@ -1705,10 +1705,8 @@ public class DBHandler {
             if (!M.containsKey(CC)) {
                 M.put(CC, Arrays.asList(rs));
             } else {
-                List L = new ArrayList(M.get(CC));
-
+                List L = M.get(CC);
                 L.add(rs);
-
                 M.put(CC, L);
             }
         }
@@ -2032,10 +2030,6 @@ public class DBHandler {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
             }
 
-            if (csd.getCustomer() != null) {
-                Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
-            }
-
             if (csd.getSalesman() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDS = :IDS ";
             }
@@ -2159,15 +2153,17 @@ public class DBHandler {
     public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
         Query query;
 
-        /*
-         Date from, to;
-        
-         from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
-         to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
-         */
-        String Q = "SELECT p from CrmProcess p WHERE p.actionDate BETWEEN :dateFrom AND :dateTo ";
+        String Q = "SELECT p from CrmProcess p WHERE 1=1 AND ";
 
         try {
+            //<editor-fold defaultstate="collapsed" desc="check parameters">
+            if (csd.getStartDate() != null) {
+                Q += " AND p.actionDate >= :dateFrom ";
+            }
+
+            if (csd.getEndDate() != null) {
+                Q += " AND p.actionDate <= :dateTo ";
+            }
 
             if (csd.getCustomer() != null) {
                 Q += " AND p.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
@@ -2190,11 +2186,17 @@ public class DBHandler {
             }
 
             Q += " ORDER BY p.actionDate ASC";
+            //</editor-fold>
 
-            query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", checkDates(csd.getStartDate(), csd.getEndDate()).get(0))
-                    .setParameter("dateTo", checkDates(csd.getStartDate(), csd.getEndDate()).get(1));
+            //<editor-fold defaultstate="collapsed" desc="setup parameters">
+            query = getEm().createQuery(Q);
 
+            if (csd.getStartDate() != null) {
+                query.setParameter("dateFrom", csd.getStartDate());
+            }
+            if (csd.getEndDate() != null) {
+                query.setParameter("dateTo", csd.getEndDate());
+            }
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
             }
@@ -2210,6 +2212,7 @@ public class DBHandler {
             if (csd.getSaleAgreeded() != null) {
                 query.setParameter("saleAgreeded", csd.getSaleAgreeded());
             }
+            //</editor-fold>
 
             return query.getResultList();
         } catch (Exception ex) {
@@ -2260,7 +2263,7 @@ public class DBHandler {
     //</editor-fold>
 
     public synchronized List<Date> checkDates(Date dateFrom, Date dateTo) {
-        Dates d = new Dates();
+        Dates d = new Dates(-11);
 
         Date from, to;
 

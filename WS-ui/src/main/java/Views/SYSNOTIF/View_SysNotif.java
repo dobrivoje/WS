@@ -55,10 +55,12 @@ public class View_SysNotif extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="My Active CRM Cases">
         try {
-            Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(
-                    DS.getCRMController().getCRM_Cases(S, false),
-                    formEditAllowed
-            );
+            CustomSearchData csd = new CustomSearchData();
+            csd.setSalesman(S);
+            csd.setCaseFinished(false);
+
+            Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(csd, formEditAllowed, false);
+
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -68,7 +70,10 @@ public class View_SysNotif extends View_Dashboard {
 
         //<editor-fold defaultstate="collapsed" desc="My Realised Sales">
         try {
-            Tree_SalesmanSales csct = new Tree_SalesmanSales("", S, null, null, formEditAllowed);
+            CustomSearchData csd = new CustomSearchData();
+            csd.setSalesman(S);
+
+            Tree_SalesmanSales csct = new Tree_SalesmanSales(csd, formEditAllowed, false);
             subPanels.add(new Panel(S.toString(), csct));
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -94,10 +99,15 @@ public class View_SysNotif extends View_Dashboard {
 
         try {
             dateInterval.setMonthsBackForth(-1);
-            
+
+            CustomSearchData csd1 = new CustomSearchData();
+            csd1.setStartDate(dateInterval.getFrom());
+            csd1.setEndDate(dateInterval.getTo());
+
             for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                Tree_SalesmanSales csct = new Tree_SalesmanSales("", BLS,
-                        dateInterval.getFrom(), dateInterval.getTo(), formAllowed);
+                csd1.setSalesman(BLS);
+
+                Tree_SalesmanSales csct = new Tree_SalesmanSales(csd1, formAllowed, false);
                 subPanels.add(new Panel(BLS.toString(), csct));
             }
 
@@ -116,7 +126,7 @@ public class View_SysNotif extends View_Dashboard {
 
             for (Salesman s : DS.getSearchController().getSalesreps(csd2)) {
                 csd2.setSalesman(s);
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(DS.getSearchController().getCRMCases(csd2), formAllowed);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(csd2, formAllowed, false);
                 subPanels.add(new Panel(s.toString(), csct));
             }
 
@@ -150,7 +160,7 @@ public class View_SysNotif extends View_Dashboard {
 
             for (Salesman s : DS.getSearchController().getSalesreps(csd4)) {
                 csd4.setSalesman(s);
-                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(DS.getSearchController().getCRMCases(csd4), formAllowed);
+                Tree_SalesmanCRMCases csct = new Tree_SalesmanCRMCases(csd4, formAllowed, false);
                 subPanels.add(new Panel(s.toString(), csct));
             }
 
