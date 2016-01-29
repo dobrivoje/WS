@@ -289,7 +289,7 @@ public class View_CRM extends View_Dashboard {
                 Map<Object, List> M = new HashMap<>();
                 M.put(RS.getKey(), RS.getValue());
 
-                if (!RS.getValue().isEmpty()) {
+                // if (!RS.getValue().isEmpty()) {
                     Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, true);
 
                     double as = 0;
@@ -299,7 +299,7 @@ public class View_CRM extends View_Dashboard {
                     }
 
                     LP.add(new Panel("All Sells Amount - " + as + " L", tss));
-                }
+                // }
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

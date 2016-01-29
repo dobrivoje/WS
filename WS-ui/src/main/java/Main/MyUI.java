@@ -79,7 +79,7 @@ public class MyUI extends UI {
                 }));
             } else {
                 showMainView();
-            }
+            } 
         } catch (NullPointerException lnpe) {
         }
     }

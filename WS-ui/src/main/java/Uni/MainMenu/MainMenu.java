@@ -12,7 +12,6 @@ import com.vaadin.server.Resource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -74,16 +73,16 @@ import static Main.MyUI.DS;
  * Responsive navigation menu presenting a list of available views to the user.
  */
 public class MainMenu extends CssLayout {
-    
+
     private static final String VALO_MENUITEMS = "valo-menuitems";
     private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
     private final Navigator navigator;
     private final Map<String, Button> viewButtons = new HashMap<>();
     private final Map<String, Tree> viewTrees = new HashMap<>();
-    
+
     private final CssLayout menuItemsLayout;
     private final CssLayout menuPart;
-    
+
     public MainMenu(final Navigator navigator) {
         this.navigator = navigator;
         setPrimaryStyleName(ValoTheme.MENU_ROOT);
@@ -107,15 +106,21 @@ public class MainMenu extends CssLayout {
         // logout menu item
         String ISU;
         String S;
-        
+
         try {
             ISU = MyUI.get().getLoggedISUser().getUserName();
+            Logger.getLogger("test1").log(
+                    Level.INFO,
+                    "WS APP - Uni.MainMenu.MainMenu() : MyUI.get().getLoggedISUser().getUserName() : {0}", MyUI.get().getLoggedISUser().getUserName());
         } catch (Exception e) {
             ISU = MyUI.get().accessControl.getPrincipal();
+            Logger.getLogger("test2").log(
+                    Level.INFO,
+                    "WS APP - Uni.MainMenu.MainMenu() : MyUI.get().accessControl.getPrincipal() : {0}", MyUI.get().accessControl.getPrincipal());
         }
-        
+
         S = MyUI.get().getLoggedSalesman().toString();
-        
+
         MenuBar logoutMenu = new MenuBar();
         logoutMenu.addItem("Logout " + (MyUI.get().getLoggedSalesman().getName().isEmpty() ? ISU : S),
                 FontAwesome.SIGN_OUT, (MenuItem selectedItem) -> {
@@ -150,7 +155,7 @@ public class MainMenu extends CssLayout {
                     MyUI.get().getAccessControl().logout();
                     Page.getCurrent().reload();
                 });
-        
+
         logoutMenu.addStyleName("user-menu");
         menuPart.addComponent(logoutMenu);
 
@@ -158,7 +163,7 @@ public class MainMenu extends CssLayout {
         menuItemsLayout = new CssLayout();
         menuItemsLayout.setPrimaryStyleName(VALO_MENUITEMS);
         menuPart.addComponent(menuItemsLayout);
-        
+
         addComponent(menuPart);
     }
 
@@ -168,36 +173,33 @@ public class MainMenu extends CssLayout {
         navigator.addView(name, view);
         createViewButton(name, caption, icon);
     }
-    
+
     public void addViewButton(View view, final String name, String caption, Resource icon) {
         navigator.addView(name, view);
         createViewButton(name, caption, icon);
     }
-    
+
     public void addViewTree(View view, final String name, String caption) {
         navigator.addView(name, view);
         createViewTree(name);
     }
-    
+
     private void createViewButton(final String name, String caption, Resource icon) {
-        Button button = new Button(caption, new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                navigator.navigateTo(name);
-            }
+        Button button = new Button(caption, (ClickEvent event) -> {
+            navigator.navigateTo(name);
         });
         button.setPrimaryStyleName(ValoTheme.MENU_ITEM);
         button.setIcon(icon);
         menuItemsLayout.addComponent(button);
         viewButtons.put(name, button);
     }
-    
+
     public void createViewTree(final String name) {
         Tree customersTree = new Tree();
 
         //<editor-fold defaultstate="collapsed" desc="Menu UI Defs">
         customersTree.addItems(Menu.getDefault().getAllMenuItems());
-        
+
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD, true);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG, true);
         customersTree.setChildrenAllowed(SALE, true);
@@ -225,28 +227,28 @@ public class MainMenu extends CssLayout {
         // SALE
         customersTree.setParent(SALE_NEW, SALE);
         customersTree.setChildrenAllowed(SALE_NEW, false);
-        
+
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CUST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CBT, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
-        
+
         customersTree.setParent(CRM_MANAG_NEW_CASE, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
-        
+
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_CASE, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
         customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
-        
+
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_PROPERTIES, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_DOCS, FS_DATA_MANAG);
-        
+
         customersTree.setChildrenAllowed(FS_DATA_MANAG_PROPERTIES, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS_OWNER, false);
@@ -259,20 +261,20 @@ public class MainMenu extends CssLayout {
                 // varijabla "un" se ovde samo koristi da bi se utvrdilo
                 // da li je accessControl aktivan.
                 String un = MyUI.get().getAccessControl().getPrincipal();
-                
+
                 switch ((MenuDefinitions) (event.getItemId())) {
                     case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
-                        
+
                         try {
                             // new ReportGenerator1().exportPDF(REPORT1.toString(), "\\\\d007012iml\\Users\\dprtenjak\\Desktop\\izvestaj.pdf");
                             new ReportGenerator1().generateReportWithPopUpDialog(REPORT1.toString(), "\\\\GLADIATOR\\Users\\Public\\Downloads\\izvestaj.pdf");
-                            
+
                             Logger.getLogger("Views.MainMenu.MainMenu.java")
                                     .log(Level.INFO, "Jasper uspe\u0161no izvr\u0161en : {0}", (new Date()).toString());
                         } catch (Exception ex) {
                             Logger.getLogger("Views.MainMenu.MainMenu.java / public void createViewTree(final String name)").log(Level.WARNING, ex.getMessage());
                         }
-                        
+
                         break;
                     case SYS_NOTIF_BOARD:
                         navigator.navigateTo(View_SysNotif.class.getSimpleName());
@@ -283,9 +285,9 @@ public class MainMenu extends CssLayout {
                     case CUST_DATA_MANAG_NEW_CUST:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                             navigator.navigateTo(View_Customers.class.getSimpleName());
-                            
+
                             Form_Customer cf = new Form_Customer(false);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     CUST_DATA_MANAG_NEW_CUST.toString(),
                                     cf,
@@ -299,9 +301,9 @@ public class MainMenu extends CssLayout {
                         break;
                     case CUST_DATA_MANAG_NEW_CBT:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
-                            
+
                             Form_RELCBT rcbtf = new Form_RELCBT(false);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     "New Customer Business Type",
                                     rcbtf,
@@ -313,11 +315,11 @@ public class MainMenu extends CssLayout {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    
+
                     case SALE_NEW:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     SALE_NEW.toString(),
                                     csf,
@@ -330,15 +332,15 @@ public class MainMenu extends CssLayout {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    
+
                     case CUST_CRM_MANAG:
                         navigator.navigateTo(View_CRM.class.getSimpleName());
                         break;
                     case CRM_MANAG_NEW_CASE:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            
+
                             Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), true);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
                                     ccf,
@@ -354,7 +356,7 @@ public class MainMenu extends CssLayout {
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             try {
                                 Form_CRMProcess cpf = new Form_CRMProcess(MyUI.get().getLoggedSalesman());
-                                
+
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_PROCESS.toString(),
                                         cpf,
@@ -362,7 +364,7 @@ public class MainMenu extends CssLayout {
                                         cpf.getClickListener(),
                                         300, 225)
                                 );
-                                
+
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         } else {
@@ -372,7 +374,7 @@ public class MainMenu extends CssLayout {
                     case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                             Form_SCR scf = new Form_SCR(false);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                     scf,
@@ -380,7 +382,7 @@ public class MainMenu extends CssLayout {
                                     scf.getClickListener(),
                                     230, 256)
                             );
-                            
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                         }
@@ -395,9 +397,9 @@ public class MainMenu extends CssLayout {
                     case FS_DATA_MANAG_NEW_FS:
                         if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                             navigator.navigateTo(View_FS.class.getSimpleName());
-                            
+
                             Form_FS fof = new Form_FS(false);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     FS_DATA_MANAG_NEW_FS.toString(),
                                     fof,
@@ -405,16 +407,16 @@ public class MainMenu extends CssLayout {
                                     fof.getClickListener(),
                                     236, 216)
                             );
-                            
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
                     case FS_DATA_MANAG_NEW_FS_OWNER:
                         if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
-                            
+
                             Form_FSOwner fof = new Form_FSOwner(false);
-                            
+
                             getUI().addWindow(new WindowForm3(
                                     FS_DATA_MANAG_NEW_FS_OWNER.toString(),
                                     fof,
@@ -430,7 +432,7 @@ public class MainMenu extends CssLayout {
                         navigator.navigateTo(View_FS.class.getSimpleName());
                         break;
                 }
-                
+
             } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
                 Notification.show(
                         "Session Expiration",
@@ -444,7 +446,7 @@ public class MainMenu extends CssLayout {
                 // MyUI.get().getAccessControl().decLoggedUsers();
             }
         });
-        
+
         customersTree.setPrimaryStyleName(ValoTheme.MENU_ITEM);
         menuItemsLayout.addComponent(customersTree);
         viewTrees.put(name, customersTree);
@@ -466,7 +468,7 @@ public class MainMenu extends CssLayout {
         }
         menuPart.removeStyleName(VALO_MENU_VISIBLE);
     }
-    
+
     public void setActiveTreeView(String viewName) {
         for (Tree subTree : viewTrees.values()) {
             subTree.removeStyleName("selected");

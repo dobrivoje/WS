@@ -28,7 +28,6 @@ import db.ent.custom.CustomSearchData;
 public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
     private Salesman salesman;
-    private CrmCase crmCase;
     private RelSALE relSale;
 
     private String imageLocation;
@@ -50,9 +49,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                 if (formAllowed) {
                     //<editor-fold defaultstate="collapsed" desc="RelSale">
                     if (event.getItemId() instanceof RelSALE) {
-
                         relSale = (RelSALE) event.getItemId();
-                        crmCase = relSale.getFK_IDCA();
                         salesman = relSale.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                         try {
@@ -67,14 +64,12 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
                     //<editor-fold defaultstate="collapsed" desc="CrmCase">
                     if (event.getItemId() instanceof CrmCase) {
+                        salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
+
                         try {
-                            salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
-
                             readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-
                             winFormCaption = "Existing CRM Case";
                             imageLocation = "img/crm/crmCase.png";
-
                             crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
                         } catch (NullPointerException | IllegalArgumentException ex) {
                         }

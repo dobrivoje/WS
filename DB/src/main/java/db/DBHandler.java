@@ -44,8 +44,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Query;
 import org.superb.apps.utilities.datum.Dates;
 
@@ -1388,14 +1386,6 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_CasesStats(Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
         try {
             return getEm().createNamedQuery("CrmCase.SaleAgreededCases")
                     .setParameter("startDate", checkDates(dateFrom, dateTo).get(0))
@@ -1409,14 +1399,6 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_CasesStats(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
         try {
             return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
                     .setParameter("IDS", salesman)
@@ -1476,14 +1458,6 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Cases(Salesman salesman, Date dateFrom, Date dateTo, boolean finished, boolean saleAgreeded, int ammount) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
         try {
             return getEm().createNamedQuery("CrmCase.Salesrep_Cases")
                     .setParameter("IDS", salesman)
@@ -1586,14 +1560,6 @@ public class DBHandler {
     //<editor-fold defaultstate="collapsed" desc="SALE">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<RelSALE> getCRM_Sales(CrmCase c, Date dateFrom, Date dateTo) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
         try {
             return getEm().createNamedQuery("RelSALE.CRMCases_Sales_ForPeriod")
                     .setParameter("FK_IDCA", c)
@@ -1627,14 +1593,6 @@ public class DBHandler {
     }
 
     public List<RelSALE> getCRM_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
         try {
             return getEm().createNamedQuery("RelSALE.Salesman_Sales_In_Period")
                     .setParameter("IDS", s)
@@ -1648,16 +1606,6 @@ public class DBHandler {
     }
 
     public List<CrmCase> CRM_Salesrep_Sales(Salesman s, Date dateFrom, Date dateTo) {
-        /*
-         Dates d = new Dates();
-         Date from, to;
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-         */
-
-        Logger.getLogger("test datuma").log(Level.INFO, "from : {0}, to : {1}", new Object[]{checkDates(dateFrom, dateTo).get(0), checkDates(dateFrom, dateTo).get(1)});
-
         try {
             return getEm().createNamedQuery("RelSALE.CRM_Salesrep_Sales_Cases")
                     .setParameter("IDS", s)
@@ -1671,21 +1619,6 @@ public class DBHandler {
     }
 
     public List<CrmCase> getCRM_Sales_Cases(Date dateFrom, Date dateTo) {
-        /*
-         Date from, to;
-
-         Dates d = new Dates();
-
-         from = dateFrom == null ? d.getFrom() : dateFrom;
-         to = dateTo == null ? d.getTo() : dateTo;
-
-         if (from.after(to)) {
-         Date z = from;
-         from = to;
-         to = z;
-         }
-         */
-
         try {
             return getEm().createNamedQuery("RelSALE.CRM_Sales_Cases")
                     .setParameter("dateFrom", checkDates(dateFrom, dateTo).get(0))
@@ -2016,12 +1949,6 @@ public class DBHandler {
     public List<RelSALE> getSales(CustomSearchData csd) {
         Query query;
 
-        /*
-         Date from, to;
-        
-         from = csd.getStartDate() == null ? new Date(0) : csd.getStartDate();
-         to = csd.getEndDate() == null ? new Date() : csd.getEndDate();
-         */
         String Q = "SELECT S from RelSALE S WHERE S.sellDate BETWEEN :dateFrom AND :dateTo ";
 
         try {
