@@ -116,21 +116,21 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
 
         clickListener = (Button.ClickEvent event) -> {
             setBeanFromFields(beanItem.getBean());
-            
+
             try {
                 fieldGroup.commit();
-                
+
                 CRM_Controller.updateCRM_Case(beanItem.getBean());
-                
+
                 if (visualContainer != null) {
                     visualContainer.refreshVisualContainer();
                 }
-                
+
                 Notification n = new Notification("Existing CRM Case Updated.", Notification.Type.TRAY_NOTIFICATION);
-                
+
                 n.setDelayMsec(500);
                 n.show(getUI().getPage());
-                
+
             } catch (FieldGroup.CommitException ce) {
                 Notification.show("Error", "Fields indicated by red stars, must be provided.", Notification.Type.ERROR_MESSAGE);
             } catch (Exception ex) {
@@ -174,21 +174,15 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
 
     @Override
     protected final void updateDynamicFields() {
-        salesman.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                customer.setContainerDataSource(new BeanItemContainer(
-                        Customer.class,
-                        CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
-            }
+        salesman.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            customer.setContainerDataSource(new BeanItemContainer(
+                    Customer.class,
+                    CRM_Controller.getCRM_Customers((Salesman) salesman.getValue())));
         });
 
-        finished.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                endDate.setEnabled(finished.getValue());
-                endDate.setValue(finished.getValue() ? new Date() : null);
-            }
+        finished.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            endDate.setEnabled(finished.getValue());
+            endDate.setValue(finished.getValue() ? new Date() : null);
         });
     }
 

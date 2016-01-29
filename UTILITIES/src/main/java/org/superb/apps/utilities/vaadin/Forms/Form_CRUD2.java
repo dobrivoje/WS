@@ -126,7 +126,6 @@ public abstract class Form_CRUD2<T> extends FormLayout implements IUpdateData<T>
             addComponents(crudButton);
         }
 
-        initFields();
     }
 
     /**

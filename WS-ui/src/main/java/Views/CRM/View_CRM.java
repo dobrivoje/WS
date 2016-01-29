@@ -289,17 +289,15 @@ public class View_CRM extends View_Dashboard {
                 Map<Object, List> M = new HashMap<>();
                 M.put(RS.getKey(), RS.getValue());
 
-                // if (!RS.getValue().isEmpty()) {
-                    Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, true);
+                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, true);
 
-                    double as = 0;
+                double as = 0;
 
-                    for (RelSALE a : RS.getValue()) {
-                        as += a.getAmmount();
-                    }
+                for (RelSALE a : RS.getValue()) {
+                    as += a.getAmmount();
+                }
 
-                    LP.add(new Panel("All Sells Amount - " + as + " L", tss));
-                // }
+                LP.add(new Panel("All Sells Amount - " + as + " L", tss));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
