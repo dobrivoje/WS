@@ -1668,9 +1668,9 @@ public class DBHandler {
         }
     }
     //</editor-fold>
+    //</editor-fold>
+    //</editor-fold>
 
-    //</editor-fold>
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="USER">
     //<editor-fold defaultstate="collapsed" desc="READ">
     public List<InfSysUser> getAllUsers() {
