@@ -115,7 +115,7 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
         beanItem = (BeanItem<CrmCase>) fieldGroup.getItemDataSource();
 
         clickListener = (Button.ClickEvent event) -> {
-            setBeanFromFields(beanItem.getBean());
+            // setBeanFromFields(beanItem.getBean());
 
             try {
                 fieldGroup.commit();

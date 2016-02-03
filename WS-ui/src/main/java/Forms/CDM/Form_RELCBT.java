@@ -73,7 +73,7 @@ public class Form_RELCBT extends Form_CRUD2<RelCBType> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -108,7 +108,7 @@ public class Form_RELCBT extends Form_CRUD2<RelCBType> {
             public void buttonClick(Button.ClickEvent event) {
                 RelCBType new_RelCBT = new RelCBType();
 
-                setBeanFromFields(new_RelCBT);
+                // setBeanFromFields(new_RelCBT);
                 new_RelCBT.setFkIdc(existingCustomer);
 
                 Notification n = new Notification("Customer Bussines Type Updated.", Notification.Type.TRAY_NOTIFICATION);
@@ -161,7 +161,7 @@ public class Form_RELCBT extends Form_CRUD2<RelCBType> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();

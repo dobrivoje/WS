@@ -59,7 +59,7 @@ public class Form_FS extends Form_CRUD2<Fuelstation> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -96,7 +96,7 @@ public class Form_FS extends Form_CRUD2<Fuelstation> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();

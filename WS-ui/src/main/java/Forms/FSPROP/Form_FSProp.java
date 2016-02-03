@@ -111,7 +111,7 @@ public class Form_FSProp extends Form_CRUD2<FsProp> {
             clickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    setBeanFromFields(beanItem.getBean());
+                    // setBeanFromFields(beanItem.getBean());
 
                     try {
                         fieldGroup.commit();

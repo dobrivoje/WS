@@ -96,7 +96,7 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
         btnCaption = BUTTON_CAPTION_SAVE.toString();
 
         clickListener = (Button.ClickEvent event) -> {
-            setBeanFromFields(beanItem.getBean());
+            // setBeanFromFields(beanItem.getBean());
 
             try {
                 fieldGroup.commit();

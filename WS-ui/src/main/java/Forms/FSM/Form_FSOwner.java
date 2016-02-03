@@ -63,7 +63,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -106,7 +106,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -173,7 +173,7 @@ public class Form_FSOwner extends Form_CRUD2<Owner> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();

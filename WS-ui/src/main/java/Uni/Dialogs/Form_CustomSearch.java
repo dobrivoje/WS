@@ -91,7 +91,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         updateDynamicFields();
 
         clickListener = (Button.ClickEvent event) -> {
-            setBeanFromFields(beanItem.getBean());
+            // setBeanFromFields(beanItem.getBean());
 
             if (iUpdateDataListener != null) {
                 iUpdateDataListener.update(beanItem.getBean());

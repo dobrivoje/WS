@@ -63,7 +63,7 @@ public class Form_SCR extends Form_CRUD2<RelSALESMANCUST> {
         clickListener = new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                setBeanFromFields(beanItem.getBean());
+                // setBeanFromFields(beanItem.getBean());
 
                 try {
                     fieldGroup.commit();
@@ -103,7 +103,7 @@ public class Form_SCR extends Form_CRUD2<RelSALESMANCUST> {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     RelSALESMANCUST R_SalesmanCustomer_ToUpdate = beanItem.getBean();
-                    setBeanFromFields(R_SalesmanCustomer_ToUpdate);
+                    // setBeanFromFields(R_SalesmanCustomer_ToUpdate);
 
                     try {
                         fieldGroup.commit();
