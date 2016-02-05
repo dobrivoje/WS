@@ -254,14 +254,17 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
             }
         });
 
-        bussinesLine.addValueChangeListener((Property.ValueChangeEvent event) -> {
-            salesrep.clear();
-        });
-
-        salesrep.addValueChangeListener((Property.ValueChangeEvent event) -> {
-            bussinesLine.clear();
-        });
-
+        /*
+         // ova dva event-a stvaraju petlju !!!
+        
+         bussinesLine.addValueChangeListener((Property.ValueChangeEvent event) -> {
+         salesrep.clear();
+         });
+        
+         salesrep.addValueChangeListener((Property.ValueChangeEvent event) -> {
+         bussinesLine.clear();
+         });
+         */
     }
     //</editor-fold>
 
