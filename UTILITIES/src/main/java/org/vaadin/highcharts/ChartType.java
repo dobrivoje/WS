@@ -47,6 +47,31 @@ public enum ChartType {
     ),
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="BASIC_COLUMN">
+    BASIC_COLUMN(
+            " chart: { "
+            + "            type: 'column' "
+            + "        }, "
+            + "        tooltip: { "
+            + "            headerFormat: '<span style=\"font-size:15px\">{point.key}</span><table>', "
+            + "            pointFormat: '<tr><td style=\"color:{series.color};padding:0\">{series.name}: </td>' + "
+            + "                '<td style=\"padding:0\"><b>{point.y:.1f} % </b></td></tr>', "
+            + "            footerFormat: '</table>', "
+            + "            shared: true, "
+            + "            useHTML: true "
+            + "        }, "
+            + "        plotOptions: { "
+            + "            column: { "
+            + "                pointPadding: 0.2, "
+            + "                borderWidth: 0 "
+            + "            } "
+            + "        }, "
+            + "        credits: { "
+            + "            enabled: false "
+            + "        },"
+    ),
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="STACKED_COLUMN">
     STACKED_COLUMN(
             " chart: { "
@@ -244,7 +269,7 @@ public enum ChartType {
     ),
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="PIE_GRADIENT">
+    //<editor-fold defaultstate="collapsed" desc="DONUT_3D">
     DONUT_3D(
             " chart: { "
             + "            type: 'pie', "

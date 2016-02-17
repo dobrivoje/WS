@@ -30,6 +30,7 @@ import org.superb.apps.utilities.datum.Dates;
 @SuppressWarnings("serial")
 public abstract class View_Dashboard extends Panel implements View {
 
+    //<editor-fold defaultstate="collapsed" desc="Varijable">
     private static final String EDIT_ID = "dashboard-edit";
     private static final String TITLE_ID = "dashboard-title";
 
@@ -37,6 +38,9 @@ public abstract class View_Dashboard extends Panel implements View {
     private NotificationsButton notificationsButton;
     protected CssLayout dashboardPanels;
     protected final VerticalLayout root = new VerticalLayout();
+
+    protected final HorizontalLayout header = new HorizontalLayout();
+    protected final HorizontalLayout tools = new HorizontalLayout();
 
     protected boolean viewMaximized;
 
@@ -46,7 +50,7 @@ public abstract class View_Dashboard extends Panel implements View {
      */
     protected final List<Panel> subPanels;
 
-    protected final Dates dateInterval = new Dates();
+    protected Dates dateInterval = new Dates(-1, true);
 
     /**
      * <b>dynamicPanels</b> Lista komponenti (panela) koje se dinamičko
@@ -57,7 +61,9 @@ public abstract class View_Dashboard extends Panel implements View {
     private Window notificationsWindow;
 
     private MenuBar.MenuItem max;
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Konstruktori">
     protected View_Dashboard(String dashBoardTitle) {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
@@ -75,10 +81,10 @@ public abstract class View_Dashboard extends Panel implements View {
 
         root.addComponent(buildHeader(dashBoardTitle));
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="DashBoard Header">
     protected final Component buildHeader(String dashBoardTitle) {
-        HorizontalLayout header = new HorizontalLayout();
         header.addStyleName("viewheader");
         header.setSpacing(true);
 
@@ -90,8 +96,10 @@ public abstract class View_Dashboard extends Panel implements View {
         header.addComponent(titleLabel);
 
         notificationsButton = buildNotificationsButton();
-        Component edit = buildEditButton();
-        HorizontalLayout tools = new HorizontalLayout(notificationsButton, edit);
+        Component editButton = buildEditButton();
+
+        tools.addComponents(notificationsButton, editButton);
+
         tools.setSpacing(true);
         tools.addStyleName("toolbar");
         header.addComponent(tools);
@@ -197,14 +205,14 @@ public abstract class View_Dashboard extends Panel implements View {
         return createContentWrapper(content, PC);
     }
 
-    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed, Map<String, MenuBar.Command> PC) {
+    protected Component createPanelComponent(String caption, List<Panel> subPanels, boolean formEditAllowed, Map<String, MenuBar.Command> PC) {
         VerticalLayout componentRootVL = new VerticalLayout();
 
         componentRootVL.setCaption(caption);
         Layout_InlineCSS ICL = new Layout_InlineCSS();
         ICL.setSizeFull();
 
-        for (Panel p : panels) {
+        for (Panel p : subPanels) {
             p.setWidth(250, Unit.PIXELS);
 
             HorizontalLayout HL = new HorizontalLayout(p);
@@ -215,15 +223,15 @@ public abstract class View_Dashboard extends Panel implements View {
         componentRootVL.addComponent(ICL);
 
         try {
-            panels.clear();
+            subPanels.clear();
         } catch (Exception e) {
         }
 
         return createContentWrapper(componentRootVL, PC);
     }
 
-    protected Component createPanelComponent(String caption, List<Panel> panels, boolean formEditAllowed) {
-        return createPanelComponent(caption, panels, formEditAllowed, null);
+    protected Component createPanelComponent(String caption, List<Panel> subPanels, boolean formEditAllowed) {
+        return createPanelComponent(caption, subPanels, formEditAllowed, null);
     }
 
     protected Component createNotesPanel(String notesContent) {

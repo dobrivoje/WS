@@ -26,7 +26,7 @@ public class SelectorDialog extends WindowForm3 {
                 "img/crm/cbt.png",
                 "Search",
                 formCustomSearch.getClickListener(),
-                220, 202, false);
+                202, 220, false);
 
         actionButton.addClickListener((Button.ClickEvent event) -> {
             closeButton.click();

@@ -5,20 +5,37 @@
  */
 package org.superb.apps.utilities.datum;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import static org.superb.apps.utilities.datum.DateFormat.DATE_FORMAT_ENG;
 
 public class Dates {
 
     private Date from;
     private Date to;
+    private DateFormat dateFormat;
 
     /**
-     * Default is interval of the 1st day of the last month to this day.
+     * Pozivanje ovog konstruktora postavlja interval datuma : <br>
+     * od 1. dana prethodnog meseca do današnjeg datuma.
      */
     public Dates() {
         this(-1);
+    }
+
+    /**
+     * Pozivanje ovog konstruktora postavlja interval datuma : <br>
+     * od 1. dana prethodnog meseca do današnjeg datuma (justThatMonth=false).
+     * od 1. dana prethodnog meseca do posledenjeg dana tog meseca
+     * (justThatMonth=true).
+     *
+     * @param justThatMonth Do poslednjeg dana u mesecu.
+     */
+    public Dates(boolean justThatMonth) {
+        this(-1, justThatMonth);
     }
 
     public Dates(Dates d) {
@@ -37,32 +54,85 @@ public class Dates {
         }
     }
 
+    public Dates(String from, String to, String format) {
+        try {
+            this.from = new SimpleDateFormat(format).parse(from);
+            this.to = new SimpleDateFormat(format).parse(to);
+        } catch (ParseException ex) {
+        }
+    }
+
     /**
+     * Default constructor with English date format.
      *
-     * @param months No. of months back/forth, to the current date. <br>
-     * <p>
-     * Positive value makes up an interval from today <br>
-     * to the last day of the no. of months onward. <br>
-     * <p>
-     * Negative value makes up an interval <br>
-     * from no. of months backward to this date.
+     * @param from
+     * @param to
      */
-    public Dates(int months) {
-        setMonthsBF(months);
+    public Dates(String from, String to) {
+        try {
+            this.from = new SimpleDateFormat(DateFormat.DATE_FORMAT_ENG.toString()).parse(from);
+            this.to = new SimpleDateFormat(DateFormat.DATE_FORMAT_ENG.toString()).parse(to);
+        } catch (ParseException ex) {
+        }
     }
 
     /**
      *
-     * @param months No. of months back/forth, to the current date. <br>
+     * @param months Broj meseci - podešavanje intervala.
      * <p>
-     * Positive value makes up an interval from today <br>
-     * to the last day of the no. of months onward. <br>
-     * <p>
-     * Negative value makes up an interval <br>
-     * from no. of months backward to this date.
+     * months > 0 : Od danas do poslednjeg dana za <u>months</u> unapred. <br>
+     * months < 0 : Od 1. dana za <u>months</u> unazad, do danas. <br>
      */
-    public synchronized void setMonthsBackForth(int months) {
-        setMonthsBF(months);
+    public Dates(int months) {
+        this.dateFormat = DATE_FORMAT_ENG;
+        setMonthsBF(months, false);
+    }
+
+    public Dates(int months, DateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+        setMonthsBF(months, false);
+    }
+
+    /**
+     *
+     * @param months Broj meseci - podešavanje intervala.
+     * <p>
+     * months > 0 : Od danas do poslednjeg dana za <u>months</u> unapred. <br>
+     * months < 0 : Od 1. dana za <u>months</u> unazad, do dana određenog
+     * parametrom justThatMonth. <br>
+     *
+     * @param justThatMonth=true: do poslednjeg dana tog meseca <br>
+     * justThatMonth=false : do danas.<br>
+     */
+    public Dates(int months, boolean justThatMonth) {
+        this.dateFormat = DateFormat.DATE_FORMAT_ENG;
+        setMonthsBF(months, justThatMonth);
+    }
+
+    public Dates(int months, boolean justThatMonth, DateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+        setMonthsBF(months, justThatMonth);
+    }
+
+    /**
+     * @param months Broj meseci - podešavanje intervala.<br>
+     * months &lt 0 : Interval je : Od 1. dana za <u>months</u> unazad, do
+     * danas, za justThatMonth=false.<br>
+     *
+     * months &lt 0 : Interval je : Od 1. dana za <u>months</u> unazad, do
+     * poslednjeg dana u tom mesecu, za justThatMonth=true.<br>
+     *
+     * months > 0 : Interval je : Od danas do poslednjeg dana za <u>months</u>
+     * unapred. <br>
+     *
+     * @param justThatMonth
+     */
+    public void setMonthsBackForth(int months, boolean justThatMonth) {
+        setMonthsBF(months, justThatMonth);
+    }
+
+    public void setMonthsBackForth(int months) {
+        setMonthsBF(months, false);
     }
 
     //<editor-fold defaultstate="collapsed" desc="interni metodi">
@@ -76,7 +146,7 @@ public class Dates {
         return c1.getTime();
     }
 
-    private void setMonthsBF(int months) {
+    private void setMonthsBF(int months, boolean justThatMonth) {
         Calendar c1 = new GregorianCalendar();
 
         c1.add(Calendar.MONTH, months);
@@ -85,12 +155,24 @@ public class Dates {
             c1.set(Calendar.DAY_OF_MONTH, 1);
 
             this.from = setHMS(c1, 0, 0, 0);
-            this.to = new Date();
+
+            if (justThatMonth) {
+                c1.set(Calendar.DAY_OF_MONTH, c1.getActualMaximum(Calendar.DAY_OF_MONTH));
+                this.to = setHMS(c1, 23, 59, 59);
+            } else {
+                this.to = new Date();
+            }
         } else {
             c1.set(Calendar.DAY_OF_MONTH, c1.getActualMaximum(Calendar.DAY_OF_MONTH));
 
             this.from = new Date();
             this.to = setHMS(c1, 23, 59, 59);
+        }
+
+        if (from.after(to)) {
+            Date z = from;
+            from = to;
+            to = z;
         }
     }
 
@@ -104,28 +186,113 @@ public class Dates {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="getter/setter">
-    public synchronized Date getFrom() {
+    public Date getFrom() {
         return from;
     }
 
-    public synchronized void setFrom(Date from) {
+    public String getFrom(DateFormat dateFormat) {
+        return new SimpleDateFormat(dateFormat.toString()).format(from);
+    }
+
+    public void setFrom(Date from) {
         this.from = from;
+    }
+
+    public void setFrom(String from, String format) {
+        try {
+            this.from = new SimpleDateFormat(format).parse(from);
+        } catch (ParseException ex) {
+        }
     }
 
     public void setFrom(int day, int month, int year) {
         this.from = setDMY(month, day, year);
     }
 
-    public synchronized Date getTo() {
+    public Date getTo() {
         return to;
     }
 
-    public synchronized void setTo(Date to) {
+    public String getTo(DateFormat dateFormat) {
+        return new SimpleDateFormat(dateFormat.toString()).format(to);
+    }
+
+    public void setTo(Date to) {
         this.to = to;
+    }
+
+    public void setTo(String to, String format) {
+        try {
+            this.to = new SimpleDateFormat(format).parse(to);
+        } catch (ParseException ex) {
+        }
     }
 
     public void setTo(int day, int month, int year) {
         this.to = setDMY(month, day, year);
     }
+
+    /**
+     * Default english format (yyyy-MM-dd)
+     *
+     * @return
+     */
+    public String getFromStr() {
+        try {
+            return getFromStr(dateFormat.toString());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Default english format (yyyy-MM-dd)
+     *
+     * @return
+     */
+    public String getToStr() {
+        try {
+            return getToStr(dateFormat.toString());
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Custom format
+     *
+     * @param format Custom date format
+     * @return
+     */
+    public String getFromStr(String format) {
+        try {
+            return new SimpleDateFormat(format).format(from);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Custom format
+     *
+     * @param format Custom date format
+     * @return
+     */
+    public String getToStr(String format) {
+        try {
+            return new SimpleDateFormat(format).format(to);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     //</editor-fold>
+
+    @Override
+    public String toString() {
+        return "["
+                + from + ", " + to
+                + "]";
+    }
+
 }

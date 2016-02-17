@@ -33,9 +33,8 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
     private String imageLocation;
 
     public Tree_SalesmanSales(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
-        super("",
-                DS.getCRMController().getCRM_Salesrep_Sales_Cases(csd.getSalesman(), csd.getStartDate(), csd.getEndDate()),
-                csd.getStartDate(), csd.getEndDate(), expandRootNodes
+        super("", DS.getSearchController().getCRMCases(csd), csd.getStartDate(), csd.getEndDate(),
+                expandRootNodes
         );
 
         this.expandRootNodes = expandRootNodes;
@@ -47,6 +46,30 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
 
             if (event.isDoubleClick()) {
                 if (formAllowed) {
+                    //<editor-fold defaultstate="collapsed" desc="CrmCase">
+                    if (event.getItemId() instanceof CrmCase) {
+                        salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
+
+                        try {
+                            readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+                            winFormCaption = "Existing CRM Case";
+                            imageLocation = "img/crm/crmCase.png";
+                            crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
+
+                            getUI().addWindow(
+                                    new WindowForm3(
+                                            winFormCaption,
+                                            crudForm,
+                                            imageLocation,
+                                            crudForm.getClickListener(),
+                                            196, 236, readOnly
+                                    )
+                            );
+                        } catch (NullPointerException | IllegalArgumentException ex) {
+                        }
+                    }
+                        //</editor-fold>
+
                     //<editor-fold defaultstate="collapsed" desc="RelSale">
                     if (event.getItemId() instanceof RelSALE) {
                         relSale = (RelSALE) event.getItemId();
@@ -57,20 +80,6 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                             winFormCaption = "Existing Sell Case";
                             imageLocation = "img/crm/sell.png";
                             crudForm = new Form_CRMSell(relSale, readOnly);
-                        } catch (NullPointerException | IllegalArgumentException ex) {
-                        }
-                    }
-                        //</editor-fold>
-
-                    //<editor-fold defaultstate="collapsed" desc="CrmCase">
-                    if (event.getItemId() instanceof CrmCase) {
-                        salesman = ((CrmCase) event.getItemId()).getFK_IDRSC().getFK_IDS();
-
-                        try {
-                            readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                            winFormCaption = "Existing CRM Case";
-                            imageLocation = "img/crm/crmCase.png";
-                            crudForm = new Form_CRMCase((CrmCase) event.getItemId(), null, false, readOnly);
                         } catch (NullPointerException | IllegalArgumentException ex) {
                         }
                     }
@@ -89,7 +98,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                                     crudForm,
                                     imageLocation,
                                     crudForm.getClickListener(),
-                                    236, 196, readOnly
+                                    196, 236, readOnly
                             )
                     );
                     //</editor-fold>
@@ -97,9 +106,7 @@ public class Tree_SalesmanSales extends CustomObjectTree<CrmCase> {
                     Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
                             Notification.Type.ERROR_MESSAGE);
                 }
-                //</editor-fold>
             }
-
         });
         //</editor-fold>
     }

@@ -5,6 +5,7 @@
  */
 package org.superb.apps.utilities.datum;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,6 +51,28 @@ public class Dates {
             Date z = this.from;
             this.from = this.to;
             this.to = z;
+        }
+    }
+
+    public Dates(String from, String to, String format) {
+        try {
+            this.from = new SimpleDateFormat(format).parse(from);
+            this.to = new SimpleDateFormat(format).parse(to);
+        } catch (ParseException ex) {
+        }
+    }
+
+    /**
+     * Default constructor with English date format.
+     *
+     * @param from
+     * @param to
+     */
+    public Dates(String from, String to) {
+        try {
+            this.from = new SimpleDateFormat(DateFormat.DATE_FORMAT_ENG.toString()).parse(from);
+            this.to = new SimpleDateFormat(DateFormat.DATE_FORMAT_ENG.toString()).parse(to);
+        } catch (ParseException ex) {
         }
     }
 
@@ -175,6 +198,13 @@ public class Dates {
         this.from = from;
     }
 
+    public void setFrom(String from, String format) {
+        try {
+            this.from = new SimpleDateFormat(format).parse(from);
+        } catch (ParseException ex) {
+        }
+    }
+
     public void setFrom(int day, int month, int year) {
         this.from = setDMY(month, day, year);
     }
@@ -191,6 +221,13 @@ public class Dates {
         this.to = to;
     }
 
+    public void setTo(String to, String format) {
+        try {
+            this.to = new SimpleDateFormat(format).parse(to);
+        } catch (ParseException ex) {
+        }
+    }
+
     public void setTo(int day, int month, int year) {
         this.to = setDMY(month, day, year);
     }
@@ -201,7 +238,11 @@ public class Dates {
      * @return
      */
     public String getFromStr() {
-        return getFromStr(dateFormat.toString());
+        try {
+            return getFromStr(dateFormat.toString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -210,7 +251,12 @@ public class Dates {
      * @return
      */
     public String getToStr() {
-        return getToStr(dateFormat.toString());
+        try {
+            return getToStr(dateFormat.toString());
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     /**
@@ -220,7 +266,11 @@ public class Dates {
      * @return
      */
     public String getFromStr(String format) {
-        return new SimpleDateFormat(format).format(from);
+        try {
+            return new SimpleDateFormat(format).format(from);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -230,7 +280,11 @@ public class Dates {
      * @return
      */
     public String getToStr(String format) {
-        return new SimpleDateFormat(format).format(to);
+        try {
+            return new SimpleDateFormat(format).format(to);
+        } catch (Exception e) {
+            return null;
+        }
     }
     //</editor-fold>
 

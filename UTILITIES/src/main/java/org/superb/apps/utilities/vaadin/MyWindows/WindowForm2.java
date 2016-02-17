@@ -39,7 +39,7 @@ public class WindowForm2 extends Window {
         Responsive.makeResponsive(this);
 
         setModal(true);
-        setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
+        addCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
         setHeight(70, Unit.PERCENTAGE);
         setWidth(60, Unit.PERCENTAGE);
 
@@ -69,7 +69,7 @@ public class WindowForm2 extends Window {
         this(caption, formLayout, "img/profile-pic-300px.jpg");
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
     protected final Component buildFormTab(String caption, Layout formLayout) {
         return buildFormTab(caption, formLayout, "img/profile-pic-300px.jpg");
@@ -116,10 +116,10 @@ public class WindowForm2 extends Window {
         });
 
         closeBtn.focus();
-        
+
         footer.addComponent(closeBtn);
         footer.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
-        
+
         return footer;
     }
     //</editor-fold>

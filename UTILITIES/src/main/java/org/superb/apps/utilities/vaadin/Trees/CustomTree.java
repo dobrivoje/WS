@@ -25,17 +25,17 @@ public class CustomTree<T> extends Tree {
     protected VerticalLayout propPanel;
     protected List propTrees;
 
+    // Calling form : form caption and (right) property panel
     protected String winFormCaption;
     protected Panel winFormPropPanel;
 
-    /**
-     * Parameter to regulate Window carrier height.
-     */
-    protected int winFormHeight;
+    // Calling form : (left) image parameters...
+    protected String winFormImagePath;
+    protected int winFormImgWidth;
+    protected int winFormImgHeight;
 
-    /**
-     * Parameter to regulate Window carrier width.
-     */
+    // Calling form : height and width
+    protected int winFormHeight;
     protected int winFormWidth;
 
     protected boolean readOnly = true;

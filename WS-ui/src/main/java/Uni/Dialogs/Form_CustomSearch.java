@@ -76,11 +76,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
     public Form_CustomSearch(CustomSearchData csd) {
         super(new BeanFieldGroup(CustomSearchData.class));
 
-        try {
-            cc = csd;
-        } catch (Exception e) {
-            cc = new CustomSearchData();
-        }
+        cc = csd == null ? new CustomSearchData() : csd;
 
         fieldGroup.bindMemberFields(this);
         setFormFieldsWidths(250, Unit.PIXELS);
@@ -91,7 +87,7 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         updateDynamicFields();
 
         clickListener = (Button.ClickEvent event) -> {
-            // setBeanFromFields(beanItem.getBean());
+            setBeanFromFields(beanItem.getBean());
 
             if (iUpdateDataListener != null) {
                 iUpdateDataListener.update(beanItem.getBean());
@@ -99,6 +95,10 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
         };
 
         addBeansToForm();
+    }
+
+    public Form_CustomSearch(int options) {
+        this(options, null);
     }
 
     /**
@@ -112,10 +112,6 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
      * Primer : options = 0b111100001, uključuje prva četiri, i poslednje polje
      * na formi, dakle start, end, salesman, customer, i saleAgreed.
      */
-    public Form_CustomSearch(int options) {
-        this(options, null);
-    }
-
     public Form_CustomSearch(int options, CustomSearchData csd) {
         this(csd);
 
@@ -254,17 +250,14 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
             }
         });
 
-        /*
-         // ova dva event-a stvaraju petlju !!!
-        
-         bussinesLine.addValueChangeListener((Property.ValueChangeEvent event) -> {
-         salesrep.clear();
-         });
-        
-         salesrep.addValueChangeListener((Property.ValueChangeEvent event) -> {
-         bussinesLine.clear();
-         });
-         */
+        bussinesLine.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            salesrep.clear();
+        });
+
+        salesrep.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            bussinesLine.clear();
+        });
+
     }
     //</editor-fold>
 

@@ -308,7 +308,7 @@ public class Table_Customer extends Table_GEN<Customer> {
                                     ccf,
                                     "img/crm/crm-case-new.png",
                                     ccf.getClickListener(),
-                                    300, 253)
+                                    253, 300)
                             );
 
                         } else {
@@ -342,7 +342,7 @@ public class Table_Customer extends Table_GEN<Customer> {
                     rcf,
                     "img/crm/cbt.png",
                     rcf.getClickListener(),
-                    220, 202)
+                    202, 220)
             );
         } else {
             Notification.show("User Rights Error",
@@ -365,7 +365,7 @@ public class Table_Customer extends Table_GEN<Customer> {
                     cf,
                     "img/crm/crm-user-3.png",
                     cf.getClickListener(),
-                    250, 205)
+                    205, 250)
             );
         } else {
             Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);

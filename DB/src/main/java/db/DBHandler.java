@@ -1949,9 +1949,18 @@ public class DBHandler {
     public List<RelSALE> getSales(CustomSearchData csd) {
         Query query;
 
-        String Q = "SELECT S from RelSALE S WHERE S.sellDate BETWEEN :dateFrom AND :dateTo ";
+        String Q = "SELECT S from RelSALE S WHERE 1=1 ";
 
         try {
+
+            //<editor-fold defaultstate="collapsed" desc="check parameters">
+            if (csd.getStartDate() != null) {
+                Q += " AND S.sellDate >= :dateFrom ";
+            }
+
+            if (csd.getEndDate() != null) {
+                Q += " AND S.sellDate <= :dateTo ";
+            }
 
             if (csd.getCustomer() != null) {
                 Q += " AND S.FK_IDCA.FK_IDRSC.FK_IDC = :IDC ";
@@ -1970,11 +1979,18 @@ public class DBHandler {
             }
 
             Q += " ORDER BY S.sellDate ASC";
+            //</editor-fold>
 
-            query = getEm().createQuery(Q)
-                    .setParameter("dateFrom", checkDates(csd.getStartDate(), csd.getEndDate()).get(0))
-                    .setParameter("dateTo", checkDates(csd.getStartDate(), csd.getEndDate()).get(1));
+            query = getEm().createQuery(Q);
 
+            //<editor-fold defaultstate="collapsed" desc="setup parameters">
+            if (csd.getStartDate() != null) {
+                query.setParameter("dateFrom", csd.getStartDate());
+            }
+
+            if (csd.getEndDate() != null) {
+                query.setParameter("dateTo", csd.getEndDate());
+            }
             if (csd.getCustomer() != null) {
                 query.setParameter("IDC", csd.getCustomer());
             }
@@ -1987,6 +2003,7 @@ public class DBHandler {
             if (csd.getProduct() != null) {
                 query.setParameter("IDP", csd.getProduct());
             }
+            //</editor-fold>
 
             return query.getResultList();
         } catch (Exception ex) {
@@ -1994,6 +2011,13 @@ public class DBHandler {
         }
     }
 
+    /**
+     * Metod formira CRM slučajeve i što je još važnije,<br>
+     * za svaki crm njegove crm procese !!!
+     *
+     * @param csd
+     * @return
+     */
     public List<CrmCase> getCRMCases(CustomSearchData csd) {
         Query query;
         String Q = "SELECT c FROM CrmCase c WHERE 1=1";
@@ -2115,9 +2139,9 @@ public class DBHandler {
             Q += " ORDER BY p.actionDate ASC";
             //</editor-fold>
 
-            //<editor-fold defaultstate="collapsed" desc="setup parameters">
             query = getEm().createQuery(Q);
 
+            //<editor-fold defaultstate="collapsed" desc="setup parameters">
             if (csd.getStartDate() != null) {
                 query.setParameter("dateFrom", csd.getStartDate());
             }

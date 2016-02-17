@@ -1,42 +1,44 @@
-package Trees.CRM;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Trees.CRM.SALES;
 
 import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMProcess;
+import Main.MyUI;
+import static Main.MyUI.DS;
+import Trees.CRM.Tree_CRMSingleCase;
+import Trees.CRM.Tree_SalesmanCRMCases;
+import db.Exceptions.CustomTreeNodesEmptyException;
+import Trees.Tree_MasterDetail;
 import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
-import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Salesman;
 import java.util.List;
+import java.util.Map;
+import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
-import org.superb.apps.utilities.vaadin.Trees.CustomObjectTree;
-import Main.MyUI;
-import static Main.MyUI.DS;
-import db.ent.custom.CustomSearchData;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 
 /**
  *
  * @author root
  */
-public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
+public class Tree_MD_CustomerCRMCases extends Tree_MasterDetail {
 
     private Salesman salesman;
     private String imageLocation;
 
-    public Tree_SalesmanCRMCases(List rootNodes)
-            throws CustomTreeNodesEmptyException, NullPointerException {
-        super(rootNodes, false);
-    }
-
-    public Tree_SalesmanCRMCases(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes)
+    public Tree_MD_CustomerCRMCases(Map<Object, List> customerCRMCases, boolean formAllowed, boolean expandRootNodes)
             throws CustomTreeNodesEmptyException, NullPointerException {
 
-        super("", DS.getCRMController().getCRM_CasesStats(csd.getSalesman(), true, false, csd.getStartDate(), csd.getEndDate()), expandRootNodes);
+        super("", customerCRMCases, expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         super.addItemClickListener((ItemClickEvent event) -> {
@@ -83,9 +85,9 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
 
                         for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
                             if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac);
+                                csct = new Tree_CRMSingleCase(this.salesman.toString(), ac);
                             }
 
                             propTrees.add(csct);
@@ -102,7 +104,6 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                         if (crudForm instanceof Form_CRMProcess) {
                             // Make window bigger in height to accomodate all form fields.
                             winFormHeight = WINDOW_HEIGHT_DEFAULT_BIG;
-
                             getUI().addWindow(
                                     new WindowFormProp(
                                             winFormCaption,
@@ -135,10 +136,7 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
             }
         });
         //</editor-fold>
+
     }
 
-    @Override
-    protected void createSubNodes(CrmCase cc) {
-        createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Processes(cc));
-    }
 }

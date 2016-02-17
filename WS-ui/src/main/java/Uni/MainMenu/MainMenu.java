@@ -293,7 +293,7 @@ public class MainMenu extends CssLayout {
                                     cf,
                                     "img/crm/crm-user-3.png",
                                     cf.getClickListener(),
-                                    236, 194)
+                                    194, 236)
                             );
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
@@ -309,7 +309,7 @@ public class MainMenu extends CssLayout {
                                     rcbtf,
                                     "img/crm/cbt.png",
                                     rcbtf.getClickListener(),
-                                    236, 216)
+                                    216, 236)
                             );
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -325,8 +325,7 @@ public class MainMenu extends CssLayout {
                                     csf,
                                     "img/crm/sell.png",
                                     csf.getClickListener(),
-                                    236, 196
-                            )
+                                    196, 236)
                             );
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
@@ -346,7 +345,7 @@ public class MainMenu extends CssLayout {
                                     ccf,
                                     "img/crm/crm-case-new.png",
                                     ccf.getClickListener(),
-                                    300, 253)
+                                    253, 300)
                             );
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
@@ -362,7 +361,7 @@ public class MainMenu extends CssLayout {
                                         cpf,
                                         "img/crm/crm5.png",
                                         cpf.getClickListener(),
-                                        300, 225)
+                                        225, 300)
                                 );
 
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -380,7 +379,7 @@ public class MainMenu extends CssLayout {
                                     scf,
                                     "img/crm/new-sc-rel2.jpg",
                                     scf.getClickListener(),
-                                    230, 256)
+                                    256, 230)
                             );
 
                         } else {
@@ -405,7 +404,7 @@ public class MainMenu extends CssLayout {
                                     fof,
                                     "img/crm/cbt.png",
                                     fof.getClickListener(),
-                                    236, 216)
+                                    216, 236)
                             );
 
                         } else {
@@ -422,7 +421,7 @@ public class MainMenu extends CssLayout {
                                     fof,
                                     "img/crm/cbt.png",
                                     fof.getClickListener(),
-                                    236, 216)
+                                    216, 236)
                             );
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);

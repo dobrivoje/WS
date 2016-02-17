@@ -85,7 +85,7 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                             crudForm,
                                             imageLocation,
                                             crudForm.getClickListener(),
-                                            236, 196, readOnly, ValoTheme.BUTTON_FRIENDLY,
+                                            196, 236, readOnly, ValoTheme.BUTTON_FRIENDLY,
                                             new Button("Sell's CRM Case", (Button.ClickEvent event1) -> {
                                                 Form_CRMCase f = new Form_CRMCase(crmCase, null, false, readOnly);
                                                 
@@ -95,7 +95,7 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                                                 f,
                                                                 "img/crm/crmCase.png",
                                                                 f.getClickListener(),
-                                                                236, 196, readOnly
+                                                                196, 236, readOnly
                                                         )
                                                 );
                                             })
