@@ -1,10 +1,7 @@
 
 import static Main.MyUI.DS;
 import db.ent.CrmCase;
-import db.ent.RelSALE;
-import db.ent.Salesman;
-import java.util.List;
-import org.superb.apps.utilities.datum.Dates;
+import db.ent.custom.CustomSearchData;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,24 +10,17 @@ import org.superb.apps.utilities.datum.Dates;
  */
 public class TestsDB {
 
-    private static final Dates dates = new Dates();
-
     public static void main(String[] args) {
-        dates.setFrom(1, 6, 2015);
-        dates.setTo(31, 12, 2015);
 
-        for (Salesman s : DS.getSalesmanController().getAll()) {
-            List<CrmCase> L = DS.getCRMController().getCRM_Salesrep_Sales_Cases(s, dates.getFrom(), dates.getTo());
+        CustomSearchData csd2 = new CustomSearchData();
+        csd2.setSalesman(DS.getSalesmanController().getByID(1L));
 
-            if (!L.isEmpty()) {
-                for (CrmCase cc : L) {
-                    List<RelSALE> RS = DS.getCRMController().getCRM_Sales(cc);
+        for (CrmCase cc : DS.getSearchController().getCRMCases(csd2)) {
+            System.err.println("CRM : " + cc);
+            System.err.println(" |____ " + cc.getRelSALEList());
 
-                    System.err.println("salesrep: " + s + ", crm case : " + cc);
-                    System.err.println("sales: " + RS);
-                }
-
-            }
+            System.err.println("");
+            System.err.println("");
         }
     }
 }

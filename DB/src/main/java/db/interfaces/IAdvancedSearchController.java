@@ -27,7 +27,7 @@ public interface IAdvancedSearchController<T> {
 
     /**
      * <b>getCRMCases</b> metod vraća CRM slučajeve sa svim CRM procesima za
-     * svaki CRM case.
+     * svaki CRM case, kao i svim prodajama ukoliko postoje.
      *
      * @param criteria
      * @return

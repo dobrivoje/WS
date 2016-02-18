@@ -1,6 +1,5 @@
 package Views.SYSNOTIF;
 
-import Trees.CRM.SALES.Tree_SalesmanSales;
 import Trees.CRM.Tree_SalesmanCRMCases;
 import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
 import com.vaadin.ui.Component;
@@ -18,8 +17,10 @@ import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import Trees.CRM.SALES.Tree_MD_CustomerCRMCases;
+import Trees.CRM.SALES.Tree_MD_SalesmanSales;
 import Trees.Tree_MD_CrmCaseProcesses;
 import db.ent.CrmCase;
+import db.ent.RelSALE;
 import java.util.HashMap;
 import java.util.Map;
 import org.superb.apps.utilities.datum.Dates;
@@ -77,13 +78,27 @@ public class View_SysNotif extends View_Dashboard {
         try {
             Dates d = new Dates(-11);
 
-            CustomSearchData csd = new CustomSearchData();
-            csd.setSalesman(S);
-            csd.setStartDate(d.getFrom());
-            csd.setEndDate(d.getTo());
+            CustomSearchData csd2 = new CustomSearchData();
+            csd2.setSalesman(S);
+            csd2.setStartDate(d.getFrom());
+            csd2.setEndDate(d.getTo());
 
-            Tree_SalesmanSales csct = new Tree_SalesmanSales(csd, formEditAllowed, true);
-            subPanels.add(new Panel(S.toString(), csct));
+            for (CrmCase CC2 : DS.getSearchController().getCRMCases(csd2)) {
+                csd2.setCrmCase(CC2);
+
+                Map<Object, List> M = new HashMap<>();
+                M.put(CC2, CC2.getRelSALEList());
+
+                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, false);
+
+                double as = 0;
+                for (RelSALE a : CC2.getRelSALEList()) {
+                    as += a.getAmmount();
+                }
+
+                subPanels.add(new Panel("All Sells Amount - " + as + " L", tss));
+            }
+
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
 
@@ -112,12 +127,21 @@ public class View_SysNotif extends View_Dashboard {
             CustomSearchData csd1 = new CustomSearchData();
             csd1.setStartDate(dateInterval.getFrom());
             csd1.setEndDate(dateInterval.getTo());
+            csd1.setBussinesLine(S.getFkIdbl());
 
-            for (Salesman BLS : DS.getSalesmanController().getSalesman(S.getFkIdbl())) {
-                csd1.setSalesman(BLS);
+            for (Map.Entry<Salesman, List<RelSALE>> BLS : DS.getSearchController().getSalesrepSales(csd1).entrySet()) {
 
-                Tree_SalesmanSales csct = new Tree_SalesmanSales(csd1, formAllowed, false);
-                subPanels.add(new Panel(BLS.toString(), csct));
+                Map<Object, List> M = new HashMap<>();
+                M.put(BLS.getKey(), BLS.getValue());
+
+                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, false);
+
+                double as = 0;
+                for (RelSALE a : BLS.getValue()) {
+                    as += a.getAmmount();
+                }
+
+                subPanels.add(new Panel("All Sells Amount - " + as + " L", tss));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

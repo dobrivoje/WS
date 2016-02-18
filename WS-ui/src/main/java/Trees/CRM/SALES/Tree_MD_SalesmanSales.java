@@ -49,6 +49,23 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
+                        //<editor-fold defaultstate="collapsed" desc="CRM Case">
+                        if (event.getItemId() instanceof CrmCase) {
+
+                            try {
+                                crmCase = (CrmCase) event.getItemId();
+                                salesman = crmCase.getFK_IDRSC().getFK_IDS();
+
+                                winFormCaption = "Existing CRM Case";
+                                imageLocation = "img/crm/crmCase.png";
+
+                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+                                crudForm = new Form_CRMSell(relSale, readOnly);
+                            } catch (NullPointerException | IllegalArgumentException ex) {
+                            }
+                        }
+                        //</editor-fold>
+
                         //<editor-fold defaultstate="collapsed" desc="RelSale">
                         if (event.getItemId() instanceof RelSALE) {
 
@@ -64,21 +81,20 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                 crudForm = new Form_CRMSell(relSale, readOnly);
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
+                        }
+                        //</editor-fold>
 
-                            //<editor-fold defaultstate="collapsed" desc="Open form">
-                            for (RelSALE rs : DS.getCRMController().getCRM_Sales(relSale.getFK_IDCA())) {
-                                Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
-                                propTrees.add(csct);
+                        //<editor-fold defaultstate="collapsed" desc="Open form">
+                        for (RelSALE rs : DS.getCRMController().getCRM_Sales(relSale.getFK_IDCA())) {
+                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
+                            propTrees.add(csct);
 
-                                propPanel.addComponent(csct);
-                            }
+                            propPanel.addComponent(csct);
+                        }
 
-                            propTrees.stream().forEach((ct) -> {
-                                ((Tree_CRMSingleCase) ct).refreshVisualContainer();
-                            });
+                        winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
 
-                            winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
-
+                        if (crudForm instanceof Form_CRMSell) {
                             getUI().addWindow(
                                     new WindowForm3(
                                             winFormCaption,
@@ -88,7 +104,7 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                             196, 236, readOnly, ValoTheme.BUTTON_FRIENDLY,
                                             new Button("Sell's CRM Case", (Button.ClickEvent event1) -> {
                                                 Form_CRMCase f = new Form_CRMCase(crmCase, null, false, readOnly);
-                                                
+
                                                 getUI().addWindow(
                                                         new WindowForm3(
                                                                 "CRM Case",
@@ -101,8 +117,15 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                             })
                                     )
                             );
-                            //</editor-fold>
-
+                        } else if (crudForm instanceof Form_CRMCase) {
+                            getUI().addWindow(
+                                    new WindowForm3(
+                                            winFormCaption,
+                                            crudForm,
+                                            imageLocation,
+                                            crudForm.getClickListener(),
+                                            196, 236, readOnly)
+                            );
                         }
                         //</editor-fold>
                     } else {
