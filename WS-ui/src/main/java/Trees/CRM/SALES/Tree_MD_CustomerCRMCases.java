@@ -108,8 +108,8 @@ public class Tree_MD_CustomerCRMCases extends Tree_MasterDetail {
                                     new WindowFormProp(
                                             winFormCaption,
                                             winFormHeight, winFormWidth,
-                                            false,
                                             readOnly,
+                                            crudForm.getClickListener(),
                                             crudForm,
                                             winFormPropPanel
                                     )

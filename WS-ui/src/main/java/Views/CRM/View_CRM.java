@@ -56,13 +56,14 @@ public class View_CRM extends View_Dashboard {
                 List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
 
                 if (!L.isEmpty()) {
-                    for (CrmCase cc : L) {
-                        Map<Object, List> SC = new HashMap<>();
-                        SC.put(cc, cc.getCrmProcessList());
+                    Map<Object, List> SC = new HashMap<>();
 
-                        Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(SC, formAllowed, false);
-                        subPanels.add(new Panel(S.toString(), csct));
+                    for (CrmCase cc : L) {
+                        SC.put(cc, cc.getCrmProcessList());
                     }
+
+                    Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(SC, formAllowed, false);
+                    subPanels.add(new Panel(S.toString(), csct));
                 }
 
             }
@@ -84,13 +85,14 @@ public class View_CRM extends View_Dashboard {
                 List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
 
                 if (!L.isEmpty()) {
-                    for (CrmCase cc : L) {
-                        Map<Object, List> SC = new HashMap<>();
-                        SC.put(cc, cc.getCrmProcessList());
+                    Map<Object, List> SC = new HashMap<>();
 
-                        Tree_MD_CustomerCRMCases ccct = new Tree_MD_CustomerCRMCases(SC, formAllowed, false);
-                        subPanels.add(new Panel(C.toString(), ccct));
+                    for (CrmCase cc : L) {
+                        SC.put(cc, cc.getCrmProcessList());
                     }
+
+                    Tree_MD_CustomerCRMCases ccct = new Tree_MD_CustomerCRMCases(SC, formAllowed, false);
+                    subPanels.add(new Panel(C.toString(), ccct));
                 }
 
             }

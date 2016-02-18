@@ -12,15 +12,35 @@ public class TestsDB {
 
     public static void main(String[] args) {
 
-        CustomSearchData csd2 = new CustomSearchData();
-        csd2.setSalesman(DS.getSalesmanController().getByID(1L));
+        CustomSearchData csd = new CustomSearchData();
+        csd.setCaseFinished(false);
+        csd.setSaleAgreeded(false);
+        csd.setSalesman(DS.getSalesmanController().getByID(1L));
 
-        for (CrmCase cc : DS.getSearchController().getCRMCases(csd2)) {
-            System.err.println("CRM : " + cc);
-            System.err.println(" |____ " + cc.getRelSALEList());
+        System.err.println("test 1 : DS.getSearchController().getCRMCases(csd)");
+        for (CrmCase cc : DS.getSearchController().getCRMCases(csd)) {
+            System.err.println("CRM : " + cc + ", ID=" + cc.getIdca());
+            System.err.println(" |____ " + cc.getCrmProcessList());
 
             System.err.println("");
             System.err.println("");
         }
+
+        csd.setCaseFinished(true);
+        csd.setSaleAgreeded(true);
+
+        System.err.println("test 2 : DS.getSearchController().getCRMCases(csd)");
+        for (CrmCase cc : DS.getSearchController().getCRMCases(csd)) {
+
+            if (!cc.getRelSALEList().isEmpty()) {
+                System.err.println("CRM : " + cc + ", ID=" + cc.getIdca());
+                System.err.println(" |____ " + cc.getRelSALEList());
+            }
+
+            System.err.println("");
+        }
+
+        System.err.println("");
+        System.err.println("");
     }
 }

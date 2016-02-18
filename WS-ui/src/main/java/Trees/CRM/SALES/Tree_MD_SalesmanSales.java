@@ -8,8 +8,6 @@ package Trees.CRM.SALES;
 import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Main.MyUI;
-import static Main.MyUI.DS;
-import Trees.CRM.Tree_CRMSingleCase;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import Trees.Tree_MasterDetail;
 import com.vaadin.event.ItemClickEvent;
@@ -49,6 +47,24 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
             try {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
+                        //<editor-fold defaultstate="collapsed" desc="RelSale">
+                        if (event.getItemId() instanceof RelSALE) {
+
+                            try {
+                                relSale = (RelSALE) event.getItemId();
+                                crmCase = relSale.getFK_IDCA();
+                                salesman = crmCase.getFK_IDRSC().getFK_IDS();
+
+                                winFormCaption = "Existing Sell Case";
+                                imageLocation = "img/crm/sell.png";
+
+                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
+                                crudForm = new Form_CRMSell(relSale, readOnly);
+                            } catch (NullPointerException | IllegalArgumentException ex) {
+                            }
+                        }
+                        //</editor-fold>
+                        
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
 
@@ -60,38 +76,13 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                 imageLocation = "img/crm/crmCase.png";
 
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMSell(relSale, readOnly);
-                            } catch (NullPointerException | IllegalArgumentException ex) {
-                            }
-                        }
-                        //</editor-fold>
-
-                        //<editor-fold defaultstate="collapsed" desc="RelSale">
-                        if (event.getItemId() instanceof RelSALE) {
-
-                            try {
-                                relSale = (RelSALE) event.getItemId();
-                                crmCase = relSale.getFK_IDCA();
-                                salesman = relSale.getFK_IDCA().getFK_IDRSC().getFK_IDS();
-
-                                winFormCaption = "Existing Sell Case";
-                                imageLocation = "img/crm/sell.png";
-
-                                readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMSell(relSale, readOnly);
+                                crudForm = new Form_CRMCase(crmCase, null, false, readOnly);
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         }
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
-                        for (RelSALE rs : DS.getCRMController().getCRM_Sales(relSale.getFK_IDCA())) {
-                            Tree_CRMSingleCase csct = new Tree_CRMSingleCase("Sales by " + salesman.toString(), rs.getFK_IDCA());
-                            propTrees.add(csct);
-
-                            propPanel.addComponent(csct);
-                        }
-
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Sales" : "No Active Salesman CRM Case", propPanel);
 
                         if (crudForm instanceof Form_CRMSell) {
@@ -117,7 +108,9 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                             })
                                     )
                             );
-                        } else if (crudForm instanceof Form_CRMCase) {
+                        }
+
+                        if (crudForm instanceof Form_CRMCase) {
                             getUI().addWindow(
                                     new WindowForm3(
                                             winFormCaption,
@@ -134,7 +127,7 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                     }
                 }
 
-            } catch (NullPointerException | CustomTreeNodesEmptyException ex) {
+            } catch (NullPointerException ex) {
             }
         });
         //</editor-fold>

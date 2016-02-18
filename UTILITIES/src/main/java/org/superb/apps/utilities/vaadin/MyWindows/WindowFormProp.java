@@ -144,29 +144,12 @@ public class WindowFormProp extends Window {
      * Typical Action-Close form
      *
      * @param caption Form caption
-     * @param bigForm True for big form
      * @param readOnly True for non-editable form
      * @param layout Layout to inject into this frame
      * @param components Right layout (form) part components
      */
-    public WindowFormProp(String caption, boolean bigForm, boolean readOnly, Layout layout, Component... components) {
-        this(caption, bigForm, null, layout, components);
-
-        actionButton.setVisible(!readOnly);
-    }
-
-    /**
-     *
-     * @param caption
-     * @param height
-     * @param width
-     * @param bigForm
-     * @param readOnly
-     * @param layout
-     * @param components
-     */
-    public WindowFormProp(String caption, int height, int width, boolean bigForm, boolean readOnly, Layout layout, Component... components) {
-        this(caption, bigForm, null, layout, components);
+    public WindowFormProp(String caption, int height, int width, boolean readOnly, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
+        this(caption, false, externalButtonClickListener, layout, components);
         setWindowSize(height, width);
 
         actionButton.setVisible(!readOnly);

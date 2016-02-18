@@ -107,8 +107,8 @@ public class Tree_SalesmanCRMCases extends CustomObjectTree<CrmCase> {
                                     new WindowFormProp(
                                             winFormCaption,
                                             winFormHeight, winFormWidth,
-                                            false,
                                             readOnly,
+                                            crudForm.getClickListener(),
                                             crudForm,
                                             winFormPropPanel
                                     )

@@ -103,8 +103,8 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                                     new WindowFormProp(
                                             winFormCaption,
                                             winFormHeight, winFormWidth,
-                                            false,
                                             readOnly,
+                                            crudForm.getClickListener(),
                                             crudForm,
                                             winFormPropPanel
                                     )
@@ -209,8 +209,8 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
                                     new WindowFormProp(
                                             winFormCaption,
                                             winFormHeight, winFormWidth,
-                                            false,
                                             readOnly,
+                                            crudForm.getClickListener(),
                                             crudForm,
                                             winFormPropPanel
                                     )
@@ -242,6 +242,6 @@ public class Tree_CustomerCRMCases extends CustomObjectTree<CrmCase> {
 
     @Override
     protected void createSubNodes(CrmCase cc) {
-       createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Processes(cc));
+        createChildNodesForTheRoot(cc, DS.getCRMController().getCRM_Processes(cc));
     }
 }
