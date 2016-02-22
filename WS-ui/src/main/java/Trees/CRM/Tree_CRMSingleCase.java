@@ -31,8 +31,6 @@ public class Tree_CRMSingleCase extends CustomObjectTree<CrmCase> {
 
     @Override
     protected void createSubNodes(CrmCase c) {
-        // if (!c.getFinished()) {
-       createChildNodesForTheRoot(c, DS.getCRMController().getCRM_Processes(c));
-        //}
+        createChildNodesForTheRoot(c, DS.getCRMController().getCRM_Processes(c));
     }
 }

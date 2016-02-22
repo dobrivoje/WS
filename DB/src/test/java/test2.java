@@ -1,8 +1,6 @@
 
-
 import dataservice.DataService;
 import db.DBHandler;
-import db.ent.CrmCase;
 import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
 import db.interfaces.ICRMController;
@@ -29,11 +27,6 @@ public class test2 {
             csd4.setSalesman(s);
             System.err.println("SR :" + s);
             System.err.println("|____SC :" + DS.getSearchController().getCRMCases(csd4));
-
-            for (CrmCase cc : DS.getSearchController().getCRMCases(csd4)) {
-                System.err.println("|___________SP :" + cc.getCrmProcessList());
-            }
         }
-
     }
 }

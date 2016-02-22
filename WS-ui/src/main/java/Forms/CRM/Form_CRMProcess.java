@@ -27,6 +27,7 @@ import java.util.Date;
 import org.superb.apps.utilities.Enums.CrudOperations;
 import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import static Main.MyUI.DS;
+import db.ent.custom.CustomSearchData;
 
 /**
  *
@@ -60,7 +61,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     private final TextField quantity = new TextField("Quantity");
 
     @PropertyId("moneyAmount")
-    private final TextField moneyAmount = new TextField("Amount");
+    private final TextField ammount = new TextField("Amount");
 
     @PropertyId("comment")
     private final TextArea comment = new TextArea("Comment");
@@ -85,6 +86,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     public Form_CRMProcess(Salesman salesRep) {
         this(null, null, false);
 
+        salesman.setEnabled(false);
         salesman.setValue(salesRep);
     }
 
@@ -103,30 +105,27 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         fieldGroup.setItemDataSource(new BeanItem(cp));
         beanItem = (BeanItem<CrmProcess>) fieldGroup.getItemDataSource();
 
-        clickListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                // setBeanFromFields(beanItem.getBean());
+        clickListener = (Button.ClickEvent event) -> {
+            // setBeanFromFields(beanItem.getBean());
 
-                try {
-                    fieldGroup.commit();
+            try {
+                fieldGroup.commit();
 
-                    CRM_Controller.updateCRM_Process(beanItem.getBean());
+                CRM_Controller.updateCRM_Process(beanItem.getBean());
 
-                    if (visualContainer != null) {
-                        visualContainer.refreshVisualContainer();
-                    }
-
-                    Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
-
-                    n.setDelayMsec(500);
-                    n.show(getUI().getPage());
-
-                } catch (FieldGroup.CommitException ex) {
-                    Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+                if (visualContainer != null) {
+                    visualContainer.refreshVisualContainer();
                 }
+
+                Notification n = new Notification("New CRM Process Added.", Notification.Type.TRAY_NOTIFICATION);
+
+                n.setDelayMsec(500);
+                n.show(getUI().getPage());
+
+            } catch (FieldGroup.CommitException ex) {
+                Notification.show("Error", "Fields indicated by a red star must be provided.", Notification.Type.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         };
 
@@ -137,11 +136,16 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     public Form_CRMProcess(CrmProcess crmProcess, final IRefreshVisualContainer visualContainer, boolean defaultCRUDButtonOnForm, boolean readOnly) {
         this(crmProcess, visualContainer, defaultCRUDButtonOnForm);
 
-        if (this.readOnly = readOnly) {
-            lockFormFileds(readOnly);
-            salesman.setEnabled(!readOnly);
-        }
+        lockFormFileds(this.readOnly = readOnly);
+        salesman.setEnabled(false);
 
+        if (!readOnly) {
+            actionDate.setEnabled(true);
+            product.setEnabled(true);
+            quantity.setEnabled(true);
+            ammount.setEnabled(true);
+            comment.setEnabled(true);
+        }
     }
 
     @Override
@@ -159,7 +163,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         }
 
         try {
-            crmProcess.setMoneyAmount(Double.valueOf(moneyAmount.getValue()));
+            crmProcess.setMoneyAmount(Double.valueOf(ammount.getValue()));
         } catch (Exception e) {
         }
     }
@@ -174,18 +178,17 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
         product.setValue(crmProcess.getFK_IDP());
         quantity.setValue(String.valueOf(crmProcess.getQuantity()));
-        moneyAmount.setValue(String.valueOf(crmProcess.getMoneyAmount()));
+        ammount.setValue(String.valueOf(crmProcess.getMoneyAmount()));
     }
 
     @Override
     protected final void lockFormFileds(boolean lockAll) {
-        if (lockAll) {
-            super.lockFormFileds(lockAll);
-        } else {
+        super.lockFormFileds(lockAll);
+
+        if (!lockAll) {
             salesman.setEnabled(false);
             crmCase.setEnabled(false);
             status.setEnabled(false);
-            actionDate.setEnabled(false);
         }
     }
 
@@ -193,9 +196,16 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     protected final void updateDynamicFields() {
         salesman.addValueChangeListener((Property.ValueChangeEvent event) -> {
             try {
-                crmCase.setContainerDataSource(new BeanItemContainer(
-                        CrmCase.class,
-                        CRM_Controller.getCRM_Cases((Salesman) salesman.getValue(), false)));
+                CustomSearchData csd = new CustomSearchData();
+                csd.setSalesman((Salesman) salesman.getValue());
+                csd.setCaseFinished(false);
+
+                crmCase.setContainerDataSource(
+                        new BeanItemContainer(
+                                CrmCase.class,
+                                DS.getSearchController().getCRMCases(csd)
+                        )
+                );
             } catch (Exception e) {
             }
         });
@@ -221,7 +231,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
             quantity.setVisible(q);
             quantity.setRequired(q);
 
-            moneyAmount.setVisible(m);
+            ammount.setVisible(m);
         });
     }
 
@@ -232,7 +242,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
         setRequiredFields();
 
         quantity.setConverter(Double.class);
-        moneyAmount.setConverter(Double.class);
+        ammount.setConverter(Double.class);
 
         salesman.setNullSelectionAllowed(false);
         crmCase.setNullSelectionAllowed(false);
@@ -240,7 +250,7 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
 
         product.setVisible(false);
         quantity.setVisible(false);
-        moneyAmount.setVisible(false);
+        ammount.setVisible(false);
     }
 
     @Override
@@ -254,6 +264,6 @@ public class Form_CRMProcess extends Form_CRUD2<CrmProcess> {
     @Override
     public void update(CrmProcess crmProcess) {
         fieldGroup.setItemDataSource(new BeanItem(crmProcess));
-        lockFormFileds(readOnly);
+        this.lockFormFileds(readOnly);
     }
 }

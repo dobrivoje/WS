@@ -2018,7 +2018,7 @@ public class DBHandler {
      * @param csd
      * @return
      */
-    public List<CrmCase> getCRMCases(CustomSearchData csd) {
+    public List getCRMCases(CustomSearchData csd) {
         Query query;
         String Q = "SELECT c FROM CrmCase c WHERE 1=1";
 
@@ -2093,7 +2093,7 @@ public class DBHandler {
             for (CrmCase c : (List<CrmCase>) query.getResultList()) {
                 c.setCrmProcessList(getCRMProcesses(c));
                 c.setRelSALEList(getCRM_Sales(c));
-                
+
                 L.add(c);
             }
 
@@ -2103,7 +2103,7 @@ public class DBHandler {
         }
     }
 
-    public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
+    public List getCRMProcesses(CustomSearchData csd) {
         Query query;
 
         String Q = "SELECT p from CrmProcess p WHERE 1=1 AND ";
@@ -2173,8 +2173,8 @@ public class DBHandler {
         }
     }
 
-    public Map<Salesman, List<RelSALE>> getSalesrepSales(CustomSearchData csd) {
-        Map<Salesman, List<RelSALE>> MSS = new HashMap<>();
+    public Map<Object, List> getSalesrepSales(CustomSearchData csd) {
+        Map<Object, List> MSS = new HashMap<>();
         List<RelSALE> LRS;
 
         for (RelSALE s : getSales(csd)) {
@@ -2194,12 +2194,54 @@ public class DBHandler {
         return MSS;
     }
 
+    public Map<Object, List> getSalesrepCRMCases(CustomSearchData csd) {
+        Map<Object, List> MSS = new HashMap<>();
+        List<CrmCase> LCRMC;
+
+        for (CrmCase cc : (List<CrmCase>) getCRMCases(csd)) {
+            Salesman salesRep = cc.getFK_IDRSC().getFK_IDS();
+
+            if (MSS.containsKey(salesRep)) {
+                LCRMC = new ArrayList<>(MSS.get(salesRep));
+                LCRMC.add(cc);
+            } else {
+                LCRMC = Arrays.asList(cc);
+            }
+
+            MSS.put(salesRep, LCRMC);
+
+        }
+
+        return MSS;
+    }
+
+    public Map<Object, List> getCustomerCRMCases(CustomSearchData csd) {
+        Map<Object, List> MSS = new HashMap<>();
+        List<CrmCase> LCRMC;
+
+        for (CrmCase cc : (List<CrmCase>) getCRMCases(csd)) {
+            Customer customer = cc.getFK_IDRSC().getFK_IDC();
+
+            if (MSS.containsKey(customer)) {
+                LCRMC = new ArrayList<>(MSS.get(customer));
+                LCRMC.add(cc);
+            } else {
+                LCRMC = Arrays.asList(cc);
+            }
+
+            MSS.put(customer, LCRMC);
+
+        }
+
+        return MSS;
+    }
+
     public Set<Customer> getCustomers(CustomSearchData csd) {
         Set<Customer> L = new HashSet<>();
 
-        getCRMCases(csd).stream().forEach((c) -> {
+        for (CrmCase c : (List<CrmCase>) getCRMCases(csd)) {
             L.add(c.getFK_IDRSC().getFK_IDC());
-        });
+        }
 
         return L;
     }
@@ -2207,9 +2249,9 @@ public class DBHandler {
     public Set<Salesman> getSalesreps(CustomSearchData csd) {
         Set<Salesman> L = new HashSet<>();
 
-        getCRMCases(csd).stream().forEach((c) -> {
+        for (CrmCase c : (List<CrmCase>) getCRMCases(csd)) {
             L.add(c.getFK_IDRSC().getFK_IDS());
-        });
+        }
 
         return L;
     }

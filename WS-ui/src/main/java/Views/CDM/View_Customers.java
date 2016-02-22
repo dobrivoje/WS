@@ -14,8 +14,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import Tables.Table_Customer;
-import Trees.CRM.Tree_CustomerCRMCases;
 import Trees.Tree_FSOwner;
+import Trees.Tree_MD_CrmCaseProcesses;
 import Trees.Tree_RelCBT;
 import Views.ResetButtonForTextField;
 import com.vaadin.data.Property;
@@ -23,8 +23,13 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import db.Exceptions.CustomTreeNodesEmptyException;
+import db.ent.CrmCase;
 import db.ent.Customer;
+import db.ent.custom.CustomSearchData;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
@@ -164,7 +169,15 @@ public class View_Customers extends VerticalLayout implements View {
             }
 
             try {
-                final Tree_CustomerCRMCases cc = new Tree_CustomerCRMCases("", c, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS));
+                CustomSearchData csd = new CustomSearchData();
+                csd.setCustomer(c);
+
+                Map<Object, List> M = new HashMap<>();
+                for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
+                    M.put(cc, cc.getCrmProcessList());
+                }
+
+                final Tree_MD_CrmCaseProcesses cc = new Tree_MD_CrmCaseProcesses(M, true, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS), false);
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

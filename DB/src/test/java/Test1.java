@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 import dataservice.DataService;
 import db.DBHandler;
 import db.ent.CrmCase;
@@ -102,15 +101,6 @@ public class Test1 {
         System.err.println("test4 : getAllSales for customer : " + csd2.getCustomer());
 
         for (RelSALE s : dbh.getSales(csd2)) {
-            System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
-        }
-
-        CustomSearchData csd3 = new CustomSearchData();
-        csd3.setProduct(DS.getProductController().getByID(4L));
-        System.err.println("------------------------");
-        System.err.println("test5 : getAllSales for product : " + csd3.getProduct());
-
-        for (RelSALE s : DS.getSearchController().getSales(csd3)) {
             System.err.println(s.getFK_IDCA().getFK_IDRSC().getFK_IDS() + " - " + s.toString());
         }
 

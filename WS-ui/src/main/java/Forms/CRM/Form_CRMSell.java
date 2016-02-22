@@ -36,6 +36,8 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
     private final IPRODUCTController PRODUCT_Controller = DS.getProductController();
     private final ISalesmanController Salesman_Controller = DS.getSalesmanController();
 
+    private boolean newCase;
+
     //<editor-fold defaultstate="collapsed" desc="Form Fields">
     private final ComboBox salesman = new ComboBox("Salesrep",
             new BeanItemContainer(Salesman.class, Salesman_Controller.getAll()));
@@ -72,15 +74,18 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
     }
 
     public Form_CRMSell(Salesman salesRep) {
-        this(null, false);
+        this(null, true, false);
 
         salesman.setValue(salesRep);
     }
 
-    public Form_CRMSell(RelSALE relSALE, boolean readOnly) {
+    public Form_CRMSell(RelSALE relSALE, boolean newCase, boolean readOnly) {
         this();
 
         this.defaultCRUDButtonOnForm = false;
+
+        this.readOnly = readOnly;
+        this.newCase = newCase;
 
         RelSALE rs = relSALE == null
                 ? new RelSALE(new Date(), 0, "", new CrmCase(new Date(), "", new RelSALESMANCUST()), new Product())
@@ -168,8 +173,17 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
 
     @Override
     protected final void lockFormFileds(boolean lockAll) {
-        super.lockFormFileds(lockAll);
         salesman.setEnabled(false);
+
+        if (!lockAll) {
+            crmCase.setEnabled(newCase);
+            sellDate.setEnabled(true);
+            product.setEnabled(newCase);
+            amount.setEnabled(true);
+            paymentMethod.setEnabled(true);
+        } else {
+            lockFormFileds(lockAll);
+        }
     }
 
     @Override

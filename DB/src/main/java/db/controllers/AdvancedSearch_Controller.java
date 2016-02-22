@@ -6,10 +6,7 @@
 package db.controllers;
 
 import db.DBHandler;
-import db.ent.CrmCase;
-import db.ent.CrmProcess;
 import db.ent.Customer;
-import db.ent.RelSALE;
 import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
 import db.interfaces.IAdvancedSearchController;
@@ -30,23 +27,23 @@ public class AdvancedSearch_Controller implements IAdvancedSearchController<Cust
     }
 
     @Override
-    public List<RelSALE> getSales(CustomSearchData csd) {
-        return dbh.getSales(csd);
+    public List getCRMCases(CustomSearchData csd) {
+        return dbh.getCRMCases(csd);
     }
 
     @Override
-    public List<CrmProcess> getCRMProcesses(CustomSearchData csd) {
-        return dbh.getCRMProcesses(csd);
-    }
-
-    @Override
-    public Map<Salesman, List<RelSALE>> getSalesrepSales(CustomSearchData csd) {
+    public Map<Object, List> getSalesrepSales(CustomSearchData csd) {
         return dbh.getSalesrepSales(csd);
     }
 
     @Override
-    public List<CrmCase> getCRMCases(CustomSearchData csd) {
-        return dbh.getCRMCases(csd);
+    public Map<Object, List> getSalesrepCRMCases(CustomSearchData csd) {
+        return dbh.getSalesrepCRMCases(csd);
+    }
+
+    @Override
+    public Map<Object, List> getCustomerCRMCases(CustomSearchData criteria) {
+        return dbh.getCustomerCRMCases(criteria);
     }
 
     @Override

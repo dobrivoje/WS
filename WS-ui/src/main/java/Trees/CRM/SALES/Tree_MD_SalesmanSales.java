@@ -8,6 +8,7 @@ package Trees.CRM.SALES;
 import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMSell;
 import Main.MyUI;
+import static Main.MyUI.DS;
 import db.Exceptions.CustomTreeNodesEmptyException;
 import Trees.Tree_MasterDetail;
 import com.vaadin.event.ItemClickEvent;
@@ -18,8 +19,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import db.ent.CrmCase;
 import db.ent.RelSALE;
 import db.ent.Salesman;
-import java.util.List;
-import java.util.Map;
+import db.ent.custom.CustomSearchData;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 
 /**
@@ -34,10 +34,10 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
 
     private String imageLocation;
 
-    public Tree_MD_SalesmanSales(Map<Object, List> salesRepSales, boolean formAllowed, boolean expandRootNodes)
+    public Tree_MD_SalesmanSales(CustomSearchData csd, boolean formAllowed, boolean expandRootNodes)
             throws CustomTreeNodesEmptyException, NullPointerException {
 
-        super("", salesRepSales, expandRootNodes);
+        super(csd.getSalesman().toString(), DS.getSearchController().getSalesrepSales(csd), expandRootNodes);
 
         //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
         addItemClickListener((ItemClickEvent event) -> {
@@ -59,12 +59,12 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                 imageLocation = "img/crm/sell.png";
 
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMSell(relSale, readOnly);
+                                crudForm = new Form_CRMSell(relSale, true, readOnly);
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         }
                         //</editor-fold>
-                        
+
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
 

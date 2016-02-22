@@ -71,15 +71,15 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
     public Form_CRMCase(CrmCase crmCase, final IRefreshVisualContainer visualContainer, boolean newCase, boolean readOnly) {
         this(crmCase, false, visualContainer);
 
-        if (readOnly) {
-            lockFormFileds(readOnly);
-            salesman.setEnabled(!readOnly);
-            customer.setEnabled(!readOnly);
-        } else {
-            salesman.setEnabled(newCase);
-            customer.setEnabled(newCase);
-            startDate.setEnabled(newCase);
+        this.readOnly = readOnly;
+        lockFormFileds(readOnly);
+        
+        salesman.setEnabled(false);
+        customer.setEnabled(newCase);
 
+        if (!readOnly) {
+            startDate.setEnabled(true);
+            description.setEnabled(true);
             finished.setEnabled(!newCase);
             saleAgreeded.setEnabled(!newCase);
             endDate.setEnabled(false);
@@ -90,10 +90,10 @@ public class Form_CRMCase extends Form_CRUD2<CrmCase> {
     public Form_CRMCase(Salesman s, boolean newCase) {
         this(new CrmCase(new Date(), "", new RelSALESMANCUST()), false, null);
 
-        salesman.setEnabled(newCase);
+        salesman.setEnabled(false);
         customer.setEnabled(newCase);
         startDate.setEnabled(newCase);
-
+        description.setEnabled(true);
         finished.setEnabled(!newCase);
         saleAgreeded.setEnabled(!newCase);
         endDate.setEnabled(false);

@@ -3,7 +3,6 @@ package Trees;
 import Trees.CRM.*;
 import Forms.CRM.Form_CRMCase;
 import Forms.CRM.Form_CRMProcess;
-import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -11,13 +10,16 @@ import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Salesman;
-import java.util.List;
-import java.util.Map;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
-import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;
+import db.ent.custom.CustomSearchData;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
+import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
 
 /**
  *
@@ -27,15 +29,41 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
 
     private String imageLocation;
 
-    public Tree_MD_CrmCaseProcesses(Map<Object, List> treeModel, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+    private CrmCase crmCase;
+    private CrmProcess crmProcess;
+    private Salesman salesman;
+
+    public Tree_MD_CrmCaseProcesses(Map<Object, List> treeModel, boolean newCase, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
         super("", treeModel, expandRootNodes);
 
-        //<editor-fold defaultstate="collapsed" desc="addItemClickListener">
-        super.addItemClickListener((ItemClickEvent event) -> {
+        addItemClickListener(getItemClickListener(newCase, formAllowed));
+    }
+
+    public Tree_MD_CrmCaseProcesses(CustomSearchData csd, boolean newCase, boolean formAllowed, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+        super("");
+
+        this.expandRootNodes = expandRootNodes;
+
+        List crmCases = DS.getSearchController().getCRMCases(csd);
+        addItems(crmCases);
+
+        Map<Object, List> M = new HashMap<>();
+
+        for (CrmCase cc : (List<CrmCase>) crmCases) {
+            M.put(cc, cc.getCrmProcessList());
+            createMasterDetail(M, expandRootNodes);
+        }
+
+        addItemClickListener(getItemClickListener(newCase, formAllowed));
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="ItemClickListener">
+    private ItemClickEvent.ItemClickListener getItemClickListener(boolean newCase, boolean formAllowed) {
+        return (ItemClickEvent event) -> {
             propTrees.clear();
             propPanel.removeAllComponents();
 
-            Salesman salesman = new Salesman();
+            salesman = new Salesman();
 
             try {
                 if (event.isDoubleClick()) {
@@ -43,11 +71,11 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                                crudForm = new Form_CRMCase(crmCase, null, false, readOnly);
+                                crudForm = new Form_CRMCase(crmCase, null, newCase, readOnly);
                                 winFormCaption = "Existing CRM Case";
                                 imageLocation = "img/crm/crmCase.png";
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -58,12 +86,12 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
                         //<editor-fold defaultstate="collapsed" desc="CRM Process...">
                         if (event.getItemId() instanceof CrmProcess) {
                             try {
-                                CrmProcess crmProcess = (CrmProcess) event.getItemId();
+                                crmProcess = (CrmProcess) event.getItemId();
                                 salesman = crmProcess.getFK_IDCA().getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
-                                Tree_CRMSingleCase cc = new Tree_CRMSingleCase("", crmProcess.getFK_IDCA());
-                                crudForm = new Form_CRMProcess(crmProcess, cc, false, readOnly);
+                                // Tree_CRMSingleCase cc = new Tree_CRMSingleCase("", crmProcess.getFK_IDCA());
+                                crudForm = new Form_CRMProcess(crmProcess, null, false, readOnly);
                                 winFormCaption = CRM_MANAG_EXISTING_PROCESS.toString();
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
@@ -71,23 +99,19 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
-                        Tree_CRMSingleCase csct;
+                        if (crudForm instanceof Form_CRMProcess) {
+                            Tree_CRMSingleCase csct;
+                            crmCase = crmCase == null ? crmProcess.getFK_IDCA() : crmCase;
 
-                        for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
-                            if (crudForm instanceof Form_CRMProcess) {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac, crudForm);
-                            } else {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac);
-                            }
+                            csct = new Tree_CRMSingleCase(crmCase.getFK_IDRSC().getFK_IDC().toString(), crmCase, crudForm);
 
                             propTrees.add(csct);
-
                             propPanel.addComponent(csct);
-                        }
 
-                        propTrees.stream().forEach((ct) -> {
-                            ((Tree_CRMSingleCase) ct).refreshVisualContainer();
-                        });
+                            propTrees.stream().forEach((ct) -> {
+                                ((Tree_CRMSingleCase) ct).refreshVisualContainer();
+                            });
+                        }
 
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
 
@@ -125,9 +149,8 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
 
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
             }
-        });
-        //</editor-fold>
-
+        };
     }
+    //</editor-fold>
 
 }

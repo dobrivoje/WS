@@ -39,6 +39,7 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
     //
     SALE_NEW("New Sell Case"),
+    SALE_EXISTING("Existing Sell Case"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Activity"),

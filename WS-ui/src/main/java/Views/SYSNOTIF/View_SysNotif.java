@@ -15,14 +15,11 @@ import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import Main.MyUI;
 import static Main.MyUI.DS;
-import Trees.CRM.SALES.Tree_MD_CustomerCRMCases;
+import Trees.CRM.SALES.Tree_MD_CrmCaseSales;
 import Trees.CRM.SALES.Tree_MD_SalesmanSales;
 import Trees.Tree_MD_CrmCaseProcesses;
 import db.ent.CrmCase;
 import db.ent.RelSALE;
-import java.util.HashMap;
-import java.util.Map;
-import org.dobrivoje.utils.date.formats.DateFormat;
 import org.superb.apps.utilities.datum.Dates;
 
 public class View_SysNotif extends View_Dashboard {
@@ -62,40 +59,44 @@ public class View_SysNotif extends View_Dashboard {
         List<Component> C = new ArrayList();
 
         CustomSearchData csd = new CustomSearchData();
-        csd.setCaseFinished(false);
-        csd.setSaleAgreeded(false);
         csd.setSalesman(S);
-
-        Map<Object, List> M = new HashMap<>();
 
         //<editor-fold defaultstate="collapsed" desc="My Active CRM Cases">
         try {
-            List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
+            csd.setCaseFinished(false);
+            csd.setSaleAgreeded(false);
 
-            if (!L.isEmpty()) {
-                d.setFrom(csd.getStartDate());
-                d.setTo(csd.getEndDate());
+            d.setFrom(csd.getStartDate());
+            d.setTo(csd.getEndDate());
 
-                datePanel = new Panel("For the period : "
-                        + d.getFromStr(DateFormat.DATE_FORMAT_SRB.toString())
-                        + " - "
-                        + d.getToStr(DateFormat.DATE_FORMAT_SRB.toString())
-                );
-
-                datePanel.setSizeFull();
-                subPanels.add(datePanel);
-
-                for (CrmCase cc : L) {
-                    M.put(cc, cc.getCrmProcessList());
-
-                    Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(M, formAllowed, false);
-                    subPanels.add(new Panel(S.toString(), csct));
-                }
+            String m = "";
+            if (d.getFromStr() == null) {
+                m = "For the period until the %s";
             }
 
+            if (d.getToStr() == null) {
+                m = "For the period from the %s";
+            }
+
+            if (d.getToStr() == null && d.getFromStr() == null) {
+                m = "For all the time";
+            }
+
+            String msg = String.format(m, new Object[]{d.getFromStr(), d.getToStr()});
+            datePanel = new Panel(msg);
+
+            subPanels.add(new Panel(msg));
+
+            // Map<Object, List> M = new HashMap<>();
+            /*
+             for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
+             M.put(cc, cc.getCrmProcessList());
+             }
+             */
+            Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(csd, false, formAllowed, false);
+            subPanels.add(new Panel(S.toString(), csct));
+
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
-        } finally {
-            M.clear();
         }
 
         C.add(createPanelComponent("My Active CRM Cases", subPanels, formEditAllowed));
@@ -106,17 +107,9 @@ public class View_SysNotif extends View_Dashboard {
             csd.setCaseFinished(true);
             csd.setSaleAgreeded(true);
 
-            List<CrmCase> L = DS.getSearchController().getCRMCases(csd);
-
-            for (CrmCase cc : L) {
-                if (!cc.getRelSALEList().isEmpty()) {
-                    M.put(cc, cc.getRelSALEList());
-
-                    Tree_MD_SalesmanSales csct = new Tree_MD_SalesmanSales(M, formAllowed, false);
-                    subPanels.add(new Panel("", csct));
-
-                    M.clear();
-                }
+            for (CrmCase cc1 : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
+                Tree_MD_CrmCaseSales csct = new Tree_MD_CrmCaseSales(cc1, false, formAllowed, false);
+                subPanels.add(new Panel("", csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -149,20 +142,14 @@ public class View_SysNotif extends View_Dashboard {
             csd1.setEndDate(dateInterval.getTo());
             csd1.setBussinesLine(S.getFkIdbl());
 
-            for (Map.Entry<Salesman, List<RelSALE>> BLS : DS.getSearchController().getSalesrepSales(csd1).entrySet()) {
+            Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(csd1, formAllowed, false);
 
-                Map<Object, List> M = new HashMap<>();
-                M.put(BLS.getKey(), BLS.getValue());
-
-                Tree_MD_SalesmanSales tss = new Tree_MD_SalesmanSales(M, formAllowed, false);
-
-                double as = 0;
-                for (RelSALE a : BLS.getValue()) {
-                    as += a.getAmmount();
-                }
-
-                subPanels.add(new Panel("All Sells Amount - " + as + " L", tss));
+            double as = 0;
+            for (RelSALE a : (List<RelSALE>) DS.getSearchController().getSalesrepSales(csd1).get(S)) {
+                as += a.getAmmount();
             }
+
+            subPanels.add(new Panel("All Sells Amount - " + as + " L", tss));
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
         }
@@ -178,18 +165,13 @@ public class View_SysNotif extends View_Dashboard {
 
             for (Customer c : DS.getSearchController().getCustomers(csd2)) {
                 csd2.setCustomer(c);
-                List<CrmCase> L = DS.getSearchController().getCRMCases(csd2);
 
-                if (!L.isEmpty()) {
-                    Map<Object, List> SC = new HashMap<>();
-
-                    for (CrmCase cc : L) {
-                        SC.put(cc, cc.getCrmProcessList());
-                    }
-
-                    Tree_MD_CustomerCRMCases ccct = new Tree_MD_CustomerCRMCases(SC, formAllowed, false);
-                    subPanels.add(new Panel(c.toString(), ccct));
-                }
+                //Map<Object, List> M = new HashMap<>();
+                //for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd2)) {
+                //    M.put(cc, cc.getCrmProcessList());
+                // }
+                Tree_MD_CrmCaseProcesses ccct = new Tree_MD_CrmCaseProcesses(csd2, false, formAllowed, false);
+                subPanels.add(new Panel(c.toString(), ccct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -205,18 +187,13 @@ public class View_SysNotif extends View_Dashboard {
 
             for (Customer c : DS.getSearchController().getCustomers(csd3)) {
                 csd3.setCustomer(c);
-                List<CrmCase> L = DS.getSearchController().getCRMCases(csd3);
 
-                if (!L.isEmpty()) {
-                    Map<Object, List> SC = new HashMap<>();
-
-                    for (CrmCase cc : L) {
-                        SC.put(cc, cc.getCrmProcessList());
-                    }
-
-                    Tree_MD_CustomerCRMCases ccct = new Tree_MD_CustomerCRMCases(SC, formAllowed, false);
-                    subPanels.add(new Panel(c.toString(), ccct));
-                }
+                //Map<Object, List> M = new HashMap<>();
+                //for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd3)) {
+                //    M.put(cc, cc.getCrmProcessList());
+                //}
+                Tree_MD_CrmCaseProcesses ccct = new Tree_MD_CrmCaseProcesses(csd3, false, formAllowed, false);
+                subPanels.add(new Panel(c.toString(), ccct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
@@ -233,19 +210,13 @@ public class View_SysNotif extends View_Dashboard {
 
             for (Salesman S : DS.getSalesmanController().getAll()) {
                 csd4.setSalesman(S);
-                List<CrmCase> L = DS.getSearchController().getCRMCases(csd4);
 
-                if (!L.isEmpty()) {
-                    Map<Object, List> SC = new HashMap<>();
-
-                    for (CrmCase cc : L) {
-                        SC.put(cc, cc.getCrmProcessList());
-                    }
-
-                    Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(SC, formAllowed, false);
-                    subPanels.add(new Panel(S.toString(), csct));
-                }
-
+                //Map<Object, List> M = new HashMap<>();
+                //for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd4)) {
+                //    M.put(cc, cc.getCrmProcessList());
+                //}
+                Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(csd4, false, formAllowed, false);
+                subPanels.add(new Panel(S.toString(), csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

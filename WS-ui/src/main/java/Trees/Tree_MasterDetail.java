@@ -42,7 +42,7 @@ public class Tree_MasterDetail extends Tree {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
-    private void init(String caption) {
+    protected final void init(String caption) {
         clear();
         setCaption(caption);
 
