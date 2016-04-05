@@ -208,15 +208,14 @@ public class View_SysNotif extends View_Dashboard {
             csd4.setSaleAgreeded(false);
             csd4.setBussinesLine(S.getFkIdbl());
 
-            for (Salesman S : DS.getSalesmanController().getAll()) {
+            for (Salesman S : DS.getSearchController().getSalesreps(csd4)) {
                 csd4.setSalesman(S);
 
-                //Map<Object, List> M = new HashMap<>();
-                //for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd4)) {
-                //    M.put(cc, cc.getCrmProcessList());
-                //}
-                Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(csd4, false, formAllowed, false);
-                subPanels.add(new Panel(S.toString(), csct));
+                if (!DS.getSearchController().getCRMCases(csd4).isEmpty()) {
+                    Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(csd4, false, formAllowed, false);
+                    subPanels.add(new Panel(S.toString(), csct));
+                }
+
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

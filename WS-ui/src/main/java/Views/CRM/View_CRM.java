@@ -53,13 +53,19 @@ public class View_CRM extends View_Dashboard {
             for (Salesman S : DS.getSalesmanController().getAll()) {
                 csd.setSalesman(S);
 
-                Map<Object, List> M = new HashMap<>();
-                for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
-                    M.put(cc, cc.getCrmProcessList());
+                List<CrmCase> activeCases = DS.getSearchController().getCRMCases(csd);
+
+                if (!activeCases.isEmpty()) {
+                    Map<Object, List> M = new HashMap<>();
+
+                    for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
+                        M.put(cc, cc.getCrmProcessList());
+                    }
+
+                    Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(M, false, formAllowed, false);
+                    subPanels.add(new Panel(S.toString(), csct));
                 }
 
-                Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(M, false, formAllowed, false);
-                subPanels.add(new Panel(S.toString(), csct));
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

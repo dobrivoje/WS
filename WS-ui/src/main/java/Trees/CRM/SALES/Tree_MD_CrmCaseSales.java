@@ -12,11 +12,13 @@ import db.ent.Salesman;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
 import Main.MyUI;
-import Trees.CRM.Tree_CRMSingleCase;
 import static Main.MyUI.DS;
+import Trees.CRM.Tree_CRM_Sell_SingleCase;
+import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_CASE;
 import static Uni.MainMenu.MenuDefinitions.SALE_EXISTING;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import db.ent.RelSALE;
+import db.ent.custom.CustomSearchData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,14 +75,16 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                 if (event.isDoubleClick()) {
                     if (formAllowed) {
                         //<editor-fold defaultstate="collapsed" desc="CRM Case">
+                        CrmCase crmCase;
+
                         if (event.getItemId() instanceof CrmCase) {
                             try {
-                                CrmCase crmCase = (CrmCase) event.getItemId();
+                                crmCase = (CrmCase) event.getItemId();
                                 salesman = crmCase.getFK_IDRSC().getFK_IDS();
 
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
                                 crudForm = new Form_CRMCase(crmCase, null, newCase, readOnly);
-                                winFormCaption = "Existing CRM Case";
+                                winFormCaption = CRM_EXISTING_CASE.toString();
                                 imageLocation = "img/crm/crmCase.png";
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
@@ -103,13 +107,20 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                         //</editor-fold>
 
                         //<editor-fold defaultstate="collapsed" desc="Open form">
-                        Tree_CRMSingleCase csct;
+                        Tree_CRM_Sell_SingleCase csct;
 
-                        for (CrmCase ac : DS.getCRMController().getCRM_Cases(salesman, false)) {
+                        // kreiraj stablo s desne strane samo za ovaj crm slučaj
+                        CustomSearchData csd1 = new CustomSearchData();
+                        csd1.setSalesman(salesman);
+                        csd1.setCaseFinished(true);
+                        csd1.setSaleAgreeded(true);
+
+                        for (CrmCase c : (List<CrmCase>) DS.getSearchController().getCRMCases(csd1)) {
+
                             if (crudForm instanceof Form_CRMSell) {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac, crudForm);
+                                csct = new Tree_CRM_Sell_SingleCase(salesman.toString(), c, crudForm);
                             } else {
-                                csct = new Tree_CRMSingleCase(salesman.toString(), ac);
+                                csct = new Tree_CRM_Sell_SingleCase(salesman.toString(), c);
                             }
 
                             propTrees.add(csct);
@@ -118,7 +129,7 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                         }
 
                         propTrees.stream().forEach((ct) -> {
-                            ((Tree_CRMSingleCase) ct).refreshVisualContainer();
+                            ((Tree_CRM_Sell_SingleCase) ct).refreshVisualContainer();
                         });
 
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);

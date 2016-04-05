@@ -1,6 +1,9 @@
 
 import static Main.MyUI.DS;
+import Trees.Tree_MD_CrmCaseProcesses;
+import com.vaadin.ui.Panel;
 import db.ent.CrmCase;
+import db.ent.Salesman;
 import db.ent.custom.CustomSearchData;
 import java.util.List;
 
@@ -43,5 +46,23 @@ public class TestsDB {
 
         System.err.println("");
         System.err.println("");
+
+        Salesman SS = DS.getSalesmanController().getByID(4L);
+
+        CustomSearchData csd4 = new CustomSearchData();
+        csd4.setCaseFinished(false);
+        csd4.setSaleAgreeded(false);
+        csd4.setBussinesLine(SS.getFkIdbl());
+
+        for (Salesman S : DS.getSearchController().getSalesreps(csd4)) {
+            csd4.setSalesman(S);
+
+            System.err.println("----------------------------------------------------------");
+            System.err.println("");
+            System.err.println("Salesman : " + S);
+            System.err.println("Cases : ");
+            List crmCases = DS.getSearchController().getCRMCases(csd4);
+            System.err.println(crmCases);
+        }
     }
 }
