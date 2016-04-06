@@ -111,6 +111,8 @@ public class Form_CustomSearch extends Form_CRUD2<CustomSearchData> {
      * <p>
      * Primer : options = 0b111100001, uključuje prva četiri, i poslednje polje
      * na formi, dakle start, end, salesman, customer, i saleAgreed.
+     *
+     * @param csd
      */
     public Form_CustomSearch(int options, CustomSearchData csd) {
         this(csd);

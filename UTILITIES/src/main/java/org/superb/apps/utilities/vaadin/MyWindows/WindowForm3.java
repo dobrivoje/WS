@@ -159,8 +159,8 @@ public class WindowForm3 extends Window {
         detailsWrapper.addComponent(buildFormTab(caption, formLayout, imageLocation, imgWidth, imgHeight));
         content.addComponent(buildFooter(externalButtonClickListener, buttonStyle, additionalFooterButtons));
     }
-
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="buildFormTab">
     protected final Component buildFormTab(String caption, Layout formLayout, String imageLocation, int imageWidth, int imageHeight) {
         formLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
