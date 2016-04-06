@@ -107,9 +107,13 @@ public class View_SysNotif extends View_Dashboard {
             csd.setCaseFinished(true);
             csd.setSaleAgreeded(true);
 
-            for (CrmCase cc1 : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
-                Tree_MD_CrmCaseSales csct = new Tree_MD_CrmCaseSales(cc1, false, formAllowed, false);
-                subPanels.add(new Panel("", csct));
+            List<CrmCase> ccc = (List<CrmCase>) DS.getSearchController().getCRMCases(csd);
+            
+            for (CrmCase cc1 : ccc) {
+                if (!cc1.getRelSALEList().isEmpty()) {
+                    Tree_MD_CrmCaseSales csct = new Tree_MD_CrmCaseSales(cc1, false, formAllowed, false);
+                    subPanels.add(new Panel("", csct));
+                }
             }
 
         } catch (CustomTreeNodesEmptyException | NullPointerException ex) {

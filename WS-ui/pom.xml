@@ -21,7 +21,8 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
+            <version>3.1.0</version>
+            <type>jar</type>
         </dependency>
 
         <!-- Custom components -->

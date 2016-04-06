@@ -14,12 +14,12 @@ import db.ent.RelSALE;
  */
 public class Tree_CRM_Sell_SingleCase extends CustomObjectTree<CrmCase> {
 
-    public Tree_CRM_Sell_SingleCase(String caption, CrmCase crmCase) throws CustomTreeNodesEmptyException, NullPointerException {
-        super(caption, Arrays.asList(crmCase));
+    public Tree_CRM_Sell_SingleCase(String caption, CrmCase crmCase, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+        super(caption, Arrays.asList(crmCase), expandRootNodes);
     }
 
-    public Tree_CRM_Sell_SingleCase(String caption, CrmCase crmCase, IUpdateData iUpdateCrmProcess) throws CustomTreeNodesEmptyException, NullPointerException {
-        this(caption, crmCase);
+    public Tree_CRM_Sell_SingleCase(String caption, CrmCase crmCase, IUpdateData iUpdateCrmProcess, boolean expandRootNodes) throws CustomTreeNodesEmptyException, NullPointerException {
+        this(caption, crmCase, expandRootNodes);
 
         addItemClickListener((ItemClickEvent event) -> {
             if (event.getItemId() instanceof RelSALE) {

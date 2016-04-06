@@ -39,7 +39,7 @@ public enum MenuDefinitions {
     SALE_EXISTING("Existing Sell Case"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
-    CRM_EXISTING_CASE("New CRM Case"),
+    CRM_EXISTING_CASE("Existing CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Activity"),
     CRM_MANAG_EXISTING_PROCESS("Existing CRM Action"),
     CRM_MANAG_NEW_SALESMAN_CUST_REL("New CRM Relationship"),
