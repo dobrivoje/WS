@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author root
  */
-public interface ICustomerController extends CRUDInterface<Customer> {
+public interface ICustomerController extends ICRUD<Customer> {
 
     Customer getCustomerByNavCode(String navCode);
 

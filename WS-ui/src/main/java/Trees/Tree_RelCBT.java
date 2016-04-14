@@ -56,14 +56,15 @@ public class Tree_RelCBT extends CustomDateTree<RelCBType> {
                         getUI().addWindow(
                                 new WindowFormProp(
                                         winFormCaption,
-                                        false,
+                                        500, 760, Unit.PIXELS,
+                                        readOnly,
                                         crudForm.getClickListener(),
                                         crudForm,
                                         winFormPropPanel
                                 )
                         );
-                        //</editor-fold>
 
+                        //</editor-fold>
                     } else {
                         Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",
                                 Notification.Type.ERROR_MESSAGE);

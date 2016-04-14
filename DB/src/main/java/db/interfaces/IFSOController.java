@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author root
  */
-public interface IFSOController extends CRUDInterface<Owner> {
+public interface IFSOController extends ICRUD<Owner> {
 
     /**
      * <b>Trenutni vlasnik (Owner) stanice (FS).</b>

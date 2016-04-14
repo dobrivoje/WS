@@ -80,10 +80,11 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
                             getUI().addWindow(new WindowForm3(
                                     "Customer Update Form",
                                     cf,
-                                    "img/crm/crm-user-3.png",
-                                    cf.getClickListener(),
-                                    205, 250)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/crm-user-3.png", "Save",
+                                    crudForm.getClickListener(), 2015, 250, false)
                             );
+
                         }
                     }
                     //</editor-fold>
@@ -125,7 +126,8 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
                                 getUI().addWindow(
                                         new WindowFormProp(
                                                 "Last Open Salesman CRM Case",
-                                                false,
+                                                500, 760, Unit.PIXELS,
+                                                readOnly,
                                                 ccf.getClickListener(),
                                                 ccf,
                                                 new Panel(VL_CRMCases.getComponentCount() > 0

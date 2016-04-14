@@ -5,19 +5,13 @@
  */
 package db.interfaces;
 
-import db.ent.BussinesLine;
-import java.util.List;
-
 /**
  *
  * @author root
  */
-public interface IBLController extends ICRUD<BussinesLine> {
+public interface IDelete {
 
-    @Override
-    public BussinesLine getByID(Long ID);
+    void delete(long index) throws Exception;
 
-    @Override
-    public List<BussinesLine> getAll();
-
+    void deleteAll() throws Exception;
 }

@@ -13,7 +13,7 @@ import db.ent.CustomerBussinesType;
  *
  * @author root
  */
-public interface ICBTController extends CRUDInterface<CustomerBussinesType> {
+public interface ICBTController extends ICRUD<CustomerBussinesType> {
 
     List<Customer> getAllCustomersForBussinesType(Long cBTID);
 

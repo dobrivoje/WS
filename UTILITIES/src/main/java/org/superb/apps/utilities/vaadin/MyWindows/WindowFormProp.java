@@ -45,21 +45,22 @@ public class WindowFormProp extends Window {
      * @param components Right layout (form) part components
      */
     public WindowFormProp(String caption, boolean bigForm, String actionButtonCaption, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
-        this(caption, WINDOW_HEIGHT_DEFAULT_NORM, WINDOW_WIDTH_DEFAULT_NORM, bigForm, actionButtonCaption, externalButtonClickListener, layout, components);
+        this(caption, WINDOW_HEIGHT_DEFAULT_NORM, WINDOW_WIDTH_DEFAULT_NORM, Unit.PERCENTAGE, bigForm, actionButtonCaption, externalButtonClickListener, layout, components);
     }
 
     /**
      *
      * @param caption
-     * @param height
-     * @param width
+     * @param formHeight
+     * @param formWidth
+     * @param unit
      * @param bigForm
      * @param actionButtonCaption
      * @param externalButtonClickListener
      * @param layout
      * @param components
      */
-    public WindowFormProp(String caption, int height, int width, boolean bigForm, String actionButtonCaption, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
+    public WindowFormProp(String caption, int formHeight, int formWidth, Unit unit, boolean bigForm, String actionButtonCaption, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
         setStyleName(Reindeer.LAYOUT_BLACK);
         setCaption(caption);
         setModal(true);
@@ -119,10 +120,10 @@ public class WindowFormProp extends Window {
 
         content.setExpandRatio(HSP, 1);
 
-        windowHeight = height;
-        windowWidth = width;
+        windowHeight = formHeight;
+        windowWidth = formWidth;
 
-        setWindowSize(height, width);
+        setWindowSize(formHeight, formWidth, unit);
         center();
         setContent(content);
     }
@@ -144,13 +145,16 @@ public class WindowFormProp extends Window {
      * Typical Action-Close form
      *
      * @param caption Form caption
+     * @param formHeight
+     * @param formWidth
      * @param readOnly True for non-editable form
      * @param layout Layout to inject into this frame
+     * @param externalButtonClickListener
      * @param components Right layout (form) part components
      */
-    public WindowFormProp(String caption, int height, int width, boolean readOnly, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
+    public WindowFormProp(String caption, int formHeight, int formWidth, Unit unit, boolean readOnly, Button.ClickListener externalButtonClickListener, Layout layout, Component... components) {
         this(caption, false, externalButtonClickListener, layout, components);
-        setWindowSize(height, width);
+        setWindowSize(formHeight, formWidth, unit);
 
         actionButton.setVisible(!readOnly);
     }
@@ -162,11 +166,11 @@ public class WindowFormProp extends Window {
      * @param height
      * @param width
      */
-    private void setWindowSize(int height, int width) {
+    private void setWindowSize(int height, int width, Unit unit) {
         windowHeight = height;
         windowWidth = width;
 
-        setHeight(height, Unit.PERCENTAGE);
-        setWidth(width, Unit.PERCENTAGE);
+        setHeight(height, unit);
+        setWidth(width, unit);
     }
 }

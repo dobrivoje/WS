@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author root
  */
-public interface IFSPROPController extends CRUDInterface<FsProp> {
+public interface IFSPROPController extends ICRUD<FsProp> {
 
     List<FsProp> getAllFSProperties(Fuelstation fuelstation, boolean active);
 

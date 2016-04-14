@@ -12,7 +12,7 @@ import java.util.List;
  * @author root
  * @param <T>
  */
-public interface CRUDInterface<T> {
+public interface ICRUD<T> {
 
     public List<T> getAll();
 

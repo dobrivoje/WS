@@ -52,68 +52,63 @@ public class Table_FS extends Table_GEN<Fuelstation> {
     public Table_FS(BeanItemContainer<Fuelstation> BIC_FS, List list) {
         super(BIC_FS, DS.getFSController().getAll());
 
-        addGeneratedColumn("options", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                HorizontalLayout optLayout = new HorizontalLayout();
+        addGeneratedColumn("options", (final Table source, final Object row, Object column) -> {
+            HorizontalLayout optLayout = new HorizontalLayout();
 
-                final Button editBtn = new Button("", new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        Fuelstation f = (Fuelstation) row;
+            final Button editBtn = new Button("", (Button.ClickEvent event) -> {
+                Fuelstation f = (Fuelstation) row;
 
-                        Form_FS cf = new Form_FS(f, Table_FS.this::refreshVisualContainer, false);
+                Form_FS cf = new Form_FS(f, Table_FS.this::refreshVisualContainer, false);
 
-                        getUI().addWindow(new WindowFormProp(
+                getUI().addWindow(
+                        new WindowFormProp(
                                 "Fuelstation Update Form",
+                                500, 760, Unit.PIXELS,
                                 false,
                                 cf.getClickListener(),
                                 cf,
-                                IG.createDocumentGallery(f, true))
-                        );
-                    }
-                });
+                                IG.createDocumentGallery(f, true)
+                        )
+                );
 
-                final Button ownerBtn = new Button("", new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        Fuelstation f = (Fuelstation) row;
+            });
 
-                        Form_FSOwner fof = new Form_FSOwner(f, Table_FS.this::refreshVisualContainer, false);
+            final Button ownerBtn = new Button("", (Button.ClickEvent event) -> {
+                Fuelstation f = (Fuelstation) row;
 
-                        getUI().addWindow(new WindowFormProp(
+                Form_FSOwner fof = new Form_FSOwner(f, Table_FS.this::refreshVisualContainer, false);
+
+                getUI().addWindow(
+                        new WindowFormProp(
                                 "Fuelstation Owner Form",
+                                500, 760, Unit.PIXELS,
                                 false,
                                 fof.getClickListener(),
                                 fof,
                                 IG.createMainDocument(IG.createDocument(f, 240, 240))
-                        ));
-                    }
-                });
+                        )
+                );
+            });
 
-                editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
-                editBtn.setDescription("Update this Fuelstation with new data...");
-                editBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_STATION));
+            editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
+            editBtn.setDescription("Update this Fuelstation with new data...");
+            editBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_STATION));
 
-                ownerBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
-                ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
-                ownerBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
+            ownerBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
+            ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
+            ownerBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
 
-                optLayout.addComponents(editBtn, ownerBtn);
-                optLayout.setSizeFull();
-                optLayout.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
-                optLayout.setComponentAlignment(ownerBtn, Alignment.MIDDLE_CENTER);
+            optLayout.addComponents(editBtn, ownerBtn);
+            optLayout.setSizeFull();
+            optLayout.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+            optLayout.setComponentAlignment(ownerBtn, Alignment.MIDDLE_CENTER);
 
-                return optLayout;
-            }
+            return optLayout;
         });
 
-        addGeneratedColumn("img", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                return IG.createDocument((Fuelstation) row, 80, 80);
-            }
-        });
+        addGeneratedColumn("img", (final Table source, final Object row, Object column)
+                -> IG.createDocument((Fuelstation) row, 80, 80)
+        );
 
         setVisibleColumns("name", "options", "img", "FK_City", "address");
         setColumnHeaders("FUEL STATION", "OPTIONS", "FS IMAGE", "CITY", "ADDRESS");
@@ -175,13 +170,16 @@ public class Table_FS extends Table_GEN<Fuelstation> {
                     }
 
                     if (cf != null) {
-                        getUI().addWindow(new WindowFormProp(
-                                caption,
-                                false,
-                                cf.getClickListener(),
-                                cf,
-                                IG.createMainDocument(IG.createDocument(f, 240, 240))
-                        )
+
+                        getUI().addWindow(
+                                new WindowFormProp(
+                                        caption,
+                                        500, 760, Unit.PIXELS,
+                                        false,
+                                        cf.getClickListener(),
+                                        cf,
+                                        IG.createMainDocument(IG.createDocument(f, 240, 240))
+                                )
                         );
                     }
                 } else {

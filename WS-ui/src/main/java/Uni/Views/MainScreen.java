@@ -6,12 +6,14 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import Views.CDM.View_Customers;
 import Views.CRM.View_CRM;
-import Views.CRM.View_CRMSC;
 import Views.FSDM.View_FS;
 import Uni.MainMenu.MainMenu;
 import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.FontAwesome;
 import Main.MyUI;
+import Views.CDM.View_CDM_NAV;
+import Views.SELLS.View_SELLS;
+import Views.SELLS.View_SELLS_Dynamic;
 
 /**
  * Content of the UI when the user is logged in.
@@ -40,9 +42,11 @@ public class MainScreen extends HorizontalLayout {
         navigator.addView(EmptyView.class.getSimpleName(), EmptyView.class);
         navigator.addView(View_Customers.class.getSimpleName(), View_Customers.class);
         navigator.addView(View_CRM.class.getSimpleName(), View_CRM.class);
-        navigator.addView(View_CRMSC.class.getSimpleName(), View_CRMSC.class);
         navigator.addView(View_FS.class.getSimpleName(), View_FS.class);
         navigator.addView(View_SysNotif.class.getSimpleName(), View_SysNotif.class);
+        navigator.addView(View_SELLS.class.getSimpleName(), View_SELLS.class);
+        navigator.addView(View_CDM_NAV.class.getSimpleName(), View_CDM_NAV.class);
+        navigator.addView(View_SELLS_Dynamic.class.getSimpleName(), View_SELLS_Dynamic.class);
 
         navigator.addViewChangeListener(viewChangeListener);
 

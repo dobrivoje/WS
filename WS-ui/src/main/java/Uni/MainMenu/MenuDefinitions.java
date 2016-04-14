@@ -6,7 +6,6 @@
 package Uni.MainMenu;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,8 +20,9 @@ public enum MenuDefinitions {
     SYS_NOTIF_BOARD("System Notifications Board"),
     CUST_DATA_MANAG("Customers Management"),
     CUST_CRM_MANAG("CRM Management"),
-    SALE("SALE"),
+    SELLS("Sells"),
     FS_DATA_MANAG("Fuelstations Management"),
+    DATAMAINTENANCE("Data Maintenance"),
     //
     // Submenus
     //
@@ -34,21 +34,25 @@ public enum MenuDefinitions {
     CUST_DATA_MANAG_NEW_CBT("New Bussines Type"),
     CUST_DATA_MANAG_CBT_LIST("Bussines Type List"),
     CUST_DATA_MANAG_CUST_DOCS("Customer Documents"),
-    //
-    SALE_NEW("New Sell Case"),
-    SALE_EXISTING("Existing Sell Case"),
+    CUST_DATA_MANAG_CUST_NAV_SYNC("NAV Customers Sync"),
     //
     CRM_MANAG_NEW_CASE("New CRM Case"),
     CRM_EXISTING_CASE("Existing CRM Case"),
     CRM_MANAG_NEW_PROCESS("New CRM Activity"),
     CRM_MANAG_EXISTING_PROCESS("Existing CRM Action"),
     CRM_MANAG_NEW_SALESMAN_CUST_REL("New CRM Relationship"),
-    CRM_MANAG_EXISTING_SALESMAN_CUST_REL("Existing Relationship"),
+    CRM_NEW_SALE("New Sell Case"),
+    CRM_EXISTING_SELL_CASES("Existing Sell Cases"),
+    //
+    SELLS_DYNAMIC("Sells Dynamic"),
     //
     FS_DATA_MANAG_NEW_FS("New FS"),
     FS_DATA_MANAG_NEW_FS_OWNER("New FS Owner"),
     FS_DATA_MANAG_PROPERTIES("Existing FSs"),
-    FS_DATA_MANAG_DOCS("FS Documents");
+    FS_DATA_MANAG_DOCS("FS Documents"),
+    //
+    DATA_MAINTENANCE_NAV_CUST_SYNC("NAV Customers Sync"),
+    DATA_MAINTENANCE_NAV_SELLS_SYNC("NAV Sells Sync");
 
     private final String menuItem;
 
@@ -66,8 +70,9 @@ public enum MenuDefinitions {
                 SYS_NOTIF_BOARD,
                 CUST_DATA_MANAG,
                 CUST_CRM_MANAG,
-                SALE,
-                FS_DATA_MANAG
+                SELLS,
+                FS_DATA_MANAG,
+                DATAMAINTENANCE
         );
     }
 
@@ -79,18 +84,16 @@ public enum MenuDefinitions {
     }
 
     public static List<MenuDefinitions> get_CUSTOMER_SubItems() {
-        return Arrays.asList(
-                CUST_DATA_MANAG_SEARCH_ENGINE,
+        return Arrays.asList(CUST_DATA_MANAG_SEARCH_ENGINE,
                 CUST_DATA_MANAG_NEW_CUST,
                 CUST_DATA_MANAG_NEW_CBT,
-                CUST_DATA_MANAG_CUST_DOCS
+                CUST_DATA_MANAG_CUST_DOCS,
+                CUST_DATA_MANAG_CUST_NAV_SYNC
         );
     }
 
     public static List<MenuDefinitions> get_SALE_SubItems() {
-        return Arrays.asList(
-                SALE_NEW
-        );
+        return Arrays.asList(SELLS_DYNAMIC);
     }
 
     public static List<MenuDefinitions> get_CRM_SubItems() {
@@ -98,18 +101,24 @@ public enum MenuDefinitions {
                 CRM_MANAG_NEW_SALESMAN_CUST_REL,
                 CRM_MANAG_NEW_PROCESS,
                 CRM_MANAG_NEW_CASE,
-                CRM_MANAG_EXISTING_SALESMAN_CUST_REL
+                CRM_NEW_SALE,
+                CRM_EXISTING_SELL_CASES
         );
     }
 
     public static List<MenuDefinitions> get_FS_SubItems() {
-        return new LinkedList<>(
-                Arrays.asList(
-                        FS_DATA_MANAG_NEW_FS,
-                        FS_DATA_MANAG_NEW_FS_OWNER,
-                        FS_DATA_MANAG_PROPERTIES,
-                        FS_DATA_MANAG_DOCS
-                )
+        return Arrays.asList(
+                FS_DATA_MANAG_NEW_FS,
+                FS_DATA_MANAG_NEW_FS_OWNER,
+                FS_DATA_MANAG_PROPERTIES,
+                FS_DATA_MANAG_DOCS
+        );
+    }
+
+    public static List<MenuDefinitions> get_DATAMAINTENANCE_SubItems() {
+        return Arrays.asList(
+                DATA_MAINTENANCE_NAV_CUST_SYNC,
+                DATA_MAINTENANCE_NAV_SELLS_SYNC
         );
     }
 }

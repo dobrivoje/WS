@@ -52,7 +52,9 @@ public class testKlasa {
             //intermolAD.login("intermol\\dprtenjak", "...");
             //intermolAD.login("root", "");
             //intermolAD.login("fs", "");
-            intermolAD.login("cum", "");
+            intermolAD.login("fsm", "");
+            //intermolAD.login("cum", "");
+            //intermolAD.login("ws", "");
 
             System.err.println(intermolAD.getPrincipal() + " isAuthenticated ? " + intermolAD.authenticated());
 
@@ -100,7 +102,7 @@ public class testKlasa {
             System.err.println(intermolAD.getPrincipal() + ", " + s + " -> " + intermolAD.hasRole(s));
         }
 
-        Sha256Hash sha256Hash = new Sha256Hash("dedaMocika2001");
+        Sha256Hash sha256Hash = new Sha256Hash("dm2001");
         System.out.println(sha256Hash.toHex());
 
         System.err.println(intermolAD.getPrincipal() + " : " + RolesPermissions.P_CARDS_USER_CUSTOMERS_EDIT_OWN
@@ -117,6 +119,18 @@ public class testKlasa {
                 + " : "
                 + intermolAD.isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY)
         );
+        
+        System.err.println(intermolAD.getPrincipal() + " : " + RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT
+                + " : "
+                + intermolAD.isPermitted(RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT)
+        );
+        
+        System.err.println(intermolAD.getPrincipal() + " : " + RolesPermissions.R_FUELSALES_MANAGER
+                + " : "
+                + intermolAD.hasRole(RolesPermissions.R_FUELSALES_MANAGER)
+        );
+        
+        
 
         System.err.println("---- login ----");
         System.err.println("user : " + intermolAD.getInfSysUserSession());

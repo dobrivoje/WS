@@ -35,6 +35,7 @@ import db.ent.InfSysUser;
 import db.ent.Log;
 import db.ent.Product;
 import db.ent.RelSALE;
+import db.ent.TMarginWHS;
 import db.ent.custom.CustomSearchData;
 import enums.ISUserType;
 import java.util.ArrayList;
@@ -2257,6 +2258,79 @@ public class DBHandler {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="TMarginWHS tabela">
+    public List<TMarginWHS> get_All_TMarginWHS() {
+        try {
+            return getEm().createNamedQuery("TMarginWHS.findAll")
+                    .getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="Add/Update Data">
+    public void addNew_TMarginWHS(TMarginWHS tMarginWHS) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+            em.persist(tMarginWHS);
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            rollBackTransaction("New TMarginWHS Addition Failed.\nReason : " + ex.getMessage());
+        }
+    }
+
+    public void addAll_TMarginWHS(List<TMarginWHS> list) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+
+            list.stream().forEach(t -> {
+                em.persist(t);
+            });
+
+            getEm().getTransaction().commit();
+
+        } catch (Exception ex) {
+            rollBackTransaction("New List of TMarginWHS Addition Failed.\nReason : " + ex.getMessage());
+        }
+    }
+
+    public void addNew_TMarginWHS(String customerNo, String customerName, String itemNo, String itemName,
+            String division, String itemGroup, String documentNo, Date postingDate, String locationCode,
+            String salesPersonCode, Double quantity, String unitOfMeasureCode, Double salesAmount, Double costAmount,
+            Double coverage, Double margin, String shipmentmethodcode, String customerSegment, String documentType) throws Exception {
+
+        addNew_TMarginWHS(new TMarginWHS(customerNo, customerName, itemNo, itemName, division, itemGroup, documentNo, postingDate, locationCode, salesPersonCode, quantity, unitOfMeasureCode, salesAmount, costAmount, coverage, margin, shipmentmethodcode, customerSegment, documentType));
+    }
+
+    public synchronized void delete_TMarginWHS(long id) throws Exception {
+        try {
+            getEm().getTransaction().begin();
+
+            getEm().createNamedQuery("TMarginWHS.deleteByID")
+                    .setParameter("id", id)
+                    .executeUpdate();
+
+            getEm().getTransaction().commit();
+        } catch (Exception ex) {
+            rollBackTransaction("New List of TMarginWHS Addition Failed.\nReason : " + ex.getMessage());
+        }
+    }
+
+    public synchronized void deleteAll_TMarginWHS() throws Exception {
+        try {
+            getEm().getTransaction().begin();
+
+            getEm().createNamedQuery("TMarginWHS.deleteAll")
+                    .executeUpdate();
+
+            getEm().getTransaction().commit();
+        } catch (Exception ex) {
+            rollBackTransaction("New List of TMarginWHS Addition Failed.\nReason : " + ex.getMessage());
+        }
+    }
+
+    //</editor-fold>
     public synchronized List<Date> checkDates(Date dateFrom, Date dateTo) {
         Dates d = new Dates(-11);
 

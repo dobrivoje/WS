@@ -29,7 +29,6 @@ import Uni.Menu.Menu;
 import static Uni.MainMenu.MenuDefinitions.CUST_CRM_MANAG;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_SEARCH_ENGINE;
-import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_CBT_LIST;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_CUST_DOCS;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_NEW_CBT;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_NEW_CUST;
@@ -45,13 +44,11 @@ import Forms.FSM.Form_FS;
 import Forms.FSM.Form_FSOwner;
 import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_NEW_PROCESS;
 import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_NEW_SALESMAN_CUST_REL;
-import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_EXISTING_SALESMAN_CUST_REL;
 import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_NEW_CASE;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;
-import static Uni.MainMenu.MenuDefinitions.SALE;
-import static Uni.MainMenu.MenuDefinitions.SALE_NEW;
+import static Uni.MainMenu.MenuDefinitions.SELLS;
+import static Uni.MainMenu.MenuDefinitions.CRM_NEW_SALE;
 import Views.CRM.View_CRM;
-import Views.CRM.View_CRMSC;
 import Views.FSDM.View_FS;
 import Views.SYSNOTIF.View_SysNotif;
 import com.vaadin.server.VaadinSession;
@@ -68,6 +65,18 @@ import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_SELL_CASES;
+import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG_CUST_NAV_SYNC;
+import static Uni.MainMenu.MenuDefinitions.DATAMAINTENANCE;
+import static Uni.MainMenu.MenuDefinitions.DATA_MAINTENANCE_NAV_CUST_SYNC;
+import static Uni.MainMenu.MenuDefinitions.DATA_MAINTENANCE_NAV_SELLS_SYNC;
+import static Uni.MainMenu.MenuDefinitions.SELLS_DYNAMIC;
+import Views.CDM.View_CDM_NAV;
+import Views.SELLS.View_SELLS;
+import Views.SELLS.View_SELLS_Dynamic;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT;
+import static org.dobrivoje.auth.roles.RolesPermissions.P_SELLS_EXCEL_IMPORT;
+import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_MANAGER;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.
@@ -202,15 +211,15 @@ public class MainMenu extends CssLayout {
 
         customersTree.setChildrenAllowed(SYS_NOTIF_BOARD, true);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG, true);
-        customersTree.setChildrenAllowed(SALE, true);
+        customersTree.setChildrenAllowed(SELLS, true);
         customersTree.setChildrenAllowed(CUST_CRM_MANAG, true);
         customersTree.setChildrenAllowed(FS_DATA_MANAG, true);
+        customersTree.setChildrenAllowed(DATAMAINTENANCE, true);
 
         // definicije gl. stavki čije su podstavke otvorene !
-        customersTree.expandItemsRecursively(CUST_DATA_MANAG);
-        // customersTree.expandItemsRecursively(CUST_CRM_MANAG);
-        customersTree.expandItemsRecursively(SALE);
-        customersTree.expandItemsRecursively(FS_DATA_MANAG);
+        customersTree.expandItemsRecursively(CUST_CRM_MANAG);
+        customersTree.expandItemsRecursively(SELLS);
+        customersTree.expandItemsRecursively(DATAMAINTENANCE);
 
         // SYS_NOTIF_BOARD
         customersTree.setParent(SYS_NOTIF_BOARD_CUSTOMERS_BLACKLIST, SYS_NOTIF_BOARD);
@@ -224,26 +233,29 @@ public class MainMenu extends CssLayout {
         customersTree.setParent(CUST_DATA_MANAG_NEW_CBT, CUST_DATA_MANAG);
         customersTree.setParent(CUST_DATA_MANAG_CUST_DOCS, CUST_DATA_MANAG);
 
-        // SALE
-        customersTree.setParent(SALE_NEW, SALE);
-        customersTree.setChildrenAllowed(SALE_NEW, false);
-
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_SEARCH_ENGINE, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CUST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_NEW_CBT, false);
-        customersTree.setChildrenAllowed(CUST_DATA_MANAG_CBT_LIST, false);
         customersTree.setChildrenAllowed(CUST_DATA_MANAG_CUST_DOCS, true);
 
+        // CRM
         customersTree.setParent(CRM_MANAG_NEW_CASE, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_PROCESS, CUST_CRM_MANAG);
         customersTree.setParent(CRM_MANAG_NEW_SALESMAN_CUST_REL, CUST_CRM_MANAG);
-        customersTree.setParent(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_NEW_SALE, CUST_CRM_MANAG);
+        customersTree.setParent(CRM_EXISTING_SELL_CASES, CUST_CRM_MANAG);
 
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_SALESMAN_CUST_REL, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_CASE, false);
         customersTree.setChildrenAllowed(CRM_MANAG_NEW_PROCESS, false);
-        customersTree.setChildrenAllowed(CRM_MANAG_EXISTING_SALESMAN_CUST_REL, false);
+        customersTree.setChildrenAllowed(CRM_NEW_SALE, false);
+        customersTree.setChildrenAllowed(CRM_EXISTING_SELL_CASES, false);
 
+        //SELLS
+        customersTree.setParent(SELLS_DYNAMIC, SELLS);
+        customersTree.setChildrenAllowed(SELLS_DYNAMIC, false);
+
+        // FS MANAGEMENT
         customersTree.setParent(FS_DATA_MANAG_NEW_FS, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_NEW_FS_OWNER, FS_DATA_MANAG);
         customersTree.setParent(FS_DATA_MANAG_PROPERTIES, FS_DATA_MANAG);
@@ -253,14 +265,21 @@ public class MainMenu extends CssLayout {
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_NEW_FS_OWNER, false);
         customersTree.setChildrenAllowed(FS_DATA_MANAG_DOCS, false);
+
+        // DATA MAINTENANCE
+        customersTree.setParent(DATA_MAINTENANCE_NAV_CUST_SYNC, DATAMAINTENANCE);
+        customersTree.setParent(DATA_MAINTENANCE_NAV_SELLS_SYNC, DATAMAINTENANCE);
+
+        customersTree.setChildrenAllowed(DATA_MAINTENANCE_NAV_CUST_SYNC, false);
+        customersTree.setChildrenAllowed(DATA_MAINTENANCE_NAV_SELLS_SYNC, false);
         //</editor-fold>
 
         customersTree.addItemClickListener((ItemClickEvent event) -> {
             // proveri da li je sesija aktivna, pa ako nije, izbaci poruku
             try {
-                // varijabla "un" se ovde samo koristi da bi se utvrdilo
+                // metod "getPrincipal" se ovde kao test da se utvrdi
                 // da li je accessControl aktivan.
-                String un = MyUI.get().getAccessControl().getPrincipal();
+                MyUI.get().getAccessControl().getPrincipal();
 
                 switch ((MenuDefinitions) (event.getItemId())) {
                     case SYS_NOTIF_BOARD_LICENCES_OVERDUE:
@@ -274,14 +293,16 @@ public class MainMenu extends CssLayout {
                         } catch (Exception ex) {
                             Logger.getLogger("Views.MainMenu.MainMenu.java / public void createViewTree(final String name)").log(Level.WARNING, ex.getMessage());
                         }
-
                         break;
+
                     case SYS_NOTIF_BOARD:
                         navigator.navigateTo(View_SysNotif.class.getSimpleName());
                         break;
+
                     case CUST_DATA_MANAG_SEARCH_ENGINE:
                         navigator.navigateTo(View_Customers.class.getSimpleName());
                         break;
+
                     case CUST_DATA_MANAG_NEW_CUST:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
                             navigator.navigateTo(View_Customers.class.getSimpleName());
@@ -291,14 +312,16 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     CUST_DATA_MANAG_NEW_CUST.toString(),
                                     cf,
-                                    "img/crm/crm-user-3.png",
-                                    cf.getClickListener(),
-                                    194, 236)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/crm-user-3.png", "Save",
+                                    cf.getClickListener(), 194, 236, false)
                             );
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case CUST_DATA_MANAG_NEW_CBT:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
 
@@ -307,26 +330,36 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     "New Customer Business Type",
                                     rcbtf,
-                                    "img/crm/cbt.png",
-                                    rcbtf.getClickListener(),
-                                    216, 236)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/cbt.png", "Save",
+                                    rcbtf.getClickListener(), 216, 236, false)
                             );
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
 
-                    case SALE_NEW:
+                    case CUST_DATA_MANAG_CUST_NAV_SYNC:
+                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT)) {
+                            navigator.navigateTo(View_CDM_NAV.class.getSimpleName());
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+
+                    case CRM_NEW_SALE:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
 
                             getUI().addWindow(new WindowForm3(
-                                    SALE_NEW.toString(),
+                                    CRM_NEW_SALE.toString(),
                                     csf,
-                                    "img/crm/sell.png",
-                                    csf.getClickListener(),
-                                    196, 236)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/sell.png", "Save",
+                                    csf.getClickListener(), 196, 236, false)
                             );
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer bussines type !", Notification.Type.ERROR_MESSAGE);
                         }
@@ -335,6 +368,7 @@ public class MainMenu extends CssLayout {
                     case CUST_CRM_MANAG:
                         navigator.navigateTo(View_CRM.class.getSimpleName());
                         break;
+
                     case CRM_MANAG_NEW_CASE:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
 
@@ -343,14 +377,16 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
                                     ccf,
-                                    "img/crm/crm-case-new.png",
-                                    ccf.getClickListener(),
-                                    253, 300)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/crm-case-new.png", "Save",
+                                    ccf.getClickListener(), 253, 300, false)
                             );
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer case !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case CRM_MANAG_NEW_PROCESS:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
                             try {
@@ -359,9 +395,9 @@ public class MainMenu extends CssLayout {
                                 getUI().addWindow(new WindowForm3(
                                         CRM_MANAG_NEW_PROCESS.toString(),
                                         cpf,
-                                        "img/crm/crm5.png",
-                                        cpf.getClickListener(),
-                                        225, 300)
+                                        495, 750, Unit.PIXELS,
+                                        "img/crm/crm5.png", "Save",
+                                        cpf.getClickListener(), 225, 300, false)
                                 );
 
                             } catch (NullPointerException | IllegalArgumentException ex) {
@@ -370,6 +406,7 @@ public class MainMenu extends CssLayout {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer process !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case CRM_MANAG_NEW_SALESMAN_CUST_REL:
                         if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
                             Form_SCR scf = new Form_SCR(false);
@@ -377,22 +414,24 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_SALESMAN_CUST_REL.toString(),
                                     scf,
-                                    "img/crm/new-sc-rel2.jpg",
-                                    scf.getClickListener(),
-                                    256, 230)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/new-sc-rel2.jpg", "Save",
+                                    scf.getClickListener(), 256, 230, false)
                             );
 
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
-                    case CRM_MANAG_EXISTING_SALESMAN_CUST_REL:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
-                            navigator.navigateTo(View_CRMSC.class.getSimpleName());
+
+                    case SELLS_DYNAMIC:
+                        if (MyUI.get().hasRole(R_FUELSALES_MANAGER)) {
+                            navigator.navigateTo(View_SELLS_Dynamic.class.getSimpleName());
                         } else {
-                            Notification.show("User Rights Error", "You don't have rights \nto enter customer relationship page !", Notification.Type.ERROR_MESSAGE);
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case FS_DATA_MANAG_NEW_FS:
                         if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
                             navigator.navigateTo(View_FS.class.getSimpleName());
@@ -402,15 +441,16 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     FS_DATA_MANAG_NEW_FS.toString(),
                                     fof,
-                                    "img/crm/cbt.png",
-                                    fof.getClickListener(),
-                                    216, 236)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/cbt.png", "Save",
+                                    fof.getClickListener(), 216, 236, false)
                             );
 
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto add new fuelstation !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case FS_DATA_MANAG_NEW_FS_OWNER:
                         if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
 
@@ -419,17 +459,36 @@ public class MainMenu extends CssLayout {
                             getUI().addWindow(new WindowForm3(
                                     FS_DATA_MANAG_NEW_FS_OWNER.toString(),
                                     fof,
-                                    "img/crm/cbt.png",
-                                    fof.getClickListener(),
-                                    216, 236)
+                                    495, 750, Unit.PIXELS,
+                                    "img/crm/cbt.png", "Save",
+                                    fof.getClickListener(), 216, 236, false)
                             );
+
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto appoint fuelstation to the customer !", Notification.Type.ERROR_MESSAGE);
                         }
                         break;
+
                     case FS_DATA_MANAG_PROPERTIES:
                         navigator.navigateTo(View_FS.class.getSimpleName());
                         break;
+
+                    case DATA_MAINTENANCE_NAV_CUST_SYNC:
+                        if (MyUI.get().isPermitted(P_CUSTOMERS_EXCEL_IMPORT)) {
+                            navigator.navigateTo(View_CDM_NAV.class.getSimpleName());
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+
+                    case DATA_MAINTENANCE_NAV_SELLS_SYNC:
+                        if (MyUI.get().isPermitted(P_SELLS_EXCEL_IMPORT)) {
+                            navigator.navigateTo(View_SELLS.class.getSimpleName());
+                        } else {
+                            Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
+                        }
+                        break;
+
                 }
 
             } catch (IllegalArgumentException | NullPointerException | ExpiredSessionException | UnknownSessionException e) {
@@ -439,10 +498,8 @@ public class MainMenu extends CssLayout {
                         Notification.Type.ERROR_MESSAGE
                 );
 
-                // MyUI.get().getAccessControl().decLoggedUsers();
             } catch (Exception e1) {
                 Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, e1);
-                // MyUI.get().getAccessControl().decLoggedUsers();
             }
         });
 

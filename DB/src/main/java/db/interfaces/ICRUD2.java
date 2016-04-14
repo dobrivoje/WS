@@ -5,19 +5,14 @@
  */
 package db.interfaces;
 
-import db.ent.City;
 import java.util.List;
 
 /**
  *
  * @author root
  */
-public interface ICityController extends ICRUD<City> {
+public interface ICRUD2<T> extends ICRUD<T>, IDelete {
 
-    List<City> getCityByDistrict(String partialName);
-
-    List<City> getCityByContainingName(String partialName);
-
-    List<City> getCityByMunicipality(String partialName);
+    public void addAll(List<T> list) throws Exception;
 
 }

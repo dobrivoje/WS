@@ -12,7 +12,7 @@ import db.ent.Fuelstation;
  *
  * @author root
  */
-public interface IFSController extends CRUDInterface<Fuelstation> {
+public interface IFSController extends ICRUD<Fuelstation> {
 
     void addNew(String name, String address, City city, String coordinates) throws Exception;
 

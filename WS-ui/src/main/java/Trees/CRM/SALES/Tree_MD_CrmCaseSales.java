@@ -14,7 +14,7 @@ import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_H
 import Main.MyUI;
 import Trees.CRM.Tree_CRM_Sell_SingleCase;
 import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_CASE;
-import static Uni.MainMenu.MenuDefinitions.SALE_EXISTING;
+import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_SELL_CASES;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import db.ent.RelSALE;
 import java.util.HashMap;
@@ -99,7 +99,7 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                                 readOnly = !salesman.equals(MyUI.get().getLoggedSalesman());
                                 // Tree_CRMSingleCase cc = new Tree_CRMSingleCase("", crmSell.getFK_IDCA());
                                 crudForm = new Form_CRMSell(crmSell, newCase, readOnly);
-                                winFormCaption = SALE_EXISTING.toString();
+                                winFormCaption = CRM_EXISTING_SELL_CASES.toString();
                             } catch (NullPointerException | IllegalArgumentException ex) {
                             }
                         }
@@ -135,23 +135,23 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                             getUI().addWindow(
                                     new WindowFormProp(
                                             winFormCaption,
-                                            winFormHeight, winFormWidth,
+                                            570, 890, Unit.PIXELS,
                                             readOnly,
                                             crudForm.getClickListener(),
                                             crudForm,
                                             winFormPropPanel
                                     )
                             );
+
                         } else {
-                            getUI().addWindow(
-                                    new WindowForm3(
-                                            winFormCaption,
-                                            crudForm,
-                                            imageLocation,
-                                            crudForm.getClickListener(),
-                                            196, 236, readOnly
-                                    )
+                            getUI().addWindow(new WindowForm3(
+                                    winFormCaption,
+                                    crudForm,
+                                    495, 750, Unit.PIXELS,
+                                    imageLocation, "Save",
+                                    crudForm.getClickListener(), 196, 236, false)
                             );
+
                         }
                         //</editor-fold>
                     } else {

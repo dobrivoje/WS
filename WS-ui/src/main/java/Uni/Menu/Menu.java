@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static Uni.MainMenu.MenuDefinitions.CUST_DATA_MANAG;
+import static Uni.MainMenu.MenuDefinitions.DATAMAINTENANCE;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG;
 import static Uni.MainMenu.MenuDefinitions.SYS_NOTIF_BOARD;
 
@@ -51,6 +52,7 @@ public class Menu {
         mainMenuSubOptions.put(CUST_DATA_MANAG, MenuDefinitions.get_CUSTOMER_SubItems());
         mainMenuSubOptions.put(CUST_CRM_MANAG, MenuDefinitions.get_CRM_SubItems());
         mainMenuSubOptions.put(FS_DATA_MANAG, MenuDefinitions.get_FS_SubItems());
+        mainMenuSubOptions.put(DATAMAINTENANCE, MenuDefinitions.get_DATAMAINTENANCE_SubItems());
 
         allMenuItems.addAll(mainMenuItems);
         allMenuItems.addAll(MenuDefinitions.get_SYS_NOTIF_BOARD_SubItems());
@@ -58,6 +60,7 @@ public class Menu {
         allMenuItems.addAll(MenuDefinitions.get_CRM_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_SALE_SubItems());
         allMenuItems.addAll(MenuDefinitions.get_FS_SubItems());
+        allMenuItems.addAll(MenuDefinitions.get_DATAMAINTENANCE_SubItems());
         //</editor-fold>
     }
 

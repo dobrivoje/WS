@@ -11,7 +11,7 @@ import db.ent.Gallery;
  *
  * @author root
  */
-public interface IGalleryController extends CRUDInterface<Gallery> {
+public interface IGalleryController extends ICRUD<Gallery> {
 
     Gallery getDefaultImageGallery();
 

@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
-import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_BIG;
 
 /**
  *
@@ -116,13 +115,10 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
                         winFormPropPanel = new Panel(propPanel.getComponentCount() > 0 ? "Open CRM Cases" : "No Active Salesman CRM Case", propPanel);
 
                         if (crudForm instanceof Form_CRMProcess) {
-                            // Make window bigger in height to accomodate all form fields.
-                            winFormHeight = WINDOW_HEIGHT_DEFAULT_BIG;
-
                             getUI().addWindow(
                                     new WindowFormProp(
                                             winFormCaption,
-                                            winFormHeight, winFormWidth,
+                                            582, 870, Unit.PIXELS,
                                             readOnly,
                                             crudForm.getClickListener(),
                                             crudForm,
@@ -130,15 +126,14 @@ public class Tree_MD_CrmCaseProcesses extends Tree_MasterDetail {
                                     )
                             );
                         } else {
-                            getUI().addWindow(
-                                    new WindowForm3(
-                                            winFormCaption,
-                                            crudForm,
-                                            imageLocation,
-                                            crudForm.getClickListener(),
-                                            196, 236, readOnly
-                                    )
+                            getUI().addWindow(new WindowForm3(
+                                    winFormCaption,
+                                    crudForm,
+                                    495, 750, Unit.PIXELS,
+                                    imageLocation, "Save",
+                                    crudForm.getClickListener(), 196, 236, false)
                             );
+
                         }
                         //</editor-fold>
                     } else {

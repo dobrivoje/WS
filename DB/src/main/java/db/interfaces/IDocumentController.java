@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author root
  */
-public interface IDocumentController extends CRUDInterface<Document> {
+public interface IDocumentController extends ICRUD<Document> {
 
     List<Document> getDocumentsByGallery(Gallery gallery);
 

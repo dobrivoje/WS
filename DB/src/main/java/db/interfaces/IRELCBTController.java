@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author root
  */
-public interface IRELCBTController extends CRUDInterface<RelCBType> {
+public interface IRELCBTController extends ICRUD<RelCBType> {
 
     void addNew(Customer customer, CustomerBussinesType customerBussinesType, Date dateFrom, Date dateTo, boolean active)
             throws Exception;

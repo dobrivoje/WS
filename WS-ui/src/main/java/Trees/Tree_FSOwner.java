@@ -63,13 +63,17 @@ public class Tree_FSOwner extends CustomDateTree<Owner> {
                             winFormPropPanel = new Panel(propPanel.getComponentCount() > 0
                                     ? "FS Owners" : "No FS Owner.", propPanel);
 
-                            getUI().addWindow(new WindowFormProp(
-                                    winFormCaption,
-                                    false,
-                                    crudForm.getClickListener(),
-                                    crudForm,
-                                    IG.createMainDocument(IG.createDocument(owner.getFkIdFs(), 240, 240))
-                            ));
+                            getUI().addWindow(
+                                    new WindowFormProp(
+                                            winFormCaption,
+                                            500, 760, Unit.PIXELS,
+                                            readOnly,
+                                            crudForm.getClickListener(),
+                                            crudForm,
+                                            IG.createMainDocument(IG.createDocument(owner.getFkIdFs(), 240, 240))
+                                    )
+                            );
+
                         }
                     } else {
                         Notification.show("User Rights Error", "You don't have rights for \ncustomer cases/processes !",

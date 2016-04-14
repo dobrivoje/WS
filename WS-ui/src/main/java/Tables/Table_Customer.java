@@ -306,9 +306,9 @@ public class Table_Customer extends Table_GEN<Customer> {
                             getUI().addWindow(new WindowForm3(
                                     CRM_MANAG_NEW_CASE.toString(),
                                     ccf,
-                                    "img/crm/crm-case-new.png",
-                                    ccf.getClickListener(),
-                                    253, 300)
+                                    530, 830, Unit.PIXELS,
+                                    "img/crm/crm-case-new.png", "Save",
+                                    ccf.getClickListener(), 253, 300, false)
                             );
 
                         } else {
@@ -340,10 +340,11 @@ public class Table_Customer extends Table_GEN<Customer> {
             getUI().addWindow(new WindowForm3(
                     "New Customer Business Type",
                     rcf,
-                    "img/crm/cbt.png",
-                    rcf.getClickListener(),
-                    202, 220)
+                    530, 830, Unit.PIXELS,
+                    "img/crm/cbt.png", "Save",
+                    rcf.getClickListener(), 202, 220, false)
             );
+
         } else {
             Notification.show("User Rights Error",
                     "You don't have rights to add \nbussines type to this customers ! ",
@@ -363,10 +364,11 @@ public class Table_Customer extends Table_GEN<Customer> {
             getUI().addWindow(new WindowForm3(
                     "Customer Update Form",
                     cf,
-                    "img/crm/crm-user-3.png",
-                    cf.getClickListener(),
-                    205, 250)
+                    530, 830, Unit.PIXELS,
+                    "img/crm/crm-user-3.png", "Save",
+                    cf.getClickListener(), 205, 250, false)
             );
+
         } else {
             Notification.show("User Rights Error", "You don't have rights to update customers !", Notification.Type.ERROR_MESSAGE);
         }

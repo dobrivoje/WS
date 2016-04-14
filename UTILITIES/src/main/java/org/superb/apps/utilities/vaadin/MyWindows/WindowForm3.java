@@ -117,7 +117,7 @@ public class WindowForm3 extends Window {
         }
     }
 
-    public WindowForm3(String caption, Layout formLayout, int formheight, int formWidth, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
+    public WindowForm3(String caption, Layout formLayout, int formHeight, int formWidth, String imageLocation, String actionButtonCaption, Button.ClickListener externalButtonClickListener, int imgWidth, int imgHeight, boolean readOnly) {
         init(caption, formLayout, imageLocation, actionButtonCaption, externalButtonClickListener, imgHeight, imgWidth, null);
 
         if (actionButton != null) {

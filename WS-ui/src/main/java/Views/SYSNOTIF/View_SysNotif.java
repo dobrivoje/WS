@@ -87,12 +87,6 @@ public class View_SysNotif extends View_Dashboard {
 
             subPanels.add(new Panel(msg));
 
-            // Map<Object, List> M = new HashMap<>();
-            /*
-             for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd)) {
-             M.put(cc, cc.getCrmProcessList());
-             }
-             */
             Tree_MD_CrmCaseProcesses csct = new Tree_MD_CrmCaseProcesses(csd, false, formAllowed, false);
             subPanels.add(new Panel(S.toString(), csct));
 
@@ -170,10 +164,6 @@ public class View_SysNotif extends View_Dashboard {
             for (Customer c : DS.getSearchController().getCustomers(csd2)) {
                 csd2.setCustomer(c);
 
-                //Map<Object, List> M = new HashMap<>();
-                //for (CrmCase cc : (List<CrmCase>) DS.getSearchController().getCRMCases(csd2)) {
-                //    M.put(cc, cc.getCrmProcessList());
-                // }
                 Tree_MD_CrmCaseProcesses ccct = new Tree_MD_CrmCaseProcesses(csd2, false, formAllowed, false);
                 subPanels.add(new Panel(c.toString(), ccct));
             }
