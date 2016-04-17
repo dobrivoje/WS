@@ -2,7 +2,7 @@ package Views.CDM;
 
 import Main.MyUI;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT;
-import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
+import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_CDM_NAV extends View_Dashboard {
 

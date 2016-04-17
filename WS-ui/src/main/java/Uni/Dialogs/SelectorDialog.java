@@ -5,9 +5,9 @@
  */
 package Uni.Dialogs;
 
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import com.vaadin.ui.Button;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD2;
 
 /**
  * Dialog for custom filtering options.

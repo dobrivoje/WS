@@ -126,8 +126,8 @@
     <module>WS-ui</module>
     <module>WS-production</module>
     <module>DB</module>
-    <module>UTILITIES</module>
-    <module>AUTH</module>
     <module>JASPER</module>
+    <module>../Libs/Auth</module>
+    <module>../Libs/Utils</module>
   </modules>
 </project>

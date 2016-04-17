@@ -1,8 +1,8 @@
 package Views.SELLS;
 
 import Main.MyUI;
-import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_MANAGER;
+import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_SELLS_Dynamic extends View_Dashboard {
 

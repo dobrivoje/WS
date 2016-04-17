@@ -6,7 +6,7 @@ import Forms.CRM.Form_CRMProcess;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
-import db.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Salesman;
@@ -18,7 +18,7 @@ import db.ent.custom.CustomSearchData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
 
 /**
  *

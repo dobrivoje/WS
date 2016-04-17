@@ -22,8 +22,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import db.ent.Customer;
 import db.ent.Product;
-import org.superb.apps.utilities.Enums.Statuses;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import org.superbapps.utils.common.Enums.Statuses;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  * A form for editing a single product.

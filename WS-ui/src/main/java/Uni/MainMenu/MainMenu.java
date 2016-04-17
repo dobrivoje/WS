@@ -61,8 +61,6 @@ import java.util.logging.Logger;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.UnknownSessionException;
 import org.dobrivoje.auth.roles.RolesPermissions;
-import org.superb.apps.utilities.Enums.LOGS;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_SELL_CASES;
@@ -77,6 +75,8 @@ import Views.SELLS.View_SELLS_Dynamic;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_SELLS_EXCEL_IMPORT;
 import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_MANAGER;
+import org.superbapps.utils.common.Enums.LOGS;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.

@@ -5,7 +5,6 @@
  */
 package ImageGallery;
 
-import org.superb.apps.utilities.vaadin.Views.Layout_InlineCSS;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
@@ -27,14 +26,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.dobrivoje.utils.chars.translators.CharsAdapter;
-import org.superb.apps.utilities.Enums.ImageTypes;
-import org.superb.apps.utilities.files.uploader.UploadReceiver;
-import org.superb.apps.utilities.os.OS;
-import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.vaadin.dialogs.ConfirmDialog;
 import static Main.MyUI.DS;
+import org.superbapps.utils.common.Enums.ImageTypes;
+import org.superbapps.utils.common.os.OS;
+import org.superbapps.utils.translators.CharsAdapter;
+import org.superbapps.utils.vaadin.MyWindows.MyWindow;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
+import org.superbapps.utils.vaadin.Views.Layout_InlineCSS;
+import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
 
 /**
  *

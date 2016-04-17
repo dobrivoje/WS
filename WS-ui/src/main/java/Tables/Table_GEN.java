@@ -8,7 +8,7 @@ package Tables;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import java.util.List;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
 /**
  *

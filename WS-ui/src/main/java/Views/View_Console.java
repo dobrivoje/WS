@@ -17,15 +17,15 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
-import org.superb.apps.utilities.Enums.Statuses;
-import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
-import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm;
-import org.superb.apps.utilities.vaadin.Tables.CustomTable;
 import Forms.CDM.Form_Customer;
 import db.ent.Customer;
 import db.ent.CustomerBussinesType;
 import static Main.MyUI.DS;
+import org.superbapps.utils.common.Enums.Statuses;
+import org.superbapps.utils.vaadin.FancyLabels.StatusLabel;
+import org.superbapps.utils.vaadin.MyMenus.AccordionMenu;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm;
+import org.superbapps.utils.vaadin.Tables.CustomTable;
 
 public class View_Console extends VerticalLayout implements View {
 

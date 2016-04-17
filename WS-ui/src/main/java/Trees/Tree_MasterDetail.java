@@ -3,13 +3,13 @@ package Trees;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
-import db.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_HEIGHT_DEFAULT_NORM;
 import static org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp.WINDOW_WIDTH_DEFAULT_NORM;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD2;
 
 /**
  *
@@ -65,7 +65,7 @@ public class Tree_MasterDetail extends Tree {
      *
      * @param caption Tree caption
      * @param treeModel Tree data model
-     * @throws db.Exceptions.CustomTreeNodesEmptyException
+     * @throws org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException
      */
     public Tree_MasterDetail(String caption, Map<Object, List> treeModel) throws CustomTreeNodesEmptyException, NullPointerException {
         this(caption, treeModel, false);

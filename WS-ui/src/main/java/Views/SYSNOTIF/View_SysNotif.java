@@ -1,9 +1,8 @@
 package Views.SYSNOTIF;
 
-import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
-import db.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.BussinesLine;
 import db.ent.Customer;
 import db.ent.Salesman;
@@ -21,6 +20,7 @@ import Trees.Tree_MD_CrmCaseProcesses;
 import db.ent.CrmCase;
 import db.ent.RelSALE;
 import org.superb.apps.utilities.datum.Dates;
+import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_SysNotif extends View_Dashboard {
 

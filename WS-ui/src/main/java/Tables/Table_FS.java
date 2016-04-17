@@ -7,7 +7,6 @@ package Tables;
 
 import ImageGallery.IDocumentGallery;
 import ImageGallery.CustomerFuelStationsGallery;
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import Forms.FSM.Form_FS;
 import Forms.FSM.Form_FSOwner;
 import com.vaadin.data.util.BeanItemContainer;
@@ -29,6 +28,7 @@ import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD2;
 
 /**
  *

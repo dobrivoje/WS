@@ -23,9 +23,9 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import org.superb.apps.utilities.Enums.LOGS;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.utils.common.Enums.LOGS;
 
 /**
  * UI content when the user is not logged in yet.

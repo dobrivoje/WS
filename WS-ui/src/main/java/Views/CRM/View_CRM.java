@@ -7,12 +7,11 @@ import db.ent.custom.CustomSearchData;
 import Uni.Dialogs.Form_CustomSearch;
 import Uni.Dialogs.SelectorDialog;
 import Trees.Tree_MD_CrmCaseProcesses;
-import org.superb.apps.utilities.vaadin.Views.View_Dashboard;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.Panel;
-import db.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.Customer;
 import db.ent.RelSALE;
@@ -23,7 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
-import org.superb.apps.utilities.vaadin.Trees.IUpdateData;
+import org.superbapps.utils.vaadin.Trees.IUpdateData;
+import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_CRM extends View_Dashboard {
 

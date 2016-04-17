@@ -3,12 +3,14 @@ import Excel.FS.ExcelTMarginWHS;
 import dataservice.DataService;
 import db.ent.TMarginWHS;
 import db.interfaces.ICRUD2;
+import org.junit.Test;
 
 public class TMarginWHS_Test2 {
 
-    //@Test
+    @Test
     public void test2() {
         String path = "D:\\Users\\dprtenjak\\Desktop\\Projekti\\SOFTWARE\\WS\\Vanja Potrosnje\\vanja izvestaj NAV.xlsx";
+        String pathKodKuce = "D:\\DEVEL\\MOL\\WS\\Vanja Potrosnje\\vanja izvestaj NAV.xlsx";
 
         ICRUD2<TMarginWHS> TMC = DataService.getDefault().getTMarginWHSController();
 
@@ -16,7 +18,7 @@ public class TMarginWHS_Test2 {
         System.err.println(TMC.getAll());
 
         try {
-            ExcelTMarginWHS ETMW = new ExcelTMarginWHS(path);
+            ExcelTMarginWHS ETMW = new ExcelTMarginWHS(pathKodKuce);
 
             System.err.println("BRISANJE IZ BAZE.");
             System.err.println("");

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package db.Exceptions;
+package dataservice.exceptions;
 
-import static db.Exceptions.SqlServerExceptionsCauses.ALREADY_EXISTS;
+import static dataservice.exceptions.SqlServerExceptionsCauses.ALREADY_EXISTS;
 
 /**
  *

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import org.dobrivoje.auth.IAccessAuthControl;
 import org.dobrivoje.auth.IntermolADAccessControl;
-import org.superb.apps.utilities.Enums.ServletOperations;
+import org.superbapps.utils.common.Enums.ServletOperations;
 
 public class AccessControlListener implements HttpSessionListener {
 

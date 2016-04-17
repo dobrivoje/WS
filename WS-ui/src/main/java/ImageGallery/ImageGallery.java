@@ -10,7 +10,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
 public abstract class ImageGallery<T> implements IDocumentGallery<T> {
 

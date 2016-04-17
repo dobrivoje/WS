@@ -27,8 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_PROPERTY;
-import org.superb.apps.utilities.Enums.LOGS;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.common.Enums.LOGS;
 
 public class View_FS extends VerticalLayout implements View {
 

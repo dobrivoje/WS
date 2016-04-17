@@ -4,11 +4,10 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD;
-import org.superb.apps.utilities.vaadin.Forms.IFormNotification;
 import db.ent.Customer;
 import static Main.MyUI.DS;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
 public class Form_Customer_Test extends Form_CRUD<Customer> {
 
@@ -33,12 +32,7 @@ public class Form_Customer_Test extends Form_CRUD<Customer> {
     //</editor-fold>
 
     public Form_Customer_Test(final Customer customer) {
-        super(customer, new IFormNotification() {
-            @Override
-            public String getNotification() {
-                return "New Customer";
-            }
-        });
+        super(customer, () -> "New Customer");
 
         fieldGroup = new BeanFieldGroup(Customer.class);
         fieldGroup.bindMemberFields(this);

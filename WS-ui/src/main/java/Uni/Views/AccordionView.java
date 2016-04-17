@@ -6,7 +6,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
-import org.superb.apps.utilities.vaadin.MyMenus.AccordionMenu;
+import org.superbapps.utils.vaadin.MyMenus.AccordionMenu;
 
 public class AccordionView extends VerticalLayout implements View {
 

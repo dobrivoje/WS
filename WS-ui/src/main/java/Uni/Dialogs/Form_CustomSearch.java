@@ -6,9 +6,7 @@
 package Uni.Dialogs;
 
 import db.ent.custom.CustomSearchData;
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD2;
 import com.vaadin.data.Property;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -23,6 +21,8 @@ import db.ent.Customer;
 import db.ent.Product;
 import db.ent.Salesman;
 import static Main.MyUI.DS;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD2;
 
 /**
  *

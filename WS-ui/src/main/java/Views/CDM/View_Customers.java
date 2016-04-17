@@ -22,7 +22,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
-import db.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.Customer;
 import db.ent.custom.CustomSearchData;
@@ -35,9 +35,9 @@ import java.util.logging.Logger;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_SC_REL;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
-import org.superb.apps.utilities.Enums.LOGS;
-import static org.superb.apps.utilities.Enums.ViewModes.FULL;
-import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
+import org.superbapps.utils.common.Enums.LOGS;
+import static org.superbapps.utils.common.Enums.ViewModes.FULL;
+import static org.superbapps.utils.common.Enums.ViewModes.SIMPLE;
 
 public class View_Customers extends VerticalLayout implements View {
 

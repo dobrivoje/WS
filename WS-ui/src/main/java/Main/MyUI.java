@@ -20,8 +20,8 @@ import dataservice.DataService;
 import db.ent.InfSysUser;
 import db.ent.Salesman;
 import enums.ISUserType;
-import org.dobrivoje.utils.date.formats.DateFormat;
-import org.superb.apps.utilities.Enums.ServletOperations;
+import org.superb.apps.utilities.datum.DateFormat;
+import org.superbapps.utils.common.Enums.ServletOperations;
 
 /**
  *

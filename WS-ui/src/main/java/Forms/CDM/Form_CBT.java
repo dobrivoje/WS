@@ -1,12 +1,11 @@
 package Forms.CDM;
 
-import org.superb.apps.utilities.vaadin.Forms.Form_CRUD;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.TextField;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
-import org.superb.apps.utilities.vaadin.Forms.IFormNotification;
 import db.ent.CustomerBussinesType;
 import static Main.MyUI.DS;
+import org.superbapps.utils.vaadin.Forms.Form_CRUD;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
 public class Form_CBT extends Form_CRUD<CustomerBussinesType> {
 
@@ -16,12 +15,7 @@ public class Form_CBT extends Form_CRUD<CustomerBussinesType> {
     //</editor-fold>
 
     public Form_CBT(final CustomerBussinesType customerBussinesType) {
-        super(customerBussinesType, new IFormNotification() {
-            @Override
-            public String getNotification() {
-                return "CBT";
-            }
-        });
+        super(customerBussinesType, () -> "CBT");
         addComponents(customerActivity, formButton);
     }
 

@@ -5,7 +5,6 @@
  */
 package ImageGallery;
 
-import org.superb.apps.utilities.vaadin.Views.Layout_InlineCSS;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
@@ -27,14 +26,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.dobrivoje.utils.chars.translators.CharsAdapter;
-import org.superb.apps.utilities.Enums.ImageTypes;
-import org.superb.apps.utilities.files.uploader.UploadReceiver;
-import org.superb.apps.utilities.os.OS;
-import org.superb.apps.utilities.vaadin.MyWindows.MyWindow;
-import org.superb.apps.utilities.vaadin.Tables.IRefreshVisualContainer;
 import org.vaadin.dialogs.ConfirmDialog;
 import static Main.MyUI.DS;
+import org.superbapps.utils.common.Enums.ImageTypes;
+import org.superbapps.utils.common.os.OS;
+import org.superbapps.utils.translators.CharsAdapter;
+import org.superbapps.utils.vaadin.MyWindows.MyWindow;
+import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
+import org.superbapps.utils.vaadin.Views.Layout_InlineCSS;
+import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
 
 /**
  *
@@ -176,50 +176,44 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
             di.getImage().setWidth(40, Unit.PIXELS);
             di.getImage().setDescription("Click to open the image.");
 
-            di.getImage().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    VL_MainImage.removeAllComponents();
-                    Image ni = new Image(null, di.getImage().getSource());
-                    ni.setHeight(97, Unit.PERCENTAGE);
-                    ni.setWidth(97, Unit.PERCENTAGE);
-
-                    ni.setDescription("Double click to make this image default for this FS.");
-                    ni.addClickListener(new MouseEvents.ClickListener() {
-                        @Override
-                        public void click(MouseEvents.ClickEvent event) {
-                            if (event.isDoubleClick()) {
-                                ConfirmDialog d = ConfirmDialog.show(getUI(),
-                                        "Default FS Gallery Image",
-                                        "Do you want this selected image to be</br> the FS's default one ?",
-                                        "Yes",
-                                        "No!",
-                                        new ConfirmDialog.Listener() {
-                                            @Override
-                                            public void onClose(ConfirmDialog dialog) {
-                                                if (dialog.isConfirmed()) {
-                                                    try {
-                                                        DS.getDocumentController().setDefaultFSImage(f, di.getDoc());
-                                                        refreshVisualContainer.refreshVisualContainer();
-                                                    } catch (Exception ex) {
-                                                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                                                    }
-                                                }
+            di.getImage().addClickListener((MouseEvents.ClickEvent event) -> {
+                VL_MainImage.removeAllComponents();
+                Image ni = new Image(null, di.getImage().getSource());
+                ni.setHeight(97, Unit.PERCENTAGE);
+                ni.setWidth(97, Unit.PERCENTAGE);
+                
+                ni.setDescription("Double click to make this image default for this FS.");
+                ni.addClickListener((MouseEvents.ClickEvent event1) -> {
+                    if (event1.isDoubleClick()) {
+                        ConfirmDialog d = ConfirmDialog.show(getUI(),
+                                "Default FS Gallery Image",
+                                "Do you want this selected image to be</br> the FS's default one ?",
+                                "Yes",
+                                "No!",
+                                new ConfirmDialog.Listener() {
+                                    @Override
+                                    public void onClose(ConfirmDialog dialog) {
+                                        if (dialog.isConfirmed()) {
+                                            try {
+                                                DS.getDocumentController().setDefaultFSImage(f, di.getDoc());
+                                                refreshVisualContainer.refreshVisualContainer();
+                                            } catch (Exception ex) {
+                                                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                                             }
-                                        });
-                                d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
-                                d.getCancelButton().setWidth(100, Unit.PIXELS);
-                                d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
-                                d.getOkButton().setWidth(100, Unit.PIXELS);
-                                d.setContentMode(ConfirmDialog.ContentMode.HTML);
-                                d.setHeight("16em");
-                            }
-                        }
-                    });
-
-                    VL_MainImage.addComponent(ni);
-                    VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
-                }
+                                        }
+                                    }
+                                });
+                        d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
+                        d.getCancelButton().setWidth(100, Unit.PIXELS);
+                        d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
+                        d.getOkButton().setWidth(100, Unit.PIXELS);
+                        d.setContentMode(ConfirmDialog.ContentMode.HTML);
+                        d.setHeight("16em");
+                    }
+                });
+                
+                VL_MainImage.addComponent(ni);
+                VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
             });
 
             HL_Images.addComponent(di.getImage());

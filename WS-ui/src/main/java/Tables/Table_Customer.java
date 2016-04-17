@@ -23,7 +23,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Tree;
-import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.City;
 import db.ent.Customer;
 import db.ent.Salesman;
@@ -31,13 +30,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.dobrivoje.auth.roles.RolesPermissions;
-import org.superb.apps.utilities.Enums.Statuses;
-import org.superb.apps.utilities.Enums.ViewModes;
-import static org.superb.apps.utilities.Enums.ViewModes.SIMPLE;
-import org.superb.apps.utilities.vaadin.FancyLabels.StatusLabel;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.utils.common.Enums.Statuses;
+import org.superbapps.utils.common.Enums.ViewModes;
+import static org.superbapps.utils.common.Enums.ViewModes.FULL;
+import static org.superbapps.utils.common.Enums.ViewModes.LICENCE;
+import static org.superbapps.utils.common.Enums.ViewModes.SIMPLE;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.FancyLabels.StatusLabel;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
 
 /**
  *

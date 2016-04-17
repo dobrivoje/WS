@@ -6,7 +6,6 @@ import Forms.CRM.Form_CRMSell;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
-import db.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.Salesman;
 import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
@@ -16,11 +15,13 @@ import Trees.CRM.Tree_CRM_Sell_SingleCase;
 import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_CASE;
 import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_SELL_CASES;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.ui.Component;
 import db.ent.RelSALE;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowForm3;
+import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
+import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
 
 /**
  *
@@ -117,8 +118,8 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                             }
 
                             propTrees.add(csct);
-                            propPanel.addComponent(csct);
-                        } catch (NullPointerException npe1) {
+                            propPanel.addComponent((Component) csct);
+                        } catch (NullPointerException | CustomTreeNodesEmptyException npe1) {
                         }
 
                         propTrees.stream().forEach((ct) -> {
@@ -160,7 +161,7 @@ public class Tree_MD_CrmCaseSales extends Tree_MasterDetail {
                     }
                 }
 
-            } catch (CustomTreeNodesEmptyException | NullPointerException e) {
+            } catch (NullPointerException e) {
             }
         };
     }
