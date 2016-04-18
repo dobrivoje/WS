@@ -11,7 +11,7 @@
     <properties>
         <vaadin.version>7.6.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <jetty.plugin.version>9.3.6.v20151106</jetty.plugin.version>
+        <jetty.plugin.version>9.3.8.v20160314</jetty.plugin.version>
         <project.source.version>1.8</project.source.version>
         <project.target.version>1.8</project.target.version>
         <project.encoding>UTF-8</project.encoding>
@@ -105,12 +105,12 @@
             <dependency>
                 <groupId>com.github.dobrivoje</groupId>
                 <artifactId>auth</artifactId>
-                <version>1.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.github.dobrivoje</groupId>
                 <artifactId>utils</artifactId>
-                <version>1.2</version>
+                <version>1.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
