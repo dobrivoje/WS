@@ -7,7 +7,7 @@ package org.superb.apps.utilities.datum;
 
 /**
  *
- * @author Dobri
+ * @author root
  */
 public enum DateFormat {
 

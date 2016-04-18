@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ImageGallery;
+package Gallery.Image;
 
 import com.vaadin.ui.Image;
 import db.ent.Document;

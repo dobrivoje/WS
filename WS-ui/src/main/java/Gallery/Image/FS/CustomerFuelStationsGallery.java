@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ImageGallery;
+package Gallery.Image.FS;
 
+import Gallery.Image.DocImg;
+import Gallery.Image.ImageGallery;
+import Gallery.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;

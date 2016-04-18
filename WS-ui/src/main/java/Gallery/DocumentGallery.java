@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ImageGallery;
+package Gallery;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -12,13 +12,13 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 
-public abstract class ImageGallery<T> implements IDocumentGallery<T> {
+public abstract class DocumentGallery<T> implements IDocumentGallery<T> {
 
     protected UI ui;
     protected final IRefreshVisualContainer refreshVisualContainer;
 
     //<editor-fold defaultstate="collapsed" desc="konstruktor i getter/setter">
-    public ImageGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
+    public DocumentGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
         this.ui = ui;
         this.refreshVisualContainer = refreshVisualContainer;
     }

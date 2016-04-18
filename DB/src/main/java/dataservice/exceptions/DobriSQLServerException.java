@@ -9,7 +9,7 @@ import static dataservice.exceptions.SqlServerExceptionsCauses.ALREADY_EXISTS;
 
 /**
  *
- * @author Dobri
+ * @author root
  */
 public class DobriSQLServerException extends Exception {
 

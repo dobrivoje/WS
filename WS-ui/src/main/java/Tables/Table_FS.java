@@ -5,8 +5,8 @@
  */
 package Tables;
 
-import ImageGallery.IDocumentGallery;
-import ImageGallery.CustomerFuelStationsGallery;
+import Gallery.IDocumentGallery;
+import Gallery.Image.FS.CustomerFuelStationsGallery;
 import Forms.FSM.Form_FS;
 import Forms.FSM.Form_FSOwner;
 import com.vaadin.data.util.BeanItemContainer;

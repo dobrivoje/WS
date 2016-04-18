@@ -57,14 +57,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.superbapps</groupId>
-            <artifactId>Auth</artifactId>
-            <version>1.0</version>
+            <groupId>com.github.dobrivoje</groupId>
+            <artifactId>auth</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.superbapps</groupId>
-            <artifactId>Utils</artifactId>
-            <version>1.2</version>
+            <groupId>com.github.dobrivoje</groupId>
+            <artifactId>utils</artifactId>
         </dependency>
     </dependencies>
 

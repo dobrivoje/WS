@@ -7,7 +7,7 @@ package dataservice.exceptions;
 
 /**
  *
- * @author Dobri
+ * @author root
  */
 public enum SqlServerExceptionsCauses {
 

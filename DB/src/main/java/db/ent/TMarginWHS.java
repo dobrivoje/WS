@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author DPrtenjak
+ * @author root
  */
 @Entity
 @Table(name = "T_MarginWHS")

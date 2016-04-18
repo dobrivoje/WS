@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ImageGallery;
+package Gallery;
 
+import Gallery.Image.DocImg;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
