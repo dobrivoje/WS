@@ -107,19 +107,10 @@
                 <artifactId>auth</artifactId>
                 <version>1.0.1</version>
             </dependency>
-            <dependency>
-                <groupId>com.github.dobrivoje</groupId>
-                <artifactId>utils</artifactId>
-                <version>1.5</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>

@@ -25,7 +25,7 @@ import java.util.List;
 import org.dobrivoje.auth.roles.RolesPermissions;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
 import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import org.superbapps.utils.vaadin.Forms.Form_CRUD2;

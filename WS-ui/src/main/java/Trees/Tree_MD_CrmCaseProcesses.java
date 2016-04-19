@@ -10,7 +10,7 @@ import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.CrmCase;
 import db.ent.CrmProcess;
 import db.ent.Salesman;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import static Uni.MainMenu.MenuDefinitions.CRM_MANAG_EXISTING_PROCESS;

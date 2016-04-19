@@ -8,7 +8,7 @@ import com.vaadin.ui.Panel;
 import org.superbapps.utils.vaadin.Exceptions.CustomTreeNodesEmptyException;
 import db.ent.Customer;
 import db.ent.RelCBType;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import static Main.MyUI.DS;
 import com.vaadin.server.Sizeable.Unit;
 import org.superbapps.utils.vaadin.Trees.CustomDateTree;

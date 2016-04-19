@@ -18,7 +18,7 @@ import db.ent.Customer;
 import db.ent.Owner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import static Main.MyUI.DS;
 import com.vaadin.server.Sizeable.Unit;
 import org.superbapps.utils.vaadin.Trees.CustomDateTree;

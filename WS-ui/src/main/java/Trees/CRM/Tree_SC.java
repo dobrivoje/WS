@@ -13,7 +13,7 @@ import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.List;
 import org.dobrivoje.auth.roles.RolesPermissions;
-import org.superb.apps.utilities.vaadin.MyWindows.WindowFormProp;
+import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import com.vaadin.server.Sizeable.Unit;
