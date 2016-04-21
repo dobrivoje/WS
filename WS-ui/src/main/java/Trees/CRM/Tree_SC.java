@@ -12,7 +12,7 @@ import db.ent.Customer;
 import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.List;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
@@ -77,7 +77,7 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
                                 },
                                 false);
 
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
                             getUI().addWindow(new WindowForm3(
                                     "Customer Update Form",
                                     cf,

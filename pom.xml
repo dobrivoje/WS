@@ -102,11 +102,6 @@
                 <artifactId>vaadin-themes</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.github.dobrivoje</groupId>
-                <artifactId>auth</artifactId>
-                <version>1.0.1</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

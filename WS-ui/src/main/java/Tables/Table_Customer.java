@@ -29,9 +29,9 @@ import db.ent.Salesman;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.dobrivoje.auth.roles.RolesPermissions;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.common.Enums.Statuses;
 import org.superbapps.utils.common.Enums.ViewModes;
 import static org.superbapps.utils.common.Enums.ViewModes.FULL;
@@ -78,42 +78,33 @@ public class Table_Customer extends Table_GEN<Customer> {
                 "navCode", "name", "licence", "options", "myCity", "zone", "matBr"));
 
         //<editor-fold defaultstate="collapsed" desc="Generisane kolone tabele,...">
-        addGeneratedColumn("options", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object row, Object column) {
-                HorizontalLayout custOptionsHL = new HorizontalLayout();
+        addGeneratedColumn("options", (final Table source, final Object row, Object column) -> {
+            HorizontalLayout custOptionsHL = new HorizontalLayout();
 
-                final Button editBtn = new Button("", new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        openForm((Customer) row, source, MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
-                    }
-                });
+            final Button editBtn = new Button("", (Button.ClickEvent event) -> {
+                openForm((Customer) row, source, MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            });
 
-                final Button cbtypeBtn = new Button("", new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        showCBTForm((Customer) row,
-                                MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
-                    }
-                });
+            final Button cbtypeBtn = new Button("", (Button.ClickEvent event) -> {
+                showCBTForm((Customer) row,
+                        MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            });
 
-                editBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
-                editBtn.setEnabled(MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
-                editBtn.setDescription("Update this customer with new data...");
+            editBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
+            editBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            editBtn.setDescription("Update this customer with new data...");
 
-                cbtypeBtn.setIcon(FontAwesome.THUMBS_O_UP);
-                cbtypeBtn.setEnabled(MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
-                cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
+            cbtypeBtn.setIcon(FontAwesome.THUMBS_O_UP);
+            cbtypeBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
-                custOptionsHL.addComponents(editBtn, cbtypeBtn);
-                custOptionsHL.setSizeFull();
-                custOptionsHL.setSpacing(true);
-                custOptionsHL.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
-                custOptionsHL.setComponentAlignment(cbtypeBtn, Alignment.MIDDLE_CENTER);
+            custOptionsHL.addComponents(editBtn, cbtypeBtn);
+            custOptionsHL.setSizeFull();
+            custOptionsHL.setSpacing(true);
+            custOptionsHL.setComponentAlignment(editBtn, Alignment.MIDDLE_CENTER);
+            custOptionsHL.setComponentAlignment(cbtypeBtn, Alignment.MIDDLE_CENTER);
 
-                return custOptionsHL;
-            }
+            return custOptionsHL;
         });
 
         addGeneratedColumn("licence", new Table.ColumnGenerator() {
@@ -272,7 +263,7 @@ public class Table_Customer extends Table_GEN<Customer> {
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
-                    openForm((Customer) (source.getValue()), source, MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                    openForm((Customer) (source.getValue()), source, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
                 }
                 //</editor-fold>
 
@@ -280,12 +271,12 @@ public class Table_Customer extends Table_GEN<Customer> {
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
                     showCBTForm(
                             (Customer) source.getValue(),
-                            MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL));
+                            MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
                 }
                 //</editor-fold>
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_ACTIVE_PROCESSES">
-                if (action.equals(ACTION_CRM_ACTIVE_PROCESSES)) {
+                if (action.equals(ACTION_CRM_ACTIVE_PROCESSES) && MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
                     Customer c = (Customer) source.getValue();
                     if (DS.getCRMController().getCRM_Processes(c, false, null, null) == null
                             || DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
@@ -297,27 +288,22 @@ public class Table_Customer extends Table_GEN<Customer> {
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_NEW_CASE">
                 if (action.equals(ACTION_CRM_NEW_CASE)) {
                     try {
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
-                            Customer c = (Customer) source.getValue();
-                            Salesman s;
+                        // Customer c = (Customer) source.getValue();
+                        Salesman s;
 
-                            s = MyUI.get().getLoggedSalesman();
+                        s = MyUI.get().getLoggedSalesman();
 
-                            Form_CRMCase ccf = new Form_CRMCase(s, true);
+                        Form_CRMCase ccf = new Form_CRMCase(s, true);
 
-                            getUI().addWindow(new WindowForm3(
-                                    CRM_MANAG_NEW_CASE.toString(),
-                                    ccf,
-                                    530, 830, Unit.PIXELS,
-                                    "img/crm/crm-case-new.png", "Save",
-                                    ccf.getClickListener(), 253, 300, false)
-                            );
+                        getUI().addWindow(new WindowForm3(
+                                CRM_MANAG_NEW_CASE.toString(),
+                                ccf,
+                                530, 830, Unit.PIXELS,
+                                "img/crm/crm-case-new.png", "Save",
+                                ccf.getClickListener(), 253, 300,
+                                MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE))
+                        );
 
-                        } else {
-                            Notification.show("User Rights Error",
-                                    "You don't have rights\nto add new CRM case ! ",
-                                    Notification.Type.ERROR_MESSAGE);
-                        }
                     } catch (NullPointerException | IllegalArgumentException e) {
                         Notification.show("Warning", e.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
@@ -355,7 +341,7 @@ public class Table_Customer extends Table_GEN<Customer> {
     }
 
     private void openForm(Customer c, Table source, boolean permitted) {
-        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EDIT_ALL)) {
+        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
             Form_Customer cf = new Form_Customer(
                     c,
                     () -> {

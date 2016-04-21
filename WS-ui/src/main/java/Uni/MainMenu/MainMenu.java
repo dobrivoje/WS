@@ -60,7 +60,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.UnknownSessionException;
-import org.dobrivoje.auth.roles.RolesPermissions;
+import org.superbapps.auth.roles.Roles;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import static Uni.MainMenu.MenuDefinitions.CRM_EXISTING_SELL_CASES;
@@ -72,9 +72,6 @@ import static Uni.MainMenu.MenuDefinitions.SELLS_DYNAMIC;
 import Views.CDM.View_CDM_NAV;
 import Views.SELLS.View_SELLS;
 import Views.SELLS.View_SELLS_Dynamic;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_SELLS_EXCEL_IMPORT;
-import static org.dobrivoje.auth.roles.RolesPermissions.R_FUELSALES_MANAGER;
 import org.superbapps.utils.common.Enums.LOGS;
 import org.superbapps.utils.vaadin.MyWindows.WindowForm3;
 
@@ -304,7 +301,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CUST_DATA_MANAG_NEW_CUST:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CUSTOMER)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
                             navigator.navigateTo(View_Customers.class.getSimpleName());
 
                             Form_Customer cf = new Form_Customer(false);
@@ -323,7 +320,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CUST_DATA_MANAG_NEW_CBT:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_NEW_CBT)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
 
                             Form_RELCBT rcbtf = new Form_RELCBT(false);
 
@@ -341,7 +338,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CUST_DATA_MANAG_CUST_NAV_SYNC:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CUSTOMERS_EXCEL_IMPORT)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_EXCEL_IMPORT)) {
                             navigator.navigateTo(View_CDM_NAV.class.getSimpleName());
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
@@ -349,7 +346,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_NEW_SALE:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
                             Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
 
                             getUI().addWindow(new WindowForm3(
@@ -370,7 +367,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_CASE:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
 
                             Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), true);
 
@@ -388,7 +385,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_PROCESS:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_CRM_PROCESS)) {
+                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
                             try {
                                 Form_CRMProcess cpf = new Form_CRMProcess(MyUI.get().getLoggedSalesman());
 
@@ -408,7 +405,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_SALESMAN_CUST_REL:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_CRM_NEW_SC_REL)) {
+                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
                             Form_SCR scf = new Form_SCR(false);
 
                             getUI().addWindow(new WindowForm3(
@@ -425,7 +422,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case SELLS_DYNAMIC:
-                        if (MyUI.get().hasRole(R_FUELSALES_MANAGER)) {
+                        if (MyUI.get().hasRole(Roles.R_WS_FS_MANAGER)) {
                             navigator.navigateTo(View_SELLS_Dynamic.class.getSimpleName());
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
@@ -433,7 +430,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case FS_DATA_MANAG_NEW_FS:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
                             navigator.navigateTo(View_FS.class.getSimpleName());
 
                             Form_FS fof = new Form_FS(false);
@@ -452,7 +449,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case FS_DATA_MANAG_NEW_FS_OWNER:
-                        if (MyUI.get().isPermitted(RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
 
                             Form_FSOwner fof = new Form_FSOwner(false);
 
@@ -474,7 +471,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case DATA_MAINTENANCE_NAV_CUST_SYNC:
-                        if (MyUI.get().isPermitted(P_CUSTOMERS_EXCEL_IMPORT)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_EXCEL_IMPORT)) {
                             navigator.navigateTo(View_CDM_NAV.class.getSimpleName());
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);
@@ -482,7 +479,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case DATA_MAINTENANCE_NAV_SELLS_SYNC:
-                        if (MyUI.get().isPermitted(P_SELLS_EXCEL_IMPORT)) {
+                        if (MyUI.get().isPermitted(Roles.P_WS_EXCEL_IMPORT)) {
                             navigator.navigateTo(View_SELLS.class.getSimpleName());
                         } else {
                             Notification.show("User Rights Error", "You don't have rights \nto create new customer relationship !", Notification.Type.ERROR_MESSAGE);

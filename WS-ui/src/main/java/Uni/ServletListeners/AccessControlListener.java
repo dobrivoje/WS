@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import org.dobrivoje.auth.IAccessAuthControl;
-import org.dobrivoje.auth.IntermolADAccessControl;
+import org.superbapps.auth.IAccessAuthControl;
+import org.superbapps.auth.IntermolADAccessControl;
 import org.superbapps.utils.common.Enums.ServletOperations;
 
 public class AccessControlListener implements HttpSessionListener {

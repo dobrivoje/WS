@@ -1,6 +1,5 @@
 package Main;
 
-import org.dobrivoje.auth.IAccessAuthControl;
 import Uni.Views.LoginScreen;
 import Uni.Views.MainScreen;
 import Views.SYSNOTIF.View_SysNotif;
@@ -21,6 +20,7 @@ import db.ent.InfSysUser;
 import db.ent.Salesman;
 import enums.ISUserType;
 import org.superb.apps.utilities.datum.DateFormat;
+import org.superbapps.auth.IAccessAuthControl;
 import org.superbapps.utils.common.Enums.ServletOperations;
 
 /**
@@ -31,25 +31,25 @@ import org.superbapps.utils.common.Enums.ServletOperations;
 @PreserveOnRefresh
 
 public class MyUI extends UI {
-    
+
     public IAccessAuthControl accessControl;
-    
+
     public static final DataService DS = DataService.getDefault();
     public static final String APP_DATE_FORMAT = DateFormat.DATE_FORMAT_SRB.toString();
-    
+
     private InfSysUser loggedISUser;
     private ISUserType loggedISUserType;
     private Salesman loggedSalesman;
-    
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         accessControl = (IAccessAuthControl) vaadinRequest.getWrappedSession().getAttribute(ServletOperations.SERVLET_CREATION.toString());
         int un = accessControl.getNoOfSessions();
-        
+
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
         getPage().setTitle("WS App");
-        
+
         Notification notification = new Notification("Welcome to WS App");
         notification.setDescription(
                 "<span>This application covers wholesale bussines process.</span>"
@@ -61,34 +61,34 @@ public class MyUI extends UI {
                         + "</u></b></span>"
                         : "<span>Currently, <b><u>no user uses the software.</u></b></span>")
         );
-        
+
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(8000);
         notification.show(Page.getCurrent());
-        
+
         try {
             if (!accessControl.authenticated()) {
                 setContent(new LoginScreen(accessControl, () -> {
                     loggedISUser = DS.getINFSYSUSERController().getByID(accessControl.getPrincipal());
                     loggedISUserType = DS.getINFSYSUSERController().getInfSysUserType(loggedISUser);
                     loggedSalesman = DS.getINFSYSUSERController().getSalesman(loggedISUser);
-                    
+
                     showMainView();
                 }));
             } else {
                 showMainView();
-            }            
+            }
         } catch (NullPointerException lnpe) {
         }
     }
-    
+
     protected void showMainView() {
         setContent(new MainScreen(MyUI.this));
         getNavigator().navigateTo(View_SysNotif.class.getSimpleName());
     }
-    
+
     public static MyUI get() {
         return (MyUI) UI.getCurrent();
     }
@@ -97,23 +97,31 @@ public class MyUI extends UI {
     public IAccessAuthControl getAccessControl() {
         return accessControl;
     }
-    
+
     public boolean isPermitted(String permission) {
         return accessControl.isPermitted(permission);
     }
-    
+
     public boolean hasRole(String role) {
         return accessControl.hasRole(role);
     }
-    
+
+    public boolean isPermitted(Enum permission) {
+        return accessControl.isPermitted(permission);
+    }
+
+    public boolean hasRole(Enum role) {
+        return accessControl.hasRole(role);
+    }
+
     public InfSysUser getLoggedISUser() {
         return loggedISUser;
     }
-    
+
     public ISUserType getLoggedISUserType() {
         return loggedISUserType;
     }
-    
+
     public Salesman getLoggedSalesman() {
         return loggedSalesman == null ? new Salesman() : loggedSalesman;
     }

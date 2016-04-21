@@ -21,13 +21,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.vaadin.Trees.IUpdateData;
 import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_CRM extends View_Dashboard {
 
-    private final boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
+    private final boolean formAllowed = MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE);
 
     public View_CRM() {
         super("Customer Relationship Management");

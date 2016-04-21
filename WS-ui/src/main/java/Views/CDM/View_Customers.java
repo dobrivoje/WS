@@ -32,9 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_SC_REL;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.common.Enums.LOGS;
 import static org.superbapps.utils.common.Enums.ViewModes.FULL;
 import static org.superbapps.utils.common.Enums.ViewModes.SIMPLE;
@@ -156,14 +154,14 @@ public class View_Customers extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                Tree_RelCBT rcbtt = new Tree_RelCBT("", c, MyUI.get().isPermitted(P_CRM_NEW_SC_REL));
+                Tree_RelCBT rcbtt = new Tree_RelCBT("", c, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
                 propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
             }
 
             try {
-                propPanels[1].setContent(new Tree_FSOwner("", c, true, MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER)));
+                propPanels[1].setContent(new Tree_FSOwner("", c, true, MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[1].setContent(new Tree());
             }
@@ -177,7 +175,7 @@ public class View_Customers extends VerticalLayout implements View {
                     M.put(cc, cc.getCrmProcessList());
                 }
 
-                final Tree_MD_CrmCaseProcesses cc = new Tree_MD_CrmCaseProcesses(M, true, MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS), false);
+                final Tree_MD_CrmCaseProcesses cc = new Tree_MD_CrmCaseProcesses(M, true, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE), false);
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

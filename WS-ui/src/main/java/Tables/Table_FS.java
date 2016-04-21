@@ -22,12 +22,10 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import db.ent.Fuelstation;
 import java.util.List;
-import org.dobrivoje.auth.roles.RolesPermissions;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_OWNER;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_FUELSALES_USER_FS_NEW_STATION;
 import org.superbapps.utils.vaadin.MyWindows.WindowFormProp;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.vaadin.Forms.Form_CRUD2;
 
 /**
@@ -92,11 +90,11 @@ public class Table_FS extends Table_GEN<Fuelstation> {
 
             editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
             editBtn.setDescription("Update this Fuelstation with new data...");
-            editBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_STATION));
+            editBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
 
             ownerBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
             ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
-            ownerBtn.setEnabled(MyUI.get().isPermitted(P_FUELSALES_USER_FS_NEW_OWNER));
+            ownerBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
 
             optLayout.addComponents(editBtn, ownerBtn);
             optLayout.setSizeFull();
@@ -158,7 +156,7 @@ public class Table_FS extends Table_GEN<Fuelstation> {
                     }
 
                     // obavezno proveriti prava
-                } else if (MyUI.get().isPermitted(RolesPermissions.P_FUELSTATIONS_MANAGEMENT)) {
+                } else if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
                     if (action.equals(Table_FS.ACTION_FS_OWNER)) {
                         caption = "Fuelstation Owner Form";
                         cf = new Form_FSOwner(f, null, false);

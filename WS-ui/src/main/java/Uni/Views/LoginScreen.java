@@ -1,6 +1,5 @@
 package Uni.Views;
 
-import org.dobrivoje.auth.IAccessAuthControl;
 import java.io.Serializable;
 
 import com.vaadin.event.ShortcutAction;
@@ -25,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import Main.MyUI;
 import static Main.MyUI.DS;
+import org.superbapps.auth.IAccessAuthControl;
 import org.superbapps.utils.common.Enums.LOGS;
 
 /**

@@ -10,8 +10,6 @@ import db.ent.custom.CustomSearchData;
 import enums.ISUserType;
 import java.util.ArrayList;
 import java.util.List;
-import static org.dobrivoje.auth.roles.RolesPermissions.P_CRM_NEW_CRM_PROCESS;
-import static org.dobrivoje.auth.roles.RolesPermissions.R_ROOT_PRIVILEGES;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import Trees.CRM.SALES.Tree_MD_CrmCaseSales;
@@ -20,6 +18,7 @@ import Trees.Tree_MD_CrmCaseProcesses;
 import db.ent.CrmCase;
 import db.ent.RelSALE;
 import org.superb.apps.utilities.datum.Dates;
+import org.superbapps.auth.roles.Roles;
 import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_SysNotif extends View_Dashboard {
@@ -28,7 +27,7 @@ public class View_SysNotif extends View_Dashboard {
     Salesman S = MyUI.get().getLoggedSalesman();
     String SECTOR = S.getFkIdbl().getName();
 
-    boolean formAllowed = MyUI.get().isPermitted(P_CRM_NEW_CRM_PROCESS);
+    boolean formAllowed = MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE);
     Dates d = new Dates();
     Panel datePanel;
 
@@ -102,7 +101,7 @@ public class View_SysNotif extends View_Dashboard {
             csd.setSaleAgreeded(true);
 
             List<CrmCase> ccc = (List<CrmCase>) DS.getSearchController().getCRMCases(csd);
-            
+
             for (CrmCase cc1 : ccc) {
                 if (!cc1.getRelSALEList().isEmpty()) {
                     Tree_MD_CrmCaseSales csct = new Tree_MD_CrmCaseSales(cc1, false, formAllowed, false);
@@ -123,7 +122,7 @@ public class View_SysNotif extends View_Dashboard {
         List<Component> C = new ArrayList();
 
         for (String s : new String[]{"admin panel", "users who don't work often", "logged users in the period"}) {
-            C.add(createPanelComponent(s, subPanels, MyUI.get().isPermitted(R_ROOT_PRIVILEGES)));
+            C.add(createPanelComponent(s, subPanels, MyUI.get().hasRole(Roles.R_WS_ROOTPRIVILEGES)));
         }
 
         buildContentWithComponents(C);
@@ -224,7 +223,7 @@ public class View_SysNotif extends View_Dashboard {
         List<Component> C = new ArrayList();
 
         for (BussinesLine BL : DS.getBLController().getAll()) {
-            C.add(createPanelComponent(BL.getName(), subPanels, MyUI.get().isPermitted(R_ROOT_PRIVILEGES)));
+            C.add(createPanelComponent(BL.getName(), subPanels, MyUI.get().hasRole(Roles.R_WS_ROOTPRIVILEGES)));
         }
 
         C.add(createNotesPanel(""));
