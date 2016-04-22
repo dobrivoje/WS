@@ -14,7 +14,7 @@ import org.superbapps.auth.roles.Roles;
  *
  * @author root
  */
-public class Tests {
+public class TestsAUTH {
 
     public static void main(String[] args) {
         Sha256Hash s = new Sha256Hash("dm");
@@ -76,6 +76,9 @@ public class Tests {
             System.err.println("--------------Roles FS------------------------");
             if (IAC.hasRole(Roles.R_FS_MAINTENANCE)) {
                 System.err.println(IAC.getPrincipal() + " HAS ROLE : " + Roles.R_FS_MAINTENANCE);
+            }
+            if (IAC.hasRole(Roles.R_WS_EXCEL_ALL)) {
+                System.err.println(IAC.getPrincipal() + " HAS ROLE : " + Roles.R_WS_EXCEL_ALL);
             }
 
         } catch (Exception e) {

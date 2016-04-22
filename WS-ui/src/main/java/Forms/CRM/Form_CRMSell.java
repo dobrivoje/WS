@@ -182,7 +182,7 @@ public class Form_CRMSell extends Form_CRUD2<RelSALE> {
             amount.setEnabled(true);
             paymentMethod.setEnabled(true);
         } else {
-            lockFormFileds(lockAll);
+            super.lockFormFileds(true);
         }
     }
 

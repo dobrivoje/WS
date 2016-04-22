@@ -21,10 +21,14 @@ public class SelectorDialog extends WindowForm3 {
      * @param formCustomSearch
      */
     public SelectorDialog(Form_CRUD2 formCustomSearch) {
+        this(formCustomSearch, 495, 735, Unit.PIXELS);
+    }
+
+    public SelectorDialog(Form_CRUD2 formCustomSearch, int formHeight, int formWidth, Unit unit) {
         super("Advanced Search Dialog",
                 formCustomSearch,
-                "img/crm/cbt.png",
-                "Search",
+                formHeight, formWidth, unit,
+                "img/crm/cbt.png", "Search",
                 formCustomSearch.getClickListener(),
                 202, 220, false);
 

@@ -90,6 +90,7 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                     new WindowForm3(
                                             winFormCaption,
                                             crudForm,
+                                            495, 735, Unit.PIXELS,
                                             imageLocation,
                                             crudForm.getClickListener(),
                                             196, 236, readOnly, ValoTheme.BUTTON_FRIENDLY,
@@ -100,11 +101,12 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                                         new WindowForm3(
                                                                 "CRM Case",
                                                                 f,
-                                                                "img/crm/crmCase.png",
-                                                                f.getClickListener(),
-                                                                196, 236, readOnly
-                                                        )
+                                                                495, 735, Unit.PIXELS,
+                                                                imageLocation, "Save",
+                                                                crudForm.getClickListener(),
+                                                                196, 236, readOnly)
                                                 );
+
                                             })
                                     )
                             );
@@ -115,10 +117,12 @@ public class Tree_MD_SalesmanSales extends Tree_MasterDetail {
                                     new WindowForm3(
                                             winFormCaption,
                                             crudForm,
-                                            imageLocation,
+                                            495, 735, Unit.PIXELS,
+                                            imageLocation, "Save",
                                             crudForm.getClickListener(),
                                             196, 236, readOnly)
                             );
+
                         }
                         //</editor-fold>
                     } else {
