@@ -77,7 +77,7 @@ public class Tree_SC extends CustomObjectTree<Salesman> {
                                 },
                                 false);
 
-                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                             getUI().addWindow(new WindowForm3(
                                     "Customer Update Form",
                                     cf,

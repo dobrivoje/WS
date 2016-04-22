@@ -27,7 +27,7 @@ import org.superbapps.utils.vaadin.Views.View_Dashboard;
 
 public class View_CRM extends View_Dashboard {
 
-    private final boolean formAllowed = MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE);
+    private final boolean formAllowed = MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE);
 
     public View_CRM() {
         super("Customer Relationship Management");

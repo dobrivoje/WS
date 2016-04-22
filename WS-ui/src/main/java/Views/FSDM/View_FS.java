@@ -109,7 +109,7 @@ public class View_FS extends VerticalLayout implements View {
         });
 
         newFSPropButton = new Button("New FS Property");
-        newFSPropButton.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
+        newFSPropButton.setEnabled(MyUI.get().hasRole(Roles.R_FS_MAINTENANCE));
         newFSPropButton.setWidth(170, Unit.PIXELS);
         newFSPropButton.setIcon(FontAwesome.ARCHIVE);
         newFSPropButton.focus();
@@ -119,7 +119,7 @@ public class View_FS extends VerticalLayout implements View {
         });
 
         newFSOButton = new Button("New FS Owner");
-        newFSOButton.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
+        newFSOButton.setEnabled(MyUI.get().hasRole(Roles.R_FS_MAINTENANCE));
         newFSOButton.setWidth(150, Unit.PIXELS);
         newFSOButton.setIcon(FontAwesome.BULLSEYE);
         newFSOButton.addClickListener((Button.ClickEvent event) -> {
@@ -160,7 +160,7 @@ public class View_FS extends VerticalLayout implements View {
     //<editor-fold defaultstate="collapsed" desc="openProperties">
     public final void openProperties(Fuelstation fs, boolean formFieldsLocked, boolean crudButtonOnForm) {
         if (fs != null) {
-            newFSPropButton.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
+            newFSPropButton.setEnabled(MyUI.get().hasRole(Roles.R_FS_MAINTENANCE));
             HL.setSplitPosition(50, Unit.PERCENTAGE);
 
             if (propVL.getComponentCount() > 0) {

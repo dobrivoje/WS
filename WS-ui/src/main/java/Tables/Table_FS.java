@@ -90,11 +90,11 @@ public class Table_FS extends Table_GEN<Fuelstation> {
 
             editBtn.setIcon(new ThemeResource("img/ico/fs.small.16x16.png"));
             editBtn.setDescription("Update this Fuelstation with new data...");
-            editBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
+            editBtn.setEnabled(MyUI.get().hasRole(Roles.R_FS_MAINTENANCE));
 
             ownerBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
             ownerBtn.setDescription("Appoint this Fuelstation to Customer...");
-            ownerBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE));
+            ownerBtn.setEnabled(MyUI.get().hasRole(Roles.R_FS_MAINTENANCE));
 
             optLayout.addComponents(editBtn, ownerBtn);
             optLayout.setSizeFull();
@@ -156,7 +156,7 @@ public class Table_FS extends Table_GEN<Fuelstation> {
                     }
 
                     // obavezno proveriti prava
-                } else if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
+                } else if (MyUI.get().hasRole(Roles.R_FS_MAINTENANCE)) {
                     if (action.equals(Table_FS.ACTION_FS_OWNER)) {
                         caption = "Fuelstation Owner Form";
                         cf = new Form_FSOwner(f, null, false);

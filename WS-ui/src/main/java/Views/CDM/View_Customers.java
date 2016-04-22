@@ -154,14 +154,14 @@ public class View_Customers extends VerticalLayout implements View {
     private void showPropForm(final Customer c) {
         if (c != null) {
             try {
-                Tree_RelCBT rcbtt = new Tree_RelCBT("", c, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
+                Tree_RelCBT rcbtt = new Tree_RelCBT("", c, MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
                 propPanels[0].setContent(rcbtt);
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[0].setContent(new Tree());
             }
 
             try {
-                propPanels[1].setContent(new Tree_FSOwner("", c, true, MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)));
+                propPanels[1].setContent(new Tree_FSOwner("", c, true, MyUI.get().hasRole(Roles.R_FS_MAINTENANCE)));
             } catch (CustomTreeNodesEmptyException | NullPointerException ex) {
                 propPanels[1].setContent(new Tree());
             }
@@ -175,7 +175,7 @@ public class View_Customers extends VerticalLayout implements View {
                     M.put(cc, cc.getCrmProcessList());
                 }
 
-                final Tree_MD_CrmCaseProcesses cc = new Tree_MD_CrmCaseProcesses(M, true, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE), false);
+                final Tree_MD_CrmCaseProcesses cc = new Tree_MD_CrmCaseProcesses(M, true, MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE), false);
                 propPanels[2].setContent(cc);
             } catch (CustomTreeNodesEmptyException | NullPointerException e) {
                 propPanels[2].setContent(new Tree());

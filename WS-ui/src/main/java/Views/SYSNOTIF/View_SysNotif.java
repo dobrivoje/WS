@@ -27,7 +27,7 @@ public class View_SysNotif extends View_Dashboard {
     Salesman S = MyUI.get().getLoggedSalesman();
     String SECTOR = S.getFkIdbl().getName();
 
-    boolean formAllowed = MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE);
+    boolean formAllowed = MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE);
     Dates d = new Dates();
     Panel datePanel;
 

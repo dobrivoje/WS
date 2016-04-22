@@ -82,20 +82,20 @@ public class Table_Customer extends Table_GEN<Customer> {
             HorizontalLayout custOptionsHL = new HorizontalLayout();
 
             final Button editBtn = new Button("", (Button.ClickEvent event) -> {
-                openForm((Customer) row, source, MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+                openForm((Customer) row, source, MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
             });
 
             final Button cbtypeBtn = new Button("", (Button.ClickEvent event) -> {
                 showCBTForm((Customer) row,
-                        MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+                        MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
             });
 
             editBtn.setIcon(new ThemeResource("img/ico/icon-user-16x16.png"));
-            editBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            editBtn.setEnabled(MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
             editBtn.setDescription("Update this customer with new data...");
 
             cbtypeBtn.setIcon(FontAwesome.THUMBS_O_UP);
-            cbtypeBtn.setEnabled(MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE));
+            cbtypeBtn.setEnabled(MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
             cbtypeBtn.setDescription("Appoint this customer to a bussines type...");
 
             custOptionsHL.addComponents(editBtn, cbtypeBtn);
@@ -263,7 +263,7 @@ public class Table_Customer extends Table_GEN<Customer> {
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CUSTOMER_UPDATE">
                 if (action.equals(ACTION_CUSTOMER_UPDATE)) {
-                    openForm((Customer) (source.getValue()), source, MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
+                    openForm((Customer) (source.getValue()), source, MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
                 }
                 //</editor-fold>
 
@@ -271,12 +271,12 @@ public class Table_Customer extends Table_GEN<Customer> {
                 if (action.equals(ACTION_CUSTOMER_BUSSINES_TYPE)) {
                     showCBTForm(
                             (Customer) source.getValue(),
-                            MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE));
+                            MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE));
                 }
                 //</editor-fold>
 
                 //<editor-fold defaultstate="collapsed" desc="ACTION_CRM_ACTIVE_PROCESSES">
-                if (action.equals(ACTION_CRM_ACTIVE_PROCESSES) && MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
+                if (action.equals(ACTION_CRM_ACTIVE_PROCESSES) && MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                     Customer c = (Customer) source.getValue();
                     if (DS.getCRMController().getCRM_Processes(c, false, null, null) == null
                             || DS.getCRMController().getCRM_Processes(c, false, null, null).size() < 1) {
@@ -301,7 +301,7 @@ public class Table_Customer extends Table_GEN<Customer> {
                                 530, 830, Unit.PIXELS,
                                 "img/crm/crm-case-new.png", "Save",
                                 ccf.getClickListener(), 253, 300,
-                                MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE))
+                                MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE))
                         );
 
                     } catch (NullPointerException | IllegalArgumentException e) {
@@ -341,7 +341,7 @@ public class Table_Customer extends Table_GEN<Customer> {
     }
 
     private void openForm(Customer c, Table source, boolean permitted) {
-        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
+        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
             Form_Customer cf = new Form_Customer(
                     c,
                     () -> {

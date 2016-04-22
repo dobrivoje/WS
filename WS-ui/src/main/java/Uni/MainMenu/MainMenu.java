@@ -301,7 +301,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CUST_DATA_MANAG_NEW_CUST:
-                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                             navigator.navigateTo(View_Customers.class.getSimpleName());
 
                             Form_Customer cf = new Form_Customer(false);
@@ -320,7 +320,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CUST_DATA_MANAG_NEW_CBT:
-                        if (MyUI.get().isPermitted(Roles.P_WS_CUSTOMERS_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
 
                             Form_RELCBT rcbtf = new Form_RELCBT(false);
 
@@ -346,7 +346,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_NEW_SALE:
-                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                             Form_CRMSell csf = new Form_CRMSell(MyUI.get().getLoggedSalesman());
 
                             getUI().addWindow(new WindowForm3(
@@ -367,7 +367,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_CASE:
-                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
 
                             Form_CRMCase ccf = new Form_CRMCase(MyUI.get().getLoggedSalesman(), true);
 
@@ -385,7 +385,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_PROCESS:
-                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                             try {
                                 Form_CRMProcess cpf = new Form_CRMProcess(MyUI.get().getLoggedSalesman());
 
@@ -405,7 +405,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case CRM_MANAG_NEW_SALESMAN_CUST_REL:
-                        if (MyUI.get().hasRole(Roles.R_WS_CRM_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_CRM_MAINTENANCE)) {
                             Form_SCR scf = new Form_SCR(false);
 
                             getUI().addWindow(new WindowForm3(
@@ -430,7 +430,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case FS_DATA_MANAG_NEW_FS:
-                        if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_FS_MAINTENANCE)) {
                             navigator.navigateTo(View_FS.class.getSimpleName());
 
                             Form_FS fof = new Form_FS(false);
@@ -449,7 +449,7 @@ public class MainMenu extends CssLayout {
                         break;
 
                     case FS_DATA_MANAG_NEW_FS_OWNER:
-                        if (MyUI.get().isPermitted(Roles.P_WS_FS_MAINTENANCE)) {
+                        if (MyUI.get().hasRole(Roles.R_FS_MAINTENANCE)) {
 
                             Form_FSOwner fof = new Form_FSOwner(false);
 
