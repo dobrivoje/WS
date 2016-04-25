@@ -5,7 +5,7 @@
  */
 package Tables;
 
-import Gallery.IDocumentGallery;
+import Gallery.common.IDocumentGallery;
 import Gallery.Image.FS.CustomerFuelStationsGallery;
 import Forms.FSM.Form_FS;
 import Forms.FSM.Form_FSOwner;

@@ -67,9 +67,9 @@
             <version>2.0.6-Beta</version>
         </dependency>
         <dependency>
-            <groupId>com.github.dobrivoje</groupId>
-            <artifactId>utils</artifactId>
-            <version>1.5.4</version>
+            <groupId>org.superbapps</groupId>
+            <artifactId>utils-all</artifactId>
+            <version>1.6.1</version>
         </dependency>
     </dependencies>
     

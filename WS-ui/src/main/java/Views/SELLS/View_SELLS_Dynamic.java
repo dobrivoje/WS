@@ -11,4 +11,5 @@ public class View_SELLS_Dynamic extends View_Dashboard {
     public View_SELLS_Dynamic() {
         super("Information System Sells Dynamics");
     }
+    
 }

@@ -7,7 +7,7 @@ package Trees;
 
 import Forms.FSM.Form_FSOwner;
 import Gallery.Image.FS.CustomerFuelStationsGallery;
-import Gallery.IDocumentGallery;
+import Gallery.common.IDocumentGallery;
 import Trees.CRM.Tree_CRMSingleCase;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Notification;

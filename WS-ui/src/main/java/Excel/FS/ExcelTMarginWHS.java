@@ -3,7 +3,7 @@ package Excel.FS;
 import db.ent.TMarginWHS;
 import org.apache.poi.ss.usermodel.Row;
 import org.superbapps.utils.excel.ExcelDobri;
-import static org.superbapps.utils.excel.IExcelSupport.resultList;
+import static org.superbapps.utils.excel.IExcelSupport.RESULTLIST;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,7 +24,7 @@ public class ExcelTMarginWHS extends ExcelDobri {
      */
     public ExcelTMarginWHS(String filePath) throws Exception {
         super(filePath, 2, (Row r) -> {
-            resultList.add(new TMarginWHS(
+            RESULTLIST.add(new TMarginWHS(
                     r.getCell(0).getStringCellValue(),
                     r.getCell(1).getStringCellValue(),
                     r.getCell(2).getStringCellValue(),

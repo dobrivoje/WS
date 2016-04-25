@@ -5,9 +5,8 @@
  */
 package Gallery.Image.FS;
 
-import Gallery.Image.DocImg;
-import Gallery.Image.ImageGallery;
-import Gallery.Notif;
+import Gallery.common.AGallery;
+import Gallery.common.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
@@ -43,7 +42,7 @@ import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
  *
  * @author root
  */
-public class FSImageGallery extends ImageGallery<Fuelstation> {
+public class FSImageGallery extends AGallery<Fuelstation> {
 
     public FSImageGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
         super(ui, refreshVisualContainer);
@@ -78,17 +77,17 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
 
         imageUploader.addFinishedListener((Upload.FinishedEvent event) -> {
             notif.setMsg(event.getFilename());
-            
+
             Document newDocument;
             try {
                 if (new File(absPath + event.getFilename()).length() < 1200L) {
                     throw new Exception("File Size Too Small !");
                 }
-                
+
                 if (event.getFilename().trim().isEmpty()) {
                     throw new Exception("Nothing Selected !");
                 }
-                
+
                 newDocument = DS.getDocumentController().addNewDocument(
                         DS.getGalleryController().getDefaultImageGallery(),
                         event.getFilename(),
@@ -97,13 +96,13 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
                         new Date(),
                         docType
                 );
-                
+
                 int priority = DS.getDocumentController().getAllFSDocuments(fuelstation).size();
                 DS.getDocumentController().addNewFSDocument(
                         fuelstation, newDocument, new Date(), true, 1 + priority);
-                
+
                 refreshVisualContainer.refreshVisualContainer();
-                
+
                 Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
             } catch (Exception ex) {
                 Notification.show("Error.", "File Upload Failed !\n"
@@ -116,16 +115,16 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
         for (final DocImg di : getAllDocuments(fuelstation)) {
-            di.getImage().setHeight(40, Unit.PIXELS);
-            di.getImage().setWidth(40, Unit.PIXELS);
+            di.getBean1().setHeight(40, Unit.PIXELS);
+            di.getBean1().setWidth(40, Unit.PIXELS);
 
-            di.getImage().addClickListener((MouseEvents.ClickEvent event) -> {
+            di.getBean1().addClickListener((MouseEvents.ClickEvent event) -> {
                 if (event.isDoubleClick()) {
                     openDocumentGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(di.getImage());
+            FSLowerImagesCssLayout.addComponent(di.getBean1());
         }
         //</editor-fold>
 
@@ -175,16 +174,16 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
         for (final DocImg di : getAllDocuments(f)) {
-            di.getImage().setHeight(40, Unit.PIXELS);
-            di.getImage().setWidth(40, Unit.PIXELS);
-            di.getImage().setDescription("Click to open the image.");
+            di.getBean1().setHeight(40, Unit.PIXELS);
+            di.getBean1().setWidth(40, Unit.PIXELS);
+            di.getBean1().setDescription("Click to open the image.");
 
-            di.getImage().addClickListener((MouseEvents.ClickEvent event) -> {
+            di.getBean1().addClickListener((MouseEvents.ClickEvent event) -> {
                 VL_MainImage.removeAllComponents();
-                Image ni = new Image(null, di.getImage().getSource());
+                Image ni = new Image(null, di.getBean1().getSource());
                 ni.setHeight(97, Unit.PERCENTAGE);
                 ni.setWidth(97, Unit.PERCENTAGE);
-                
+
                 ni.setDescription("Double click to make this image default for this FS.");
                 ni.addClickListener((MouseEvents.ClickEvent event1) -> {
                     if (event1.isDoubleClick()) {
@@ -194,18 +193,18 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
                                 "Yes",
                                 "No!",
                                 new ConfirmDialog.Listener() {
-                                    @Override
-                                    public void onClose(ConfirmDialog dialog) {
-                                        if (dialog.isConfirmed()) {
-                                            try {
-                                                DS.getDocumentController().setDefaultFSImage(f, di.getDoc());
-                                                refreshVisualContainer.refreshVisualContainer();
-                                            } catch (Exception ex) {
-                                                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                                            }
-                                        }
+                            @Override
+                            public void onClose(ConfirmDialog dialog) {
+                                if (dialog.isConfirmed()) {
+                                    try {
+                                        DS.getDocumentController().setDefaultFSImage(f, di.getBean2());
+                                        refreshVisualContainer.refreshVisualContainer();
+                                    } catch (Exception ex) {
+                                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                                     }
-                                });
+                                }
+                            }
+                        });
                         d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
                         d.getCancelButton().setWidth(100, Unit.PIXELS);
                         d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -214,12 +213,12 @@ public class FSImageGallery extends ImageGallery<Fuelstation> {
                         d.setHeight("16em");
                     }
                 });
-                
+
                 VL_MainImage.addComponent(ni);
                 VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
             });
 
-            HL_Images.addComponent(di.getImage());
+            HL_Images.addComponent(di.getBean1());
         }
         //</editor-fold>
 

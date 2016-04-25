@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Gallery;
+package Gallery.common;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;

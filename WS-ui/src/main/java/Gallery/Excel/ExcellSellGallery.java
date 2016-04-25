@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Gallery.Image.FS;
+package Gallery.Excel;
 
 import Gallery.common.AGallery;
+import Gallery.Image.FS.DocImg;
 import Gallery.common.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
@@ -42,9 +43,9 @@ import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
  *
  * @author root
  */
-public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
+public class ExcellSellGallery extends AGallery<Fuelstation> {
 
-    public CustomerFuelStationsGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
+    public ExcellSellGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
         super(ui, refreshVisualContainer);
     }
 
@@ -133,7 +134,7 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
                     DS.getDocumentController().addNewFSDocument(
                             f, newDocument, new Date(), true, 1 + priority);
 
-                    CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
+                    ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
 
                     Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
                 } catch (Exception ex) {
@@ -179,7 +180,7 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="openDocumentGalleryWindow">
     @Override
-    public void openDocumentGalleryWindow(String caption, Fuelstation f) {
+    public void openDocumentGalleryWindow(String caption, Fuelstation tm) {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 
@@ -201,7 +202,7 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
         VL_Root.setComponentAlignment(HL_Footer, Alignment.MIDDLE_CENTER);
 
         //<editor-fold defaultstate="collapsed" desc="Glavna slika">
-        Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
+        Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(tm).getAbsolutePath(true))));
         defaultImage.setHeight(97, Unit.PERCENTAGE);
         defaultImage.setWidth(97, Unit.PERCENTAGE);
 
@@ -210,7 +211,7 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
-        for (final DocImg di : getAllDocuments(f)) {
+        for (final DocImg di : getAllDocuments(tm)) {
             di.getBean1().setHeight(40, Unit.PIXELS);
             di.getBean1().setWidth(40, Unit.PIXELS);
             di.getBean1().setDescription("Click to open the image.");
@@ -238,8 +239,8 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
                                     public void onClose(ConfirmDialog dialog) {
                                         if (dialog.isConfirmed()) {
                                             try {
-                                                DS.getDocumentController().setDefaultFSImage(f, di.getBean2());
-                                                CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
+                                                DS.getDocumentController().setDefaultFSImage(tm, di.getBean2());
+                                                ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
                                             } catch (Exception ex) {
                                                 Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                                             }
@@ -271,10 +272,10 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
     @Override
-    public List<DocImg> getAllDocuments(Fuelstation f) {
+    public List<DocImg> getAllDocuments(Fuelstation tm) {
         List<DocImg> LI = new ArrayList<>();
 
-        for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
+        for (Document d : DS.getDocumentController().getAllFSDocuments(tm)) {
             if (ImageTypes.contains(d.getName())) {
                 FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
 

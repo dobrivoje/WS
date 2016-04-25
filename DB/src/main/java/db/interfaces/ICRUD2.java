@@ -10,6 +10,7 @@ import java.util.List;
 /**
  *
  * @author root
+ * @param <T>
  */
 public interface ICRUD2<T> extends ICRUD<T>, IDelete {
 

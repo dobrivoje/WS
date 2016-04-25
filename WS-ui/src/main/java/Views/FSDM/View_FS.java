@@ -3,7 +3,7 @@ package Views.FSDM;
 import Forms.FSM.Form_FSOwner;
 import Forms.FSPROP.Form_FSProp;
 import Gallery.Image.FS.CustomerFuelStationsGallery;
-import Gallery.IDocumentGallery;
+import Gallery.common.IDocumentGallery;
 import Main.MyUI;
 import static Main.MyUI.DS;
 import static Uni.MainMenu.MenuDefinitions.FS_DATA_MANAG_NEW_FS_OWNER;

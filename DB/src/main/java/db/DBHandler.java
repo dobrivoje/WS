@@ -2329,8 +2329,10 @@ public class DBHandler {
             rollBackTransaction("New List of TMarginWHS Addition Failed.\nReason : " + ex.getMessage());
         }
     }
-
     //</editor-fold>
+    
+    //</editor-fold>
+
     public synchronized List<Date> checkDates(Date dateFrom, Date dateTo) {
         Dates d = new Dates(-11);
 
