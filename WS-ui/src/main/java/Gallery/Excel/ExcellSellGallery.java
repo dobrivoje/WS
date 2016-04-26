@@ -6,7 +6,6 @@
 package Gallery.Excel;
 
 import Gallery.common.AGallery;
-import Gallery.Image.FS.DocImg;
 import Gallery.common.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
@@ -22,16 +21,14 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
 import db.ent.Document;
-import db.ent.Fuelstation;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.vaadin.dialogs.ConfirmDialog;
 import static Main.MyUI.DS;
-import org.superbapps.utils.common.Enums.ImageTypes;
+import db.ent.TMarginWHS;
+import java.util.stream.Collectors;
 import org.superbapps.utils.common.os.OS;
 import org.superbapps.utils.translators.CharsAdapter;
 import org.superbapps.utils.vaadin.MyWindows.MyWindow;
@@ -43,7 +40,7 @@ import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
  *
  * @author root
  */
-public class ExcellSellGallery extends AGallery<Fuelstation> {
+public class ExcellSellGallery extends AGallery<TMarginWHS> {
 
     public ExcellSellGallery(UI ui, IRefreshVisualContainer refreshVisualContainer) {
         super(ui, refreshVisualContainer);
@@ -51,21 +48,18 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="createDocument">
     @Override
-    public Image createDocument(Fuelstation f, float height, float width) {
-        Document defaultImage = DS.getDocumentController().getDefaultFSImage(f);
+    public Image createDocument(TMarginWHS tmwhs, float height, float width) {
+        Document defaultDoc = DS.getDocumentController().getByID(tmwhs.getId().longValue());
 
         Image image;
 
         try {
-            image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
-            image.setDescription("Double click to open\nan Image Gallery.");
+            image = new Image(null, new FileResource(new File(defaultDoc.getAbsolutePath(true))));
+            image.setDescription("Double click to open\nan Gallery.");
 
-            image.addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
-                    }
+            image.addClickListener((MouseEvents.ClickEvent event) -> {
+                if (event.isDoubleClick()) {
+                    openDocumentGalleryWindow("Document - ", tmwhs);
                 }
             });
         } catch (Exception e) {
@@ -81,12 +75,12 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="createDocumentGallery">
     @Override
-    public VerticalLayout createDocumentGallery(Fuelstation f, boolean uploaderOnForm) {
+    public VerticalLayout createDocumentGallery(TMarginWHS tmwhs, boolean uploaderOnForm) {
         final String imgGalleryLoc = DS.getGalleryController().getDefaultImageGallery().getStoreLocation();
         final String docType = DS.getDocumentTypeController().getImageDocumentType().getDocType();
         final Notif notif = new Notif();
 
-        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()) + OS.getSeparator() + docType + OS.getSeparator();
+        final String absPath = imgGalleryLoc + CharsAdapter.safeAdapt(tmwhs.getDocumentNo()) + OS.getSeparator() + docType + OS.getSeparator();
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj glavni layout">
         VerticalLayout rootLayout = new VerticalLayout();
@@ -97,13 +91,13 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
         UploadReceiver ur = new UploadReceiver(null,
                 imgGalleryLoc
                 //adaptiraj filename tako da sadrži samo slova eng. alfabeta !
-                + CharsAdapter.safeAdapt(f.getName())
+                + CharsAdapter.safeAdapt(tmwhs.getDocumentNo())
                 + OS.getSeparator()
                 + docType
                 + OS.getSeparator()
         );
         // proveri da li postoji direktorijum sa imenom stanice :
-        ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()));
+        ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(tmwhs.getDocumentNo()));
         final Upload imageUploader = new Upload(null, ur);
 
         imageUploader.addFinishedListener(new Upload.FinishedListener() {
@@ -113,10 +107,6 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
 
                 Document newDocument;
                 try {
-                    if (new File(absPath + event.getFilename()).length() < 1200L) {
-                        throw new Exception("File Size Too Small !");
-                    }
-
                     if (event.getFilename().trim().isEmpty()) {
                         throw new Exception("Nothing Selected !");
                     }
@@ -125,14 +115,13 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
                             DS.getGalleryController().getDefaultImageGallery(),
                             event.getFilename(),
                             null,
-                            CharsAdapter.safeAdapt(f.getName()),
+                            CharsAdapter.safeAdapt(tmwhs.getDocumentNo()),
                             new Date(),
                             docType
                     );
 
-                    int priority = DS.getDocumentController().getAllFSDocuments(f).size();
-                    DS.getDocumentController().addNewFSDocument(
-                            f, newDocument, new Date(), true, 1 + priority);
+                    // int priority = DS.getDocumentController().getAllFSDocuments(tmwhs).size();
+                    DS.getDocumentController().addNew(newDocument);
 
                     ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
 
@@ -146,27 +135,25 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
         );
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
+        //<editor-fold defaultstate="collapsed" desc="Kreiraj footer sa ikonicama excel fajlova ako ih ima">
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
-        for (final DocImg di : getAllDocuments(f)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
+        Image excelImg = new Image(null, new ThemeResource("img/excel1.png"));
+        excelImg.setHeight(40, Unit.PIXELS);
+        excelImg.setWidth(40, Unit.PIXELS);
 
-            di.getBean1().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
-                    }
+        for (final DocFile df : getAllDocuments(tmwhs)) {
+            excelImg.addClickListener((MouseEvents.ClickEvent event) -> {
+                if (event.isDoubleClick()) {
+                    openDocumentGalleryWindow("Excel Document - " + tmwhs.getDocumentNo(), tmwhs);
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(di.getBean1());
+            FSLowerImagesCssLayout.addComponent(excelImg);
         }
         //</editor-fold>
 
-        rootLayout.addComponents(super.createMainDocument(createDocument(f, 200, 200)));
+        rootLayout.addComponents(super.createMainDocument(createDocument(tmwhs, 200, 200)));
 
         if (uploaderOnForm) {
             rootLayout.addComponents(imageUploader);
@@ -180,7 +167,7 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="openDocumentGalleryWindow">
     @Override
-    public void openDocumentGalleryWindow(String caption, Fuelstation tm) {
+    public void openDocumentGalleryWindow(String caption, TMarginWHS tm) {
         VerticalLayout VL_Root = new VerticalLayout();
         VL_Root.setSpacing(true);
 
@@ -202,67 +189,21 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
         VL_Root.setComponentAlignment(HL_Footer, Alignment.MIDDLE_CENTER);
 
         //<editor-fold defaultstate="collapsed" desc="Glavna slika">
-        Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(tm).getAbsolutePath(true))));
-        defaultImage.setHeight(97, Unit.PERCENTAGE);
-        defaultImage.setWidth(97, Unit.PERCENTAGE);
+        Image excelImage = new Image(null, new ThemeResource("img/excel1.png"));
+        excelImage.setHeight(97, Unit.PERCENTAGE);
+        excelImage.setWidth(97, Unit.PERCENTAGE);
 
-        VL_MainImage.addComponent(defaultImage);
-        VL_MainImage.setComponentAlignment(defaultImage, Alignment.MIDDLE_CENTER);
+        VL_MainImage.addComponent(excelImage);
+        VL_MainImage.setComponentAlignment(excelImage, Alignment.MIDDLE_CENTER);
         //</editor-fold>
 
-        //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
-        for (final DocImg di : getAllDocuments(tm)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
-            di.getBean1().setDescription("Click to open the image.");
+        //<editor-fold defaultstate="collapsed" desc="Sve sličice ostalih dokumenata.">
+        for (final DocFile df : getAllDocuments(tm)) {
+            excelImage.setHeight(40, Unit.PIXELS);
+            excelImage.setWidth(40, Unit.PIXELS);
+            excelImage.setDescription("Click to open an excel.");
 
-            di.getBean1().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    VL_MainImage.removeAllComponents();
-                    Image ni = new Image(null, di.getBean1().getSource());
-                    ni.setHeight(97, Unit.PERCENTAGE);
-                    ni.setWidth(97, Unit.PERCENTAGE);
-
-                    ni.setDescription("Double click to make this image default for this FS.");
-                    ni.addClickListener(new MouseEvents.ClickListener() {
-                        @Override
-                        public void click(MouseEvents.ClickEvent event) {
-                            if (event.isDoubleClick()) {
-                                ConfirmDialog d = ConfirmDialog.show(getUI(),
-                                        "Default FS Gallery Image",
-                                        "Do you want this selected image to be</br> the FS's default one ?",
-                                        "Yes",
-                                        "No!",
-                                        new ConfirmDialog.Listener() {
-                                    @Override
-                                    public void onClose(ConfirmDialog dialog) {
-                                        if (dialog.isConfirmed()) {
-                                            try {
-                                                DS.getDocumentController().setDefaultFSImage(tm, di.getBean2());
-                                                ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
-                                            } catch (Exception ex) {
-                                                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                                            }
-                                        }
-                                    }
-                                });
-                                d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
-                                d.getCancelButton().setWidth(100, Unit.PIXELS);
-                                d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
-                                d.getOkButton().setWidth(100, Unit.PIXELS);
-                                d.setContentMode(ConfirmDialog.ContentMode.HTML);
-                                d.setHeight("16em");
-                            }
-                        }
-                    });
-
-                    VL_MainImage.addComponent(ni);
-                    VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
-                }
-            });
-
-            HL_Images.addComponent(di.getBean1());
+            HL_Images.addComponent(excelImage);
         }
         //</editor-fold>
 
@@ -272,18 +213,17 @@ public class ExcellSellGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
     @Override
-    public List<DocImg> getAllDocuments(Fuelstation tm) {
-        List<DocImg> LI = new ArrayList<>();
+    public List<DocFile> getAllDocuments(TMarginWHS tm) {
+        List LI = new ArrayList<>();
 
-        for (Document d : DS.getDocumentController().getAllFSDocuments(tm)) {
-            if (ImageTypes.contains(d.getName())) {
-                FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
+        for (Document d : DS.getDocumentController().getAll().stream()
+                .filter((Document p) -> p.getName().contains("xls"))
+                .collect(Collectors.toList())) {
 
-                if (fr.getSourceFile().exists()) {
-                    final Image image = new Image(null, fr);
+            FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
 
-                    LI.add(new DocImg(image, d));
-                }
+            if (fr.getSourceFile().exists()) {
+                LI.add(new DocFile(fr.getSourceFile(), d));
             }
         }
 

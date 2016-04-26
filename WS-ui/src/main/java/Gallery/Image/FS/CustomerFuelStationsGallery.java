@@ -59,12 +59,9 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
             image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
             image.setDescription("Double click to open\nan Image Gallery.");
 
-            image.addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
-                    }
+            image.addClickListener((MouseEvents.ClickEvent event) -> {
+                if (event.isDoubleClick()) {
+                    openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
             });
         } catch (Exception e) {
@@ -105,67 +102,60 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
         ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(f.getName()));
         final Upload imageUploader = new Upload(null, ur);
 
-        imageUploader.addFinishedListener(new Upload.FinishedListener() {
-            @Override
-            public void uploadFinished(Upload.FinishedEvent event) {
-                notif.setMsg(event.getFilename());
+        imageUploader.addFinishedListener((Upload.FinishedEvent event) -> {
+            notif.setMsg(event.getFilename());
 
-                Document newDocument;
-                try {
-                    if (new File(absPath + event.getFilename()).length() < 1200L) {
-                        throw new Exception("File Size Too Small !");
-                    }
-
-                    if (event.getFilename().trim().isEmpty()) {
-                        throw new Exception("Nothing Selected !");
-                    }
-
-                    newDocument = DS.getDocumentController().addNewDocument(
-                            DS.getGalleryController().getDefaultImageGallery(),
-                            event.getFilename(),
-                            null,
-                            CharsAdapter.safeAdapt(f.getName()),
-                            new Date(),
-                            docType
-                    );
-
-                    int priority = DS.getDocumentController().getAllFSDocuments(f).size();
-                    DS.getDocumentController().addNewFSDocument(
-                            f, newDocument, new Date(), true, 1 + priority);
-
-                    CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
-
-                    Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error.", "File Upload Failed !\n"
-                            + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            Document newDocument;
+            try {
+                if (new File(absPath + event.getFilename()).length() < 1200L) {
+                    throw new Exception("File Size Too Small !");
                 }
+
+                if (event.getFilename().trim().isEmpty()) {
+                    throw new Exception("Nothing Selected !");
+                }
+
+                newDocument = DS.getDocumentController().addNewDocument(
+                        DS.getGalleryController().getDefaultImageGallery(),
+                        event.getFilename(),
+                        null,
+                        CharsAdapter.safeAdapt(f.getName()),
+                        new Date(),
+                        docType
+                );
+
+                int priority = DS.getDocumentController().getAllFSDocuments(f).size();
+                DS.getDocumentController().addNewFSDocument(
+                        f, newDocument, new Date(), true, 1 + priority);
+
+                CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
+
+                Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error.", "File Upload Failed !\n"
+                        + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
-        }
-        );
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
         for (final DocImg di : getAllDocuments(f)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
+            di.getBean().setHeight(40, Unit.PIXELS);
+            di.getBean().setWidth(40, Unit.PIXELS);
 
-            di.getBean1().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    if (event.isDoubleClick()) {
-                        openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
-                    }
+            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
+                if (event.isDoubleClick()) {
+                    openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(di.getBean1());
+            FSLowerImagesCssLayout.addComponent(di.getBean());
         }
         //</editor-fold>
 
-        rootLayout.addComponents(super.createMainDocument(createDocument(f, 200, 200)));
+        rootLayout.addComponents(createMainDocument(createDocument(f, 200, 200)));
 
         if (uploaderOnForm) {
             rootLayout.addComponents(imageUploader);
@@ -211,57 +201,51 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
         for (final DocImg di : getAllDocuments(f)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
-            di.getBean1().setDescription("Click to open the image.");
+            di.getBean().setHeight(40, Unit.PIXELS);
+            di.getBean().setWidth(40, Unit.PIXELS);
+            di.getBean().setDescription("Click to open the image.");
 
-            di.getBean1().addClickListener(new MouseEvents.ClickListener() {
-                @Override
-                public void click(MouseEvents.ClickEvent event) {
-                    VL_MainImage.removeAllComponents();
-                    Image ni = new Image(null, di.getBean1().getSource());
-                    ni.setHeight(97, Unit.PERCENTAGE);
-                    ni.setWidth(97, Unit.PERCENTAGE);
+            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
+                VL_MainImage.removeAllComponents();
+                Image ni = new Image(null, di.getBean().getSource());
+                ni.setHeight(97, Unit.PERCENTAGE);
+                ni.setWidth(97, Unit.PERCENTAGE);
 
-                    ni.setDescription("Double click to make this image default for this FS.");
-                    ni.addClickListener(new MouseEvents.ClickListener() {
-                        @Override
-                        public void click(MouseEvents.ClickEvent event) {
-                            if (event.isDoubleClick()) {
-                                ConfirmDialog d = ConfirmDialog.show(getUI(),
-                                        "Default FS Gallery Image",
-                                        "Do you want this selected image to be</br> the FS's default one ?",
-                                        "Yes",
-                                        "No!",
-                                        new ConfirmDialog.Listener() {
-                                    @Override
-                                    public void onClose(ConfirmDialog dialog) {
-                                        if (dialog.isConfirmed()) {
-                                            try {
-                                                DS.getDocumentController().setDefaultFSImage(f, di.getBean2());
-                                                CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
-                                            } catch (Exception ex) {
-                                                Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                                            }
-                                        }
+                ni.setDescription("Double click to make this image default for this FS.");
+                ni.addClickListener((MouseEvents.ClickEvent event1) -> {
+                    if (event1.isDoubleClick()) {
+                        ConfirmDialog d = ConfirmDialog.show(getUI(),
+                                "Default FS Gallery Image",
+                                "Do you want this selected image to be</br> the FS's default one ?",
+                                "Yes",
+                                "No!",
+                                new ConfirmDialog.Listener() {
+                            @Override
+                            public void onClose(ConfirmDialog dialog) {
+                                if (dialog.isConfirmed()) {
+                                    try {
+                                        DS.getDocumentController().setDefaultFSImage(f, di.getDocument());
+                                        CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
+                                    } catch (Exception ex) {
+                                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                                     }
-                                });
-                                d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
-                                d.getCancelButton().setWidth(100, Unit.PIXELS);
-                                d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
-                                d.getOkButton().setWidth(100, Unit.PIXELS);
-                                d.setContentMode(ConfirmDialog.ContentMode.HTML);
-                                d.setHeight("16em");
+                                }
                             }
-                        }
-                    });
+                        });
+                        d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
+                        d.getCancelButton().setWidth(100, Unit.PIXELS);
+                        d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
+                        d.getOkButton().setWidth(100, Unit.PIXELS);
+                        d.setContentMode(ConfirmDialog.ContentMode.HTML);
+                        d.setHeight("16em");
+                    }
+                });
 
-                    VL_MainImage.addComponent(ni);
-                    VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
-                }
+                VL_MainImage.addComponent(ni);
+                VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
             });
 
-            HL_Images.addComponent(di.getBean1());
+            HL_Images.addComponent(di.getBean());
         }
         //</editor-fold>
 

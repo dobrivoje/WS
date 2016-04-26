@@ -5,20 +5,20 @@
  */
 package Gallery.common;
 
+import db.ent.Document;
+
 /**
  *
  * @author root
- * @param <B1>
- * @param <B2>
  */
-public interface IDocBeans<B1, B2> {
+public interface IDocBeans<T> {
 
-    void setBean1(B1 bean);
+    void setBean(T bean);
 
-    B1 getBean1();
+    T getBean();
 
-    void setBean2(B2 bean);
+    void setDocument(Document bean);
 
-    B2 getBean2();
+    Document getDocument();
 
 }

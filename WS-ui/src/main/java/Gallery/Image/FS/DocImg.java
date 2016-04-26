@@ -13,7 +13,7 @@ import Gallery.common.IDocBeans;
  *
  * @author root
  */
-public class DocImg implements IDocBeans<Image, Document> {
+public class DocImg implements IDocBeans<Image> {
 
     private Image image;
     private Document doc;
@@ -24,22 +24,22 @@ public class DocImg implements IDocBeans<Image, Document> {
     }
 
     @Override
-    public Document getBean2() {
+    public Document getDocument() {
         return doc;
     }
 
     @Override
-    public void setBean1(Image bean) {
+    public void setBean(Image bean) {
         this.image = bean;
     }
 
     @Override
-    public Image getBean1() {
+    public Image getBean() {
         return image;
     }
 
     @Override
-    public void setBean2(Document bean) {
+    public void setDocument(Document bean) {
         this.doc = bean;
     }
 };

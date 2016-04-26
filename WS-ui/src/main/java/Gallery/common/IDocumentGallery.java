@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * Interfejs za kreiranje galerije slika za univerzalni tip podataka.
+ * Interfejs za kreiranje galerije za univerzalni tip podataka.
  *
  * @param <T>
  */

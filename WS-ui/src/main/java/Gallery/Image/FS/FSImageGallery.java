@@ -115,16 +115,16 @@ public class FSImageGallery extends AGallery<Fuelstation> {
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
         for (final DocImg di : getAllDocuments(fuelstation)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
+            di.getBean().setHeight(40, Unit.PIXELS);
+            di.getBean().setWidth(40, Unit.PIXELS);
 
-            di.getBean1().addClickListener((MouseEvents.ClickEvent event) -> {
+            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
                 if (event.isDoubleClick()) {
                     openDocumentGalleryWindow("Fuelstation - " + fuelstation.getName(), fuelstation);
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(di.getBean1());
+            FSLowerImagesCssLayout.addComponent(di.getBean());
         }
         //</editor-fold>
 
@@ -174,13 +174,13 @@ public class FSImageGallery extends AGallery<Fuelstation> {
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
         for (final DocImg di : getAllDocuments(f)) {
-            di.getBean1().setHeight(40, Unit.PIXELS);
-            di.getBean1().setWidth(40, Unit.PIXELS);
-            di.getBean1().setDescription("Click to open the image.");
+            di.getBean().setHeight(40, Unit.PIXELS);
+            di.getBean().setWidth(40, Unit.PIXELS);
+            di.getBean().setDescription("Click to open the image.");
 
-            di.getBean1().addClickListener((MouseEvents.ClickEvent event) -> {
+            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
                 VL_MainImage.removeAllComponents();
-                Image ni = new Image(null, di.getBean1().getSource());
+                Image ni = new Image(null, di.getBean().getSource());
                 ni.setHeight(97, Unit.PERCENTAGE);
                 ni.setWidth(97, Unit.PERCENTAGE);
 
@@ -197,7 +197,7 @@ public class FSImageGallery extends AGallery<Fuelstation> {
                             public void onClose(ConfirmDialog dialog) {
                                 if (dialog.isConfirmed()) {
                                     try {
-                                        DS.getDocumentController().setDefaultFSImage(f, di.getBean2());
+                                        DS.getDocumentController().setDefaultFSImage(f, di.getDocument());
                                         refreshVisualContainer.refreshVisualContainer();
                                     } catch (Exception ex) {
                                         Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
@@ -218,7 +218,7 @@ public class FSImageGallery extends AGallery<Fuelstation> {
                 VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
             });
 
-            HL_Images.addComponent(di.getBean1());
+            HL_Images.addComponent(di.getBean());
         }
         //</editor-fold>
 
