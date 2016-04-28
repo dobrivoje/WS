@@ -83,7 +83,7 @@ public class Table_FS extends Table_GEN<Fuelstation> {
                                 false,
                                 fof.getClickListener(),
                                 fof,
-                                IG.createMainDocument(IG.createDocument(f, 240, 240))
+                                IG.createMainDocLayout(IG.createDocument(f, 240, 240, false))
                         )
                 );
             });
@@ -105,7 +105,7 @@ public class Table_FS extends Table_GEN<Fuelstation> {
         });
 
         addGeneratedColumn("img", (final Table source, final Object row, Object column)
-                -> IG.createDocument((Fuelstation) row, 80, 80)
+                -> IG.createDocument((Fuelstation) row, 80, 80, false)
         );
 
         setVisibleColumns("name", "options", "img", "FK_City", "address");
@@ -176,7 +176,7 @@ public class Table_FS extends Table_GEN<Fuelstation> {
                                         false,
                                         cf.getClickListener(),
                                         cf,
-                                        IG.createMainDocument(IG.createDocument(f, 240, 240))
+                                        IG.createMainDocLayout(IG.createDocument(f, 240, 240, false))
                                 )
                         );
                     }

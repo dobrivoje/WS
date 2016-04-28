@@ -7,13 +7,13 @@ package Gallery.Image.FS;
 
 import com.vaadin.ui.Image;
 import db.ent.Document;
-import Gallery.common.IDocBeans;
+import Gallery.common.IDocBean;
 
 /**
  *
  * @author root
  */
-public class DocImg implements IDocBeans<Image> {
+public class DocImg implements IDocBean<Image> {
 
     private Image image;
     private Document doc;
@@ -35,6 +35,11 @@ public class DocImg implements IDocBeans<Image> {
 
     @Override
     public Image getBean() {
+        return image;
+    }
+
+    @Override
+    public Image getImageRepresentation() {
         return image;
     }
 

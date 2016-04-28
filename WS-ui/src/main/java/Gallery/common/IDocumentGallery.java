@@ -22,9 +22,10 @@ public interface IDocumentGallery<T> {
      * @param customObject
      * @param height
      * @param width
+     * @param defaultDocument
      * @return
      */
-    Component createDocument(T customObject, float height, float width);
+    Component createDocument(T customObject, float height, float width, boolean defaultDocument);
 
     /**
      * <p>
@@ -34,7 +35,7 @@ public interface IDocumentGallery<T> {
      * @param component
      * @return
      */
-    VerticalLayout createMainDocument(Component component);
+    VerticalLayout createMainDocLayout(Component component);
 
     /**
      * <p>

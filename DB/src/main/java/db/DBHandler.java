@@ -616,7 +616,7 @@ public class DBHandler {
         }
     }
 
-    public void setFSDefaultImage(Fuelstation fuelstation, Document defaultFSImage) throws Exception {
+    public void setFSDefaultImage(Fuelstation fuelstation, Document docForFS) throws Exception {
         try {
             getEm().getTransaction().begin();
 
@@ -628,7 +628,7 @@ public class DBHandler {
             // odabranu sliku postavi kao podrazumevanu
             getEm().createNamedQuery("RelFSDocument.SetDefaultImage")
                     .setParameter("FK_IDFS", fuelstation)
-                    .setParameter("FK_IDD", defaultFSImage)
+                    .setParameter("FK_IDD", docForFS)
                     .executeUpdate();
 
             getEm().getTransaction().commit();

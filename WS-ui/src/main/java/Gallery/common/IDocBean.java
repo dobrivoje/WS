@@ -5,17 +5,20 @@
  */
 package Gallery.common;
 
+import com.vaadin.ui.Image;
 import db.ent.Document;
 
 /**
  *
  * @author root
  */
-public interface IDocBeans<T> {
+public interface IDocBean<T> {
 
     void setBean(T bean);
 
     T getBean();
+    
+    Image getImageRepresentation();
 
     void setDocument(Document bean);
 

@@ -6,34 +6,27 @@
 package Gallery.Image.FS;
 
 import Gallery.common.AGallery;
+import Gallery.common.IDocBean;
 import Gallery.common.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
-import com.vaadin.ui.themes.ValoTheme;
 import db.ent.Document;
 import db.ent.Fuelstation;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.vaadin.dialogs.ConfirmDialog;
 import static Main.MyUI.DS;
+import java.util.ArrayList;
 import org.superbapps.utils.common.Enums.ImageTypes;
 import org.superbapps.utils.common.os.OS;
 import org.superbapps.utils.translators.CharsAdapter;
-import org.superbapps.utils.vaadin.MyWindows.MyWindow;
 import org.superbapps.utils.vaadin.Tables.IRefreshVisualContainer;
 import org.superbapps.utils.vaadin.Views.Layout_InlineCSS;
 import org.superbapps.utils.vaadin.files.uploader.UploadReceiver;
@@ -50,26 +43,22 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
 
     //<editor-fold defaultstate="collapsed" desc="createDocument">
     @Override
-    public Image createDocument(Fuelstation f, float height, float width) {
-        Document defaultImage = DS.getDocumentController().getDefaultFSImage(f);
-
-        Image image;
-
-        try {
-            image = new Image(null, new FileResource(new File(defaultImage.getAbsolutePath(true))));
-            image.setDescription("Double click to open\nan Image Gallery.");
-
-            image.addClickListener((MouseEvents.ClickEvent event) -> {
-                if (event.isDoubleClick()) {
-                    openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
-                }
-            });
-        } catch (Exception e) {
-            image = new Image(null, new ThemeResource("img/fs/1.png"));
-        }
+    public Image createDocument(Fuelstation f, float height, float width, boolean defaultDocument) {
+        DocFs dfs = new DocFs(f);
+        Image image = dfs.getImageRepresentation();
 
         image.setHeight(height, Unit.PIXELS);
         image.setWidth(width, Unit.PIXELS);
+        image.addClickListener((MouseEvents.ClickEvent event) -> {
+            if (event.isDoubleClick()) {
+                openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
+            }
+        });
+
+        if (defaultDocument) {
+            // DS.getDocumentController().setDefaultFSImage(f, di.getDocument());
+            setUpDefaultGalleryDocument(new DocFs(f, dfs.getDocument()));
+        }
 
         return image;
     }
@@ -141,21 +130,21 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
-        for (final DocImg di : getAllDocuments(f)) {
-            di.getBean().setHeight(40, Unit.PIXELS);
-            di.getBean().setWidth(40, Unit.PIXELS);
+        for (final Object di : getAllDocuments(f)) {
+            ((IDocBean) di).getImageRepresentation().setHeight(40, Unit.PIXELS);
+            ((IDocBean) di).getImageRepresentation().setWidth(40, Unit.PIXELS);
 
-            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
+            ((IDocBean) di).getImageRepresentation().addClickListener((MouseEvents.ClickEvent event) -> {
                 if (event.isDoubleClick()) {
                     openDocumentGalleryWindow("Fuelstation - " + f.getName(), f);
                 }
             });
 
-            FSLowerImagesCssLayout.addComponent(di.getBean());
+            FSLowerImagesCssLayout.addComponent(((IDocBean) di).getImageRepresentation());
         }
         //</editor-fold>
 
-        rootLayout.addComponents(createMainDocument(createDocument(f, 200, 200)));
+        rootLayout.addComponents(createMainDocLayout(createDocument(f, 200, 200, false)));
 
         if (uploaderOnForm) {
             rootLayout.addComponents(imageUploader);
@@ -170,108 +159,36 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
     //<editor-fold defaultstate="collapsed" desc="openDocumentGalleryWindow">
     @Override
     public void openDocumentGalleryWindow(String caption, Fuelstation f) {
-        VerticalLayout VL_Root = new VerticalLayout();
-        VL_Root.setSpacing(true);
-
-        final Window W = new MyWindow(caption, VL_Root, 0, 0);
-        W.setModal(true);
-        W.setStyleName(Reindeer.WINDOW_BLACK);
-
-        final VerticalLayout VL_MainImage = new VerticalLayout();
-        VL_MainImage.setSizeFull();
-
-        final HorizontalLayout HL_Footer = new HorizontalLayout();
-        final HorizontalLayout HL_Images = new HorizontalLayout();
-        HL_Footer.addComponents(HL_Images);
-
-        // na kraj dodaj i new VerticalLayout(), da sličice ne bi otišle na "dno" footer-a,...
-        VL_Root.addComponents(VL_MainImage, HL_Footer, new VerticalLayout());
-        VL_Root.setExpandRatio(VL_MainImage, 1);
-        VL_Root.setComponentAlignment(VL_MainImage, Alignment.MIDDLE_CENTER);
-        VL_Root.setComponentAlignment(HL_Footer, Alignment.MIDDLE_CENTER);
-
-        //<editor-fold defaultstate="collapsed" desc="Glavna slika">
-        Image defaultImage = new Image(null, new FileResource(new File(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true))));
-        defaultImage.setHeight(97, Unit.PERCENTAGE);
-        defaultImage.setWidth(97, Unit.PERCENTAGE);
-
-        VL_MainImage.addComponent(defaultImage);
-        VL_MainImage.setComponentAlignment(defaultImage, Alignment.MIDDLE_CENTER);
-        //</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Sve slike stanice.">
-        for (final DocImg di : getAllDocuments(f)) {
-            di.getBean().setHeight(40, Unit.PIXELS);
-            di.getBean().setWidth(40, Unit.PIXELS);
-            di.getBean().setDescription("Click to open the image.");
-
-            di.getBean().addClickListener((MouseEvents.ClickEvent event) -> {
-                VL_MainImage.removeAllComponents();
-                Image ni = new Image(null, di.getBean().getSource());
-                ni.setHeight(97, Unit.PERCENTAGE);
-                ni.setWidth(97, Unit.PERCENTAGE);
-
-                ni.setDescription("Double click to make this image default for this FS.");
-                ni.addClickListener((MouseEvents.ClickEvent event1) -> {
-                    if (event1.isDoubleClick()) {
-                        ConfirmDialog d = ConfirmDialog.show(getUI(),
-                                "Default FS Gallery Image",
-                                "Do you want this selected image to be</br> the FS's default one ?",
-                                "Yes",
-                                "No!",
-                                new ConfirmDialog.Listener() {
-                            @Override
-                            public void onClose(ConfirmDialog dialog) {
-                                if (dialog.isConfirmed()) {
-                                    try {
-                                        DS.getDocumentController().setDefaultFSImage(f, di.getDocument());
-                                        CustomerFuelStationsGallery.this.refreshVisualContainer.refreshVisualContainer();
-                                    } catch (Exception ex) {
-                                        Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                                    }
-                                }
-                            }
-                        });
-                        d.getCancelButton().setStyleName(ValoTheme.BUTTON_DANGER);
-                        d.getCancelButton().setWidth(100, Unit.PIXELS);
-                        d.getOkButton().setStyleName(ValoTheme.BUTTON_PRIMARY);
-                        d.getOkButton().setWidth(100, Unit.PIXELS);
-                        d.setContentMode(ConfirmDialog.ContentMode.HTML);
-                        d.setHeight("16em");
-                    }
-                });
-
-                VL_MainImage.addComponent(ni);
-                VL_MainImage.setComponentAlignment(ni, Alignment.MIDDLE_CENTER);
-            });
-
-            HL_Images.addComponent(di.getBean());
-        }
-        //</editor-fold>
-
-        UI.getCurrent().getUI().addWindow(W);
+        setMainImageFilePath(DS.getDocumentController().getDefaultFSImage(f).getAbsolutePath(true));
+        super.openDocumentGalleryWindow(caption, f);
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
+    //</editor-fold>
     @Override
-    public List<DocImg> getAllDocuments(Fuelstation f) {
-        List<DocImg> LI = new ArrayList<>();
+    protected void setUpDefaultGalleryDocument(IDocBean<Fuelstation> docFSBean) {
+        try {
+            DS.getDocumentController().setDefaultFSImage(docFSBean.getBean(), docFSBean.getDocument());
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public List getAllDocuments(Fuelstation f) {
+        List<IDocBean> LI = new ArrayList<>();
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
             if (ImageTypes.contains(d.getName())) {
                 FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
 
                 if (fr.getSourceFile().exists()) {
-                    final Image image = new Image(null, fr);
-
-                    LI.add(new DocImg(image, d));
+                    LI.add(new DocImg(new Image("", fr), d));
                 }
             }
         }
 
         return LI;
     }
-    //</editor-fold>
 
 }

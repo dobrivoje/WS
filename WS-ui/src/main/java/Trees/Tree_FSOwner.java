@@ -71,7 +71,7 @@ public class Tree_FSOwner extends CustomDateTree<Owner> {
                                             readOnly,
                                             crudForm.getClickListener(),
                                             crudForm,
-                                            IG.createMainDocument(IG.createDocument(owner.getFkIdFs(), 240, 240))
+                                            IG.createMainDocLayout(IG.createDocument(owner.getFkIdFs(), 240, 240, false))
                                     )
                             );
 

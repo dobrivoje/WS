@@ -43,8 +43,8 @@ public class View_FS extends VerticalLayout implements View {
 
     public View_FS() {
         //<editor-fold defaultstate="collapsed" desc="UI setup">
-        setSizeFull();
-        addStyleName("crud-view");
+        super.setSizeFull();
+        super.addStyleName("crud-view");
         VL.setSizeFull();
         VL.setMargin(true);
         VL.setSpacing(true);
@@ -142,7 +142,7 @@ public class View_FS extends VerticalLayout implements View {
                     false,
                     fof.getClickListener(),
                     fof,
-                    IG.createMainDocument(IG.createDocument(f, 240, 240))
+                    IG.createMainDocLayout(IG.createDocument(f, 240, 240, false))
             ));
         });
 

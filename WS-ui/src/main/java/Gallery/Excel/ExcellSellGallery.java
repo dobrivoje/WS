@@ -6,6 +6,7 @@
 package Gallery.Excel;
 
 import Gallery.common.AGallery;
+import Gallery.common.IDocBean;
 import Gallery.common.Notif;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
@@ -23,12 +24,10 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import db.ent.Document;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import static Main.MyUI.DS;
 import db.ent.TMarginWHS;
-import java.util.stream.Collectors;
 import org.superbapps.utils.common.os.OS;
 import org.superbapps.utils.translators.CharsAdapter;
 import org.superbapps.utils.vaadin.MyWindows.MyWindow;
@@ -48,7 +47,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
 
     //<editor-fold defaultstate="collapsed" desc="createDocument">
     @Override
-    public Image createDocument(TMarginWHS tmwhs, float height, float width) {
+    public Image createDocument(TMarginWHS tmwhs, float height, float width, boolean defaultDocument) {
         Document defaultDoc = DS.getDocumentController().getByID(tmwhs.getId().longValue());
 
         Image image;
@@ -100,39 +99,35 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         ur.checkAndMakeRootDir(imgGalleryLoc + CharsAdapter.safeAdapt(tmwhs.getDocumentNo()));
         final Upload imageUploader = new Upload(null, ur);
 
-        imageUploader.addFinishedListener(new Upload.FinishedListener() {
-            @Override
-            public void uploadFinished(Upload.FinishedEvent event) {
-                notif.setMsg(event.getFilename());
+        imageUploader.addFinishedListener((Upload.FinishedEvent event) -> {
+            notif.setMsg(event.getFilename());
 
-                Document newDocument;
-                try {
-                    if (event.getFilename().trim().isEmpty()) {
-                        throw new Exception("Nothing Selected !");
-                    }
-
-                    newDocument = DS.getDocumentController().addNewDocument(
-                            DS.getGalleryController().getDefaultImageGallery(),
-                            event.getFilename(),
-                            null,
-                            CharsAdapter.safeAdapt(tmwhs.getDocumentNo()),
-                            new Date(),
-                            docType
-                    );
-
-                    // int priority = DS.getDocumentController().getAllFSDocuments(tmwhs).size();
-                    DS.getDocumentController().addNew(newDocument);
-
-                    ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
-
-                    Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
-                } catch (Exception ex) {
-                    Notification.show("Error.", "File Upload Failed !\n"
-                            + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            Document newDocument;
+            try {
+                if (event.getFilename().trim().isEmpty()) {
+                    throw new Exception("Nothing Selected !");
                 }
+
+                newDocument = DS.getDocumentController().addNewDocument(
+                        DS.getGalleryController().getDefaultImageGallery(),
+                        event.getFilename(),
+                        null,
+                        CharsAdapter.safeAdapt(tmwhs.getDocumentNo()),
+                        new Date(),
+                        docType
+                );
+
+                // int priority = DS.getDocumentController().getAllFSDocuments(tmwhs).size();
+                DS.getDocumentController().addNew(newDocument);
+
+                ExcellSellGallery.this.refreshVisualContainer.refreshVisualContainer();
+
+                Notification.show("File name : ", notif.getMsg(), Notification.Type.HUMANIZED_MESSAGE);
+            } catch (Exception ex) {
+                Notification.show("Error.", "File Upload Failed !\n"
+                        + ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
-        }
-        );
+        });
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Kreiraj footer sa ikonicama excel fajlova ako ih ima">
@@ -142,7 +137,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         excelImg.setHeight(40, Unit.PIXELS);
         excelImg.setWidth(40, Unit.PIXELS);
 
-        for (final DocFile df : getAllDocuments(tmwhs)) {
+        for (final Object df : getAllDocuments(tmwhs)) {
             excelImg.addClickListener((MouseEvents.ClickEvent event) -> {
                 if (event.isDoubleClick()) {
                     openDocumentGalleryWindow("Excel Document - " + tmwhs.getDocumentNo(), tmwhs);
@@ -153,7 +148,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         }
         //</editor-fold>
 
-        rootLayout.addComponents(super.createMainDocument(createDocument(tmwhs, 200, 200)));
+        rootLayout.addComponents(super.createMainDocLayout(createDocument(tmwhs, 200, 200, false)));
 
         if (uploaderOnForm) {
             rootLayout.addComponents(imageUploader);
@@ -198,7 +193,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sve sličice ostalih dokumenata.">
-        for (final DocFile df : getAllDocuments(tm)) {
+        for (final Object df : getAllDocuments(tm)) {
             excelImage.setHeight(40, Unit.PIXELS);
             excelImage.setWidth(40, Unit.PIXELS);
             excelImage.setDescription("Click to open an excel.");
@@ -212,23 +207,15 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
-    @Override
-    public List<DocFile> getAllDocuments(TMarginWHS tm) {
-        List LI = new ArrayList<>();
-
-        for (Document d : DS.getDocumentController().getAll().stream()
-                .filter((Document p) -> p.getName().contains("xls"))
-                .collect(Collectors.toList())) {
-
-            FileResource fr = new FileResource(new File(d.getAbsolutePath(true)));
-
-            if (fr.getSourceFile().exists()) {
-                LI.add(new DocFile(fr.getSourceFile(), d));
-            }
-        }
-
-        return LI;
-    }
     //</editor-fold>
+    @Override
+    protected void setUpDefaultGalleryDocument(IDocBean<TMarginWHS> docBean) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List getAllDocuments(TMarginWHS customObject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
