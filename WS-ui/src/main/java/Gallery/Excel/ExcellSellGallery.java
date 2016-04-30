@@ -137,7 +137,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         excelImg.setHeight(40, Unit.PIXELS);
         excelImg.setWidth(40, Unit.PIXELS);
 
-        for (final Object df : getAllDocuments(tmwhs)) {
+        for (final Object df : getAllDocumentsImageRepresentations(tmwhs)) {
             excelImg.addClickListener((MouseEvents.ClickEvent event) -> {
                 if (event.isDoubleClick()) {
                     openDocumentGalleryWindow("Excel Document - " + tmwhs.getDocumentNo(), tmwhs);
@@ -193,7 +193,7 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sve sličice ostalih dokumenata.">
-        for (final Object df : getAllDocuments(tm)) {
+        for (final Object df : getAllDocumentsImageRepresentations(tm)) {
             excelImage.setHeight(40, Unit.PIXELS);
             excelImage.setWidth(40, Unit.PIXELS);
             excelImage.setDescription("Click to open an excel.");
@@ -206,15 +206,15 @@ public class ExcellSellGallery extends AGallery<TMarginWHS> {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
+    //<editor-fold defaultstate="collapsed" desc="getAllDocumentsImageRepresentations">
     //</editor-fold>
     @Override
-    protected void setUpDefaultGalleryDocument(IDocBean<TMarginWHS> docBean) throws Exception {
+    protected void setUpDefaultGalleryDocument(IDocBean docBean) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List getAllDocuments(TMarginWHS customObject) {
+    public List getAllDocumentsImageRepresentations(TMarginWHS customObject) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

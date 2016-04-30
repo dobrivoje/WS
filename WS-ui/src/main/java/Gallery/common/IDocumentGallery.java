@@ -50,6 +50,6 @@ public interface IDocumentGallery<T> {
 
     void openDocumentGalleryWindow(String caption, T customObject);
 
-    List getAllDocuments(T customObject);
+    List getAllDocumentsImageRepresentations(T customObject);
 
 }

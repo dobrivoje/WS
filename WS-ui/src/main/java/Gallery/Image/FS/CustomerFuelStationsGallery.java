@@ -18,11 +18,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import db.ent.Document;
-import db.ent.Fuelstation;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import static Main.MyUI.DS;
+import db.ent.Fuelstation;
 import java.util.ArrayList;
 import org.superbapps.utils.common.Enums.ImageTypes;
 import org.superbapps.utils.common.os.OS;
@@ -130,7 +130,7 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
         //<editor-fold defaultstate="collapsed" desc="Kreiraj sličice ako ih ima">
         CssLayout FSLowerImagesCssLayout = new Layout_InlineCSS();
 
-        for (final Object di : getAllDocuments(f)) {
+        for (final Object di : getAllDocumentsImageRepresentations(f)) {
             ((IDocBean) di).getImageRepresentation().setHeight(40, Unit.PIXELS);
             ((IDocBean) di).getImageRepresentation().setWidth(40, Unit.PIXELS);
 
@@ -164,18 +164,9 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="getAllDocuments">
-    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="getAllDocumentsImageRepresentations">
     @Override
-    protected void setUpDefaultGalleryDocument(IDocBean<Fuelstation> docFSBean) {
-        try {
-            DS.getDocumentController().setDefaultFSImage(docFSBean.getBean(), docFSBean.getDocument());
-        } catch (Exception e) {
-        }
-    }
-
-    @Override
-    public List getAllDocuments(Fuelstation f) {
+    public List getAllDocumentsImageRepresentations(Fuelstation f) {
         List<IDocBean> LI = new ArrayList<>();
 
         for (Document d : DS.getDocumentController().getAllFSDocuments(f)) {
@@ -190,5 +181,13 @@ public class CustomerFuelStationsGallery extends AGallery<Fuelstation> {
 
         return LI;
     }
+    //</editor-fold>
 
+    @Override
+    protected void setUpDefaultGalleryDocument(IDocBean docFSBean) {
+        try {
+            DS.getDocumentController().setDefaultFSImage(((IDocBean<Fuelstation>) docFSBean).getBean(), docFSBean.getDocument());
+        } catch (Exception e) {
+        }
+    }
 }

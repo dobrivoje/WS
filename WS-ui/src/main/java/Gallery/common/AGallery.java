@@ -103,7 +103,7 @@ public abstract class AGallery<T> implements IDocumentGallery<T> {
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Sve slike u footer-u.">
-        for (final Object docBean : getAllDocuments(customObject)) {
+        for (final Object docBean : getAllDocumentsImageRepresentations(customObject)) {
             ((IDocBean)docBean).getImageRepresentation().setHeight(40, Sizeable.Unit.PIXELS);
             ((IDocBean)docBean).getImageRepresentation().setWidth(40, Sizeable.Unit.PIXELS);
             ((IDocBean)docBean).getImageRepresentation().setDescription("Click once to open the image.");
@@ -125,7 +125,7 @@ public abstract class AGallery<T> implements IDocumentGallery<T> {
                                     if (dialog.isConfirmed()) {
                                         try {
                                             // DS.getDocumentController().setDefaultFSImage(f, di.getDocument());
-                                            setUpDefaultGalleryDocument((IDocBean<T>) docBean);
+                                            setUpDefaultGalleryDocument((IDocBean) docBean);
                                             
                                             AGallery.this.refreshVisualContainer.refreshVisualContainer();
                                         } catch (Exception ex) {
@@ -153,6 +153,6 @@ public abstract class AGallery<T> implements IDocumentGallery<T> {
         UI.getCurrent().getUI().addWindow(W);
     }
 
-    protected abstract void setUpDefaultGalleryDocument(IDocBean<T> docBean) throws Exception;
+    protected abstract void setUpDefaultGalleryDocument(IDocBean docBean) throws Exception;
 
 }
